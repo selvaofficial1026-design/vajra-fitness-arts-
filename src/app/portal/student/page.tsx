@@ -220,7 +220,7 @@ export default function StudentPortalPage() {
       />
 
       {/* Main Student Page Content */}
-      <main className="min-h-screen bg-background text-coffee-dark pt-24 sm:pt-28 pb-16 px-4 sm:px-6 md:px-8">
+      <main className="min-h-screen bg-background text-coffee-dark pt-28 sm:pt-32 md:pt-36 pb-16 px-4 sm:px-6 md:px-8">
         <div className="max-w-7xl mx-auto space-y-6">
           {/* Top Student Welcome Banner Card */}
           <motion.div

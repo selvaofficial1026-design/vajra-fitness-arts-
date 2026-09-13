@@ -432,7 +432,7 @@ export default function AdminPortalPage() {
       />
 
       {/* Main Admin Page Content - SEAMLESS CANVAS (NO HEAVY BOXES) */}
-      <main className="min-h-screen bg-background text-coffee-dark pt-24 sm:pt-28 pb-16 px-4 sm:px-6 md:px-12">
+      <main className="min-h-screen bg-background text-coffee-dark pt-28 sm:pt-32 md:pt-36 pb-16 px-4 sm:px-6 md:px-12">
         <div className="max-w-7xl mx-auto space-y-8">
           {/* Top Admin Header - Sits directly on background without chunky boxes */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-coffee-dark/10">

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -40,14 +41,16 @@ export default function PortalNavbar({
 }: PortalNavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 40);
+      setScrolled(window.scrollY > 50);
     };
 
-    // Check initial scroll position immediately on mount
+    // Check initial scroll position immediately on mount/navigation
     handleScroll();
+    // Re-check after a tiny delay to catch browser scroll restoration
     const timeoutId = setTimeout(handleScroll, 100);
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -55,7 +58,7 @@ export default function PortalNavbar({
       window.removeEventListener("scroll", handleScroll);
       clearTimeout(timeoutId);
     };
-  }, []);
+  }, [pathname]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -89,8 +92,8 @@ export default function PortalNavbar({
         className={cn(
           "transition-all duration-700 pointer-events-auto flex items-center justify-between",
           scrolled
-            ? "bg-background/90 backdrop-blur-2xl py-3 px-4 sm:px-6 md:px-8 rounded-full shadow-premium-hover border border-cappuccino/20 min-w-0 w-[95%] sm:w-auto md:min-w-[700px] lg:min-w-[860px] md:justify-around gap-4 sm:gap-6"
-            : "bg-transparent py-4 sm:py-6 md:py-7 px-3 xs:px-4 sm:px-6 md:px-8 w-full max-w-7xl border-b border-coffee-dark/10"
+            ? "bg-background/90 backdrop-blur-2xl py-3 px-4 sm:px-6 md:px-8 rounded-full shadow-premium-hover border border-cappuccino/20 min-w-0 w-[95%] sm:w-auto md:min-w-[700px] md:justify-around"
+            : "bg-transparent py-5 sm:py-8 md:py-10 px-3 xs:px-4 sm:px-6 md:px-8 w-full max-w-7xl"
         )}
       >
         {/* Brand Logo - EXACTLY matching main website navbar */}
@@ -98,7 +101,7 @@ export default function PortalNavbar({
           <div
             className={cn(
               "relative overflow-hidden rounded-full border border-cappuccino/40 group-hover:scale-105 transition-all duration-700 shadow-[0_0_15px_rgba(200,160,120,0.35)] flex items-center justify-center bg-coffee-dark shrink-0",
-              scrolled ? "w-9 h-9 sm:w-10 sm:h-10" : "w-10 h-10 sm:w-12 sm:h-12"
+              scrolled ? "w-9 h-9 sm:w-10 sm:h-10" : "w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14"
             )}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -112,7 +115,7 @@ export default function PortalNavbar({
             <span
               className={cn(
                 "font-serif font-bold tracking-tight transition-all duration-700 leading-none text-coffee-dark",
-                scrolled ? "text-sm sm:text-base md:text-lg" : "text-base sm:text-lg md:text-xl"
+                scrolled ? "text-sm sm:text-base md:text-lg" : "text-lg sm:text-xl md:text-2xl"
               )}
             >
               Vajra
@@ -120,7 +123,7 @@ export default function PortalNavbar({
             <span
               className={cn(
                 "font-sans uppercase font-bold transition-all duration-700 mt-1 text-cappuccino",
-                scrolled ? "text-[7px] md:text-[8px] tracking-[0.25em] sm:tracking-[0.3em]" : "text-[8px] md:text-[9px] tracking-[0.3em]"
+                scrolled ? "text-[7px] md:text-[8px] tracking-[0.25em] sm:tracking-[0.3em]" : "text-[7px] md:text-[8px] tracking-[0.25em] sm:tracking-[0.3em]"
               )}
             >
               Fitness Arts
@@ -132,7 +135,7 @@ export default function PortalNavbar({
         <div
           className={cn(
             "hidden md:flex items-center transition-all duration-500",
-            scrolled ? "gap-6 lg:gap-8" : "gap-7 lg:gap-9"
+            scrolled ? "gap-6 lg:gap-8" : "gap-8 lg:gap-10"
           )}
         >
           {navItems.map((item) => {
