@@ -214,7 +214,7 @@ function PortalAuthContent() {
   const performTrack = async (codeToTrack?: string) => {
     const code = (codeToTrack || trackInputCode).trim().toUpperCase();
     if (!code) {
-      setTrackError("Please enter your temporary tracking code (e.g., TEMP-1001).");
+      setTrackError("Please enter your temporary tracking code (e.g., TEMP-xxxx).");
       return;
     }
 
@@ -377,7 +377,7 @@ function PortalAuthContent() {
                       type="text"
                       value={studentUsername}
                       onChange={(e) => setStudentUsername(e.target.value)}
-                      placeholder="e.g. Karthik Raja"
+                      placeholder="Enter your registered name"
                       className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl pl-11 pr-4 py-3 text-sm focus:outline-none transition-colors"
                       required
                     />
@@ -394,7 +394,7 @@ function PortalAuthContent() {
                       type="text"
                       value={studentCode}
                       onChange={(e) => setStudentCode(e.target.value)}
-                      placeholder="e.g. vajra-1001"
+                      placeholder="Enter permanent code (vajra-xxxx)"
                       className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl pl-11 pr-4 py-3 text-sm focus:outline-none transition-colors"
                       required
                     />
@@ -437,27 +437,6 @@ function PortalAuthContent() {
                   </button>
                 </div>
               </form>
-
-              {/* Demo Hint Box */}
-              <div className="mt-8 pt-6 border-t border-white/10 text-xs text-white/60">
-                <p className="font-bold text-cappuccino mb-2 uppercase tracking-wider text-[10px]">
-                  💡 Quick Demo Student Account:
-                </p>
-                <div className="bg-[#191111] p-3 rounded-xl border border-white/10 flex flex-wrap items-center justify-between gap-2">
-                  <span>Username: <strong>Karthik Raja</strong></span>
-                  <span>Code: <code className="text-cappuccino font-mono font-bold">vajra-1001</code></span>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setStudentUsername("Karthik Raja");
-                      setStudentCode("vajra-1001");
-                    }}
-                    className="px-3 py-1 bg-white/10 hover:bg-cappuccino hover:text-black rounded-lg text-[10px] font-bold uppercase transition-all cursor-pointer"
-                  >
-                    Auto Fill
-                  </button>
-                </div>
-              </div>
             </motion.div>
           )}
 
@@ -757,7 +736,7 @@ function PortalAuthContent() {
                       type="text"
                       value={trackInputCode}
                       onChange={(e) => setTrackInputCode(e.target.value.toUpperCase())}
-                      placeholder="e.g. TEMP-2045"
+                      placeholder="e.g. TEMP-xxxx"
                       className="flex-1 bg-[#191111] border border-white/20 focus:border-cappuccino text-white font-mono tracking-wider uppercase rounded-xl px-4 py-3 text-sm focus:outline-none transition-colors"
                       required
                     />
@@ -844,26 +823,6 @@ function PortalAuthContent() {
                   )}
                 </motion.div>
               )}
-
-              {/* Demo Hint */}
-              <div className="mt-8 pt-6 border-t border-white/10 text-xs text-white/60">
-                <p className="font-bold text-cappuccino mb-2 uppercase tracking-wider text-[10px]">
-                  💡 Try Sample Pending Code:
-                </p>
-                <div className="bg-[#191111] p-3 rounded-xl border border-white/10 flex items-center justify-between">
-                  <span>Student: <strong>Deepak Kumar</strong> (<code className="text-cappuccino font-mono">TEMP-2045</code>)</span>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setTrackInputCode("TEMP-2045");
-                      performTrack("TEMP-2045");
-                    }}
-                    className="px-3 py-1 bg-white/10 hover:bg-cappuccino hover:text-black rounded-lg text-[10px] font-bold uppercase transition-all cursor-pointer"
-                  >
-                    Check Status
-                  </button>
-                </div>
-              </div>
             </motion.div>
           )}
 

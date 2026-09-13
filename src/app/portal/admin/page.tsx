@@ -1006,42 +1006,49 @@ export default function AdminPortalPage() {
               </div>
 
               <div className="flex-1 overflow-y-auto divide-y divide-white/5">
-                {students.filter((s) => s.status === "APPROVED").map((std) => {
-                  const isSelected = selectedStudentId === std.id;
-                  const lastMsg = messages
-                    .filter((m) => m.studentId === std.id)
-                    .slice(-1)[0];
+                {students.filter((s) => s.status === "APPROVED").length === 0 ? (
+                  <div className="p-6 text-center text-white/40 text-xs space-y-2">
+                    <p>No enrolled students yet.</p>
+                    <p className="text-[10px] text-white/30">Approved students will appear here for direct messaging.</p>
+                  </div>
+                ) : (
+                  students.filter((s) => s.status === "APPROVED").map((std) => {
+                    const isSelected = selectedStudentId === std.id;
+                    const lastMsg = messages
+                      .filter((m) => m.studentId === std.id)
+                      .slice(-1)[0];
 
-                  return (
-                    <div
-                      key={std.id}
-                      onClick={() => setSelectedStudentId(std.id)}
-                      className={`p-3.5 transition-all cursor-pointer flex items-center gap-3 ${
-                        isSelected
-                          ? "bg-cappuccino/20 border-l-4 border-cappuccino"
-                          : "hover:bg-white/5"
-                      }`}
-                    >
-                      <div className="w-10 h-10 rounded-full bg-cappuccino/20 text-cappuccino flex items-center justify-center font-bold text-sm shrink-0">
-                        {std.name.charAt(0)}
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-center justify-between">
-                          <h5 className="font-bold text-xs text-white truncate">{std.name}</h5>
-                          <span className="text-[9px] text-white/40 font-mono">
-                            {std.permanentCode}
-                          </span>
+                    return (
+                      <div
+                        key={std.id}
+                        onClick={() => setSelectedStudentId(std.id)}
+                        className={`p-3.5 transition-all cursor-pointer flex items-center gap-3 ${
+                          isSelected
+                            ? "bg-cappuccino/20 border-l-4 border-cappuccino"
+                            : "hover:bg-white/5"
+                        }`}
+                      >
+                        <div className="w-10 h-10 rounded-full bg-cappuccino/20 text-cappuccino flex items-center justify-center font-bold text-sm shrink-0">
+                          {std.name.charAt(0)}
                         </div>
-                        <p className="text-[11px] text-cappuccino/90 truncate">{std.course}</p>
-                        {lastMsg && (
-                          <p className="text-[10px] text-white/50 truncate mt-0.5">
-                            {lastMsg.sender === "admin" ? "You: " : ""}{lastMsg.text}
-                          </p>
-                        )}
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center justify-between">
+                            <h5 className="font-bold text-xs text-white truncate">{std.name}</h5>
+                            <span className="text-[9px] text-white/40 font-mono">
+                              {std.permanentCode}
+                            </span>
+                          </div>
+                          <p className="text-[11px] text-cappuccino/90 truncate">{std.course}</p>
+                          {lastMsg && (
+                            <p className="text-[10px] text-white/50 truncate mt-0.5">
+                              {lastMsg.sender === "admin" ? "You: " : ""}{lastMsg.text}
+                            </p>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })
+                )}
               </div>
             </div>
 
