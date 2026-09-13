@@ -9,9 +9,12 @@ export async function GET(req: Request) {
     const data = await getPortalData();
     let videos = data.videos;
 
-    if (course && course.toLowerCase() !== "all") {
+    if (course && course.toLowerCase() !== "all" && course.toLowerCase() !== "all courses") {
       videos = videos.filter(
-        (v) => v.course.toLowerCase() === course.toLowerCase() || v.course.toLowerCase() === "all"
+        (v) =>
+          v.course.toLowerCase() === course.toLowerCase() ||
+          v.course.toLowerCase() === "all" ||
+          v.course.toLowerCase() === "all courses"
       );
     }
 

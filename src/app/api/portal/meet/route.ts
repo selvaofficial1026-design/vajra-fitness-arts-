@@ -10,15 +10,21 @@ export async function GET(req: Request) {
     const data = await getPortalData();
     let meetings = data.meetings;
 
-    if (course) {
+    if (course && course.toLowerCase() !== "all" && course.toLowerCase() !== "all courses") {
       meetings = meetings.filter(
-        (m) => m.course.toLowerCase() === course.toLowerCase() || m.course.toLowerCase() === "all"
+        (m) =>
+          m.course.toLowerCase() === course.toLowerCase() ||
+          m.course.toLowerCase() === "all" ||
+          m.course.toLowerCase() === "all courses"
       );
     }
 
-    if (batch) {
+    if (batch && batch.toLowerCase() !== "all" && batch.toLowerCase() !== "all batches") {
       meetings = meetings.filter(
-        (m) => m.batch.toLowerCase() === batch.toLowerCase() || m.batch.toLowerCase() === "all batches"
+        (m) =>
+          m.batch.toLowerCase() === batch.toLowerCase() ||
+          m.batch.toLowerCase() === "all" ||
+          m.batch.toLowerCase() === "all batches"
       );
     }
 

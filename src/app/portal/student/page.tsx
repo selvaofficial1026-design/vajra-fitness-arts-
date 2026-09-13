@@ -191,8 +191,23 @@ export default function StudentPortalPage() {
     );
   }
 
-  // Active meeting for student's course/batch
-  const activeMeeting = meetings.find((m) => m.isActive) || meetings[0];
+  // Active meeting for student's course/batch or academy-wide All session
+  const activeMeeting =
+    meetings.find((m) => {
+      const courseMatch =
+        m.course.toLowerCase() === "all" ||
+        m.course.toLowerCase() === "all courses" ||
+        m.course.toLowerCase() === student.course.toLowerCase();
+      const batchMatch =
+        m.batch.toLowerCase() === "all" ||
+        m.batch.toLowerCase() === "all batches" ||
+        m.batch.toLowerCase() === student.batch.toLowerCase();
+      return courseMatch && batchMatch;
+    }) ||
+    meetings.find(
+      (m) => m.course.toLowerCase() === "all" || m.course.toLowerCase() === "all courses"
+    ) ||
+    meetings[0];
 
   return (
     <>
@@ -629,7 +644,6 @@ export default function StudentPortalPage() {
                       type="text"
                       value={newMessageText}
                       onChange={(e) => setNewMessageText(e.target.value)}
-                      placeholder="Type your doubt or question for the Coach..."
                       className="flex-1 bg-[#130D0D] border border-white/10 focus:border-cappuccino text-white rounded-full px-4 py-2 text-xs focus:outline-none transition-colors"
                     />
                     <button
