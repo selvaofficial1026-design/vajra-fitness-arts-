@@ -51,7 +51,7 @@ export default function Hero() {
     <section 
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="relative min-h-[100svh] sm:h-screen w-full flex items-center justify-center overflow-hidden p-0 perspective-1000 py-16 sm:py-0"
+      className="relative min-h-[100svh] w-full flex flex-col items-center justify-center p-0 perspective-1000 pt-20 pb-12 sm:pt-24 sm:pb-16 overflow-hidden"
     >
       {/* Background Image with Pro Parallax & Rich Warm Cinematic Grade */}
       <motion.div 
@@ -80,16 +80,16 @@ export default function Hero() {
           rotateY,
           transformStyle: "preserve-3d"
         }}
-        className="relative z-20 text-center px-4 xs:px-6 sm:px-12 max-w-5xl pt-16 sm:pt-24 md:pt-28 pb-14 sm:pb-0"
+        className="relative z-20 text-center px-4 xs:px-6 sm:px-12 max-w-5xl my-auto"
       >
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
         >
           {/* Prominent Golden Logo Crest with Warm Glow */}
-          <div className="flex flex-col items-center justify-center mb-4 sm:mb-6">
-            <div className="relative w-20 h-20 xs:w-24 xs:h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-full overflow-hidden border-2 border-cappuccino/80 shadow-[0_0_50px_rgba(200,149,95,0.7),0_0_20px_rgba(221,169,34,0.35)] ring-2 ring-cappuccino/30 bg-coffee-dark mb-3 sm:mb-4 hover:scale-105 transition-transform duration-500">
+          <div className="flex flex-col items-center justify-center mb-3 sm:mb-5">
+            <div className="relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full overflow-hidden border-2 border-cappuccino/80 shadow-[0_0_40px_rgba(200,149,95,0.7),0_0_20px_rgba(221,169,34,0.35)] ring-2 ring-cappuccino/30 bg-coffee-dark mb-2.5 sm:mb-3 hover:scale-105 transition-transform duration-500">
               <Image 
                 src="/images/logo_gold.jpeg" 
                 alt="Vajra Fitness Arts Logo" 
@@ -98,26 +98,26 @@ export default function Hero() {
                 className="object-cover scale-110"
               />
             </div>
-            <span className="inline-block px-3 xs:px-4 sm:px-5 py-1.5 sm:py-2 border border-cappuccino/50 rounded-full text-cappuccino text-[8px] sm:text-[10px] tracking-wider sm:tracking-[0.35em] uppercase backdrop-blur-md bg-[#1A1212]/80 shadow-lg max-w-full text-center font-bold">
+            <span className="inline-block px-3 xs:px-4 sm:px-5 py-1 sm:py-1.5 border border-cappuccino/50 rounded-full text-cappuccino text-[8px] sm:text-[10px] tracking-wider sm:tracking-[0.3em] uppercase backdrop-blur-md bg-[#1A1212]/85 shadow-lg max-w-full text-center font-bold">
               Vajra Fitness Arts • Fitness | Yoga | Martial Arts | Silambam
             </span>
           </div>
 
           {/* High-contrast readable typography */}
-          <h1 className="text-3xl xs:text-4xl sm:text-6xl md:text-8xl font-serif text-white mb-4 sm:mb-8 md:mb-10 tracking-tight leading-[1.1] text-balance drop-shadow-[0_4px_24px_rgba(0,0,0,0.85)]">
+          <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif text-white mb-3 sm:mb-5 tracking-tight leading-[1.15] text-balance drop-shadow-[0_4px_24px_rgba(0,0,0,0.85)]">
             Ancient Disciplines. <br />
             <span className="italic font-normal text-cappuccino drop-shadow-[0_2px_12px_rgba(200,149,95,0.5)]">Modern Strength.</span>
           </h1>
-          <p className="text-white/95 max-w-2xl mx-auto text-xs xs:text-sm sm:text-base md:text-lg font-normal leading-relaxed mb-6 sm:mb-10 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)] px-2 sm:px-0">
+          <p className="text-white/95 max-w-xl mx-auto text-xs xs:text-sm sm:text-base font-normal leading-relaxed mb-6 sm:mb-8 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)] px-2 sm:px-0">
             Build strength, discipline, and focus through professional training in Fitness, Yoga, Martial Arts, and Silambam.
           </p>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 sm:gap-6 md:gap-8 w-full sm:w-auto max-w-xs sm:max-w-none mx-auto">
+          {/* CTA Buttons - fully visible & interactive */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-5 w-full sm:w-auto max-w-xs sm:max-w-none mx-auto relative z-30">
             <Magnetic className="w-full sm:w-auto">
               <Link
                 href="/course"
-                className="group relative w-full sm:w-auto px-8 sm:px-12 py-3.5 sm:py-5 bg-cappuccino text-coffee-dark rounded-full font-bold text-xs sm:text-sm tracking-widest uppercase overflow-hidden transition-all shadow-premium hover:shadow-[0_12px_35px_rgba(200,149,95,0.45)] active:scale-95 flex items-center justify-center"
+                className="group relative w-full sm:w-auto px-8 sm:px-10 py-3.5 sm:py-4 bg-cappuccino text-coffee-dark rounded-full font-bold text-xs sm:text-sm tracking-widest uppercase overflow-hidden transition-all shadow-premium hover:shadow-[0_12px_35px_rgba(200,149,95,0.55)] active:scale-95 flex items-center justify-center cursor-pointer"
               >
                 <span className="relative z-10">Explore Courses</span>
                 <div className="absolute inset-0 bg-white/30 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
@@ -126,7 +126,7 @@ export default function Hero() {
             <Magnetic className="w-full sm:w-auto">
               <Link
                 href="/contact"
-                className="w-full sm:w-auto px-8 sm:px-12 py-3.5 sm:py-5 border-2 border-white/90 text-white rounded-full font-bold text-xs sm:text-sm tracking-widest uppercase hover:bg-white hover:text-coffee-dark transition-all backdrop-blur-sm shadow-premium active:scale-95 flex items-center justify-center"
+                className="w-full sm:w-auto px-8 sm:px-10 py-3.5 sm:py-4 border-2 border-white/90 text-white rounded-full font-bold text-xs sm:text-sm tracking-widest uppercase hover:bg-white hover:text-coffee-dark transition-all backdrop-blur-sm shadow-premium active:scale-95 flex items-center justify-center cursor-pointer"
               >
                 Contact &amp; Admissions
               </Link>
@@ -135,20 +135,20 @@ export default function Hero() {
         </motion.div>
       </motion.div>
 
-      {/* Mobile-visible animated scroll indicator */}
+      {/* Subtle bottom scroll indicator */}
       <motion.div 
-        className="absolute bottom-3 sm:bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 sm:gap-2.5 z-20 pointer-events-none"
+        className="mt-6 sm:mt-8 flex flex-col items-center gap-1 z-20 pointer-events-none"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.2, duration: 1 }}
+        transition={{ delay: 1, duration: 1 }}
       >
-        <span className="text-[8px] sm:text-[9px] uppercase tracking-[0.3em] sm:tracking-[0.4em] text-white/80 font-bold whitespace-nowrap drop-shadow-md">
-          Start Your Journey
+        <span className="text-[7px] sm:text-[8px] uppercase tracking-[0.3em] text-white/70 font-bold whitespace-nowrap drop-shadow-md">
+          Scroll Down
         </span>
         <motion.div 
-          animate={{ y: [0, 5, 0], opacity: [0.6, 1, 0.6] }}
-          transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
-          className="w-[1.5px] h-6 sm:h-12 md:h-16 bg-gradient-to-b from-cappuccino via-cappuccino/60 to-transparent rounded-full shadow-[0_0_8px_rgba(200,149,95,0.8)]"
+          animate={{ y: [0, 4, 0], opacity: [0.5, 1, 0.5] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          className="w-[1.5px] h-4 sm:h-6 bg-gradient-to-b from-cappuccino to-transparent rounded-full shadow-[0_0_8px_rgba(200,149,95,0.8)]"
         />
       </motion.div>
     </section>

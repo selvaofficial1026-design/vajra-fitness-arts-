@@ -127,8 +127,8 @@ export default function Home() {
             subtitle="Flagship Courses"
             title="Master the Arts of Strength &amp; Focus"
           />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 lg:gap-10 max-w-5xl mx-auto">
-            {featuredCourses.map((item, index) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 lg:gap-10 max-w-4xl mx-auto">
+            {featuredCourses.slice(0, 2).map((item, index) => (
               <MenuItemCard 
                 key={index} 
                 index={index} 
