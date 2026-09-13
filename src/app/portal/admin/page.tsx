@@ -28,9 +28,13 @@ import {
   CheckCheck,
   UserCheck,
   RefreshCw,
-  Award
+  Award,
+  Zap,
+  Flame,
+  MapPin
 } from "lucide-react";
 import { Student, ClassMeeting, VideoClass, ChatMessage, extractYoutubeId } from "@/lib/portalStore";
+import PortalDashboardLayout, { NavItem } from "@/components/portal/PortalDashboardLayout";
 
 const officialBatches = [
   "4:30 AM - 5:15 AM (Morning)",
@@ -48,6 +52,7 @@ export default function AdminPortalPage() {
   const router = useRouter();
   const [adminUser, setAdminUser] = useState<{ username: string; name: string } | null>(null);
   const [activeTab, setActiveTab] = useState<"students" | "meet" | "videos" | "messages">("students");
+  const [searchQuery, setSearchQuery] = useState("");
 
   // Admin Data State
   const [students, setStudents] = useState<Student[]>([]);
@@ -59,7 +64,6 @@ export default function AdminPortalPage() {
 
   // Student Sub-Tab: Pending vs Enrolled
   const [studentFilter, setStudentFilter] = useState<"pending" | "approved" | "all">("pending");
-  const [searchStudent, setSearchStudent] = useState("");
 
   // Google Meet Upload Form State
   const [newMeet, setNewMeet] = useState({
@@ -324,78 +328,276 @@ export default function AdminPortalPage() {
   const approvedStudents = students.filter((s) => s.status === "APPROVED");
 
   // Filter students based on sub-tab and search query
-  const displayedStudents = students.filter((s) => {
-    if (studentFilter === "pending") return s.status === "PENDING";
-    if (studentFilter === "approved") return s.status === "APPROVED";
-    return true;
-  }).filter((s) => {
-    if (!searchStudent.trim()) return true;
-    const q = searchStudent.toLowerCase();
-    return (
-      s.name.toLowerCase().includes(q) ||
-      s.phone.includes(q) ||
-      (s.permanentCode && s.permanentCode.toLowerCase().includes(q)) ||
-      s.tempCode.toLowerCase().includes(q) ||
-      s.course.toLowerCase().includes(q)
-    );
-  });
+  const displayedStudents = students
+    .filter((s) => {
+      if (studentFilter === "pending") return s.status === "PENDING";
+      if (studentFilter === "approved") return s.status === "APPROVED";
+      return true;
+    })
+    .filter((s) => {
+      if (!searchQuery.trim()) return true;
+      const q = searchQuery.toLowerCase();
+      return (
+        s.name.toLowerCase().includes(q) ||
+        s.phone.includes(q) ||
+        (s.permanentCode && s.permanentCode.toLowerCase().includes(q)) ||
+        s.tempCode.toLowerCase().includes(q) ||
+        s.course.toLowerCase().includes(q) ||
+        (s.city && s.city.toLowerCase().includes(q))
+      );
+    });
 
   const activeChatStudent = students.find((s) => s.id === selectedStudentId);
   const activeChatMessages = messages.filter((m) => m.studentId === selectedStudentId);
 
-  return (
-    <main className="min-h-screen bg-background text-coffee-dark pt-24 pb-20 px-4 sm:px-6 md:px-12">
-      <div className="max-w-7xl mx-auto space-y-8">
-        {/* Admin Header */}
-        <div className="bg-[#241A1A] text-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-cappuccino/30 shadow-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-5 relative overflow-hidden">
-          <div className="flex items-center gap-4 z-10">
-            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-cappuccino text-coffee-dark flex items-center justify-center font-serif text-2xl font-bold shrink-0 shadow-lg">
-              <ShieldCheck size={28} />
-            </div>
-            <div>
-              <div className="flex items-center gap-2 mb-1">
-                <h1 className="text-xl sm:text-2xl font-serif font-bold text-white leading-none">
-                  Vajra Master Admin Desk
-                </h1>
-                <span className="px-2.5 py-0.5 rounded-full bg-cappuccino/20 border border-cappuccino/50 text-cappuccino text-[10px] font-bold uppercase tracking-wider">
-                  Head Coach
-                </span>
-              </div>
-              <p className="text-xs text-white/70">
-                Online Classes Management, Student Approvals, Live Google Meet &amp; Messaging System
-              </p>
-            </div>
+  // Navigation Items
+  const navItems: NavItem[] = [
+    { id: "students", label: "Admissions Desk", icon: Users, badge: pendingStudents.length || undefined },
+    { id: "meet", label: "Google Meets", icon: Radio, badge: meetings.length || undefined },
+    { id: "videos", label: "Video Library", icon: Video, badge: videos.length || undefined },
+    { id: "messages", label: "Coach Messages", icon: MessageSquare, badge: messages.length || undefined }
+  ];
+
+  const tabTitles: Record<string, string> = {
+    students: "Student Admissions & Directory Desk",
+    meet: "Live Google Meet Classroom Scheduler",
+    videos: "YouTube Training Video Management",
+    messages: "Student Doubts & Stance Feedback Desk"
+  };
+
+  const breadcrumbs = [
+    { label: "Vajra Portal", href: "/portal" },
+    { label: "Admin Console", href: "/portal/admin" },
+    { label: navItems.find((n) => n.id === activeTab)?.label || "Dashboard" }
+  ];
+
+  // Right Admin Widget (Matching reference image architecture, styled in Vajra's brand theme)
+  const rightAdminWidget = (
+    <div className="bg-white rounded-3xl border border-cream shadow-premium p-6 space-y-6 text-coffee-dark text-center">
+      {/* Circular Avatar with Progress Ring */}
+      <div className="relative w-28 h-28 mx-auto flex items-center justify-center">
+        <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="44" className="stroke-[#EDE4D8]" strokeWidth="6" fill="transparent" />
+          <circle
+            cx="50"
+            cy="50"
+            r="44"
+            className="stroke-cappuccino"
+            strokeWidth="6"
+            strokeDasharray={276}
+            strokeDashoffset={0}
+            strokeLinecap="round"
+            fill="transparent"
+          />
+        </svg>
+
+        {/* Inner Logo Badge */}
+        <div className="absolute inset-2 rounded-full bg-[#241A1A] border-2 border-cappuccino/60 flex items-center justify-center p-2.5 shadow-inner">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/logo_gold.jpeg"
+            alt="Vajra Emblem"
+            className="w-full h-full object-contain rounded-full"
+          />
+        </div>
+
+        {/* Verified Admin Shield */}
+        <span className="absolute bottom-1 right-1 bg-cappuccino text-coffee-dark p-1 rounded-full border-2 border-white shadow-sm" title="Master Administrator">
+          <ShieldCheck size={14} />
+        </span>
+      </div>
+
+      {/* Admin Name & Role */}
+      <div className="space-y-1">
+        <h3 className="font-serif font-bold text-lg text-coffee-dark truncate">
+          {adminUser?.name || "Vajra Master Admin"}
+        </h3>
+        <p className="text-xs text-cappuccino font-semibold tracking-wide">
+          Lead Instructor &amp; Academy Director
+        </p>
+        <div className="pt-1">
+          <span className="inline-block px-3 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-mono font-bold text-[10px] uppercase tracking-wider border border-emerald-300">
+            Active Supervisor
+          </span>
+        </div>
+      </div>
+
+      {/* Stats Counter Boxes (Matching Reference Image) */}
+      <div className="grid grid-cols-2 gap-3 pt-2 border-t border-cream">
+        <div className="p-2.5 rounded-2xl bg-[#FAF7F2] border border-cream text-center">
+          <span className="text-[9.5px] uppercase tracking-wider text-coffee-dark/50 font-bold block">
+            Pending
+          </span>
+          <p className="font-mono font-bold text-base text-amber-600 mt-0.5">
+            {pendingStudents.length}
+          </p>
+        </div>
+
+        <div className="p-2.5 rounded-2xl bg-[#FAF7F2] border border-cream text-center">
+          <span className="text-[9.5px] uppercase tracking-wider text-coffee-dark/50 font-bold block">
+            Approved
+          </span>
+          <p className="font-mono font-bold text-base text-emerald-600 mt-0.5">
+            {approvedStudents.length}
+          </p>
+        </div>
+      </div>
+
+      {/* Contact & Control Information */}
+      <div className="space-y-2.5 text-left text-xs border-t border-cream pt-4">
+        <div className="flex items-center gap-3 p-2 rounded-xl bg-[#FAF7F2] border border-cream">
+          <div className="w-7 h-7 rounded-lg bg-cappuccino/15 text-cappuccino flex items-center justify-center shrink-0">
+            <Phone size={13} />
           </div>
-
-          {/* Quick Metrics & Logout */}
-          <div className="flex items-center gap-3 z-10 w-full md:w-auto justify-between md:justify-end border-t md:border-t-0 border-white/10 pt-3 md:pt-0">
-            <div className="flex items-center gap-2.5 text-xs">
-              <div className="text-center px-2.5 py-1 text-xs rounded-xl bg-white/5 border border-white/10">
-                <span className="text-[9px] uppercase tracking-wider text-white/50 block">Pending</span>
-                <span className="font-mono font-bold text-amber-400 text-xs sm:text-sm">
-                  {pendingStudents.length}
-                </span>
-              </div>
-              <div className="text-center px-2.5 py-1 text-xs rounded-xl bg-white/5 border border-white/10">
-                <span className="text-[9px] uppercase tracking-wider text-white/50 block">Approved</span>
-                <span className="font-mono font-bold text-emerald-400 text-xs sm:text-sm">
-                  {approvedStudents.length}
-                </span>
-              </div>
-            </div>
-
-            <button
-              type="button"
-              onClick={handleLogout}
-              className="px-3.5 py-2 bg-white/10 hover:bg-red-500/20 hover:text-red-300 hover:border-red-500/40 text-white/80 rounded-xl text-xs font-bold uppercase tracking-wider transition-all border border-white/10 flex items-center gap-2 cursor-pointer shrink-0"
-            >
-              <LogOut size={14} />
-              <span>Log Out</span>
-            </button>
+          <div className="min-w-0 flex-1">
+            <span className="text-[9px] uppercase tracking-wider text-coffee-dark/50 font-semibold block">Academy Line</span>
+            <p className="font-mono font-bold text-coffee-dark text-[11px] truncate">+91 87789 31958</p>
           </div>
         </div>
 
-        {/* Global Action Message Toast */}
+        <div className="flex items-center gap-3 p-2 rounded-xl bg-[#FAF7F2] border border-cream">
+          <div className="w-7 h-7 rounded-lg bg-emerald-500/15 text-emerald-600 flex items-center justify-center shrink-0">
+            <Radio size={13} />
+          </div>
+          <div className="min-w-0 flex-1">
+            <span className="text-[9px] uppercase tracking-wider text-coffee-dark/50 font-semibold block">Scheduled Meets</span>
+            <p className="font-bold text-coffee-dark text-[11px] truncate">{meetings.length} Active Links</p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3 p-2 rounded-xl bg-[#FAF7F2] border border-cream">
+          <div className="w-7 h-7 rounded-lg bg-cappuccino/15 text-cappuccino flex items-center justify-center shrink-0">
+            <Award size={13} />
+          </div>
+          <div className="min-w-0 flex-1">
+            <span className="text-[9px] uppercase tracking-wider text-coffee-dark/50 font-semibold block">Batches</span>
+            <p className="font-bold text-coffee-dark text-[11px] truncate">6 Daily Slots</p>
+          </div>
+        </div>
+      </div>
+
+      {/* 3 Circular System Gauges (Bottom Right Gauges from Reference Image) */}
+      <div className="border-t border-cream pt-4 space-y-2">
+        <span className="text-[9.5px] uppercase tracking-widest text-coffee-dark/40 font-bold block">
+          Portal Health &amp; Response
+        </span>
+
+        <div className="grid grid-cols-3 gap-2 pt-1">
+          {/* Gauge 1: Approval Rate */}
+          <div className="flex flex-col items-center">
+            <div className="relative w-12 h-12 flex items-center justify-center">
+              <svg className="w-full h-full -rotate-90" viewBox="0 0 36 36">
+                <circle cx="18" cy="18" r="14" stroke="#EDE4D8" strokeWidth="3" fill="none" />
+                <circle
+                  cx="18"
+                  cy="18"
+                  r="14"
+                  stroke="#C8955F"
+                  strokeWidth="3"
+                  strokeDasharray="88"
+                  strokeDashoffset={88 * (1 - 0.94)}
+                  strokeLinecap="round"
+                  fill="none"
+                />
+              </svg>
+              <span className="absolute text-[9px] font-bold text-coffee-dark font-mono">94%</span>
+            </div>
+            <span className="text-[8.5px] uppercase tracking-wider text-coffee-dark/70 font-semibold mt-1">
+              Admissions
+            </span>
+          </div>
+
+          {/* Gauge 2: Batch Coverage */}
+          <div className="flex flex-col items-center">
+            <div className="relative w-12 h-12 flex items-center justify-center">
+              <svg className="w-full h-full -rotate-90" viewBox="0 0 36 36">
+                <circle cx="18" cy="18" r="14" stroke="#EDE4D8" strokeWidth="3" fill="none" />
+                <circle
+                  cx="18"
+                  cy="18"
+                  r="14"
+                  stroke="#DDA922"
+                  strokeWidth="3"
+                  strokeDasharray="88"
+                  strokeDashoffset={0}
+                  strokeLinecap="round"
+                  fill="none"
+                />
+              </svg>
+              <span className="absolute text-[9px] font-bold text-coffee-dark font-mono">100%</span>
+            </div>
+            <span className="text-[8.5px] uppercase tracking-wider text-coffee-dark/70 font-semibold mt-1">
+              Batches
+            </span>
+          </div>
+
+          {/* Gauge 3: Response Rate */}
+          <div className="flex flex-col items-center">
+            <div className="relative w-12 h-12 flex items-center justify-center">
+              <svg className="w-full h-full -rotate-90" viewBox="0 0 36 36">
+                <circle cx="18" cy="18" r="14" stroke="#EDE4D8" strokeWidth="3" fill="none" />
+                <circle
+                  cx="18"
+                  cy="18"
+                  r="14"
+                  stroke="#10B981"
+                  strokeWidth="3"
+                  strokeDasharray="88"
+                  strokeDashoffset={88 * (1 - 0.98)}
+                  strokeLinecap="round"
+                  fill="none"
+                />
+              </svg>
+              <span className="absolute text-[9px] font-bold text-coffee-dark font-mono">98%</span>
+            </div>
+            <span className="text-[8.5px] uppercase tracking-wider text-coffee-dark/70 font-semibold mt-1">
+              Response
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Quick Action Button */}
+      <div className="pt-2">
+        <button
+          type="button"
+          onClick={() => loadAdminData()}
+          className="w-full py-2.5 px-4 rounded-xl bg-[#241A1A] hover:bg-[#1A1212] text-white font-bold text-xs uppercase tracking-wider transition-all shadow-md active:scale-95 flex items-center justify-center gap-2 cursor-pointer border border-cappuccino/40"
+        >
+          <RefreshCw size={14} className="text-cappuccino" />
+          <span>Refresh Records</span>
+        </button>
+      </div>
+    </div>
+  );
+
+  return (
+    <PortalDashboardLayout
+      role="admin"
+      title={tabTitles[activeTab]}
+      subtitle="Head Coach Control Center &amp; Admissions Desk"
+      breadcrumbs={breadcrumbs}
+      navItems={navItems}
+      activeNavId={activeTab}
+      onNavChange={(id) => setActiveTab(id as typeof activeTab)}
+      searchValue={searchQuery}
+      onSearchChange={setSearchQuery}
+      searchPlaceholder="Search student name, phone, or code..."
+      user={{
+        name: adminUser?.name || "Master Coach",
+        roleName: "Super Admin",
+        badgeCode: "HEAD COACH",
+        avatarLetter: "A",
+        phone: "8778931958",
+        courseOrBatch: "6 Batches"
+      }}
+      onLogout={handleLogout}
+      notificationsCount={pendingStudents.length}
+      messagesCount={messages.length}
+      rightWidget={rightAdminWidget}
+    >
+      <div className="space-y-6">
+        {/* Global Toast Message */}
         {actionMessage && (
           <motion.div
             initial={{ opacity: 0, y: -10 }}
@@ -409,90 +611,31 @@ export default function AdminPortalPage() {
             <button
               type="button"
               onClick={() => setActionMessage(null)}
-              className="text-emerald-400 hover:text-white text-sm"
+              className="text-emerald-400 hover:text-white text-sm cursor-pointer"
             >
               &times;
             </button>
           </motion.div>
         )}
 
-        {/* 4 Main Tabs */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 bg-white p-2 rounded-2xl border border-cream shadow-premium">
-          <button
-            type="button"
-            onClick={() => setActiveTab("students")}
-            className={`py-2.5 sm:py-3 px-3 rounded-xl text-xs font-bold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${
-              activeTab === "students"
-                ? "bg-[#241A1A] text-white shadow-md border border-cappuccino/40"
-                : "text-coffee-dark/60 hover:text-coffee-dark hover:bg-cream/40"
-            }`}
-          >
-            <Users size={16} className={activeTab === "students" ? "text-cappuccino" : ""} />
-            <span>Student Details</span>
-            {pendingStudents.length > 0 && (
-              <span className="w-5 h-5 rounded-full bg-amber-500 text-black text-[10px] font-bold flex items-center justify-center ml-1 animate-pulse">
-                {pendingStudents.length}
-              </span>
-            )}
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActiveTab("meet")}
-            className={`py-2.5 sm:py-3 px-3 rounded-xl text-xs font-bold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${
-              activeTab === "meet"
-                ? "bg-[#241A1A] text-white shadow-md border border-cappuccino/40"
-                : "text-coffee-dark/60 hover:text-coffee-dark hover:bg-cream/40"
-            }`}
-          >
-            <Radio size={16} className={activeTab === "meet" ? "text-emerald-400" : ""} />
-            <span>Google Meet Upload</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActiveTab("videos")}
-            className={`py-2.5 sm:py-3 px-3 rounded-xl text-xs font-bold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${
-              activeTab === "videos"
-                ? "bg-[#241A1A] text-white shadow-md border border-cappuccino/40"
-                : "text-coffee-dark/60 hover:text-coffee-dark hover:bg-cream/40"
-            }`}
-          >
-            <Video size={16} className={activeTab === "videos" ? "text-cappuccino" : ""} />
-            <span>Videos Upload</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActiveTab("messages")}
-            className={`py-2.5 sm:py-3 px-3 rounded-xl text-xs font-bold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${
-              activeTab === "messages"
-                ? "bg-[#241A1A] text-white shadow-md border border-cappuccino/40"
-                : "text-coffee-dark/60 hover:text-coffee-dark hover:bg-cream/40"
-            }`}
-          >
-            <MessageSquare size={16} className={activeTab === "messages" ? "text-green-400" : ""} />
-            <span>Message System</span>
-          </button>
-        </div>
-
-        {/* Tab 1: STUDENT DETAILS & APPROVAL DESK */}
+        {/* Tab 1: STUDENT ADMISSIONS & DIRECTORY */}
         {activeTab === "students" && (
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
             className="space-y-6"
           >
-            {/* Filter Pills & Search */}
-            <div className="bg-white p-4 sm:p-5 rounded-2xl border border-cream shadow-premium flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div className="flex gap-2 w-full sm:w-auto">
+            {/* Filter Pills */}
+            <div className="bg-white p-4 sm:p-5 rounded-3xl border border-cream shadow-premium flex flex-wrap items-center justify-between gap-4">
+              <div className="flex flex-wrap gap-2">
                 <button
                   type="button"
                   onClick={() => setStudentFilter("pending")}
                   className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer ${
                     studentFilter === "pending"
                       ? "bg-amber-500 text-black shadow-md"
-                      : "bg-cream/50 text-coffee-dark/70 hover:bg-cream"
+                      : "bg-[#FAF7F2] text-coffee-dark/70 hover:bg-cream border border-cream"
                   }`}
                 >
                   <Clock size={14} />
@@ -505,7 +648,7 @@ export default function AdminPortalPage() {
                   className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer ${
                     studentFilter === "approved"
                       ? "bg-emerald-600 text-white shadow-md"
-                      : "bg-cream/50 text-coffee-dark/70 hover:bg-cream"
+                      : "bg-[#FAF7F2] text-coffee-dark/70 hover:bg-cream border border-cream"
                   }`}
                 >
                   <CheckCircle2 size={14} />
@@ -518,33 +661,26 @@ export default function AdminPortalPage() {
                   className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
                     studentFilter === "all"
                       ? "bg-[#241A1A] text-white"
-                      : "bg-cream/50 text-coffee-dark/70 hover:bg-cream"
+                      : "bg-[#FAF7F2] text-coffee-dark/70 hover:bg-cream border border-cream"
                   }`}
                 >
                   All ({students.length})
                 </button>
               </div>
 
-              <div className="relative w-full sm:w-72">
-                <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-coffee-dark/40" />
-                <input
-                  type="text"
-                  value={searchStudent}
-                  onChange={(e) => setSearchStudent(e.target.value)}
-                  placeholder="Search by name, phone, code..."
-                  className="w-full bg-background border border-cream focus:border-cappuccino text-coffee-dark rounded-xl pl-10 pr-3 py-2 text-xs focus:outline-none"
-                />
-              </div>
+              <span className="text-xs text-coffee-dark/60 font-mono">
+                Showing: <strong>{displayedStudents.length}</strong> records
+              </span>
             </div>
 
-            {/* Students Table / Cards */}
+            {/* Students List */}
             {displayedStudents.length === 0 ? (
-              <div className="bg-white p-12 rounded-3xl border border-cream text-center shadow-premium">
-                <Users size={40} className="mx-auto text-coffee-dark/30 mb-2" />
+              <div className="bg-white p-12 rounded-3xl border border-cream text-center shadow-premium space-y-2">
+                <Users size={36} className="mx-auto text-coffee-dark/30" />
                 <p className="text-sm font-bold text-coffee-dark">No student records found</p>
-                <p className="text-xs text-coffee-dark/60 mt-1">
+                <p className="text-xs text-coffee-dark/60">
                   {studentFilter === "pending"
-                    ? "Great job! Zero pending enrollment requests."
+                    ? "Zero pending enrollment requests."
                     : "No matching student profiles."}
                 </p>
               </div>
@@ -555,7 +691,7 @@ export default function AdminPortalPage() {
                   return (
                     <div
                       key={std.id}
-                      className={`p-4 sm:p-5 rounded-2xl border transition-all ${
+                      className={`p-5 rounded-3xl border transition-all ${
                         isPending
                           ? "bg-[#241A1A] text-white border-amber-500/40 shadow-xl"
                           : "bg-white text-coffee-dark border-cream shadow-premium hover:border-cappuccino/40"
@@ -574,35 +710,32 @@ export default function AdminPortalPage() {
                             ) : (
                               <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500 text-emerald-400 text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
                                 <CheckCircle2 size={12} />
-                                <span>Permanent Code: <strong className="font-mono">{std.permanentCode}</strong></span>
+                                <span>Permanent: <strong className="font-mono">{std.permanentCode}</strong></span>
                               </span>
                             )}
 
-                            <span className="text-[11px] opacity-60">
-                              Temp Code: <code className="font-mono font-bold">{std.tempCode}</code>
+                            <span className="text-[11px] opacity-60 font-mono">
+                              Temp: {std.tempCode}
                             </span>
                           </div>
 
                           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs opacity-80 pt-1">
                             <div>
-                              <span className="block text-[9px] uppercase tracking-wider opacity-60">Discipline</span>
+                              <span className="block text-[9px] uppercase tracking-wider opacity-60 font-semibold">Discipline</span>
                               <strong className="text-cappuccino">{std.course}</strong>
                             </div>
                             <div>
-                              <span className="block text-[9px] uppercase tracking-wider opacity-60">Batch Slot</span>
+                              <span className="block text-[9px] uppercase tracking-wider opacity-60 font-semibold">Batch Slot</span>
                               <span>{std.batch}</span>
                             </div>
                             <div>
-                              <span className="block text-[9px] uppercase tracking-wider opacity-60">WhatsApp Phone</span>
-                              <a
-                                href={`tel:${std.phone}`}
-                                className="text-cappuccino hover:underline font-mono"
-                              >
+                              <span className="block text-[9px] uppercase tracking-wider opacity-60 font-semibold">WhatsApp</span>
+                              <a href={`tel:${std.phone}`} className="text-cappuccino hover:underline font-mono">
                                 +91 {std.phone}
                               </a>
                             </div>
                             <div>
-                              <span className="block text-[9px] uppercase tracking-wider opacity-60">Location / Age</span>
+                              <span className="block text-[9px] uppercase tracking-wider opacity-60 font-semibold">Location / Age</span>
                               <span>{std.city || "Ariyalur"} • {std.age || "N/A"} yrs</span>
                             </div>
                           </div>
@@ -623,8 +756,8 @@ export default function AdminPortalPage() {
                                 onClick={() => handleApproveStudent(std.id)}
                                 className="px-5 py-2.5 bg-[#25D366] hover:bg-[#20ba5a] text-black font-extrabold text-xs uppercase tracking-wider rounded-xl shadow-lg transition-all flex items-center gap-1.5 cursor-pointer active:scale-95"
                               >
-                                <CheckCircle2 size={16} />
-                                <span>Approve &amp; Generate Code</span>
+                                <CheckCircle2 size={15} />
+                                <span>Approve &amp; Assign ID</span>
                               </button>
 
                               <button
@@ -633,7 +766,7 @@ export default function AdminPortalPage() {
                                 className="px-3.5 py-2.5 bg-red-500/20 hover:bg-red-500 hover:text-white text-red-300 border border-red-500/40 rounded-xl text-xs font-bold transition-all cursor-pointer"
                                 title="Reject enrollment"
                               >
-                                <XCircle size={16} />
+                                <XCircle size={15} />
                               </button>
                             </>
                           ) : (
@@ -643,10 +776,10 @@ export default function AdminPortalPage() {
                                 setSelectedStudentId(std.id);
                                 setActiveTab("messages");
                               }}
-                              className="px-4 py-2 bg-coffee-dark text-cappuccino hover:bg-cappuccino hover:text-coffee-dark border border-cappuccino/40 rounded-xl text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer"
+                              className="px-4 py-2 bg-[#241A1A] text-cappuccino hover:bg-cappuccino hover:text-coffee-dark border border-cappuccino/40 rounded-xl text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer"
                             >
                               <MessageSquare size={14} />
-                              <span>Chat on Desk</span>
+                              <span>Open Doubt Chat</span>
                             </button>
                           )}
                         </div>
@@ -659,22 +792,23 @@ export default function AdminPortalPage() {
           </motion.div>
         )}
 
-        {/* Tab 2: GOOGLE MEET UPLOAD LINK */}
+        {/* Tab 2: GOOGLE MEET SCHEDULER */}
         {activeTab === "meet" && (
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            className="space-y-8"
+            transition={{ duration: 0.3 }}
+            className="space-y-6"
           >
             {/* Publish Meet Form */}
-            <div className="bg-[#241A1A] text-white p-5 sm:p-7 rounded-2xl sm:rounded-3xl border border-cappuccino/30 shadow-2xl">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-xl bg-cappuccino/20 text-cappuccino flex items-center justify-center">
+            <div className="bg-[#241A1A] text-white p-6 sm:p-8 rounded-3xl border border-cappuccino/30 shadow-2xl space-y-5">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-cappuccino/20 text-cappuccino flex items-center justify-center">
                   <Radio size={20} />
                 </div>
                 <div>
-                  <h3 className="text-xl font-serif font-bold text-white">Publish / Update Google Meet Link</h3>
-                  <p className="text-xs text-white/60">Students in this course and batch will see this active link to join live sessions</p>
+                  <h3 className="text-xl font-serif font-bold text-white">Publish Google Meet Classroom Link</h3>
+                  <p className="text-xs text-white/60">Students in this course and batch slot will see this active link to join live sessions</p>
                 </div>
               </div>
 
@@ -687,7 +821,7 @@ export default function AdminPortalPage() {
                     <select
                       value={newMeet.course}
                       onChange={(e) => setNewMeet({ ...newMeet, course: e.target.value })}
-                      className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3 py-2 text-xs focus:outline-none cursor-pointer"
+                      className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3 py-2.5 text-xs focus:outline-none cursor-pointer"
                     >
                       {courseOptions.filter((c) => c !== "All Courses").map((c) => (
                         <option key={c} value={c} className="bg-[#191111] text-white">
@@ -704,7 +838,7 @@ export default function AdminPortalPage() {
                     <select
                       value={newMeet.batch}
                       onChange={(e) => setNewMeet({ ...newMeet, batch: e.target.value })}
-                      className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3 py-2 text-xs focus:outline-none cursor-pointer"
+                      className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3 py-2.5 text-xs focus:outline-none cursor-pointer"
                     >
                       {officialBatches.map((b) => (
                         <option key={b} value={b} className="bg-[#191111] text-white">
@@ -724,8 +858,8 @@ export default function AdminPortalPage() {
                       type="text"
                       value={newMeet.title}
                       onChange={(e) => setNewMeet({ ...newMeet, title: e.target.value })}
-                      placeholder="e.g. Morning Silambam Kaalvari & Spin Technique"
-                      className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3 py-2 text-xs focus:outline-none"
+                      placeholder="e.g. Silambam Kaalvari Stances & Basic Spin"
+                      className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3 py-2.5 text-xs focus:outline-none"
                       required
                     />
                   </div>
@@ -739,7 +873,7 @@ export default function AdminPortalPage() {
                       value={newMeet.meetUrl}
                       onChange={(e) => setNewMeet({ ...newMeet, meetUrl: e.target.value })}
                       placeholder="https://meet.google.com/xyz-abcd-efg"
-                      className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3 py-2 text-xs focus:outline-none"
+                      className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3 py-2.5 text-xs focus:outline-none"
                       required
                     />
                   </div>
@@ -749,9 +883,9 @@ export default function AdminPortalPage() {
                   <button
                     type="submit"
                     disabled={meetSubmitting}
-                    className="px-8 py-3.5 bg-[#25D366] text-black font-extrabold text-xs uppercase tracking-wider rounded-full hover:bg-[#20ba5a] transition-all shadow-md flex items-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50"
+                    className="px-7 py-3 bg-[#25D366] text-black font-extrabold text-xs uppercase tracking-wider rounded-full hover:bg-[#20ba5a] transition-all shadow-md flex items-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50"
                   >
-                    <Radio size={16} />
+                    <Radio size={15} />
                     <span>Publish Google Meet Link</span>
                   </button>
                 </div>
@@ -759,7 +893,7 @@ export default function AdminPortalPage() {
             </div>
 
             {/* Existing Meet Links */}
-            <div className="space-y-3">
+            <div className="space-y-4">
               <h4 className="font-serif text-lg font-bold text-coffee-dark">
                 Active &amp; Scheduled Class Rooms ({meetings.length})
               </h4>
@@ -767,7 +901,7 @@ export default function AdminPortalPage() {
                 {meetings.map((meet) => (
                   <div
                     key={meet.id}
-                    className="bg-white p-5 rounded-2xl border border-cream shadow-premium space-y-3 flex flex-col justify-between"
+                    className="bg-white p-5 rounded-3xl border border-cream shadow-premium space-y-3 flex flex-col justify-between"
                   >
                     <div>
                       <div className="flex items-center justify-between gap-2 mb-1.5">
@@ -803,10 +937,10 @@ export default function AdminPortalPage() {
                       <button
                         type="button"
                         onClick={() => handleDeleteMeet(meet.id)}
-                        className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+                        className="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
                         title="Delete Meet link"
                       >
-                        <Trash2 size={16} />
+                        <Trash2 size={15} />
                       </button>
                     </div>
                   </div>
@@ -816,22 +950,23 @@ export default function AdminPortalPage() {
           </motion.div>
         )}
 
-        {/* Tab 3: VIDEOS UPLOAD LINK FOR STUDENTS */}
+        {/* Tab 3: YOUTUBE VIDEO MANAGER */}
         {activeTab === "videos" && (
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            className="space-y-8"
+            transition={{ duration: 0.3 }}
+            className="space-y-6"
           >
             {/* Upload Video Form */}
-            <div className="bg-[#241A1A] text-white p-5 sm:p-7 rounded-2xl sm:rounded-3xl border border-cappuccino/30 shadow-2xl">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-xl bg-cappuccino/20 text-cappuccino flex items-center justify-center">
+            <div className="bg-[#241A1A] text-white p-6 sm:p-8 rounded-3xl border border-cappuccino/30 shadow-2xl space-y-5">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-cappuccino/20 text-cappuccino flex items-center justify-center">
                   <Video size={20} />
                 </div>
                 <div>
                   <h3 className="text-xl font-serif font-bold text-white">Upload Training Video (YouTube)</h3>
-                  <p className="text-xs text-white/60">Paste any YouTube lesson URL to make it available in the Student Portal</p>
+                  <p className="text-xs text-white/60">Paste any YouTube training lesson URL to publish directly to students</p>
                 </div>
               </div>
 
@@ -846,7 +981,7 @@ export default function AdminPortalPage() {
                       value={newVideo.youtubeUrl}
                       onChange={(e) => setNewVideo({ ...newVideo, youtubeUrl: e.target.value })}
                       placeholder="https://www.youtube.com/watch?v=... or ID"
-                      className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3 py-2 text-xs focus:outline-none"
+                      className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3 py-2.5 text-xs focus:outline-none"
                       required
                     />
                   </div>
@@ -860,7 +995,7 @@ export default function AdminPortalPage() {
                       value={newVideo.title}
                       onChange={(e) => setNewVideo({ ...newVideo, title: e.target.value })}
                       placeholder="e.g. Silambam Kaalvari Stances & Basic Spin"
-                      className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3 py-2 text-xs focus:outline-none"
+                      className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3 py-2.5 text-xs focus:outline-none"
                       required
                     />
                   </div>
@@ -874,7 +1009,7 @@ export default function AdminPortalPage() {
                     <select
                       value={newVideo.course}
                       onChange={(e) => setNewVideo({ ...newVideo, course: e.target.value })}
-                      className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3 py-2 text-xs focus:outline-none cursor-pointer"
+                      className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3 py-2.5 text-xs focus:outline-none cursor-pointer"
                     >
                       {courseOptions.filter((c) => c !== "All Courses").map((c) => (
                         <option key={c} value={c} className="bg-[#191111] text-white">
@@ -893,21 +1028,21 @@ export default function AdminPortalPage() {
                       value={newVideo.category}
                       onChange={(e) => setNewVideo({ ...newVideo, category: e.target.value })}
                       placeholder="e.g. Foundational Stances"
-                      className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3 py-2 text-xs focus:outline-none"
+                      className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3 py-2.5 text-xs focus:outline-none"
                     />
                   </div>
                 </div>
 
                 <div>
                   <label className="text-[10px] uppercase tracking-wider text-white/70 font-bold block mb-1">
-                    Lesson Guidance &amp; Practice Instructions
+                    Lesson Guidance &amp; Instructions
                   </label>
                   <textarea
                     rows={2}
                     value={newVideo.description}
                     onChange={(e) => setNewVideo({ ...newVideo, description: e.target.value })}
                     placeholder="Instructions for students to practice after class..."
-                    className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3 py-2 text-xs focus:outline-none resize-none"
+                    className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3 py-2.5 text-xs focus:outline-none resize-none"
                   />
                 </div>
 
@@ -915,16 +1050,16 @@ export default function AdminPortalPage() {
                   <button
                     type="submit"
                     disabled={videoSubmitting}
-                    className="px-8 py-3.5 bg-cappuccino text-coffee-dark font-bold text-xs uppercase tracking-wider rounded-full hover:bg-white transition-all shadow-md flex items-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50"
+                    className="px-7 py-3 bg-cappuccino text-coffee-dark font-extrabold text-xs uppercase tracking-wider rounded-full hover:bg-white transition-all shadow-md flex items-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50"
                   >
-                    <Plus size={16} />
+                    <Plus size={15} />
                     <span>Upload Video Lesson</span>
                   </button>
                 </div>
               </form>
             </div>
 
-            {/* Existing Videos Grid */}
+            {/* Existing Videos */}
             <div className="space-y-4">
               <h4 className="font-serif text-lg font-bold text-coffee-dark">
                 Uploaded Video Library ({videos.length})
@@ -933,7 +1068,7 @@ export default function AdminPortalPage() {
                 {videos.map((vid) => (
                   <div
                     key={vid.id}
-                    className="bg-white rounded-2xl border border-cream shadow-premium overflow-hidden flex flex-col justify-between"
+                    className="bg-white rounded-3xl border border-cream shadow-premium overflow-hidden flex flex-col justify-between"
                   >
                     <div className="relative aspect-video bg-coffee-dark">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -942,7 +1077,7 @@ export default function AdminPortalPage() {
                         alt={vid.title}
                         className="w-full h-full object-cover"
                       />
-                      <div className="absolute top-2 left-2 bg-cappuccino text-coffee-dark px-2.5 py-0.5 rounded-full text-[8px] font-bold uppercase tracking-wider">
+                      <div className="absolute top-2.5 left-2.5 bg-cappuccino text-coffee-dark px-2.5 py-0.5 rounded-full text-[8.5px] font-bold uppercase tracking-wider">
                         {vid.course}
                       </div>
                     </div>
@@ -968,7 +1103,7 @@ export default function AdminPortalPage() {
                           className="text-xs font-bold text-cappuccino hover:underline flex items-center gap-1"
                         >
                           <Play size={12} />
-                          <span>Watch on YouTube</span>
+                          <span>Watch</span>
                         </a>
 
                         <button
@@ -977,7 +1112,7 @@ export default function AdminPortalPage() {
                           className="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
                           title="Delete Video"
                         >
-                          <Trash2 size={16} />
+                          <Trash2 size={15} />
                         </button>
                       </div>
                     </div>
@@ -988,88 +1123,90 @@ export default function AdminPortalPage() {
           </motion.div>
         )}
 
-        {/* Tab 4: MESSAGE SYSTEM (WHATSAPP-STYLE MULTI-STUDENT DESK) */}
+        {/* Tab 4: COACHING MESSAGING DESK */}
         {activeTab === "messages" && (
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-[#241A1A] rounded-2xl sm:rounded-3xl border border-cappuccino/30 shadow-2xl overflow-hidden h-[560px] grid grid-cols-1 md:grid-cols-3"
+            transition={{ duration: 0.3 }}
+            className="bg-[#241A1A] rounded-3xl border border-cappuccino/30 shadow-2xl overflow-hidden h-[580px] grid grid-cols-1 md:grid-cols-3"
           >
             {/* Left Column: Students List */}
-            <div className="border-r border-white/10 flex flex-col h-full bg-[#1b1414]">
+            <div className="border-r border-white/10 flex flex-col h-full bg-[#1D1414]">
               <div className="p-4 border-b border-white/10">
-                <h4 className="font-bold text-sm text-white flex items-center gap-2">
-                  <MessageSquare size={16} className="text-cappuccino" />
+                <h4 className="font-serif font-bold text-sm text-white flex items-center gap-2">
+                  <MessageSquare size={15} className="text-cappuccino" />
                   <span>Student Doubt Desks</span>
                 </h4>
-                <p className="text-[11px] text-white/50 mt-0.5">Select a student to chat</p>
+                <p className="text-[10px] text-white/50 mt-0.5">Select an enrolled student to message</p>
               </div>
 
               <div className="flex-1 overflow-y-auto divide-y divide-white/5">
                 {students.filter((s) => s.status === "APPROVED").length === 0 ? (
                   <div className="p-6 text-center text-white/40 text-xs space-y-2">
                     <p>No enrolled students yet.</p>
-                    <p className="text-[10px] text-white/30">Approved students will appear here for direct messaging.</p>
+                    <p className="text-[10px] text-white/30">Approved students will appear here for direct feedback.</p>
                   </div>
                 ) : (
-                  students.filter((s) => s.status === "APPROVED").map((std) => {
-                    const isSelected = selectedStudentId === std.id;
-                    const lastMsg = messages
-                      .filter((m) => m.studentId === std.id)
-                      .slice(-1)[0];
+                  students
+                    .filter((s) => s.status === "APPROVED")
+                    .map((std) => {
+                      const isSelected = selectedStudentId === std.id;
+                      const lastMsg = messages
+                        .filter((m) => m.studentId === std.id)
+                        .slice(-1)[0];
 
-                    return (
-                      <div
-                        key={std.id}
-                        onClick={() => setSelectedStudentId(std.id)}
-                        className={`p-2.5 sm:p-3 transition-all cursor-pointer flex items-center gap-3 ${
-                          isSelected
-                            ? "bg-cappuccino/20 border-l-4 border-cappuccino"
-                            : "hover:bg-white/5"
-                        }`}
-                      >
-                        <div className="w-10 h-10 rounded-full bg-cappuccino/20 text-cappuccino flex items-center justify-center font-bold text-sm shrink-0">
-                          {std.name.charAt(0)}
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <div className="flex items-center justify-between">
-                            <h5 className="font-bold text-xs text-white truncate">{std.name}</h5>
-                            <span className="text-[9px] text-white/40 font-mono">
-                              {std.permanentCode}
-                            </span>
+                      return (
+                        <div
+                          key={std.id}
+                          onClick={() => setSelectedStudentId(std.id)}
+                          className={`p-3 transition-all cursor-pointer flex items-center gap-3 ${
+                            isSelected
+                              ? "bg-cappuccino/20 border-l-4 border-cappuccino"
+                              : "hover:bg-white/5"
+                          }`}
+                        >
+                          <div className="w-9 h-9 rounded-full bg-cappuccino/20 text-cappuccino flex items-center justify-center font-bold text-xs shrink-0">
+                            {std.name.charAt(0)}
                           </div>
-                          <p className="text-[11px] text-cappuccino/90 truncate">{std.course}</p>
-                          {lastMsg && (
-                            <p className="text-[10px] text-white/50 truncate mt-0.5">
-                              {lastMsg.sender === "admin" ? "You: " : ""}{lastMsg.text}
-                            </p>
-                          )}
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center justify-between">
+                              <h5 className="font-bold text-xs text-white truncate">{std.name}</h5>
+                              <span className="text-[8.5px] text-white/40 font-mono">
+                                {std.permanentCode}
+                              </span>
+                            </div>
+                            <p className="text-[10px] text-cappuccino/90 truncate">{std.course}</p>
+                            {lastMsg && (
+                              <p className="text-[9.5px] text-white/50 truncate mt-0.5">
+                                {lastMsg.sender === "admin" ? "You: " : ""}{lastMsg.text}
+                              </p>
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    );
-                  })
+                      );
+                    })
                 )}
               </div>
             </div>
 
-            {/* Right Column: Active Conversation (WhatsApp Style) */}
-            <div className="col-span-1 md:col-span-2 flex flex-col h-full bg-[#130d0d]">
+            {/* Right Column: Active Conversation */}
+            <div className="col-span-1 md:col-span-2 flex flex-col h-full bg-[#130D0D]">
               {activeChatStudent ? (
                 <>
-                  {/* Chat Top Header */}
-                  <div className="p-4 bg-[#1b1414] border-b border-white/10 flex items-center justify-between">
+                  <div className="p-3.5 bg-[#1D1414] border-b border-white/10 flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-cappuccino text-coffee-dark font-bold flex items-center justify-center shrink-0">
+                      <div className="w-9 h-9 rounded-full bg-cappuccino text-coffee-dark font-serif font-bold flex items-center justify-center shrink-0">
                         {activeChatStudent.name.charAt(0)}
                       </div>
                       <div>
-                        <h4 className="font-bold text-sm text-white flex items-center gap-2">
+                        <h4 className="font-serif font-bold text-sm text-white flex items-center gap-2">
                           <span>{activeChatStudent.name}</span>
-                          <span className="text-[10px] font-mono text-cappuccino font-bold">
+                          <span className="text-[9.5px] font-mono text-cappuccino font-bold">
                             ({activeChatStudent.permanentCode})
                           </span>
                         </h4>
-                        <p className="text-[11px] text-white/60">
+                        <p className="text-[10px] text-white/60">
                           {activeChatStudent.course} • Batch: {activeChatStudent.batch}
                         </p>
                       </div>
@@ -1081,18 +1218,17 @@ export default function AdminPortalPage() {
                       rel="noopener noreferrer"
                       className="px-3 py-1.5 rounded-full bg-[#25D366]/20 border border-[#25D366]/40 text-[#25D366] text-xs font-bold hover:bg-[#25D366] hover:text-black transition-all flex items-center gap-1.5"
                     >
-                      <Phone size={13} />
+                      <Phone size={12} />
                       <span>WhatsApp App</span>
                     </a>
                   </div>
 
-                  {/* Messages Bubble Canvas */}
                   <div className="flex-1 p-4 sm:p-6 overflow-y-auto space-y-3">
                     {activeChatMessages.length === 0 ? (
                       <div className="text-center py-20 text-white/40 space-y-2">
-                        <MessageSquare size={36} className="mx-auto text-cappuccino/50" />
-                        <p className="text-sm">No messages yet with {activeChatStudent.name}.</p>
-                        <p className="text-xs">Type a message below to guide or send class instructions.</p>
+                        <MessageSquare size={32} className="mx-auto text-cappuccino/50" />
+                        <p className="text-xs sm:text-sm">No messages yet with {activeChatStudent.name}.</p>
+                        <p className="text-[11px]">Type instructions or posture feedback below.</p>
                       </div>
                     ) : (
                       activeChatMessages.map((msg) => {
@@ -1103,21 +1239,21 @@ export default function AdminPortalPage() {
                             className={`flex ${isAdmin ? "justify-end" : "justify-start"}`}
                           >
                             <div
-                              className={`max-w-[82%] sm:max-w-[70%] p-2.5 sm:p-3 rounded-2xl text-xs leading-relaxed shadow-md ${
+                              className={`max-w-[85%] sm:max-w-[70%] p-3 rounded-2xl text-xs leading-relaxed shadow-md ${
                                 isAdmin
-                                  ? "bg-[#005c4b] text-white rounded-tr-none"
-                                  : "bg-[#241A1A] text-white rounded-tl-none border border-cappuccino/30"
+                                  ? "bg-[#241A1A] text-white border border-cappuccino/40 rounded-tr-none"
+                                  : "bg-[#005c4b] text-white rounded-tl-none"
                               }`}
                             >
                               {!isAdmin && (
-                                <span className="text-[10px] font-bold text-cappuccino block mb-0.5">
+                                <span className="text-[10px] font-bold text-amber-300 block mb-0.5">
                                   {activeChatStudent.name}
                                 </span>
                               )}
                               <p className="whitespace-pre-wrap">{msg.text}</p>
                               <div
                                 className={`flex items-center justify-end gap-1 text-[9px] mt-1.5 ${
-                                  isAdmin ? "text-white/70" : "text-white/40"
+                                  isAdmin ? "text-white/50" : "text-white/70"
                                 }`}
                               >
                                 <span>
@@ -1136,55 +1272,35 @@ export default function AdminPortalPage() {
                     <div ref={chatScrollRef} />
                   </div>
 
-                  {/* Quick Coach Replies */}
-                  <div className="px-3 py-1.5 bg-[#1b1414] border-t border-white/5 flex gap-2 overflow-x-auto scrollbar-none text-[10px]">
-                    {[
-                      "Good technique, keep practicing daily!",
-                      "Live class is starting in 10 minutes on Google Meet.",
-                      "Please review Video Lesson #1 for stance correction.",
-                      "Yes, you can attend the evening batch today."
-                    ].map((shortcut, i) => (
-                      <button
-                        key={i}
-                        type="button"
-                        onClick={() => handleSendReply(undefined as any, shortcut)}
-                        className="px-2.5 py-1 rounded-full bg-white/5 hover:bg-cappuccino hover:text-coffee-dark text-white/70 whitespace-nowrap transition-all cursor-pointer"
-                      >
-                        {shortcut}
-                      </button>
-                    ))}
-                  </div>
-
-                  {/* Reply Input Bar */}
                   <form
                     onSubmit={handleSendReply}
-                    className="p-3 bg-[#1b1414] border-t border-white/10 flex items-center gap-2"
+                    className="p-3 bg-[#1D1414] border-t border-white/10 flex items-center gap-2"
                   >
                     <input
                       type="text"
                       value={replyText}
                       onChange={(e) => setReplyText(e.target.value)}
                       placeholder={`Reply to ${activeChatStudent.name}...`}
-                      className="flex-1 bg-[#120b0b] border border-white/10 focus:border-cappuccino text-white rounded-full px-4 py-2.5 text-xs sm:text-sm focus:outline-none transition-colors"
+                      className="flex-1 bg-[#130D0D] border border-white/10 focus:border-cappuccino text-white rounded-full px-4 py-2 text-xs focus:outline-none transition-colors"
                     />
                     <button
                       type="submit"
                       disabled={messageSending || !replyText.trim()}
-                      className="w-10 h-10 rounded-full bg-[#25D366] hover:bg-[#20ba5a] text-black flex items-center justify-center transition-all disabled:opacity-40 cursor-pointer shrink-0 shadow-lg active:scale-95"
+                      className="w-9 h-9 rounded-full bg-cappuccino hover:bg-white text-coffee-dark flex items-center justify-center transition-all disabled:opacity-40 cursor-pointer shrink-0 shadow-md active:scale-95 font-bold"
                     >
-                      <Send size={16} />
+                      <Send size={15} />
                     </button>
                   </form>
                 </>
               ) : (
-                <div className="flex items-center justify-center h-full text-white/40 text-sm">
-                  Select a student from the left to start chatting
+                <div className="flex-1 flex items-center justify-center text-white/40 text-xs">
+                  Select a student from the left panel to begin chat.
                 </div>
               )}
             </div>
           </motion.div>
         )}
       </div>
-    </main>
+    </PortalDashboardLayout>
   );
 }
