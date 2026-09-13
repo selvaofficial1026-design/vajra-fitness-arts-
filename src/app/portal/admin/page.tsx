@@ -366,12 +366,38 @@ export default function AdminPortalPage() {
     ? messages.filter((m) => m.studentId === activeChatStudent.id)
     : [];
 
+  // Auto-mark student messages as read when admin views the active conversation
+  useEffect(() => {
+    if (activeTab === "messages" && activeChatStudent) {
+      const hasUnread = messages.some(
+        (m) => m.studentId === activeChatStudent.id && m.sender === "student" && !m.isRead
+      );
+      if (hasUnread) {
+        setMessages((prev) =>
+          prev.map((m) =>
+            m.studentId === activeChatStudent.id && m.sender === "student"
+              ? { ...m, isRead: true }
+              : m
+          )
+        );
+        fetch("/api/portal/messages", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ studentId: activeChatStudent.id, sender: "student" })
+        }).catch(console.error);
+      }
+    }
+  }, [activeTab, activeChatStudent, messages]);
+
+  // Only count unread messages sent by students (admin's own sent messages never trigger a badge)
+  const unreadStudentMessages = messages.filter((m) => m.sender === "student" && !m.isRead);
+
   // Exact matching nav items
   const navItems: PortalNavItem[] = [
     { id: "students", label: "Admissions", badge: pendingStudents.length || undefined },
     { id: "meet", label: "Google Meets", badge: meetings.length || undefined },
     { id: "videos", label: "Videos", badge: videos.length || undefined },
-    { id: "messages", label: "Message Desk", badge: messages.length || undefined }
+    { id: "messages", label: "Message Desk", badge: unreadStudentMessages.length || undefined }
   ];
 
   if (!adminUser) {
@@ -1146,10 +1172,6 @@ export default function AdminPortalPage() {
                               Enrolled Discipline: <strong className="text-cappuccino">{activeChatStudent.course}</strong> • Batch Slot: {activeChatStudent.batch}
                             </p>
                           </div>
-                        </div>
-
-                        <div className="text-[10px] font-mono text-coffee-dark/50 self-start sm:self-auto">
-                          Phone: <a href={`tel:${activeChatStudent.phone}`} className="text-coffee-dark hover:text-cappuccino font-bold underline">+91 {activeChatStudent.phone}</a>
                         </div>
                       </div>
 

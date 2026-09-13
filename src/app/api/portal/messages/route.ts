@@ -55,3 +55,33 @@ export async function POST(req: Request) {
     return NextResponse.json({ success: false, error: "Failed to send message." }, { status: 500 });
   }
 }
+
+export async function PATCH(req: Request) {
+  try {
+    const body = await req.json();
+    const { studentId, sender } = body;
+
+    const data = await getPortalData();
+    let updated = false;
+
+    data.messages = data.messages.map((m) => {
+      const studentMatch = !studentId || m.studentId === studentId;
+      const senderMatch = !sender || m.sender === sender;
+      if (studentMatch && senderMatch && !m.isRead) {
+        updated = true;
+        return { ...m, isRead: true };
+      }
+      return m;
+    });
+
+    if (updated) {
+      await savePortalData(data);
+    }
+
+    return NextResponse.json({ success: true, updated });
+  } catch (error) {
+    console.error("Messages PATCH error:", error);
+    return NextResponse.json({ success: false, error: "Failed to update message status." }, { status: 500 });
+  }
+}
+

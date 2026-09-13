@@ -137,6 +137,27 @@ export default function StudentPortalPage() {
     }
   }, [messages, activeTab]);
 
+  // Auto-mark coach messages as read when student views the doubt desk
+  useEffect(() => {
+    if (activeTab === "doubt" && student) {
+      const hasUnread = messages.some(
+        (m) => m.studentId === student.id && m.sender === "admin" && !m.isRead
+      );
+      if (hasUnread) {
+        setMessages((prev) =>
+          prev.map((m) =>
+            m.studentId === student.id && m.sender === "admin" ? { ...m, isRead: true } : m
+          )
+        );
+        fetch("/api/portal/messages", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ studentId: student.id, sender: "admin" })
+        }).catch(console.error);
+      }
+    }
+  }, [activeTab, student, messages]);
+
   // Send message
   const handleSendMessage = async (e?: React.FormEvent, presetText?: string) => {
     if (e) e.preventDefault();
@@ -172,11 +193,14 @@ export default function StudentPortalPage() {
     router.push("/portal?tab=login");
   };
 
+  // Only count unread messages sent by coach/admin (Student's own sent messages never trigger a badge)
+  const unreadCoachMessages = messages.filter((m) => m.sender === "admin" && !m.isRead);
+
   // Navigation Items matching website navbar style
   const navItems: PortalNavItem[] = [
     { id: "meet", label: "Live Classroom", icon: Radio },
     { id: "videos", label: "Videos", icon: Video, badge: videos.length || undefined },
-    { id: "doubt", label: "Ask Doubt", icon: MessageSquare, badge: messages.length || undefined },
+    { id: "doubt", label: "Ask Doubt", icon: MessageSquare, badge: unreadCoachMessages.length || undefined },
     { id: "profile", label: "My Profile", icon: User }
   ];
 
