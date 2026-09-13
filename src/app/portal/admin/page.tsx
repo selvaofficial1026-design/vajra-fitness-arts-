@@ -347,9 +347,9 @@ export default function AdminPortalPage() {
     <main className="min-h-screen bg-background text-coffee-dark pt-24 pb-20 px-4 sm:px-6 md:px-12">
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Admin Header */}
-        <div className="bg-[#241A1A] text-white p-5 sm:p-7 rounded-3xl border border-cappuccino/30 shadow-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-5 relative overflow-hidden">
+        <div className="bg-[#241A1A] text-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-cappuccino/30 shadow-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-5 relative overflow-hidden">
           <div className="flex items-center gap-4 z-10">
-            <div className="w-14 h-14 rounded-2xl bg-cappuccino text-coffee-dark flex items-center justify-center font-serif text-2xl font-bold shrink-0 shadow-lg">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-cappuccino text-coffee-dark flex items-center justify-center font-serif text-2xl font-bold shrink-0 shadow-lg">
               <ShieldCheck size={28} />
             </div>
             <div>
@@ -368,17 +368,17 @@ export default function AdminPortalPage() {
           </div>
 
           {/* Quick Metrics & Logout */}
-          <div className="flex items-center gap-4 z-10 w-full md:w-auto justify-between md:justify-end border-t md:border-t-0 border-white/10 pt-3 md:pt-0">
-            <div className="flex items-center gap-3 text-xs">
-              <div className="text-center px-3 py-1.5 rounded-xl bg-white/5 border border-white/10">
+          <div className="flex items-center gap-3 z-10 w-full md:w-auto justify-between md:justify-end border-t md:border-t-0 border-white/10 pt-3 md:pt-0">
+            <div className="flex items-center gap-2.5 text-xs">
+              <div className="text-center px-2.5 py-1 text-xs rounded-xl bg-white/5 border border-white/10">
                 <span className="text-[9px] uppercase tracking-wider text-white/50 block">Pending</span>
-                <span className="font-mono font-bold text-amber-400 text-sm">
+                <span className="font-mono font-bold text-amber-400 text-xs sm:text-sm">
                   {pendingStudents.length}
                 </span>
               </div>
-              <div className="text-center px-3 py-1.5 rounded-xl bg-white/5 border border-white/10">
+              <div className="text-center px-2.5 py-1 text-xs rounded-xl bg-white/5 border border-white/10">
                 <span className="text-[9px] uppercase tracking-wider text-white/50 block">Approved</span>
-                <span className="font-mono font-bold text-emerald-400 text-sm">
+                <span className="font-mono font-bold text-emerald-400 text-xs sm:text-sm">
                   {approvedStudents.length}
                 </span>
               </div>
@@ -387,7 +387,7 @@ export default function AdminPortalPage() {
             <button
               type="button"
               onClick={handleLogout}
-              className="px-4 py-2.5 bg-white/10 hover:bg-red-500/20 hover:text-red-300 hover:border-red-500/40 text-white/80 rounded-xl text-xs font-bold uppercase tracking-wider transition-all border border-white/10 flex items-center gap-2 cursor-pointer shrink-0"
+              className="px-3.5 py-2 bg-white/10 hover:bg-red-500/20 hover:text-red-300 hover:border-red-500/40 text-white/80 rounded-xl text-xs font-bold uppercase tracking-wider transition-all border border-white/10 flex items-center gap-2 cursor-pointer shrink-0"
             >
               <LogOut size={14} />
               <span>Log Out</span>
@@ -421,7 +421,7 @@ export default function AdminPortalPage() {
           <button
             type="button"
             onClick={() => setActiveTab("students")}
-            className={`py-3.5 px-3 rounded-xl text-xs sm:text-sm font-bold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${
+            className={`py-2.5 sm:py-3 px-3 rounded-xl text-xs font-bold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${
               activeTab === "students"
                 ? "bg-[#241A1A] text-white shadow-md border border-cappuccino/40"
                 : "text-coffee-dark/60 hover:text-coffee-dark hover:bg-cream/40"
@@ -439,7 +439,7 @@ export default function AdminPortalPage() {
           <button
             type="button"
             onClick={() => setActiveTab("meet")}
-            className={`py-3.5 px-3 rounded-xl text-xs sm:text-sm font-bold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${
+            className={`py-2.5 sm:py-3 px-3 rounded-xl text-xs font-bold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${
               activeTab === "meet"
                 ? "bg-[#241A1A] text-white shadow-md border border-cappuccino/40"
                 : "text-coffee-dark/60 hover:text-coffee-dark hover:bg-cream/40"
@@ -452,7 +452,7 @@ export default function AdminPortalPage() {
           <button
             type="button"
             onClick={() => setActiveTab("videos")}
-            className={`py-3.5 px-3 rounded-xl text-xs sm:text-sm font-bold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${
+            className={`py-2.5 sm:py-3 px-3 rounded-xl text-xs font-bold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${
               activeTab === "videos"
                 ? "bg-[#241A1A] text-white shadow-md border border-cappuccino/40"
                 : "text-coffee-dark/60 hover:text-coffee-dark hover:bg-cream/40"
@@ -465,7 +465,7 @@ export default function AdminPortalPage() {
           <button
             type="button"
             onClick={() => setActiveTab("messages")}
-            className={`py-3.5 px-3 rounded-xl text-xs sm:text-sm font-bold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${
+            className={`py-2.5 sm:py-3 px-3 rounded-xl text-xs font-bold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${
               activeTab === "messages"
                 ? "bg-[#241A1A] text-white shadow-md border border-cappuccino/40"
                 : "text-coffee-dark/60 hover:text-coffee-dark hover:bg-cream/40"
@@ -555,7 +555,7 @@ export default function AdminPortalPage() {
                   return (
                     <div
                       key={std.id}
-                      className={`p-5 sm:p-6 rounded-2xl border transition-all ${
+                      className={`p-4 sm:p-5 rounded-2xl border transition-all ${
                         isPending
                           ? "bg-[#241A1A] text-white border-amber-500/40 shadow-xl"
                           : "bg-white text-coffee-dark border-cream shadow-premium hover:border-cappuccino/40"
@@ -667,7 +667,7 @@ export default function AdminPortalPage() {
             className="space-y-8"
           >
             {/* Publish Meet Form */}
-            <div className="bg-[#241A1A] text-white p-6 sm:p-8 rounded-3xl border border-cappuccino/30 shadow-2xl">
+            <div className="bg-[#241A1A] text-white p-5 sm:p-7 rounded-2xl sm:rounded-3xl border border-cappuccino/30 shadow-2xl">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-10 h-10 rounded-xl bg-cappuccino/20 text-cappuccino flex items-center justify-center">
                   <Radio size={20} />
@@ -687,7 +687,7 @@ export default function AdminPortalPage() {
                     <select
                       value={newMeet.course}
                       onChange={(e) => setNewMeet({ ...newMeet, course: e.target.value })}
-                      className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3.5 py-2.5 text-xs sm:text-sm focus:outline-none"
+                      className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3 py-2 text-xs focus:outline-none cursor-pointer"
                     >
                       {courseOptions.filter((c) => c !== "All Courses").map((c) => (
                         <option key={c} value={c} className="bg-[#191111] text-white">
@@ -704,7 +704,7 @@ export default function AdminPortalPage() {
                     <select
                       value={newMeet.batch}
                       onChange={(e) => setNewMeet({ ...newMeet, batch: e.target.value })}
-                      className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3.5 py-2.5 text-xs sm:text-sm focus:outline-none"
+                      className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3 py-2 text-xs focus:outline-none cursor-pointer"
                     >
                       {officialBatches.map((b) => (
                         <option key={b} value={b} className="bg-[#191111] text-white">
@@ -725,7 +725,7 @@ export default function AdminPortalPage() {
                       value={newMeet.title}
                       onChange={(e) => setNewMeet({ ...newMeet, title: e.target.value })}
                       placeholder="e.g. Morning Silambam Kaalvari & Spin Technique"
-                      className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3.5 py-2.5 text-xs sm:text-sm focus:outline-none"
+                      className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3 py-2 text-xs focus:outline-none"
                       required
                     />
                   </div>
@@ -739,7 +739,7 @@ export default function AdminPortalPage() {
                       value={newMeet.meetUrl}
                       onChange={(e) => setNewMeet({ ...newMeet, meetUrl: e.target.value })}
                       placeholder="https://meet.google.com/xyz-abcd-efg"
-                      className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3.5 py-2.5 text-xs sm:text-sm focus:outline-none"
+                      className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3 py-2 text-xs focus:outline-none"
                       required
                     />
                   </div>
@@ -824,7 +824,7 @@ export default function AdminPortalPage() {
             className="space-y-8"
           >
             {/* Upload Video Form */}
-            <div className="bg-[#241A1A] text-white p-6 sm:p-8 rounded-3xl border border-cappuccino/30 shadow-2xl">
+            <div className="bg-[#241A1A] text-white p-5 sm:p-7 rounded-2xl sm:rounded-3xl border border-cappuccino/30 shadow-2xl">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-10 h-10 rounded-xl bg-cappuccino/20 text-cappuccino flex items-center justify-center">
                   <Video size={20} />
@@ -846,7 +846,7 @@ export default function AdminPortalPage() {
                       value={newVideo.youtubeUrl}
                       onChange={(e) => setNewVideo({ ...newVideo, youtubeUrl: e.target.value })}
                       placeholder="https://www.youtube.com/watch?v=... or ID"
-                      className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3.5 py-2.5 text-xs sm:text-sm focus:outline-none"
+                      className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3 py-2 text-xs focus:outline-none"
                       required
                     />
                   </div>
@@ -860,7 +860,7 @@ export default function AdminPortalPage() {
                       value={newVideo.title}
                       onChange={(e) => setNewVideo({ ...newVideo, title: e.target.value })}
                       placeholder="e.g. Silambam Kaalvari Stances & Basic Spin"
-                      className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3.5 py-2.5 text-xs sm:text-sm focus:outline-none"
+                      className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3 py-2 text-xs focus:outline-none"
                       required
                     />
                   </div>
@@ -874,7 +874,7 @@ export default function AdminPortalPage() {
                     <select
                       value={newVideo.course}
                       onChange={(e) => setNewVideo({ ...newVideo, course: e.target.value })}
-                      className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3.5 py-2.5 text-xs sm:text-sm focus:outline-none"
+                      className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3 py-2 text-xs focus:outline-none cursor-pointer"
                     >
                       {courseOptions.filter((c) => c !== "All Courses").map((c) => (
                         <option key={c} value={c} className="bg-[#191111] text-white">
@@ -893,7 +893,7 @@ export default function AdminPortalPage() {
                       value={newVideo.category}
                       onChange={(e) => setNewVideo({ ...newVideo, category: e.target.value })}
                       placeholder="e.g. Foundational Stances"
-                      className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3.5 py-2.5 text-xs sm:text-sm focus:outline-none"
+                      className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3 py-2 text-xs focus:outline-none"
                     />
                   </div>
                 </div>
@@ -907,7 +907,7 @@ export default function AdminPortalPage() {
                     value={newVideo.description}
                     onChange={(e) => setNewVideo({ ...newVideo, description: e.target.value })}
                     placeholder="Instructions for students to practice after class..."
-                    className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3.5 py-2 text-xs sm:text-sm focus:outline-none resize-none"
+                    className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3 py-2 text-xs focus:outline-none resize-none"
                   />
                 </div>
 
@@ -993,7 +993,7 @@ export default function AdminPortalPage() {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-[#241A1A] rounded-3xl border border-cappuccino/30 shadow-2xl overflow-hidden h-[680px] grid grid-cols-1 md:grid-cols-3"
+            className="bg-[#241A1A] rounded-2xl sm:rounded-3xl border border-cappuccino/30 shadow-2xl overflow-hidden h-[560px] grid grid-cols-1 md:grid-cols-3"
           >
             {/* Left Column: Students List */}
             <div className="border-r border-white/10 flex flex-col h-full bg-[#1b1414]">
@@ -1022,7 +1022,7 @@ export default function AdminPortalPage() {
                       <div
                         key={std.id}
                         onClick={() => setSelectedStudentId(std.id)}
-                        className={`p-3.5 transition-all cursor-pointer flex items-center gap-3 ${
+                        className={`p-2.5 sm:p-3 transition-all cursor-pointer flex items-center gap-3 ${
                           isSelected
                             ? "bg-cappuccino/20 border-l-4 border-cappuccino"
                             : "hover:bg-white/5"
@@ -1103,7 +1103,7 @@ export default function AdminPortalPage() {
                             className={`flex ${isAdmin ? "justify-end" : "justify-start"}`}
                           >
                             <div
-                              className={`max-w-[82%] sm:max-w-[70%] p-3.5 rounded-2xl text-xs sm:text-sm leading-relaxed shadow-md ${
+                              className={`max-w-[82%] sm:max-w-[70%] p-2.5 sm:p-3 rounded-2xl text-xs leading-relaxed shadow-md ${
                                 isAdmin
                                   ? "bg-[#005c4b] text-white rounded-tr-none"
                                   : "bg-[#241A1A] text-white rounded-tl-none border border-cappuccino/30"
@@ -1165,12 +1165,12 @@ export default function AdminPortalPage() {
                       value={replyText}
                       onChange={(e) => setReplyText(e.target.value)}
                       placeholder={`Reply to ${activeChatStudent.name}...`}
-                      className="flex-1 bg-[#120b0b] border border-white/10 focus:border-cappuccino text-white rounded-full px-5 py-3 text-xs sm:text-sm focus:outline-none transition-colors"
+                      className="flex-1 bg-[#120b0b] border border-white/10 focus:border-cappuccino text-white rounded-full px-4 py-2.5 text-xs sm:text-sm focus:outline-none transition-colors"
                     />
                     <button
                       type="submit"
                       disabled={messageSending || !replyText.trim()}
-                      className="w-11 h-11 rounded-full bg-[#25D366] hover:bg-[#20ba5a] text-black flex items-center justify-center transition-all disabled:opacity-40 cursor-pointer shrink-0 shadow-lg active:scale-95"
+                      className="w-10 h-10 rounded-full bg-[#25D366] hover:bg-[#20ba5a] text-black flex items-center justify-center transition-all disabled:opacity-40 cursor-pointer shrink-0 shadow-lg active:scale-95"
                     >
                       <Send size={16} />
                     </button>

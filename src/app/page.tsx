@@ -121,13 +121,13 @@ export default function Home() {
       <Hero />
 
       {/* Featured Courses Section */}
-      <section className="py-14 sm:py-20 md:py-32 px-4 sm:px-6 md:px-12 bg-premium-gradient relative z-10">
+      <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 md:px-12 bg-premium-gradient relative z-10">
         <div className="max-w-7xl mx-auto">
           <SectionHeading
             subtitle="Flagship Courses"
             title="Master the Arts of Strength &amp; Focus"
           />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 lg:gap-10 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 max-w-3xl mx-auto">
             {featuredCourses.slice(0, 2).map((item, index) => (
               <MenuItemCard 
                 key={index} 
@@ -249,7 +249,7 @@ export default function Home() {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-14 sm:py-20 md:py-32 px-4 sm:px-6 md:px-12 bg-background relative z-10">
+      <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 md:px-12 bg-background relative z-10">
         <div className="max-w-7xl mx-auto">
           <SectionHeading
             subtitle="Voices of Discipline"
@@ -264,12 +264,12 @@ export default function Home() {
                 whileHover={{ y: -10, scale: 1.02 }}
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.6, ease: "easeOut" }}
-                className="bg-gradient-to-br from-[#281C1C] to-[#1A1212] p-6 sm:p-8 md:p-10 rounded-2xl sm:rounded-[2rem] text-white flex flex-col justify-between shadow-premium hover:shadow-[0_20px_50px_rgba(200,160,120,0.25)] transition-all relative overflow-hidden group border border-cappuccino/25"
+                className="bg-gradient-to-br from-[#281C1C] to-[#1A1212] p-5 sm:p-6 rounded-2xl sm:rounded-[2rem] text-white flex flex-col justify-between shadow-premium hover:shadow-[0_20px_50px_rgba(200,160,120,0.25)] transition-all relative overflow-hidden group border border-cappuccino/25"
               >
                 <div className="absolute top-0 right-0 w-48 h-48 bg-cappuccino/10 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:bg-cappuccino/20 transition-colors duration-500 blur-[40px] pointer-events-none" />
                 <Star className="text-cappuccino absolute top-6 right-6 sm:top-8 sm:right-8 opacity-80 group-hover:opacity-100 transition-all duration-500 group-hover:scale-110 drop-shadow-[0_0_15px_rgba(200,149,95,0.7)]" size={20} fill="currentColor" />
                 
-                <p className="text-base sm:text-lg md:text-xl font-serif leading-relaxed mb-6 sm:mb-8 italic relative z-10 text-white drop-shadow-md pr-6 sm:pr-0">
+                <p className="text-xs sm:text-sm font-serif leading-relaxed mb-6 sm:mb-8 italic relative z-10 text-white drop-shadow-md pr-6 sm:pr-0">
                   &ldquo;{test.quote}&rdquo;
                 </p>
                 <div className="relative z-10 flex items-center gap-3.5 sm:gap-4">
@@ -289,11 +289,11 @@ export default function Home() {
 
       {/* Admissions & WhatsApp CTA Section */}
       <section className="py-14 sm:py-20 md:py-28 px-4 sm:px-6 md:px-12 bg-white relative z-10 border-t border-cream">
-        <div className="max-w-5xl mx-auto bg-[#241A1A] rounded-2xl sm:rounded-3xl md:rounded-[3rem] p-6 sm:p-10 md:p-16 text-center text-white relative overflow-hidden shadow-2xl border border-cappuccino/30">
+        <div className="max-w-5xl mx-auto bg-[#241A1A] rounded-2xl sm:rounded-3xl md:rounded-[3rem] p-6 sm:p-8 md:p-12 text-center text-white relative overflow-hidden shadow-2xl border border-cappuccino/30">
           <div className="absolute -right-20 -top-20 w-80 h-80 bg-cappuccino/20 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute -left-20 -bottom-20 w-80 h-80 bg-cappuccino/15 rounded-full blur-3xl pointer-events-none" />
           <span className="text-[10px] uppercase tracking-[0.4em] sm:tracking-[0.5em] text-cappuccino font-bold mb-3 sm:mb-4 block drop-shadow-sm">Take the First Step</span>
-          <h2 className="text-2xl sm:text-3xl md:text-5xl font-serif italic mb-4 sm:mb-6 text-white drop-shadow-md">Begin Your Training Journey</h2>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif italic mb-4 sm:mb-6 text-white drop-shadow-md">Begin Your Training Journey</h2>
           <p className="text-white/80 max-w-xl mx-auto mb-8 sm:mb-10 text-xs sm:text-sm md:text-base font-light leading-relaxed">
             Join us at our training center in Ariyalur for Fitness, Yoga, Martial Arts, or Silambam. Connect with us directly on WhatsApp to learn about admissions and batch timings.
           </p>
@@ -302,14 +302,14 @@ export default function Home() {
               href="https://wa.me/918778931958?text=Hello%20Vajra%20Fitness%20Arts,%20I%20would%20like%20to%20know%20more%20about%20admissions%20and%20batch%20timings."
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full sm:w-auto px-6 sm:px-10 py-4 sm:py-5 bg-[#25D366] hover:bg-[#20ba5a] text-black font-bold text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] rounded-full transition-all shadow-premium hover:shadow-[0_0_30px_rgba(37,211,102,0.4)] inline-flex items-center justify-center gap-3 active:scale-95"
+              className="w-full sm:w-auto py-3.5 px-7 bg-[#25D366] hover:bg-[#20ba5a] text-black font-bold text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] rounded-full transition-all shadow-premium hover:shadow-[0_0_30px_rgba(37,211,102,0.4)] inline-flex items-center justify-center gap-3 active:scale-95"
             >
               <span>Chat on WhatsApp</span>
               <ArrowRight size={16} />
             </a>
             <Link
               href="/portal?tab=enroll"
-              className="w-full sm:w-auto px-6 sm:px-10 py-4 sm:py-5 border border-cappuccino/50 hover:bg-cappuccino hover:text-coffee-dark text-white font-bold text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] rounded-full transition-all backdrop-blur-sm shadow-premium inline-flex items-center justify-center gap-3 active:scale-95"
+              className="w-full sm:w-auto py-3.5 px-7 border border-cappuccino/50 hover:bg-cappuccino hover:text-coffee-dark text-white font-bold text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] rounded-full transition-all backdrop-blur-sm shadow-premium inline-flex items-center justify-center gap-3 active:scale-95"
             >
               <span>Enroll in Online Class</span>
             </Link>

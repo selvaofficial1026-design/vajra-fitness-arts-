@@ -98,13 +98,13 @@ export default function Hero() {
                 className="object-cover scale-110"
               />
             </div>
-            <span className="inline-block px-3 xs:px-4 sm:px-5 py-1 sm:py-1.5 border border-cappuccino/50 rounded-full text-cappuccino text-[8px] sm:text-[10px] tracking-wider sm:tracking-[0.3em] uppercase backdrop-blur-md bg-[#1A1212]/85 shadow-lg max-w-full text-center font-bold">
+            <span className="inline-block px-3 xs:px-4 sm:px-5 py-1 sm:py-1.5 border border-cappuccino/50 rounded-full text-cappuccino text-[8px] sm:text-[9px] tracking-[0.25em] uppercase backdrop-blur-md bg-[#1A1212]/85 shadow-lg max-w-full text-center font-bold">
               Vajra Fitness Arts • Fitness | Yoga | Martial Arts | Silambam
             </span>
           </div>
 
           {/* High-contrast readable typography */}
-          <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif text-white mb-3 sm:mb-5 tracking-tight leading-[1.15] text-balance drop-shadow-[0_4px_24px_rgba(0,0,0,0.85)]">
+          <h1 className="text-4xl sm:text-6xl md:text-6xl lg:text-7xl font-serif text-white mb-3 sm:mb-5 tracking-tight leading-[1.15] text-balance drop-shadow-[0_4px_24px_rgba(0,0,0,0.85)]">
             Ancient Disciplines. <br />
             <span className="italic font-normal text-cappuccino drop-shadow-[0_2px_12px_rgba(200,149,95,0.5)]">Modern Strength.</span>
           </h1>
@@ -117,7 +117,7 @@ export default function Hero() {
             <Magnetic className="w-full sm:w-auto">
               <Link
                 href="/course"
-                className="group relative w-full sm:w-auto px-8 sm:px-10 py-3.5 sm:py-4 bg-cappuccino text-coffee-dark rounded-full font-bold text-xs sm:text-sm tracking-widest uppercase overflow-hidden transition-all shadow-premium hover:shadow-[0_12px_35px_rgba(200,149,95,0.55)] active:scale-95 flex items-center justify-center cursor-pointer"
+                className="group relative w-full sm:w-auto px-7 sm:px-8 py-3 sm:py-3.5 bg-cappuccino text-coffee-dark rounded-full font-bold text-xs sm:text-xs tracking-widest uppercase overflow-hidden transition-all shadow-premium hover:shadow-[0_12px_35px_rgba(200,149,95,0.55)] active:scale-95 flex items-center justify-center cursor-pointer"
               >
                 <span className="relative z-10">Explore Courses</span>
                 <div className="absolute inset-0 bg-white/30 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
@@ -126,7 +126,7 @@ export default function Hero() {
             <Magnetic className="w-full sm:w-auto">
               <Link
                 href="/contact"
-                className="w-full sm:w-auto px-8 sm:px-10 py-3.5 sm:py-4 border-2 border-white/90 text-white rounded-full font-bold text-xs sm:text-sm tracking-widest uppercase hover:bg-white hover:text-coffee-dark transition-all backdrop-blur-sm shadow-premium active:scale-95 flex items-center justify-center cursor-pointer"
+                className="w-full sm:w-auto px-7 sm:px-8 py-3 sm:py-3.5 border-2 border-white/90 text-white rounded-full font-bold text-xs sm:text-xs tracking-widest uppercase hover:bg-white hover:text-coffee-dark transition-all backdrop-blur-sm shadow-premium active:scale-95 flex items-center justify-center cursor-pointer"
               >
                 Contact &amp; Admissions
               </Link>

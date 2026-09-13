@@ -260,16 +260,16 @@ function PortalAuthContent() {
           <GraduationCap size={14} className="text-cappuccino" />
           <span>Vajra Online Academy</span>
         </div>
-        <h1 className="text-3xl sm:text-5xl font-serif font-bold text-coffee-dark tracking-tight mb-3">
+        <h1 className="text-2xl sm:text-4xl font-serif font-bold text-coffee-dark tracking-tight mb-3">
           Virtual Training Portal
         </h1>
-        <p className="text-xs sm:text-sm text-coffee-dark/70 font-light leading-relaxed">
+        <p className="text-xs text-coffee-dark/70 font-light leading-relaxed">
           Daily live Google Meet sessions, private YouTube training videos, syllabus guidance, and direct WhatsApp messaging with our Head Coach.
         </p>
       </motion.div>
 
       {/* Main Card Container */}
-      <div className="w-full max-w-2xl z-10">
+      <div className="w-full max-w-xl z-10">
         {/* Navigation Tabs */}
         <div className="flex rounded-2xl bg-white border border-cream p-1.5 shadow-premium mb-8 overflow-x-auto scrollbar-none">
           <button
@@ -278,7 +278,7 @@ function PortalAuthContent() {
               setActiveTab("login");
               setLoginError("");
             }}
-            className={`flex-1 py-3 px-3 sm:px-5 rounded-xl text-xs sm:text-sm font-bold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer shrink-0 ${
+            className={`flex-1 py-2.5 px-3 sm:px-4 rounded-xl text-xs font-bold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer shrink-0 ${
               activeTab === "login"
                 ? "bg-[#241A1A] text-white shadow-md border border-cappuccino/40"
                 : "text-coffee-dark/60 hover:text-coffee-dark hover:bg-cream/40"
@@ -294,7 +294,7 @@ function PortalAuthContent() {
               setActiveTab("enroll");
               setEnrollError("");
             }}
-            className={`flex-1 py-3 px-3 sm:px-5 rounded-xl text-xs sm:text-sm font-bold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer shrink-0 ${
+            className={`flex-1 py-2.5 px-3 sm:px-4 rounded-xl text-xs font-bold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer shrink-0 ${
               activeTab === "enroll"
                 ? "bg-[#241A1A] text-white shadow-md border border-cappuccino/40"
                 : "text-coffee-dark/60 hover:text-coffee-dark hover:bg-cream/40"
@@ -310,7 +310,7 @@ function PortalAuthContent() {
               setActiveTab("track");
               setTrackError("");
             }}
-            className={`flex-1 py-3 px-3 sm:px-5 rounded-xl text-xs sm:text-sm font-bold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer shrink-0 ${
+            className={`flex-1 py-2.5 px-3 sm:px-4 rounded-xl text-xs font-bold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer shrink-0 ${
               activeTab === "track"
                 ? "bg-[#241A1A] text-white shadow-md border border-cappuccino/40"
                 : "text-coffee-dark/60 hover:text-coffee-dark hover:bg-cream/40"
@@ -326,7 +326,7 @@ function PortalAuthContent() {
               setActiveTab("admin");
               setAdminError("");
             }}
-            className={`py-3 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-bold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer shrink-0 ${
+            className={`py-2.5 px-3 sm:px-4 rounded-xl text-xs font-bold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer shrink-0 ${
               activeTab === "admin"
                 ? "bg-cappuccino text-coffee-dark shadow-md"
                 : "text-coffee-dark/60 hover:text-coffee-dark hover:bg-cream/40"
@@ -347,7 +347,7 @@ function PortalAuthContent() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.3 }}
-              className="bg-[#241A1A] text-white p-6 sm:p-10 rounded-3xl border border-cappuccino/30 shadow-2xl relative overflow-hidden"
+              className="bg-[#241A1A] text-white p-5 sm:p-7 md:p-8 rounded-2xl sm:rounded-3xl border border-cappuccino/30 shadow-2xl relative overflow-hidden"
             >
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-12 rounded-2xl bg-cappuccino/20 border border-cappuccino/40 flex items-center justify-center text-cappuccino">
@@ -378,7 +378,7 @@ function PortalAuthContent() {
                       value={studentUsername}
                       onChange={(e) => setStudentUsername(e.target.value)}
                       placeholder="Enter your registered name"
-                      className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl pl-11 pr-4 py-3 text-sm focus:outline-none transition-colors"
+                      className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl pl-11 pr-4 py-2.5 text-xs sm:text-sm focus:outline-none transition-colors"
                       required
                     />
                   </div>
@@ -395,7 +395,7 @@ function PortalAuthContent() {
                       value={studentCode}
                       onChange={(e) => setStudentCode(e.target.value)}
                       placeholder="Enter permanent code (vajra-xxxx)"
-                      className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl pl-11 pr-4 py-3 text-sm focus:outline-none transition-colors"
+                      className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl pl-11 pr-4 py-2.5 text-xs sm:text-sm focus:outline-none transition-colors"
                       required
                     />
                   </div>
@@ -448,7 +448,7 @@ function PortalAuthContent() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.3 }}
-              className="bg-[#241A1A] text-white p-6 sm:p-10 rounded-3xl border border-cappuccino/30 shadow-2xl relative overflow-hidden"
+              className="bg-[#241A1A] text-white p-5 sm:p-7 md:p-8 rounded-2xl sm:rounded-3xl border border-cappuccino/30 shadow-2xl relative overflow-hidden"
             >
               {generatedTempCode ? (
                 /* Success Temporary Code Modal */
@@ -551,7 +551,6 @@ function PortalAuthContent() {
                             type="text"
                             value={enrollForm.name}
                             onChange={(e) => setEnrollForm({ ...enrollForm, name: e.target.value })}
-                            placeholder="Your full name"
                             className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl pl-10 pr-3 py-2.5 text-xs sm:text-sm focus:outline-none transition-colors"
                             required
                           />
@@ -568,7 +567,6 @@ function PortalAuthContent() {
                             type="tel"
                             value={enrollForm.phone}
                             onChange={(e) => setEnrollForm({ ...enrollForm, phone: e.target.value })}
-                            placeholder="e.g. 9876543210"
                             className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl pl-10 pr-3 py-2.5 text-xs sm:text-sm focus:outline-none transition-colors"
                             required
                           />
@@ -623,7 +621,6 @@ function PortalAuthContent() {
                           type="number"
                           value={enrollForm.age}
                           onChange={(e) => setEnrollForm({ ...enrollForm, age: e.target.value })}
-                          placeholder="e.g. 21"
                           className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3 py-2.5 text-xs sm:text-sm focus:outline-none transition-colors"
                         />
                       </div>
@@ -651,7 +648,6 @@ function PortalAuthContent() {
                           type="text"
                           value={enrollForm.city}
                           onChange={(e) => setEnrollForm({ ...enrollForm, city: e.target.value })}
-                          placeholder="e.g. Ariyalur"
                           className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3 py-2.5 text-xs sm:text-sm focus:outline-none transition-colors"
                         />
                       </div>
@@ -666,8 +662,7 @@ function PortalAuthContent() {
                         rows={2}
                         value={enrollForm.notes}
                         onChange={(e) => setEnrollForm({ ...enrollForm, notes: e.target.value })}
-                        placeholder="Tell us your goals or any past experience..."
-                        className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3.5 py-2 text-xs sm:text-sm focus:outline-none transition-colors resize-none"
+                        className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3.5 py-2.5 text-xs sm:text-sm focus:outline-none transition-colors resize-none"
                       />
                     </div>
 
@@ -701,7 +696,7 @@ function PortalAuthContent() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.3 }}
-              className="bg-[#241A1A] text-white p-6 sm:p-10 rounded-3xl border border-cappuccino/30 shadow-2xl relative overflow-hidden"
+              className="bg-[#241A1A] text-white p-5 sm:p-7 md:p-8 rounded-2xl sm:rounded-3xl border border-cappuccino/30 shadow-2xl relative overflow-hidden"
             >
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-12 rounded-2xl bg-cappuccino/20 border border-cappuccino/40 flex items-center justify-center text-cappuccino">
@@ -737,7 +732,7 @@ function PortalAuthContent() {
                       value={trackInputCode}
                       onChange={(e) => setTrackInputCode(e.target.value.toUpperCase())}
                       placeholder="e.g. TEMP-xxxx"
-                      className="flex-1 bg-[#191111] border border-white/20 focus:border-cappuccino text-white font-mono tracking-wider uppercase rounded-xl px-4 py-3 text-sm focus:outline-none transition-colors"
+                      className="flex-1 bg-[#191111] border border-white/20 focus:border-cappuccino text-white font-mono tracking-wider uppercase rounded-xl px-4 py-2.5 text-xs sm:text-sm focus:outline-none transition-colors"
                       required
                     />
                     <button
@@ -834,7 +829,7 @@ function PortalAuthContent() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.3 }}
-              className="bg-[#241A1A] text-white p-6 sm:p-10 rounded-3xl border border-cappuccino/30 shadow-2xl relative overflow-hidden"
+              className="bg-[#241A1A] text-white p-5 sm:p-7 md:p-8 rounded-2xl sm:rounded-3xl border border-cappuccino/30 shadow-2xl relative overflow-hidden"
             >
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-12 rounded-2xl bg-cappuccino/20 border border-cappuccino/40 flex items-center justify-center text-cappuccino">
@@ -863,7 +858,7 @@ function PortalAuthContent() {
                     value={adminUsername}
                     onChange={(e) => setAdminUsername(e.target.value)}
                     placeholder="admin"
-                    className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-4 py-3 text-sm focus:outline-none transition-colors"
+                    className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-4 py-2.5 text-xs sm:text-sm focus:outline-none transition-colors"
                     required
                   />
                 </div>
@@ -877,7 +872,7 @@ function PortalAuthContent() {
                     value={adminPassword}
                     onChange={(e) => setAdminPassword(e.target.value)}
                     placeholder="Enter admin password"
-                    className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-4 py-3 text-sm focus:outline-none transition-colors"
+                    className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-4 py-2.5 text-xs sm:text-sm focus:outline-none transition-colors"
                     required
                   />
                 </div>

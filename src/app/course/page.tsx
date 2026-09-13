@@ -146,7 +146,7 @@ export default function CoursesPage() {
   return (
     <main className="min-h-screen flex flex-col pt-0 bg-background relative overflow-hidden">
       {/* Immersive Course Hero with Warm Cinematic Grade */}
-      <section className="relative min-h-[360px] h-[50vh] sm:h-[55vh] md:h-[65vh] w-full flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[300px] h-[40vh] sm:h-[45vh] md:h-[50vh] w-full flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image
             src="/images/vajra_hero.jpg"
@@ -163,10 +163,10 @@ export default function CoursesPage() {
           <span className="inline-block px-4 sm:px-6 py-1.5 sm:py-2 mb-4 sm:mb-6 border border-cappuccino/40 rounded-full text-cappuccino text-[9px] sm:text-[10px] font-bold tracking-[0.25em] sm:tracking-[0.3em] uppercase backdrop-blur-md bg-white/5 shadow-lg">
             Curriculum &amp; Programs
           </span>
-          <h1 className="text-3xl sm:text-5xl md:text-7xl font-serif text-white mb-3 sm:mb-4 italic">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-serif text-white mb-3 sm:mb-4 italic">
             Training Courses
           </h1>
-          <p className="text-white/70 max-w-xl mx-auto text-xs sm:text-sm md:text-base font-light px-2">
+          <p className="text-white/70 max-w-xl mx-auto text-xs sm:text-sm font-light px-2">
             Comprehensive programs in Fitness, Yoga, Martial Arts, and Silambam.
           </p>
         </div>
@@ -220,7 +220,7 @@ export default function CoursesPage() {
           </div>
 
           {/* Course Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 max-w-5xl mx-auto gap-6 sm:gap-8 lg:gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 max-w-5xl mx-auto gap-6 sm:gap-7">
             <AnimatePresence mode="popLayout">
               {filteredCourses.length > 0 ? (
                 filteredCourses.map((course, index) => (
@@ -264,15 +264,15 @@ export default function CoursesPage() {
                     </div>
 
                     {/* Body Content */}
-                    <div className="p-5 sm:p-6 md:p-8 flex-1 flex flex-col justify-between">
+                    <div className="p-4 sm:p-5 md:p-6 flex-1 flex flex-col justify-between">
                       <div>
                         <span className="text-[9px] sm:text-[10px] uppercase tracking-[0.25em] sm:tracking-[0.3em] text-cappuccino font-bold block mb-1">
                           {course.subtitle}
                         </span>
-                        <h3 className="text-xl sm:text-2xl font-serif text-coffee-dark font-bold mb-2 sm:mb-3 group-hover:text-cappuccino transition-colors leading-snug">
+                        <h3 className="text-lg sm:text-xl font-serif text-coffee-dark font-bold mb-1.5 group-hover:text-cappuccino transition-colors leading-snug">
                           {course.name}
                         </h3>
-                        <p className="text-coffee-dark/70 text-xs sm:text-sm leading-relaxed font-light mb-5 sm:mb-6">
+                        <p className="text-coffee-dark/70 text-xs leading-relaxed font-light mb-4">
                           {course.description}
                         </p>
 
@@ -344,7 +344,7 @@ export default function CoursesPage() {
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-white rounded-2xl sm:rounded-[2.5rem] p-5 sm:p-8 md:p-10 w-[95vw] sm:max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl relative border border-cream z-10 my-auto"
+              className="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-7 w-[95vw] sm:max-w-xl max-h-[85vh] overflow-y-auto shadow-2xl relative border border-cream z-10 my-auto"
             >
               <button
                 type="button"
@@ -359,7 +359,7 @@ export default function CoursesPage() {
               <span className="text-[10px] uppercase tracking-[0.3em] sm:tracking-[0.4em] text-cappuccino font-bold block mb-1.5 sm:mb-2">
                 Course Syllabus
               </span>
-              <h2 className="text-2xl sm:text-3xl font-serif text-coffee-dark font-bold mb-2 pr-16">
+              <h2 className="text-xl sm:text-2xl font-serif text-coffee-dark font-bold mb-2 pr-16">
                 {selectedCourse.name}
               </h2>
               <p className="text-xs sm:text-sm text-coffee-dark/70 mb-5 sm:mb-6 leading-relaxed">

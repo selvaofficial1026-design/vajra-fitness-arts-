@@ -19,7 +19,7 @@ export default function SectionHeading({ title, subtitle, centered = true, class
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      className={cn("mb-12 sm:mb-16 md:mb-20 px-2 sm:px-0", centered ? "text-center" : "text-left", className)}
+      className={cn("mb-10 sm:mb-12 md:mb-14 px-2 sm:px-0", centered ? "text-center" : "text-left", className)}
     >
       {subtitle && (
         <span className={cn(
@@ -30,7 +30,7 @@ export default function SectionHeading({ title, subtitle, centered = true, class
         </span>
       )}
       <h2 className={cn(
-        "text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-serif leading-tight text-balance font-bold",
+        "text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif leading-tight text-balance font-bold",
         inverted ? "text-white" : "text-coffee-dark",
         centered && "mx-auto max-w-3xl"
       )}>

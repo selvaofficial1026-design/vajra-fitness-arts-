@@ -75,7 +75,7 @@ I would like to inquire about admissions:
   return (
     <main className="min-h-screen flex flex-col pt-0 bg-background relative overflow-hidden">
       {/* Immersive Warm Graded Contact Hero */}
-      <section className="relative h-[50vh] sm:h-[55vh] md:h-[65vh] w-full flex items-center justify-center overflow-hidden">
+      <section className="relative h-[42vh] sm:h-[48vh] md:h-[52vh] min-h-[320px] w-full flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image
             src="/images/vajra_hero.jpg"
@@ -90,11 +90,11 @@ I would like to inquire about admissions:
           <div className="absolute inset-0 bg-[#2A1D1D]/20 mix-blend-multiply pointer-events-none" />
         </div>
 
-        <div className="relative z-10 text-center px-4 sm:px-6 pt-12 sm:pt-16 max-w-4xl mx-auto">
-          <span className="inline-block px-4 sm:px-6 py-1.5 sm:py-2 mb-4 sm:mb-6 border border-cappuccino/40 rounded-full text-cappuccino text-[9px] sm:text-[10px] font-bold tracking-[0.25em] sm:tracking-[0.3em] uppercase backdrop-blur-md bg-white/5 shadow-lg">
+        <div className="relative z-10 text-center px-4 sm:px-6 pt-10 sm:pt-14 max-w-4xl mx-auto">
+          <span className="inline-block px-4 sm:px-6 py-1.5 sm:py-2 mb-3 sm:mb-4 border border-cappuccino/40 rounded-full text-cappuccino text-[9px] sm:text-[10px] font-bold tracking-[0.25em] sm:tracking-[0.3em] uppercase backdrop-blur-md bg-white/5 shadow-lg">
             Direct Admissions &amp; WhatsApp
           </span>
-          <h1 className="text-3xl sm:text-5xl md:text-7xl font-serif text-white mb-3 sm:mb-4 italic tracking-tight">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-serif text-white mb-2.5 sm:mb-3 italic tracking-tight">
             Connect With Us
           </h1>
           <p className="text-white/70 max-w-xl mx-auto text-xs sm:text-sm md:text-base font-light px-2">
@@ -126,18 +126,18 @@ I would like to inquire about admissions:
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 gap-4 sm:gap-5">
+              <div className="grid grid-cols-1 gap-3.5 sm:gap-4">
                 {contactItems.map((item, i) => {
                   const content = (
                     <>
-                      <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-background rounded-full flex items-center justify-center shrink-0 group-hover:bg-coffee-dark group-hover:text-white transition-all duration-500 text-cappuccino mt-0.5 sm:mt-0">
-                        <item.icon className="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6" />
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-background rounded-full flex items-center justify-center shrink-0 group-hover:bg-coffee-dark group-hover:text-white transition-all duration-500 text-cappuccino mt-0.5 sm:mt-0">
+                        <item.icon className="w-5 h-5 sm:w-5 sm:h-5" />
                       </div>
                       <div className="min-w-0 flex-1">
                         <h4 className="font-bold text-coffee-dark/60 mb-0.5 sm:mb-1 uppercase tracking-[0.2em] text-[8px] sm:text-[9px]">
                           {item.title}
                         </h4>
-                        <p className="text-coffee-dark text-sm sm:text-base md:text-lg font-bold leading-snug break-words group-hover:text-cappuccino transition-colors">
+                        <p className="text-coffee-dark text-sm sm:text-base font-bold leading-snug break-words group-hover:text-cappuccino transition-colors">
                           {item.detail}
                         </p>
                         <p className="text-cappuccino text-[9px] sm:text-[10px] font-semibold mt-0.5 break-words">
@@ -156,7 +156,7 @@ I would like to inquire about admissions:
                       initial={{ opacity: 0, y: 10 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       transition={{ delay: i * 0.1 }}
-                      className="group flex items-start sm:items-center gap-3.5 sm:gap-5 p-5 sm:p-6 md:p-8 rounded-2xl sm:rounded-[1.8rem] bg-white border border-cream hover:border-cappuccino/40 transition-all duration-500 shadow-premium hover:shadow-premium-hover cursor-pointer"
+                      className="group flex items-start sm:items-center gap-3.5 sm:gap-4 p-4 sm:p-5 md:p-6 rounded-2xl sm:rounded-[1.5rem] bg-white border border-cream hover:border-cappuccino/40 transition-all duration-500 shadow-premium hover:shadow-premium-hover cursor-pointer"
                     >
                       {content}
                     </motion.a>
@@ -166,7 +166,7 @@ I would like to inquire about admissions:
                       initial={{ opacity: 0, y: 10 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       transition={{ delay: i * 0.1 }}
-                      className="group flex items-start sm:items-center gap-3.5 sm:gap-5 p-5 sm:p-6 md:p-8 rounded-2xl sm:rounded-[1.8rem] bg-white border border-cream hover:border-cappuccino/40 transition-all duration-500 shadow-premium hover:shadow-premium-hover"
+                      className="group flex items-start sm:items-center gap-3.5 sm:gap-4 p-4 sm:p-5 md:p-6 rounded-2xl sm:rounded-[1.5rem] bg-white border border-cream hover:border-cappuccino/40 transition-all duration-500 shadow-premium hover:shadow-premium-hover"
                     >
                       {content}
                     </motion.div>
@@ -194,12 +194,12 @@ I would like to inquire about admissions:
               transition={{ duration: 0.8 }}
               className="flex flex-col justify-center"
             >
-              <div className="bg-[#241A1A]/95 backdrop-blur-xl p-5 sm:p-8 md:p-10 rounded-2xl sm:rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.3)] hover:shadow-[0_20px_50px_rgba(200,149,95,0.2)] transition-all duration-500 relative overflow-hidden border border-cappuccino/30 group/form">
+              <div className="w-full max-w-lg mx-auto bg-[#241A1A]/95 backdrop-blur-xl p-5 sm:p-7 md:p-8 rounded-2xl sm:rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] hover:shadow-[0_20px_50px_rgba(200,149,95,0.2)] transition-all duration-500 relative overflow-hidden border border-cappuccino/30 group/form">
                 {/* Warm Cappuccino Ambient Blur Circles */}
                 <div className="absolute top-0 right-0 w-72 h-72 bg-cappuccino/20 rounded-full -translate-y-1/2 translate-x-1/2 blur-[80px] pointer-events-none" />
                 <div className="absolute bottom-0 left-0 w-60 h-60 bg-cappuccino/15 rounded-full translate-y-1/2 -translate-x-1/2 blur-[70px] pointer-events-none" />
 
-                <div className="space-y-1.5 sm:space-y-2 mb-6 sm:mb-8 relative z-10">
+                <div className="space-y-1.5 mb-5 sm:mb-6 relative z-10">
                   <div className="flex items-center gap-2">
                     <MessageCircle size={16} className="text-[#4ede80] shrink-0" />
                     <h3 className="text-[#4ede80] text-[9px] sm:text-[10px] uppercase tracking-[0.3em] sm:tracking-[0.4em] font-bold">
@@ -214,8 +214,8 @@ I would like to inquire about admissions:
                   </p>
                 </div>
 
-                <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5 relative z-10">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                <form onSubmit={handleSubmit} className="space-y-3.5 sm:space-y-4 relative z-10">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
                     {/* Name */}
                     <div className="space-y-1.5">
                       <label
@@ -231,7 +231,7 @@ I would like to inquire about admissions:
                         required
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3.5 py-3 sm:py-2.5 text-xs sm:text-sm min-h-[44px] focus:outline-none transition-colors placeholder:text-white/30"
+                        className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3.5 py-2 sm:py-2.5 text-xs sm:text-sm min-h-[40px] focus:outline-none transition-colors placeholder:text-white/30"
                         placeholder="Your full name"
                       />
                     </div>
@@ -254,7 +254,7 @@ I would like to inquire about admissions:
                           setFormData({ ...formData, phone: e.target.value });
                           if (phoneError) setPhoneError("");
                         }}
-                        className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3.5 py-3 sm:py-2.5 text-xs sm:text-sm min-h-[44px] focus:outline-none transition-colors placeholder:text-white/30"
+                        className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3.5 py-2 sm:py-2.5 text-xs sm:text-sm min-h-[40px] focus:outline-none transition-colors placeholder:text-white/30"
                         placeholder="e.g. +91 98765 43210"
                       />
                       {phoneError && (
@@ -263,7 +263,7 @@ I would like to inquire about admissions:
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
                     {/* Course Selection */}
                     <div className="space-y-1.5">
                       <label
@@ -277,7 +277,7 @@ I would like to inquire about admissions:
                         name="course_interest"
                         value={formData.course}
                         onChange={(e) => setFormData({ ...formData, course: e.target.value })}
-                        className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3.5 py-3 sm:py-2.5 text-xs sm:text-sm min-h-[44px] focus:outline-none transition-colors cursor-pointer"
+                        className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3.5 py-2 sm:py-2.5 text-xs sm:text-sm min-h-[40px] focus:outline-none transition-colors cursor-pointer"
                       >
                         <option value="Fitness" className="bg-[#191111] text-white">Fitness</option>
                         <option value="Yoga" className="bg-[#191111] text-white">Yoga</option>
@@ -299,7 +299,7 @@ I would like to inquire about admissions:
                         name="batch_preference"
                         value={formData.batch}
                         onChange={(e) => setFormData({ ...formData, batch: e.target.value })}
-                        className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3.5 py-3 sm:py-2.5 text-xs sm:text-sm min-h-[44px] focus:outline-none transition-colors cursor-pointer"
+                        className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3.5 py-2 sm:py-2.5 text-xs sm:text-sm min-h-[40px] focus:outline-none transition-colors cursor-pointer"
                       >
                         <option value="4:30 AM - 5:15 AM (Morning)" className="bg-[#191111] text-white">4:30 AM - 5:15 AM (Morning)</option>
                         <option value="5:30 AM - 6:00 AM (Morning)" className="bg-[#191111] text-white">5:30 AM - 6:00 AM (Morning)</option>
@@ -325,17 +325,17 @@ I would like to inquire about admissions:
                       rows={2}
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      className="w-full min-h-[70px] bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3.5 py-2.5 text-xs sm:text-sm focus:outline-none transition-colors resize-none placeholder:text-white/30"
+                      className="w-full min-h-[60px] bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3.5 py-2 sm:py-2.5 text-xs sm:text-sm focus:outline-none transition-colors resize-none placeholder:text-white/30"
                       placeholder="Mention any goals, questions, or previous experience..."
                     />
                   </div>
 
-                  <div className="pt-2 sm:pt-4">
+                  <div className="pt-2 sm:pt-3">
                     <button
                       type="submit"
-                      className="w-full sm:w-auto px-8 py-4 min-h-[48px] bg-[#25D366] text-black font-bold text-xs uppercase tracking-[0.2em] rounded-full hover:bg-[#20bd5a] transition-all shadow-[0_0_25px_rgba(37,211,102,0.4)] flex items-center justify-center gap-3 group/btn active:scale-95 cursor-pointer"
+                      className="w-full sm:w-auto px-7 py-3 min-h-[44px] bg-[#25D366] text-black font-bold text-xs uppercase tracking-[0.2em] rounded-full hover:bg-[#20bd5a] transition-all shadow-[0_0_25px_rgba(37,211,102,0.4)] flex items-center justify-center gap-2.5 group/btn active:scale-95 cursor-pointer"
                     >
-                      <MessageCircle size={18} className="shrink-0" />
+                      <MessageCircle size={17} className="shrink-0" />
                       <span>Send on WhatsApp</span>
                     </button>
                   </div>

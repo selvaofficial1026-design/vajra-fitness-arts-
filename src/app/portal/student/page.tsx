@@ -180,16 +180,16 @@ export default function StudentPortalPage() {
     <main className="min-h-screen bg-background text-coffee-dark pt-24 pb-20 px-4 sm:px-6 md:px-12">
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Top Student Header Bar */}
-        <div className="bg-[#241A1A] text-white p-5 sm:p-7 rounded-3xl border border-cappuccino/30 shadow-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-5 relative overflow-hidden">
+        <div className="bg-[#241A1A] text-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-cappuccino/30 shadow-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-5 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-80 h-80 bg-cappuccino/10 rounded-full blur-3xl pointer-events-none -translate-y-1/2 translate-x-1/2" />
 
           <div className="flex items-center gap-4 z-10">
-            <div className="w-14 h-14 rounded-2xl bg-cappuccino/20 border border-cappuccino/40 flex items-center justify-center text-cappuccino font-serif text-2xl font-bold shrink-0">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-cappuccino/20 border border-cappuccino/40 flex items-center justify-center text-cappuccino font-serif text-xl sm:text-2xl font-bold shrink-0">
               {student.name.charAt(0)}
             </div>
             <div>
               <div className="flex items-center gap-2 flex-wrap mb-1">
-                <h1 className="text-xl sm:text-2xl font-serif font-bold text-white leading-none">
+                <h1 className="text-lg sm:text-xl font-serif font-bold text-white leading-none">
                   {student.name}
                 </h1>
                 <span className="px-2.5 py-0.5 rounded-full bg-cappuccino/20 border border-cappuccino/50 text-cappuccino text-[10px] font-mono font-bold uppercase tracking-wider">
@@ -229,7 +229,7 @@ export default function StudentPortalPage() {
           <button
             type="button"
             onClick={() => setActiveTab("meet")}
-            className={`py-3 sm:py-3.5 px-3 rounded-xl text-xs sm:text-sm font-bold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${
+            className={`py-2.5 sm:py-3 px-3 rounded-xl text-xs font-bold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${
               activeTab === "meet"
                 ? "bg-[#241A1A] text-white shadow-md border border-cappuccino/40"
                 : "text-coffee-dark/60 hover:text-coffee-dark hover:bg-cream/40"
@@ -242,7 +242,7 @@ export default function StudentPortalPage() {
           <button
             type="button"
             onClick={() => setActiveTab("videos")}
-            className={`py-3 sm:py-3.5 px-3 rounded-xl text-xs sm:text-sm font-bold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${
+            className={`py-2.5 sm:py-3 px-3 rounded-xl text-xs font-bold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${
               activeTab === "videos"
                 ? "bg-[#241A1A] text-white shadow-md border border-cappuccino/40"
                 : "text-coffee-dark/60 hover:text-coffee-dark hover:bg-cream/40"
@@ -255,7 +255,7 @@ export default function StudentPortalPage() {
           <button
             type="button"
             onClick={() => setActiveTab("doubt")}
-            className={`py-3 sm:py-3.5 px-3 rounded-xl text-xs sm:text-sm font-bold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${
+            className={`py-2.5 sm:py-3 px-3 rounded-xl text-xs font-bold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${
               activeTab === "doubt"
                 ? "bg-[#241A1A] text-white shadow-md border border-cappuccino/40"
                 : "text-coffee-dark/60 hover:text-coffee-dark hover:bg-cream/40"
@@ -268,7 +268,7 @@ export default function StudentPortalPage() {
           <button
             type="button"
             onClick={() => setActiveTab("profile")}
-            className={`py-3 sm:py-3.5 px-3 rounded-xl text-xs sm:text-sm font-bold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${
+            className={`py-2.5 sm:py-3 px-3 rounded-xl text-xs font-bold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${
               activeTab === "profile"
                 ? "bg-[#241A1A] text-white shadow-md border border-cappuccino/40"
                 : "text-coffee-dark/60 hover:text-coffee-dark hover:bg-cream/40"
@@ -288,14 +288,14 @@ export default function StudentPortalPage() {
               animate={{ opacity: 1, y: 0 }}
               className="space-y-6"
             >
-              <div className="bg-[#241A1A] text-white p-6 sm:p-10 rounded-3xl border border-cappuccino/30 shadow-2xl relative overflow-hidden">
+              <div className="bg-[#241A1A] text-white p-5 sm:p-7 rounded-2xl sm:rounded-3xl border border-cappuccino/30 shadow-2xl relative overflow-hidden">
                 <div className="max-w-3xl">
                   <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-500/40 text-xs font-bold uppercase tracking-wider mb-4">
                     <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
                     <span>Official Live Classroom</span>
                   </div>
 
-                  <h2 className="text-2xl sm:text-4xl font-serif font-bold text-white mb-2">
+                  <h2 className="text-xl sm:text-2xl font-serif font-bold text-white mb-2">
                     {activeMeeting?.title || `${student.course} Daily Live Training`}
                   </h2>
                   <p className="text-xs sm:text-sm text-white/70 mb-6 leading-relaxed">
@@ -403,7 +403,7 @@ export default function StudentPortalPage() {
                   {/* Left Player Screen */}
                   <div className="lg:col-span-2 space-y-4">
                     {selectedVideo && (
-                      <div className="bg-[#241A1A] p-4 sm:p-6 rounded-3xl border border-cappuccino/30 shadow-2xl space-y-4">
+                      <div className="bg-[#241A1A] p-3.5 sm:p-5 rounded-2xl sm:rounded-3xl border border-cappuccino/30 shadow-2xl space-y-4">
                         <div className="relative aspect-video rounded-2xl overflow-hidden bg-black shadow-inner">
                           <iframe
                             src={`https://www.youtube-nocookie.com/embed/${selectedVideo.youtubeId}?rel=0&modestbranding=1`}
@@ -446,7 +446,7 @@ export default function StudentPortalPage() {
                           <div
                             key={vid.id}
                             onClick={() => setSelectedVideo(vid)}
-                            className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex gap-3 items-center ${
+                            className={`p-2.5 rounded-xl border transition-all cursor-pointer flex gap-3 items-center ${
                               isSelected
                                 ? "bg-[#241A1A] text-white border-cappuccino shadow-md"
                                 : "bg-white text-coffee-dark border-cream hover:border-cappuccino/40"
@@ -489,7 +489,7 @@ export default function StudentPortalPage() {
               animate={{ opacity: 1, y: 0 }}
               className="max-w-4xl mx-auto"
             >
-              <div className="bg-[#241A1A] rounded-3xl border border-cappuccino/30 shadow-2xl overflow-hidden flex flex-col h-[620px]">
+              <div className="bg-[#241A1A] rounded-2xl sm:rounded-3xl border border-cappuccino/30 shadow-2xl overflow-hidden flex flex-col h-[520px]">
                 {/* WhatsApp Chat Header */}
                 <div className="p-4 bg-[#1b1414] border-b border-white/10 flex items-center justify-between gap-3">
                   <div className="flex items-center gap-3">
@@ -565,7 +565,7 @@ export default function StudentPortalPage() {
                           className={`flex ${isMe ? "justify-end" : "justify-start"}`}
                         >
                           <div
-                            className={`max-w-[82%] sm:max-w-[70%] p-3.5 rounded-2xl text-xs sm:text-sm leading-relaxed shadow-md relative ${
+                            className={`max-w-[82%] sm:max-w-[70%] p-2.5 sm:p-3 rounded-2xl text-xs leading-relaxed shadow-md relative ${
                               isMe
                                 ? "bg-[#005c4b] text-white rounded-tr-none"
                                 : "bg-[#241A1A] text-white/95 rounded-tl-none border border-cappuccino/30"
@@ -608,12 +608,12 @@ export default function StudentPortalPage() {
                     value={newMessageText}
                     onChange={(e) => setNewMessageText(e.target.value)}
                     placeholder="Type your doubt or question for the Coach..."
-                    className="flex-1 bg-[#120b0b] border border-white/10 focus:border-cappuccino text-white rounded-full px-5 py-3 text-xs sm:text-sm focus:outline-none transition-colors"
+                    className="flex-1 bg-[#120b0b] border border-white/10 focus:border-cappuccino text-white rounded-full px-4 py-2.5 text-xs sm:text-sm focus:outline-none transition-colors"
                   />
                   <button
                     type="submit"
                     disabled={chatSending || !newMessageText.trim()}
-                    className="w-11 h-11 rounded-full bg-[#25D366] hover:bg-[#20ba5a] text-black flex items-center justify-center transition-all disabled:opacity-40 cursor-pointer shrink-0 shadow-lg active:scale-95"
+                    className="w-10 h-10 rounded-full bg-[#25D366] hover:bg-[#20ba5a] text-black flex items-center justify-center transition-all disabled:opacity-40 cursor-pointer shrink-0 shadow-lg active:scale-95"
                   >
                     <Send size={16} />
                   </button>

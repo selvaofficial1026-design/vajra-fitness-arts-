@@ -91,13 +91,13 @@ export default function MenuItemCard({ name, description, price, image, category
         )}
       </div>
 
-      <div className="p-4 sm:p-5 md:p-6 flex flex-col flex-1 justify-between">
+      <div className="p-4 sm:p-5 flex flex-col flex-1 justify-between">
         <div>
           <div className="flex justify-between items-baseline gap-2 mb-2">
             <h3 className="text-base sm:text-lg font-serif text-coffee-dark font-bold group-hover:text-cappuccino transition-colors duration-300 line-clamp-1">
               {name}
             </h3>
-            <span className="text-cappuccino font-bold font-sans text-xs sm:text-sm md:text-base shrink-0 px-2.5 py-0.5 rounded-full bg-cappuccino/10 border border-cappuccino/30">
+            <span className="text-cappuccino font-bold font-sans text-xs sm:text-sm shrink-0 px-2.5 py-0.5 rounded-full bg-cappuccino/10 border border-cappuccino/30">
               {price}
             </span>
           </div>

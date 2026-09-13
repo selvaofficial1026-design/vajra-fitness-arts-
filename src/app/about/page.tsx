@@ -73,7 +73,7 @@ export default function AboutPage() {
           <span className="inline-block px-4 sm:px-6 py-1.5 sm:py-2 mb-4 sm:mb-6 border border-cappuccino/40 rounded-full text-cappuccino text-[9px] sm:text-[10px] font-bold tracking-[0.25em] sm:tracking-[0.3em] uppercase backdrop-blur-md bg-white/5 shadow-lg">
             About Our Academy
           </span>
-          <h1 className="text-3xl sm:text-6xl md:text-8xl font-serif text-white mb-3 sm:mb-4 italic leading-tight">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-serif text-white mb-3 sm:mb-4 italic leading-tight">
             The Vajra Journey
           </h1>
           <p className="text-white/70 max-w-xl mx-auto text-xs sm:text-sm md:text-base font-light px-2">
@@ -83,7 +83,7 @@ export default function AboutPage() {
       </section>
 
       {/* Philosophy Section */}
-      <section className="py-16 sm:py-24 md:py-32 px-4 sm:px-6 md:px-12 bg-white relative z-10">
+      <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 md:px-12 bg-white relative z-10">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-16 lg:gap-20 items-center">
             <motion.div
@@ -123,7 +123,7 @@ export default function AboutPage() {
 
               {/* Story Section Quote Block with Warm Cappuccino Accent Border */}
               <div className="mt-8 sm:mt-12 p-5 sm:p-7 bg-gradient-to-r from-cream/40 via-cream/15 to-transparent border-l-4 border-cappuccino rounded-r-2xl sm:rounded-r-3xl">
-                <p className="text-lg sm:text-xl md:text-2xl font-serif text-coffee-dark italic leading-relaxed">
+                <p className="text-base sm:text-lg md:text-xl font-serif text-coffee-dark italic leading-relaxed">
                   &ldquo;Consistent practice builds both physical strength and a peaceful mind.&rdquo;
                 </p>
                 <div className="mt-3 sm:mt-4 flex items-center gap-3 sm:gap-4">
@@ -167,7 +167,7 @@ export default function AboutPage() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-14 items-center">
               {/* Left Column: Founder Photo Card with Warm Cappuccino Border and Espresso Gradient */}
               <div className="lg:col-span-5 flex flex-col items-center">
-                <div className="relative w-full max-w-[280px] sm:max-w-[340px] aspect-[4/5] rounded-2xl sm:rounded-[2.5rem] overflow-hidden shadow-2xl border-2 border-cappuccino/50 group bg-coffee-dark">
+                <div className="relative w-full max-w-[240px] sm:max-w-[280px] md:max-w-[300px] aspect-[4/5] rounded-2xl sm:rounded-[2.5rem] overflow-hidden shadow-2xl border-2 border-cappuccino/50 group bg-coffee-dark">
                   <Image
                     src="/images/owner.jpg"
                     alt="Vajra Fitness Arts Founder &amp; Head Coach"
@@ -191,10 +191,10 @@ export default function AboutPage() {
                 </div>
 
                 <div className="mt-4 sm:mt-6 flex flex-wrap justify-center gap-2 sm:gap-3 text-center">
-                  <div className="px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full bg-cream/60 border border-cappuccino/30 text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-coffee-dark">
+                  <div className="px-2.5 py-1 rounded-full bg-cream/60 border border-cappuccino/30 text-[9px] font-bold uppercase tracking-wider text-coffee-dark">
                     100% Direct Coaching
                   </div>
-                  <div className="px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full bg-cream/60 border border-cappuccino/30 text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-coffee-dark">
+                  <div className="px-2.5 py-1 rounded-full bg-cream/60 border border-cappuccino/30 text-[9px] font-bold uppercase tracking-wider text-coffee-dark">
                     All 4 Disciplines
                   </div>
                 </div>
@@ -273,19 +273,19 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="group relative p-6 sm:p-8 bg-gradient-to-b from-white to-[#FDFBF7] rounded-2xl sm:rounded-[2rem] border border-cream hover:border-cappuccino/50 shadow-premium hover:shadow-[0_20px_45px_rgba(200,149,95,0.22)] hover:-translate-y-1 sm:hover:-translate-y-2 transition-all duration-500 overflow-hidden"
+                className="group relative p-5 sm:p-6 bg-gradient-to-b from-white to-[#FDFBF7] rounded-2xl sm:rounded-[2rem] border border-cream hover:border-cappuccino/50 shadow-premium hover:shadow-[0_20px_45px_rgba(200,149,95,0.22)] hover:-translate-y-1 sm:hover:-translate-y-2 transition-all duration-500 overflow-hidden"
               >
                 {/* Subtle ambient hover glow */}
                 <div className="absolute -inset-px rounded-2xl sm:rounded-[2rem] bg-gradient-to-b from-cappuccino/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
                 {/* Icon circle */}
-                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-cappuccino/15 text-cappuccino flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 group-hover:bg-cappuccino group-hover:text-white transition-all duration-300">
-                  <pillar.icon className="w-5 h-5 sm:w-7 sm:h-7" />
+                <div className="w-10 h-10 rounded-full bg-cappuccino/15 text-cappuccino flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 group-hover:bg-cappuccino group-hover:text-white transition-all duration-300">
+                  <pillar.icon className="w-5 h-5" />
                 </div>
                 <span className="text-[10px] sm:text-[11px] font-serif text-cappuccino font-bold block mb-1">
                   {pillar.tamil}
                 </span>
-                <h4 className="text-lg sm:text-xl font-bold text-coffee-dark mb-2 sm:mb-3 font-serif group-hover:text-cappuccino transition-colors">
+                <h4 className="text-base sm:text-lg font-bold text-coffee-dark mb-2 sm:mb-3 font-serif group-hover:text-cappuccino transition-colors">
                   {pillar.title}
                 </h4>
                 <p className="text-xs text-coffee-dark/70 leading-relaxed font-light">

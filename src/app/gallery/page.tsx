@@ -200,7 +200,7 @@ export default function GalleryPage() {
   return (
     <main className="min-h-screen flex flex-col pt-0 bg-background relative overflow-hidden">
       {/* Immersive Warm Cinematic Gallery Hero */}
-      <section className="relative h-[48vh] sm:h-[55vh] md:h-[65vh] min-h-[360px] sm:min-h-[420px] w-full flex items-center justify-center overflow-hidden">
+      <section className="relative h-[40vh] sm:h-[45vh] md:h-[50vh] min-h-[300px] sm:min-h-[340px] w-full flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image
             src="/images/martial_arts.jpg"
@@ -215,11 +215,11 @@ export default function GalleryPage() {
           <div className="absolute inset-0 bg-[#2A1D1D]/20 mix-blend-multiply pointer-events-none" />
         </div>
 
-        <div className="relative z-10 text-center px-4 sm:px-6 pt-12 sm:pt-16">
-          <span className="inline-block px-4 sm:px-6 py-1.5 sm:py-2 mb-4 sm:mb-6 border border-cappuccino/40 rounded-full text-cappuccino text-[9px] sm:text-[10px] font-bold tracking-[0.25em] sm:tracking-[0.3em] uppercase backdrop-blur-md bg-white/5 shadow-lg">
+        <div className="relative z-10 text-center px-4 sm:px-6 pt-10 sm:pt-14">
+          <span className="inline-block px-4 sm:px-6 py-1.5 sm:py-2 mb-3 sm:mb-4 border border-cappuccino/40 rounded-full text-cappuccino text-[9px] sm:text-[10px] font-bold tracking-[0.25em] sm:tracking-[0.3em] uppercase backdrop-blur-md bg-white/5 shadow-lg">
             Photo Gallery
           </span>
-          <h1 className="text-3xl sm:text-6xl md:text-7xl font-serif text-white mb-3 sm:mb-4 italic leading-tight">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-serif text-white mb-2.5 sm:mb-3 italic leading-tight">
             Action Gallery
           </h1>
           <p className="text-white/70 max-w-xl mx-auto text-xs sm:text-sm md:text-base font-light px-2">
@@ -240,13 +240,13 @@ export default function GalleryPage() {
           {/* Compact 5 Categories: 3 on Top, 2 on Bottom */}
           <div className="flex flex-col items-center gap-2 sm:gap-2.5 mb-8 sm:mb-10 max-w-xl mx-auto px-2">
             {/* Top Row: 3 Categories */}
-            <div className="flex flex-wrap justify-center items-center gap-1.5 sm:gap-3">
+            <div className="flex flex-wrap justify-center items-center gap-1.5 sm:gap-2.5">
               {["All", "Fitness", "Yoga"].map((cat) => (
                 <button
                   key={cat}
                   onClick={() => handleCategoryChange(cat)}
                   className={cn(
-                    "relative py-2 px-3 sm:px-5 rounded-full text-[10px] sm:text-xs font-bold tracking-wider uppercase transition-all duration-300 overflow-hidden shadow-sm whitespace-nowrap",
+                    "relative px-3 sm:px-4 py-1.5 rounded-full text-[10px] sm:text-xs font-bold tracking-wider uppercase transition-all duration-300 overflow-hidden shadow-sm whitespace-nowrap",
                     activeCategory === cat
                       ? "bg-coffee-dark text-white border border-cappuccino shadow-md scale-105"
                       : "text-coffee-dark/70 hover:text-coffee-dark bg-white/80 hover:bg-white border border-cream hover:border-cappuccino/40"
@@ -258,13 +258,13 @@ export default function GalleryPage() {
             </div>
 
             {/* Bottom Row: 2 Categories */}
-            <div className="flex flex-wrap justify-center items-center gap-1.5 sm:gap-3">
+            <div className="flex flex-wrap justify-center items-center gap-1.5 sm:gap-2.5">
               {["Martial Arts", "Silambam"].map((cat) => (
                 <button
                   key={cat}
                   onClick={() => handleCategoryChange(cat)}
                   className={cn(
-                    "relative py-2 px-3 sm:px-5 rounded-full text-[10px] sm:text-xs font-bold tracking-wider uppercase transition-all duration-300 overflow-hidden shadow-sm whitespace-nowrap",
+                    "relative px-3 sm:px-4 py-1.5 rounded-full text-[10px] sm:text-xs font-bold tracking-wider uppercase transition-all duration-300 overflow-hidden shadow-sm whitespace-nowrap",
                     activeCategory === cat
                       ? "bg-coffee-dark text-white border border-cappuccino shadow-md scale-105"
                       : "text-coffee-dark/70 hover:text-coffee-dark bg-white/80 hover:bg-white border border-cream hover:border-cappuccino/40"
@@ -295,16 +295,16 @@ export default function GalleryPage() {
                   onClick={() => setActiveItem(item)}
                   whileHover={{ y: -6, scale: 1.02 }}
                   transition={{ duration: 0.3 }}
-                  className="w-[88vw] sm:w-[50vw] md:w-[380px] lg:w-[400px] shrink-0 bg-white rounded-2xl sm:rounded-[2rem] overflow-hidden shadow-premium hover:shadow-[0_20px_50px_rgba(200,149,95,0.25)] border border-cream hover:border-cappuccino/40 transition-all duration-500 flex flex-col group cursor-pointer select-none"
+                  className="w-[85vw] sm:w-[45vw] md:w-[320px] lg:w-[350px] shrink-0 bg-white rounded-2xl sm:rounded-[2rem] overflow-hidden shadow-premium hover:shadow-[0_20px_50px_rgba(200,149,95,0.25)] border border-cream hover:border-cappuccino/40 transition-all duration-500 flex flex-col group cursor-pointer select-none"
                 >
                   {/* Uniform Top Image Poster - Same Size */}
-                  <div className="relative aspect-[16/10] overflow-hidden bg-coffee-dark">
+                  <div className="relative aspect-[4/3] overflow-hidden bg-coffee-dark">
                     <Image
                       src={item.image}
                       alt={item.title}
                       fill
                       quality={90}
-                      sizes="(max-width: 640px) 88vw, (max-width: 1024px) 50vw, 400px"
+                      sizes="(max-width: 640px) 85vw, (max-width: 1024px) 45vw, 350px"
                       className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-coffee-dark/70 via-transparent to-transparent opacity-60 group-hover:opacity-85 transition-opacity" />
@@ -321,20 +321,20 @@ export default function GalleryPage() {
                   </div>
 
                   {/* Uniform Body Details */}
-                  <div className="p-4 sm:p-6 flex-1 flex flex-col justify-between">
+                  <div className="p-3.5 sm:p-4 flex-1 flex flex-col justify-between">
                     <div>
                       <span className="text-[9px] sm:text-[10px] uppercase tracking-[0.25em] sm:tracking-[0.3em] text-cappuccino font-bold block mb-1">
                         {item.category} Session
                       </span>
-                      <h3 className="text-lg sm:text-xl font-serif text-coffee-dark font-bold mb-1.5 sm:mb-2 group-hover:text-cappuccino transition-colors leading-snug">
+                      <h3 className="text-base sm:text-lg font-serif text-coffee-dark font-bold mb-1 sm:mb-1.5 group-hover:text-cappuccino transition-colors leading-snug">
                         {item.title}
                       </h3>
-                      <p className="text-coffee-dark/70 text-xs md:text-sm font-light leading-relaxed line-clamp-2 mb-3 sm:mb-4">
+                      <p className="text-coffee-dark/70 text-xs font-light leading-relaxed line-clamp-2 mb-3">
                         {item.description}
                       </p>
                     </div>
 
-                    <div className="pt-3 border-t border-cream flex items-center justify-between text-xs">
+                    <div className="pt-2.5 border-t border-cream flex items-center justify-between text-xs">
                       <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-cappuccino">
                         View Full Photo
                       </span>
@@ -382,21 +382,21 @@ export default function GalleryPage() {
               exit={{ opacity: 0, scale: 0.95, y: 10 }}
               transition={{ duration: 0.2 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-[#241A1A]/95 border border-cappuccino/40 backdrop-blur-xl rounded-2xl sm:rounded-3xl overflow-hidden w-[95vw] sm:max-w-lg max-h-[90vh] overflow-y-auto shadow-[0_25px_60px_rgba(0,0,0,0.5)] relative flex flex-col"
+              className="bg-[#241A1A]/95 border border-cappuccino/40 backdrop-blur-xl rounded-2xl w-[92vw] sm:max-w-md max-h-[85vh] p-4 sm:p-5 overflow-y-auto shadow-[0_25px_60px_rgba(0,0,0,0.5)] relative flex flex-col"
             >
               {/* Compact Close Button (Finger-friendly) */}
               <button
                 type="button"
                 onClick={() => setActiveItem(null)}
-                className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3 z-20 w-10 h-10 sm:w-9 sm:h-9 rounded-full bg-black/70 hover:bg-cappuccino active:scale-95 text-white hover:text-coffee-dark transition-all flex items-center justify-center shadow-lg border border-white/10"
+                className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3 z-20 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/70 hover:bg-cappuccino active:scale-95 text-white hover:text-coffee-dark transition-all flex items-center justify-center shadow-lg border border-white/10"
                 title="Close"
                 aria-label="Close lightbox"
               >
-                <X size={18} />
+                <X size={16} />
               </button>
 
               {/* Compact High-Quality Image Container with Warm Glow */}
-              <div className="relative aspect-[4/3] w-full max-h-[260px] sm:max-h-[380px] bg-[#160E0E] flex items-center justify-center overflow-hidden shrink-0">
+              <div className="relative aspect-[4/3] w-full max-h-[240px] sm:max-h-[300px] bg-[#160E0E] rounded-xl flex items-center justify-center overflow-hidden shrink-0">
                 {/* Warm ambient backdrop blur with cappuccino glow */}
                 <div className="absolute inset-0 bg-radial from-cappuccino/30 via-cappuccino/10 to-transparent blur-2xl pointer-events-none" />
                 <Image
@@ -411,20 +411,20 @@ export default function GalleryPage() {
                   alt={activeItem.title}
                   fill
                   quality={98}
-                  sizes="(max-width: 640px) 95vw, 512px"
+                  sizes="(max-width: 640px) 92vw, 448px"
                   className="object-contain relative z-10 p-1 sm:p-1.5 drop-shadow-[0_10px_25px_rgba(0,0,0,0.5)]"
                 />
               </div>
 
               {/* Compact Content */}
-              <div className="p-4 sm:p-6 text-white bg-transparent">
-                <div className="flex items-center gap-1.5 mb-1.5 text-cappuccino">
+              <div className="pt-3.5 sm:pt-4 text-white bg-transparent">
+                <div className="flex items-center gap-1.5 mb-1 text-cappuccino">
                   <Sparkles size={13} />
                   <span className="text-[9px] sm:text-[10px] uppercase tracking-[0.25em] font-bold">
                     {activeItem.category}
                   </span>
                 </div>
-                <h2 className="text-base sm:text-xl font-serif font-bold text-white mb-1.5 sm:mb-2 leading-snug">
+                <h2 className="text-base sm:text-lg font-serif font-bold text-white mb-1 leading-snug">
                   {activeItem.title}
                 </h2>
                 <p className="text-white/75 text-xs sm:text-sm leading-relaxed font-light">
