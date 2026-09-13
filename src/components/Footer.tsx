@@ -103,18 +103,8 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto pt-5 sm:pt-6 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-3 sm:gap-4 text-white/70 text-[11px] sm:text-xs font-medium tracking-wider relative z-10 text-center md:text-left">
+      <div className="max-w-7xl mx-auto pt-5 sm:pt-6 border-t border-white/10 flex items-center justify-center text-white/70 text-[11px] sm:text-xs font-medium tracking-wider relative z-10 text-center">
         <p className="text-white/80">© {new Date().getFullYear()} Vajra Fitness Arts. All rights reserved.</p>
-        <div className="flex gap-5 sm:gap-6">
-          <Link href="/privacy" className="group relative hover:text-cappuccino transition-colors duration-300">
-            <span className="relative z-10">Privacy Guidelines</span>
-            <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-cappuccino transition-all duration-300 group-hover:w-full shadow-[0_0_8px_rgba(200,149,95,0.8)]" />
-          </Link>
-          <Link href="/terms" className="group relative hover:text-cappuccino transition-colors duration-300">
-            <span className="relative z-10">Terms &amp; Conditions</span>
-            <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-cappuccino transition-all duration-300 group-hover:w-full shadow-[0_0_8px_rgba(200,149,95,0.8)]" />
-          </Link>
-        </div>
       </div>
     </footer>
   );
