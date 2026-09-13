@@ -8,9 +8,9 @@ export default function Footer() {
       {/* Decorative background circle */}
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-cappuccino/5 rounded-full translate-y-1/2 translate-x-1/2 pointer-events-none" />
       
-      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-10 sm:gap-y-12 gap-x-6 md:gap-12 mb-12 sm:mb-16 md:mb-20 relative z-10">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-y-10 sm:gap-y-12 gap-x-8 md:gap-16 mb-12 sm:mb-16 md:mb-20 relative z-10">
         {/* Brand Section */}
-        <div className="col-span-1 sm:col-span-2 md:col-span-1">
+        <div className="max-w-md">
           <Link href="/" className="flex items-center gap-3 sm:gap-4 mb-5 sm:mb-6 group">
             <div className="relative w-12 h-12 sm:w-14 sm:h-14 overflow-hidden rounded-full border border-cappuccino/40 shadow-[0_0_15px_rgba(200,160,120,0.3)] flex items-center justify-center bg-white/5 group-hover:bg-cappuccino/10 transition-colors duration-500 shrink-0">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -59,21 +59,8 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Quick Links */}
-        <div className="col-span-1">
-          <h4 className="font-serif text-lg md:text-xl font-bold mb-4 sm:mb-6 md:mb-8 italic text-cappuccino">Disciplines &amp; Pages</h4>
-          <ul className="space-y-3 sm:space-y-4 text-white/60 text-sm md:text-base">
-            <li><Link href="/" className="hover:text-cappuccino transition-colors flex items-center gap-3 group py-0.5"><div className="w-1.5 h-1.5 rounded-full bg-cappuccino/30 group-hover:bg-cappuccino transition-all shrink-0" /> Home</Link></li>
-            <li><Link href="/about" className="hover:text-cappuccino transition-colors flex items-center gap-3 group py-0.5"><div className="w-1.5 h-1.5 rounded-full bg-cappuccino/30 group-hover:bg-cappuccino transition-all shrink-0" /> About Our Academy</Link></li>
-            <li><Link href="/course" className="hover:text-cappuccino transition-colors flex items-center gap-3 group py-0.5"><div className="w-1.5 h-1.5 rounded-full bg-cappuccino/30 group-hover:bg-cappuccino transition-all shrink-0" /> Training Courses</Link></li>
-            <li><Link href="/gallery" className="hover:text-cappuccino transition-colors flex items-center gap-3 group py-0.5"><div className="w-1.5 h-1.5 rounded-full bg-cappuccino/30 group-hover:bg-cappuccino transition-all shrink-0" /> Action Gallery</Link></li>
-            <li><Link href="/portal" className="hover:text-cappuccino transition-colors flex items-center gap-3 group py-0.5"><div className="w-1.5 h-1.5 rounded-full bg-cappuccino/30 group-hover:bg-cappuccino transition-all shrink-0" /> Online Student Portal</Link></li>
-            <li><Link href="/contact" className="hover:text-cappuccino transition-colors flex items-center gap-3 group py-0.5"><div className="w-1.5 h-1.5 rounded-full bg-cappuccino/30 group-hover:bg-cappuccino transition-all shrink-0" /> Contact &amp; Admissions</Link></li>
-          </ul>
-        </div>
-
         {/* Contact Info */}
-        <div className="col-span-1">
+        <div className="max-w-md md:ml-auto">
           <h4 className="font-serif text-lg md:text-xl font-bold mb-4 sm:mb-6 md:mb-8 italic text-cappuccino">Training Center</h4>
           <ul className="space-y-4 sm:space-y-6">
             <li>
