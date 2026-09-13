@@ -39,6 +39,23 @@ export default function PortalNavbar({
   onProfileClick
 }: PortalNavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 40);
+    };
+
+    // Check initial scroll position immediately on mount
+    handleScroll();
+    const timeoutId = setTimeout(handleScroll, 100);
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      clearTimeout(timeoutId);
+    };
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -62,11 +79,28 @@ export default function PortalNavbar({
   }, [isOpen]);
 
   return (
-    <nav className="fixed left-0 right-0 z-50 transition-all duration-700 px-3 xs:px-4 sm:px-6 md:px-12 pointer-events-none flex justify-center top-3 sm:top-6">
-      <div className="transition-all duration-700 pointer-events-auto flex items-center justify-between bg-background/90 backdrop-blur-2xl py-3 px-4 sm:px-6 md:px-8 rounded-full shadow-premium-hover border border-cappuccino/20 min-w-0 w-[95%] sm:w-auto md:min-w-[700px] lg:min-w-[860px] md:justify-around gap-4 sm:gap-6">
+    <nav
+      className={cn(
+        "fixed left-0 right-0 z-50 transition-all duration-700 px-3 xs:px-4 sm:px-6 md:px-12 pointer-events-none flex justify-center",
+        scrolled ? "top-3 sm:top-6" : "top-0"
+      )}
+    >
+      <div
+        className={cn(
+          "transition-all duration-700 pointer-events-auto flex items-center justify-between",
+          scrolled
+            ? "bg-background/90 backdrop-blur-2xl py-3 px-4 sm:px-6 md:px-8 rounded-full shadow-premium-hover border border-cappuccino/20 min-w-0 w-[95%] sm:w-auto md:min-w-[700px] lg:min-w-[860px] md:justify-around gap-4 sm:gap-6"
+            : "bg-transparent py-4 sm:py-6 md:py-7 px-3 xs:px-4 sm:px-6 md:px-8 w-full max-w-7xl border-b border-coffee-dark/10"
+        )}
+      >
         {/* Brand Logo - EXACTLY matching main website navbar */}
         <Link href="/" className="flex items-center gap-2.5 sm:gap-4 group shrink-0">
-          <div className="relative overflow-hidden rounded-full border border-cappuccino/40 group-hover:scale-105 transition-all duration-700 shadow-[0_0_15px_rgba(200,160,120,0.35)] flex items-center justify-center bg-coffee-dark shrink-0 w-9 h-9 sm:w-10 sm:h-10">
+          <div
+            className={cn(
+              "relative overflow-hidden rounded-full border border-cappuccino/40 group-hover:scale-105 transition-all duration-700 shadow-[0_0_15px_rgba(200,160,120,0.35)] flex items-center justify-center bg-coffee-dark shrink-0",
+              scrolled ? "w-9 h-9 sm:w-10 sm:h-10" : "w-10 h-10 sm:w-12 sm:h-12"
+            )}
+          >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/images/logo_gold.jpeg"
@@ -75,17 +109,32 @@ export default function PortalNavbar({
             />
           </div>
           <div className="flex flex-col">
-            <span className="font-serif font-bold tracking-tight transition-all duration-700 leading-none text-sm sm:text-base md:text-lg text-coffee-dark">
+            <span
+              className={cn(
+                "font-serif font-bold tracking-tight transition-all duration-700 leading-none text-coffee-dark",
+                scrolled ? "text-sm sm:text-base md:text-lg" : "text-base sm:text-lg md:text-xl"
+              )}
+            >
               Vajra
             </span>
-            <span className="font-sans text-[7px] md:text-[8px] uppercase tracking-[0.25em] sm:tracking-[0.3em] font-bold transition-all duration-700 mt-1 text-cappuccino">
+            <span
+              className={cn(
+                "font-sans uppercase font-bold transition-all duration-700 mt-1 text-cappuccino",
+                scrolled ? "text-[7px] md:text-[8px] tracking-[0.25em] sm:tracking-[0.3em]" : "text-[8px] md:text-[9px] tracking-[0.3em]"
+              )}
+            >
               Fitness Arts
             </span>
           </div>
         </Link>
 
         {/* Desktop Navigation Links - EXACTLY matching main website nav link typography & golden underline */}
-        <div className="hidden md:flex items-center gap-6 lg:gap-8">
+        <div
+          className={cn(
+            "hidden md:flex items-center transition-all duration-500",
+            scrolled ? "gap-6 lg:gap-8" : "gap-7 lg:gap-9"
+          )}
+        >
           {navItems.map((item) => {
             const isActive = activeNavId === item.id;
             return (
@@ -124,31 +173,43 @@ export default function PortalNavbar({
           })}
         </div>
 
-        {/* Right Section: User snippet + Logout Button */}
         {/* Right Section: User snippet (Interactive Profile Button) + Logout Button */}
         <div className="flex items-center gap-2.5 sm:gap-4 shrink-0">
           {/* Desktop/Tablet Clickable Avatar & User Badge */}
           <button
             type="button"
             onClick={onProfileClick}
-            className="hidden sm:flex items-center gap-2.5 pr-2.5 border-r border-coffee-dark/10 group cursor-pointer text-left hover:opacity-95 transition-all rounded-full py-0.5 pl-0.5 focus:outline-none"
-            title="Click to view Admin Profile & Change Password"
+            className={cn(
+              "hidden sm:flex items-center gap-2.5 pr-2.5 border-r border-coffee-dark/10 group cursor-pointer text-left hover:opacity-95 transition-all rounded-full py-0.5 pl-0.5 focus:outline-none",
+              scrolled ? "" : "py-1"
+            )}
+            title={role === "admin" ? "Click to view Admin Profile & Change Password" : "View Profile"}
           >
-            <div className="w-8 h-8 rounded-full border border-cappuccino/50 bg-coffee-dark text-cappuccino font-serif font-bold text-xs flex items-center justify-center shadow-sm group-hover:scale-105 group-hover:border-cappuccino group-hover:shadow-[0_0_15px_rgba(200,149,95,0.45)] transition-all relative">
+            <div
+              className={cn(
+                "rounded-full border border-cappuccino/50 bg-coffee-dark text-cappuccino font-serif font-bold flex items-center justify-center shadow-sm group-hover:scale-105 group-hover:border-cappuccino group-hover:shadow-[0_0_15px_rgba(200,149,95,0.45)] transition-all relative",
+                scrolled ? "w-8 h-8 text-xs" : "w-9 h-9 text-sm"
+              )}
+            >
               <span>{user.avatarLetter || user.name.charAt(0).toUpperCase()}</span>
               <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-500 border border-background" />
             </div>
             <div className="hidden lg:block text-left leading-tight">
-              <p className="font-serif font-bold text-xs text-coffee-dark truncate max-w-[110px] group-hover:text-cappuccino transition-colors">
+              <p
+                className={cn(
+                  "font-serif font-bold text-coffee-dark truncate max-w-[120px] group-hover:text-cappuccino transition-colors",
+                  scrolled ? "text-xs" : "text-sm"
+                )}
+              >
                 {user.name}
               </p>
-              <p className="text-[7.5px] uppercase tracking-wider text-cappuccino font-bold truncate max-w-[110px]">
+              <p className="text-[7.5px] uppercase tracking-wider text-cappuccino font-bold truncate max-w-[120px]">
                 {user.badgeCode || user.roleName}
               </p>
             </div>
           </button>
 
-          {/* Mobile Clickable Avatar Button directly in the pill navbar */}
+          {/* Mobile Clickable Avatar Button directly in navbar */}
           {onProfileClick && (
             <button
               type="button"
@@ -164,7 +225,10 @@ export default function PortalNavbar({
           <button
             type="button"
             onClick={onLogout}
-            className="px-3.5 py-1.5 rounded-full bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-sans text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-300 shadow-sm flex items-center gap-1.5 cursor-pointer active:scale-95"
+            className={cn(
+              "rounded-full bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-sans text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-300 shadow-sm flex items-center gap-1.5 cursor-pointer active:scale-95",
+              scrolled ? "px-3.5 py-1.5" : "px-4 py-2"
+            )}
             title="Log Out"
           >
             <LogOut size={12} />
