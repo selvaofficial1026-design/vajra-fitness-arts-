@@ -18,6 +18,9 @@ import {
   Clock,
   Award,
   Play,
+  Pause,
+  ChevronLeft,
+  ChevronRight,
   Calendar,
   Phone,
   MapPin,
@@ -31,6 +34,7 @@ import { cn } from "@/lib/utils";
 import PortalNavbar, { PortalNavItem } from "@/components/portal/PortalNavbar";
 import PortalLoadingScreen from "@/components/portal/PortalLoadingScreen";
 import StudentProfileModal from "@/components/portal/StudentProfileModal";
+import VideoModal from "@/components/VideoModal";
 
 export default function StudentPortalPage() {
   const router = useRouter();
@@ -39,10 +43,14 @@ export default function StudentPortalPage() {
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [pageLoading, setPageLoading] = useState(true);
 
-  // Video State
+  // Video State & Compact Auto-Scroll Marquee
   const [videos, setVideos] = useState<VideoClass[]>([]);
-  const [selectedVideo, setSelectedVideo] = useState<VideoClass | null>(null);
   const [videosLoading, setVideosLoading] = useState(false);
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+  const [activeVideoId, setActiveVideoId] = useState<string | null>(null);
+  const [isVideoSliderHovered, setIsVideoSliderHovered] = useState(false);
+  const [isVideoPaused, setIsVideoPaused] = useState(false);
+  const videoSliderRef = useRef<HTMLDivElement>(null);
 
   // Meet State
   const [meetings, setMeetings] = useState<ClassMeeting[]>([]);
@@ -105,9 +113,6 @@ export default function StudentPortalPage() {
       const data = await res.json();
       if (data.success) {
         setVideos(data.videos || []);
-        if (data.videos?.length > 0) {
-          setSelectedVideo(data.videos[0]);
-        }
       }
     } catch (err) {
       console.error(err);
@@ -117,6 +122,41 @@ export default function StudentPortalPage() {
 
     // 3. Fetch Messages
     fetchMessages(std.id);
+  };
+
+  // Auto-scroll marquee for compact videos carousel (identical continuous smooth logic as main website)
+  useEffect(() => {
+    if (
+      activeTab !== "videos" ||
+      isVideoPaused ||
+      isVideoSliderHovered ||
+      isVideoModalOpen ||
+      videos.length === 0
+    ) {
+      return;
+    }
+
+    const interval = setInterval(() => {
+      if (videoSliderRef.current) {
+        videoSliderRef.current.scrollLeft += 1;
+        if (videoSliderRef.current.scrollLeft >= videoSliderRef.current.scrollWidth / 2) {
+          videoSliderRef.current.scrollLeft = 0;
+        }
+      }
+    }, 12);
+
+    return () => clearInterval(interval);
+  }, [activeTab, isVideoPaused, isVideoSliderHovered, isVideoModalOpen, videos.length]);
+
+  // Manual scroll helper for video carousel buttons
+  const handleScrollVideos = (direction: "left" | "right") => {
+    if (videoSliderRef.current) {
+      const scrollAmount = 320;
+      videoSliderRef.current.scrollBy({
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth"
+      });
+    }
   };
 
   // Fetch chat messages
@@ -250,6 +290,13 @@ export default function StudentPortalPage() {
         onClose={() => setIsProfileModalOpen(false)}
         student={student}
         onLogout={handleLogout}
+      />
+
+      {/* YouTube Video Player Modal (Triggered by clicking any compact video card) */}
+      <VideoModal
+        isOpen={isVideoModalOpen}
+        onClose={() => setIsVideoModalOpen(false)}
+        videoId={activeVideoId}
       />
 
       {/* Dedicated Portal Floating Navbar (Matching Website Navbar Style) */}
@@ -450,7 +497,7 @@ export default function StudentPortalPage() {
               </motion.div>
             )}
 
-            {/* 2. VIDEOS FETCH FROM YOUTUBE (OPEN CANVAS - NO CHUNKY BOXES) */}
+            {/* 2. COMPACT AUTO-SCROLLING VIDEO VAULT WITH YOUTUBE MODAL (MATCHING MAIN WEBSITE) */}
             {activeTab === "videos" && (
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
@@ -458,8 +505,71 @@ export default function StudentPortalPage() {
                 transition={{ duration: 0.3 }}
                 className="space-y-6"
               >
+                {/* Header & Controls Bar */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-coffee-dark/10">
+                  <div className="space-y-1 min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="px-2.5 py-0.5 rounded-full bg-cappuccino/20 border border-cappuccino/40 text-coffee-dark text-[10px] font-bold uppercase tracking-wider inline-flex items-center gap-1.5 shadow-2xs">
+                        <Sparkles size={11} className="text-cappuccino shrink-0" />
+                        <span>{student.course} Vault</span>
+                      </span>
+                      <span className="text-[11px] font-mono text-coffee-dark/60">
+                        {videos.length} {videos.length === 1 ? "Lesson" : "Recorded Lessons"}
+                      </span>
+                    </div>
+                    <h3 className="text-xl sm:text-2xl md:text-3xl font-serif font-bold text-coffee-dark break-words tracking-tight">
+                      Technique Masterclasses
+                    </h3>
+                    <p className="text-xs sm:text-sm text-coffee-dark/65 font-light leading-relaxed">
+                      Continuous auto-scrolling curriculum. Tap any lesson to stream in HD YouTube popup player.
+                    </p>
+                  </div>
+
+                  {videos.length > 0 && (
+                    <div className="flex items-center gap-2 shrink-0 self-start sm:self-center">
+                      <button
+                        type="button"
+                        onClick={() => setIsVideoPaused((prev) => !prev)}
+                        aria-label={isVideoPaused ? "Resume auto-scrolling" : "Pause auto-scrolling"}
+                        className="h-9 px-3.5 rounded-full bg-white/80 hover:bg-white border border-coffee-dark/15 text-coffee-dark text-xs font-semibold flex items-center gap-1.5 transition-all shadow-2xs cursor-pointer active:scale-95 select-none"
+                      >
+                        {isVideoPaused ? (
+                          <>
+                            <Play size={12} fill="currentColor" className="text-cappuccino shrink-0" />
+                            <span>Resume</span>
+                          </>
+                        ) : (
+                          <>
+                            <Pause size={12} className="text-coffee-dark shrink-0" />
+                            <span>Pause</span>
+                          </>
+                        )}
+                      </button>
+
+                      <div className="flex items-center gap-1">
+                        <button
+                          type="button"
+                          onClick={() => handleScrollVideos("left")}
+                          aria-label="Scroll videos left"
+                          className="w-9 h-9 rounded-full bg-white/80 hover:bg-white border border-coffee-dark/15 text-coffee-dark flex items-center justify-center transition-all shadow-2xs cursor-pointer active:scale-90 select-none"
+                        >
+                          <ChevronLeft size={16} />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleScrollVideos("right")}
+                          aria-label="Scroll videos right"
+                          className="w-9 h-9 rounded-full bg-white/80 hover:bg-white border border-coffee-dark/15 text-coffee-dark flex items-center justify-center transition-all shadow-2xs cursor-pointer active:scale-90 select-none"
+                        >
+                          <ChevronRight size={16} />
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
                 {videos.length === 0 ? (
-                  <div className="py-10 sm:py-16 px-4 text-center space-y-2.5 max-w-md mx-auto">
+                  <div className="py-12 sm:py-16 px-4 text-center space-y-2.5 max-w-md mx-auto">
                     <VideoOff size={36} className="mx-auto text-coffee-dark/40 shrink-0" />
                     <h3 className="text-base sm:text-lg font-serif font-bold text-coffee-dark break-words">
                       No Training Videos Yet
@@ -469,95 +579,114 @@ export default function StudentPortalPage() {
                     </p>
                   </div>
                 ) : (
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
-                    {/* Main Video Player */}
-                    <div className="lg:col-span-8 space-y-4 w-full min-w-0">
-                      {selectedVideo && (
-                        <div className="space-y-4">
-                          <div className="relative w-full aspect-video rounded-xl sm:rounded-2xl overflow-hidden bg-black shadow-lg border border-coffee-dark/15">
-                            <iframe
-                              src={`https://www.youtube-nocookie.com/embed/${selectedVideo.youtubeId}?rel=0&modestbranding=1`}
-                              title={selectedVideo.title}
-                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                              allowFullScreen
-                              className="absolute inset-0 w-full h-full border-0"
-                            />
-                          </div>
+                  <div
+                    className="relative group/slider w-full max-w-full overflow-hidden py-1"
+                    onMouseEnter={() => setIsVideoSliderHovered(true)}
+                    onMouseLeave={() => setIsVideoSliderHovered(false)}
+                    onTouchStart={() => setIsVideoSliderHovered(true)}
+                    onTouchEnd={() => setIsVideoSliderHovered(false)}
+                  >
+                    {/* Gradient Fade Edges for Luxury Marquee Feel */}
+                    <div className="pointer-events-none hidden sm:block absolute top-0 bottom-0 left-0 w-8 md:w-12 bg-gradient-to-r from-[#FAF7F2] to-transparent z-10" />
+                    <div className="pointer-events-none hidden sm:block absolute top-0 bottom-0 right-0 w-8 md:w-12 bg-gradient-to-l from-[#FAF7F2] to-transparent z-10" />
 
-                          <div className="space-y-2 pt-1 min-w-0">
-                            <div className="flex items-center gap-2 flex-wrap">
-                              <span className="px-2.5 py-0.5 rounded-full bg-cappuccino text-coffee-dark text-[9px] font-bold uppercase tracking-wider shrink-0">
-                                {selectedVideo.category}
-                              </span>
-                              <span className="text-[11px] text-coffee-dark/60 font-mono break-words">
-                                Discipline: <strong className="text-coffee-dark">{selectedVideo.course}</strong>
-                              </span>
+                    {/* Continuous Marquee Track */}
+                    <div
+                      ref={videoSliderRef}
+                      className="flex gap-4 sm:gap-6 overflow-x-auto [&::-webkit-scrollbar]:hidden touch-pan-x py-2 px-1"
+                      style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+                    >
+                      {(videos.length < 4
+                        ? [...videos, ...videos, ...videos, ...videos]
+                        : [...videos, ...videos]
+                      ).map((vid, index) => {
+                        const uniqueKey = `${vid.id}-${index}`;
+                        return (
+                          <div
+                            key={uniqueKey}
+                            role="button"
+                            tabIndex={0}
+                            onClick={() => {
+                              setActiveVideoId(vid.youtubeId);
+                              setIsVideoModalOpen(true);
+                            }}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter" || e.key === " ") {
+                                e.preventDefault();
+                                setActiveVideoId(vid.youtubeId);
+                                setIsVideoModalOpen(true);
+                              }
+                            }}
+                            className="group/card relative w-[74vw] xs:w-[68vw] sm:w-[280px] md:w-[310px] shrink-0 bg-white rounded-2xl overflow-hidden border border-coffee-dark/10 hover:border-cappuccino/60 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col cursor-pointer select-none active:scale-[0.98]"
+                          >
+                            {/* Poster / Thumbnail Area */}
+                            <div className="relative aspect-[16/10] w-full overflow-hidden bg-coffee-dark">
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img
+                                src={`https://img.youtube.com/vi/${vid.youtubeId}/hqdefault.jpg`}
+                                alt={vid.title}
+                                className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover/card:scale-108 pointer-events-none"
+                                loading="lazy"
+                              />
+
+                              {/* Vignette Overlay */}
+                              <div className="absolute inset-0 bg-gradient-to-t from-coffee-dark/95 via-coffee-dark/25 to-transparent opacity-85 group-hover/card:opacity-100 transition-opacity duration-300" />
+
+                              {/* Category Badge */}
+                              <div className="absolute top-2.5 left-2.5 z-10">
+                                <span className="px-2.5 py-0.5 rounded-full bg-coffee-dark/85 backdrop-blur-md text-cappuccino border border-cappuccino/30 text-[9px] font-bold uppercase tracking-wider shadow-sm">
+                                  {vid.category || "Technique"}
+                                </span>
+                              </div>
+
+                              {/* Course Tag */}
+                              <div className="absolute top-2.5 right-2.5 z-10">
+                                <span className="px-2 py-0.5 rounded-full bg-white/90 backdrop-blur-md text-coffee-dark text-[9px] font-semibold shadow-sm truncate max-w-[100px] block">
+                                  {vid.course}
+                                </span>
+                              </div>
+
+                              {/* Centered Glowing Play Button Overlay */}
+                              <div className="absolute inset-0 flex items-center justify-center">
+                                <div className="w-12 h-12 rounded-full bg-cappuccino/90 backdrop-blur-md text-white flex items-center justify-center shadow-[0_0_20px_rgba(200,149,95,0.6)] group-hover/card:scale-110 group-hover/card:bg-white group-hover/card:text-coffee-dark transition-all duration-300">
+                                  <Play size={18} fill="currentColor" className="ml-0.5" />
+                                </div>
+                              </div>
                             </div>
 
-                            <h3 className="text-lg sm:text-xl md:text-2xl font-serif font-bold text-coffee-dark break-words tracking-tight leading-snug">
-                              {selectedVideo.title}
-                            </h3>
-
-                            <p className="text-xs sm:text-sm text-coffee-dark/70 leading-relaxed font-light break-words">
-                              {selectedVideo.description ||
-                                "Guided training video provided for regular practice and technique perfection."}
-                            </p>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Playlist Sidebar - Open Canvas */}
-                    <div className="lg:col-span-4 space-y-3 w-full min-w-0">
-                      <div className="flex items-center justify-between gap-2 pb-2.5 sm:pb-3 border-b border-coffee-dark/10">
-                        <h4 className="font-serif text-sm font-bold text-coffee-dark truncate">
-                          {student.course} Library ({videos.length})
-                        </h4>
-                        <span className="text-[10px] font-mono text-cappuccino font-bold uppercase shrink-0">
-                          Official Drills
-                        </span>
-                      </div>
-
-                      <div className="space-y-2 max-h-[300px] sm:max-h-[400px] lg:max-h-[500px] overflow-y-auto pr-1 overscroll-contain">
-                        {videos.map((vid) => {
-                          const isSelected = selectedVideo?.id === vid.id;
-                          return (
-                            <div
-                              key={vid.id}
-                              role="button"
-                              tabIndex={0}
-                              onClick={() => setSelectedVideo(vid)}
-                              onKeyDown={(e) => {
-                                if (e.key === "Enter" || e.key === " ") {
-                                  e.preventDefault();
-                                  setSelectedVideo(vid);
-                                }
-                              }}
-                              className={`min-h-[44px] p-2.5 rounded-2xl border transition-all cursor-pointer flex gap-3 items-center w-full text-left select-none active:scale-[0.99] ${
-                                isSelected
-                                  ? "bg-coffee-dark text-white border-cappuccino/60 shadow-md"
-                                  : "bg-white/60 hover:bg-white text-coffee-dark border-coffee-dark/10 hover:border-cappuccino/40"
-                              }`}
-                            >
-                              <div className="w-10 h-10 rounded-xl bg-cappuccino/20 flex items-center justify-center shrink-0 text-cappuccino">
-                                <Play size={16} fill="currentColor" className="shrink-0 ml-0.5" />
-                              </div>
-                              <div className="min-w-0 flex-1 py-0.5">
-                                <p className="font-serif font-bold text-xs line-clamp-2 leading-tight break-words">
+                            {/* Card Body */}
+                            <div className="p-3.5 sm:p-4 flex flex-col justify-between flex-1 gap-2.5 bg-white">
+                              <div className="space-y-1">
+                                <h4 className="font-serif font-bold text-sm sm:text-base text-coffee-dark group-hover/card:text-cappuccino line-clamp-2 transition-colors leading-snug break-words">
                                   {vid.title}
+                                </h4>
+                                <p className="text-[11px] sm:text-xs text-coffee-dark/65 line-clamp-2 leading-relaxed break-words font-light">
+                                  {vid.description || "Master discipline drills and posture sequences with step-by-step video guidance."}
                                 </p>
-                                <span
-                                  className={`text-[9px] uppercase tracking-wider font-semibold block mt-0.5 truncate ${
-                                    isSelected ? "text-cappuccino" : "text-coffee-dark/50"
-                                  }`}
-                                >
-                                  {vid.category}
+                              </div>
+
+                              {/* Card Action Footer */}
+                              <div className="flex items-center justify-between pt-2 border-t border-coffee-dark/10 text-[11px] font-semibold text-cappuccino">
+                                <span className="group-hover/card:translate-x-0.5 transition-transform flex items-center gap-1">
+                                  <span>Stream Lesson</span>
+                                  <Play size={10} fill="currentColor" />
+                                </span>
+                                <span className="text-[10px] text-coffee-dark/40 font-mono">
+                                  YouTube HD
                                 </span>
                               </div>
                             </div>
-                          );
-                        })}
-                      </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    {/* Bottom Helper Bar */}
+                    <div className="pt-2.5 flex items-center justify-between text-[11px] text-coffee-dark/55 px-1 font-medium">
+                      <span>💡 Touch or hover cards to pause auto-scroll</span>
+                      <span className="hidden sm:inline font-mono text-[10px] text-coffee-dark/45 uppercase tracking-wider">
+                        Continuous Loop
+                      </span>
                     </div>
                   </div>
                 )}

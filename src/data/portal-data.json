@@ -20,14 +20,54 @@
   "meetings": [],
   "videos": [
     {
-      "id": "vid_1789314972629",
-      "youtubeUrl": "https://youtu.be/blajJsKACv8?si=Nz0g6Z1B0Dy27Qwb",
+      "id": "vid_1789315082585",
+      "youtubeUrl": "https://youtu.be/blajJsKACv8",
       "youtubeId": "blajJsKACv8",
-      "title": "silamban basic course",
-      "course": "Fitness",
+      "title": "Silambam Fundamentals & Basic Stick Grips",
+      "course": "Silambam",
       "category": "Foundations",
-      "description": "",
-      "addedAt": "2026-09-13T15:56:12.629Z"
+      "description": "Essential cane grip positions, wrist wrist flexion drills, and foundational circular swings.",
+      "addedAt": "2026-09-13T15:58:02.585Z"
+    },
+    {
+      "id": "vid_1789316001001",
+      "youtubeUrl": "https://youtu.be/blajJsKACv8",
+      "youtubeId": "blajJsKACv8",
+      "title": "Kaalvari Footwork & Stance Balance Flow",
+      "course": "Silambam",
+      "category": "Footwork",
+      "description": "Traditional 8-direction Kaalvari footwork patterns, weight transfers, and low stance transitions.",
+      "addedAt": "2026-09-13T16:00:00.000Z"
+    },
+    {
+      "id": "vid_1789316002002",
+      "youtubeUrl": "https://youtu.be/blajJsKACv8",
+      "youtubeId": "blajJsKACv8",
+      "title": "High-Speed Continuous Cane Rotations",
+      "course": "Silambam",
+      "category": "Speed Drills",
+      "description": "Building continuous rotational momentum, figure-eight swings, and hand switch dexterity.",
+      "addedAt": "2026-09-13T16:05:00.000Z"
+    },
+    {
+      "id": "vid_1789316003003",
+      "youtubeUrl": "https://youtu.be/blajJsKACv8",
+      "youtubeId": "blajJsKACv8",
+      "title": "Defensive Parries & Counter-Strike Combat",
+      "course": "Silambam",
+      "category": "Sparring",
+      "description": "Combat application of staff blocks, head parries, leg sweeps, and explosive counter-attacks.",
+      "addedAt": "2026-09-13T16:10:00.000Z"
+    },
+    {
+      "id": "vid_1789316004004",
+      "youtubeUrl": "https://youtu.be/blajJsKACv8",
+      "youtubeId": "blajJsKACv8",
+      "title": "Warrior Mobility & Wrist Conditioning Flow",
+      "course": "Silambam",
+      "category": "Mobility",
+      "description": "Warm-up protocol designed to strengthen forearms, wrists, and shoulder stabilizers.",
+      "addedAt": "2026-09-13T16:15:00.000Z"
     }
   ],
   "messages": [
