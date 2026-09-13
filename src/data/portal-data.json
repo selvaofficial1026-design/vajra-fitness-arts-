@@ -3,7 +3,7 @@
     {
       "id": "std_1789284374584_231",
       "tempCode": "TEMP-6267",
-      "permanentCode": null,
+      "permanentCode": "vajra-6482",
       "name": "selvakumaran",
       "phone": "8668102797",
       "course": "Silambam",
@@ -12,12 +12,21 @@
       "gender": "Male",
       "city": "Ariyalur",
       "notes": "",
-      "status": "PENDING",
+      "status": "APPROVED",
       "createdAt": "2026-09-13T07:26:14.584Z",
-      "approvedAt": null
+      "approvedAt": "2026-09-13T07:38:42.786Z"
     }
   ],
   "meetings": [],
   "videos": [],
-  "messages": []
+  "messages": [
+    {
+      "id": "msg_1789285122786",
+      "studentId": "std_1789284374584_231",
+      "sender": "admin",
+      "text": "Namaskaram selvakumaran! Your admission for Silambam (4:30 AM - 5:15 AM (Morning)) is approved! Your permanent login code is vajra-6482. Welcome to Vajra Fitness Arts!",
+      "timestamp": "2026-09-13T07:38:42.786Z",
+      "isRead": false
+    }
+  ]
 }

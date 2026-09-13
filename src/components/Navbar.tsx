@@ -59,6 +59,11 @@ export default function Navbar() {
     };
   }, [isOpen]);
 
+  // Hide public website navbar inside the student and admin portals
+  if (pathname?.startsWith("/portal/admin") || pathname?.startsWith("/portal/student")) {
+    return null;
+  }
+
   return (
     <nav
       className={cn(

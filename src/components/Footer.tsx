@@ -1,8 +1,18 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { MapPin, Phone } from "lucide-react";
 
 export default function Footer() {
+  const pathname = usePathname();
+
+  // Hide public website footer inside the student and admin portals
+  if (pathname?.startsWith("/portal/admin") || pathname?.startsWith("/portal/student")) {
+    return null;
+  }
+
   return (
     <footer className="bg-coffee-dark text-white px-4 sm:px-6 md:px-12 py-10 sm:py-12 md:py-14 relative overflow-hidden font-sans">
       {/* Decorative background circle */}
