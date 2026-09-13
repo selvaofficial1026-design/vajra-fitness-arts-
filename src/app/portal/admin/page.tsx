@@ -28,9 +28,10 @@ import {
   CheckCheck,
   UserCheck,
   RefreshCw,
-  Award
+  Award,
+  Loader2
 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, extractYoutubeId } from "@/lib/utils";
 import { Student, ClassMeeting, VideoClass, ChatMessage } from "@/lib/portalStore";
 import PortalNavbar, { PortalNavItem } from "@/components/portal/PortalNavbar";
 import PortalLoadingScreen from "@/components/portal/PortalLoadingScreen";
@@ -98,6 +99,9 @@ export default function AdminPortalPage() {
     description: ""
   });
   const [videoSubmitting, setVideoSubmitting] = useState(false);
+  const [isFetchingTitle, setIsFetchingTitle] = useState(false);
+  const [titleFetchStatus, setTitleFetchStatus] = useState<"idle" | "fetching" | "success" | "error">("idle");
+  const lastFetchedUrlRef = useRef<string>("");
 
   // Messaging State (Direct Academy Desk)
   const [selectedStudentId, setSelectedStudentId] = useState<string | null>(null);
@@ -258,6 +262,48 @@ export default function AdminPortalPage() {
     }
   };
 
+  // Automatically fetch YouTube video title when URL or ID is provided
+  const fetchVideoTitle = async (rawUrl: string, force = false) => {
+    const trimmed = rawUrl.trim();
+    if (!trimmed) {
+      setTitleFetchStatus("idle");
+      return;
+    }
+
+    const videoId = extractYoutubeId(trimmed);
+    if (!videoId || videoId.length !== 11) {
+      return;
+    }
+
+    // Don't re-fetch if already fetched for this exact videoId unless forced
+    if (!force && lastFetchedUrlRef.current === videoId) {
+      return;
+    }
+
+    setIsFetchingTitle(true);
+    setTitleFetchStatus("fetching");
+    lastFetchedUrlRef.current = videoId;
+
+    try {
+      const res = await fetch(`/api/portal/fetch-youtube-title?url=${encodeURIComponent(trimmed)}`);
+      const data = await res.json();
+      if (data.success && data.title) {
+        setNewVideo((prev) => ({
+          ...prev,
+          title: data.title
+        }));
+        setTitleFetchStatus("success");
+      } else {
+        setTitleFetchStatus("error");
+      }
+    } catch (err) {
+      console.error("Failed to auto-fetch video title:", err);
+      setTitleFetchStatus("error");
+    } finally {
+      setIsFetchingTitle(false);
+    }
+  };
+
   const handleAddVideo = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newVideo.title.trim() || !newVideo.youtubeUrl.trim()) return;
@@ -283,6 +329,8 @@ export default function AdminPortalPage() {
           category: "Foundations",
           description: ""
         });
+        setTitleFetchStatus("idle");
+        lastFetchedUrlRef.current = "";
         loadAdminData();
       }
     } catch (err) {
@@ -933,29 +981,84 @@ export default function AdminPortalPage() {
                 <form onSubmit={handleAddVideo} className="space-y-4 pt-2">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="text-[11px] sm:text-[10px] uppercase tracking-wider text-coffee-dark/75 font-bold block mb-1.5">
-                        YouTube Video Link or ID
-                      </label>
-                      <input
-                        type="text"
-                        value={newVideo.youtubeUrl}
-                        onChange={(e) => setNewVideo({ ...newVideo, youtubeUrl: e.target.value })}
-                        className="w-full bg-white/60 focus:bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2.5 sm:py-2 text-sm sm:text-xs min-h-[42px] sm:min-h-0 focus:outline-none transition-colors shadow-sm"
-                        required
-                      />
+                      <div className="flex items-center justify-between mb-1.5">
+                        <label className="text-[11px] sm:text-[10px] uppercase tracking-wider text-coffee-dark/75 font-bold block">
+                          YouTube Video Link or ID
+                        </label>
+                        {isFetchingTitle && (
+                          <span className="inline-flex items-center gap-1 text-[10px] text-cappuccino font-semibold animate-pulse">
+                            <Loader2 size={10} className="animate-spin shrink-0" />
+                            <span>Fetching Title...</span>
+                          </span>
+                        )}
+                        {!isFetchingTitle && titleFetchStatus === "success" && (
+                          <span className="inline-flex items-center gap-1 text-[10px] text-emerald-600 font-semibold">
+                            <Sparkles size={10} className="shrink-0" />
+                            <span>Title Auto-Fetched</span>
+                          </span>
+                        )}
+                      </div>
+                      <div className="relative">
+                        <input
+                          type="text"
+                          value={newVideo.youtubeUrl}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            setNewVideo((prev) => ({ ...prev, youtubeUrl: val }));
+                            fetchVideoTitle(val);
+                          }}
+                          onPaste={(e) => {
+                            const pasted = e.clipboardData.getData("text");
+                            if (pasted) {
+                              setNewVideo((prev) => ({ ...prev, youtubeUrl: pasted }));
+                              fetchVideoTitle(pasted, true);
+                            }
+                          }}
+                          onBlur={() => {
+                            if (newVideo.youtubeUrl && !newVideo.title) {
+                              fetchVideoTitle(newVideo.youtubeUrl, true);
+                            }
+                          }}
+                          className="w-full bg-white/60 focus:bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2.5 sm:py-2 text-sm sm:text-xs min-h-[42px] sm:min-h-0 focus:outline-none transition-colors shadow-sm pr-9"
+                          required
+                        />
+                        {newVideo.youtubeUrl && (
+                          <button
+                            type="button"
+                            onClick={() => fetchVideoTitle(newVideo.youtubeUrl, true)}
+                            title="Re-fetch title from YouTube"
+                            aria-label="Re-fetch title from YouTube"
+                            className="absolute right-2.5 top-1/2 -translate-y-1/2 text-coffee-dark/40 hover:text-cappuccino transition-colors p-1 cursor-pointer active:scale-90"
+                          >
+                            <RefreshCw size={13} className={cn(isFetchingTitle && "animate-spin text-cappuccino")} />
+                          </button>
+                        )}
+                      </div>
                     </div>
 
                     <div>
-                      <label className="text-[11px] sm:text-[10px] uppercase tracking-wider text-coffee-dark/75 font-bold block mb-1.5">
-                        Video Lesson Title
-                      </label>
-                      <input
-                        type="text"
-                        value={newVideo.title}
-                        onChange={(e) => setNewVideo({ ...newVideo, title: e.target.value })}
-                        className="w-full bg-white/60 focus:bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2.5 sm:py-2 text-sm sm:text-xs min-h-[42px] sm:min-h-0 focus:outline-none transition-colors shadow-sm"
-                        required
-                      />
+                      <div className="flex items-center justify-between mb-1.5">
+                        <label className="text-[11px] sm:text-[10px] uppercase tracking-wider text-coffee-dark/75 font-bold block">
+                          Video Lesson Title
+                        </label>
+                        {newVideo.title && titleFetchStatus === "success" && (
+                          <span className="text-[9.5px] text-coffee-dark/50 font-mono">
+                            Auto-synced
+                          </span>
+                        )}
+                      </div>
+                      <div className="relative">
+                        <input
+                          type="text"
+                          value={newVideo.title}
+                          onChange={(e) => setNewVideo({ ...newVideo, title: e.target.value })}
+                          className={cn(
+                            "w-full bg-white/60 focus:bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2.5 sm:py-2 text-sm sm:text-xs min-h-[42px] sm:min-h-0 focus:outline-none transition-colors shadow-sm",
+                            isFetchingTitle && "animate-pulse bg-cappuccino/5 border-cappuccino/40"
+                          )}
+                          required
+                        />
+                      </div>
                     </div>
                   </div>
 
