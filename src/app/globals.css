@@ -1,25 +1,26 @@
 @import "tailwindcss";
 
 :root {
-  --background: #F9F5EE;
+  --background: #FAF7F2;
   --foreground: #1A1A1A;
-  --coffee-dark: #2A1D1D;
+  --coffee-dark: #241A1A;
   --cappuccino: #C8955F;
-  --cream: #F3E4CF;
-  --cream-light: #F9F5EE;
+  --cream: #EDE4D8;
+  --cream-light: #FAF7F2;
   --gold: #DDA922;
   --text-dark: #1A1A1A;
 }
 
 @theme {
-  --color-primary: #2A1D1D;
+  --breakpoint-xs: 420px;
+  --color-primary: #241A1A;
   --color-secondary: #C8955F;
-  --color-coffee-dark: #2A1D1D;
+  --color-coffee-dark: #241A1A;
   --color-cappuccino: #C8955F;
-  --color-background: #F9F5EE;
+  --color-background: #FAF7F2;
   --color-foreground: #1A1A1A;
-  --color-cream: #F3E4CF;
-  --color-cream-light: #F9F5EE;
+  --color-cream: #EDE4D8;
+  --color-cream-light: #FAF7F2;
   --color-gold: #DDA922;
   --color-text-dark: #1A1A1A;
   
@@ -56,18 +57,31 @@
     line-height: 1.2;
     color: var(--coffee-dark);
   }
-
-  section {
-    padding: 100px 0;
-  }
 }
 
 .bg-premium-gradient {
-  background: linear-gradient(135deg, #F5EBDD, #FAF7F2);
+  background: linear-gradient(135deg, #EDE4D8, #FAF7F2);
 }
 
 .text-balance {
   text-wrap: balance;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Subtle Warm Cinematic Tone Filter Utility */
+.cinematic-tone {
+  filter: contrast(103%) saturate(105%) sepia(4%) hue-rotate(-2deg);
+}
+
+.cinematic-glow {
+  box-shadow: 0 0 50px -10px rgba(200, 149, 95, 0.35);
 }
 
 /* Grain Texture Overlay */
@@ -103,13 +117,16 @@
   100% { transform: translate3d(5%, 0, 0); }
 }
 
-/* Custom Cursor Hide default */
+/* Custom Cursor Hide default & allow natural form interaction */
 @media (hover: hover) and (pointer: fine) {
   body {
     cursor: none;
   }
-  a, button {
-    cursor: none;
+  input, textarea, select {
+    cursor: text !important;
+  }
+  button, a {
+    cursor: pointer;
   }
 }
 

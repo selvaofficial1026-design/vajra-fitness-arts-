@@ -13,10 +13,10 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "VFX Studio | Crafting Impossible Worlds",
-  description: "An elite visual effects studio establishing a new standard for visual excellence. High-end compositing, 3D animation, and motion graphics.",
+  title: "Vajra Fitness Arts | Fitness, Yoga, Martial Arts & Silambam",
+  description: "Vajra Fitness Arts: Professional training academy in Fitness, Yoga, Martial Arts, and Silambam in Ariyalur. Building strength, flexibility, and discipline.",
   icons: {
-    icon: "/favicon.png",
+    icon: "/images/logo_gold.jpeg",
   },
 };
 

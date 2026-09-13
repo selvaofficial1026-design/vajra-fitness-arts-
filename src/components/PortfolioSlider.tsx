@@ -177,7 +177,7 @@ export default function PortfolioSlider({ items, onPlay, isPaused = false }: Por
                   </p>
                   <div className="mt-4 pt-3 border-t border-cream flex justify-between items-center">
                     <p className="text-[8px] uppercase tracking-[0.3em] text-coffee-dark/40 font-bold">
-                      VFX Studio
+                      Vajra Fitness Arts
                     </p>
                     <motion.span 
                       animate={{ x: isCardHovered ? 5 : 0 }}

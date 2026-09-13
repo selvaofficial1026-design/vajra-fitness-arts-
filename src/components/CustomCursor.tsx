@@ -1,41 +1,79 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { motion, useSpring } from "framer-motion";
 
 export default function CustomCursor() {
+  const [hasMoved, setHasMoved] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
+  const [isOverInput, setIsOverInput] = useState(false);
+  const hasMovedRef = useRef(false);
+
   const mouseX = useSpring(0, { stiffness: 500, damping: 28 });
   const mouseY = useSpring(0, { stiffness: 500, damping: 28 });
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      mouseX.set(e.clientX);
-      mouseY.set(e.clientY);
-    };
+    const checkTarget = (target: HTMLElement | null) => {
+      if (!target) return;
 
-    const handleMouseOver = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (
+      const isInput = Boolean(
+        target.tagName.toLowerCase() === "textarea" ||
+        target.tagName.toLowerCase() === "select" ||
+        target.isContentEditable ||
+        (target.tagName.toLowerCase() === "input" && !["submit", "button", "checkbox", "radio"].includes((target as HTMLInputElement).type?.toLowerCase())) ||
+        target.closest("textarea, select, [contenteditable='true']") ||
+        target.closest("input:not([type='submit']):not([type='button']):not([type='checkbox']):not([type='radio'])")
+      );
+
+      setIsOverInput(isInput);
+
+      if (!isInput && (
         target.tagName.toLowerCase() === "a" ||
         target.tagName.toLowerCase() === "button" ||
         target.closest("a") ||
         target.closest("button")
-      ) {
+      )) {
         setIsHovering(true);
       } else {
         setIsHovering(false);
       }
     };
 
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!hasMovedRef.current) {
+        hasMovedRef.current = true;
+        mouseX.jump(e.clientX);
+        mouseY.jump(e.clientY);
+        setHasMoved(true);
+      } else {
+        mouseX.set(e.clientX);
+        mouseY.set(e.clientY);
+      }
+    };
+
+    const handleMouseOver = (e: MouseEvent) => {
+      checkTarget(e.target as HTMLElement | null);
+    };
+
+    const handleMouseLeave = () => {
+      setHasMoved(false);
+      hasMovedRef.current = false;
+    };
+
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseover", handleMouseOver);
+    document.addEventListener("mouseleave", handleMouseLeave);
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseover", handleMouseOver);
+      document.removeEventListener("mouseleave", handleMouseLeave);
     };
   }, [mouseX, mouseY]);
+
+  if (!hasMoved) {
+    return null;
+  }
 
   return (
     <div className="fixed inset-0 pointer-events-none z-[99999] hidden [@media(hover:hover)]:block">
@@ -48,11 +86,12 @@ export default function CustomCursor() {
           translateY: "-50%",
         }}
         animate={{
-          scale: isHovering ? 4 : 1,
+          scale: isOverInput ? 0 : isHovering ? 4 : 1,
+          opacity: isOverInput ? 0 : 1,
         }}
-        transition={{ type: "spring", stiffness: 250, damping: 20 }}
+        transition={{ type: "spring", stiffness: 280, damping: 22 }}
       >
-        {isHovering && (
+        {isHovering && !isOverInput && (
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

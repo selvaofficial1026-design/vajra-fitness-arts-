@@ -11,17 +11,36 @@ interface VideoModalProps {
 }
 
 export default function VideoModal({ isOpen, onClose, videoId }: VideoModalProps) {
-  // Prevent scrolling when modal is open
+  // Safely lock and restore body scroll on open/close without layout shift
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
+    if (!isOpen) return;
+    const originalOverflow = document.body.style.overflow;
+    const originalPaddingRight = document.body.style.paddingRight;
+
+    // Prevent horizontal layout jump when scrollbar disappears
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    if (scrollbarWidth > 0) {
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
     }
+    document.body.style.overflow = "hidden";
+
     return () => {
-      document.body.style.overflow = "";
+      document.body.style.overflow = originalOverflow;
+      document.body.style.paddingRight = originalPaddingRight;
     };
   }, [isOpen]);
+
+  // Close modal when pressing ESC key
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
 
   return (
     <AnimatePresence>
@@ -30,40 +49,42 @@ export default function VideoModal({ isOpen, onClose, videoId }: VideoModalProps
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 md:p-12"
+          className="fixed inset-0 z-[100] flex items-center justify-center p-2.5 xs:p-4 sm:p-6 md:p-12 overflow-y-auto"
         >
-          {/* Backdrop */}
+          {/* Backdrop with rich warm color grading */}
           <div 
-            className="absolute inset-0 bg-black/80 backdrop-blur-md"
+            className="absolute inset-0 bg-[#1A1212]/90 backdrop-blur-md cursor-pointer"
             onClick={onClose}
+            aria-label="Close modal backdrop"
           />
           
-          {/* Modal Content */}
+          {/* Modal Content with warm espresso & cappuccino styling */}
           <motion.div
             initial={{ scale: 0.95, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.95, opacity: 0, y: 20 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="relative w-full max-w-6xl aspect-video bg-coffee-dark rounded-2xl overflow-hidden shadow-2xl border border-white/10 z-10"
+            className="relative w-full max-w-5xl aspect-video bg-[#1A1212] rounded-xl sm:rounded-2xl overflow-hidden shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9),0_0_30px_rgba(200,149,95,0.2)] border border-cappuccino/30 z-10 my-auto"
           >
-            {/* Close Button */}
+            {/* Close Button - high contrast, finger-friendly, clear hover states */}
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 z-20 p-2 bg-black/50 hover:bg-cappuccino text-white rounded-full transition-colors backdrop-blur-md"
+              aria-label="Close video modal"
+              className="absolute top-2.5 right-2.5 sm:top-4 sm:right-4 z-20 w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center bg-[#241A1A]/90 hover:bg-cappuccino hover:text-coffee-dark text-white rounded-full transition-all duration-300 backdrop-blur-md border border-cappuccino/40 hover:border-cappuccino touch-manipulation shadow-xl focus:outline-none focus:ring-2 focus:ring-cappuccino active:scale-90"
             >
-              <X size={24} />
+              <X size={20} className="sm:w-6 sm:h-6" />
             </button>
 
             {/* YouTube Iframe */}
             <iframe
               className="w-full h-full"
-              src={`https://www.youtube.com/embed/${videoId}?autoplay=1`}
-              title="YouTube video player"
+              src={`https://www.youtube.com/embed/${videoId}?autoplay=1&enablejsapi=1&rel=0`}
+              title="Vajra Fitness Arts Training Video"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               referrerPolicy="strict-origin-when-cross-origin"
               allowFullScreen
-            ></iframe>
+            />
           </motion.div>
         </motion.div>
       )}
