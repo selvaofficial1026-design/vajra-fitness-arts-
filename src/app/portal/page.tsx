@@ -31,8 +31,10 @@ import {
   Zap,
   Flame,
   ChevronRight,
-  HelpCircle
+  HelpCircle,
+  Play
 } from "lucide-react";
+import VideoModal from "@/components/VideoModal";
 
 const officialBatches = [
   "4:30 AM - 5:15 AM (Morning)",
@@ -58,6 +60,9 @@ function PortalAuthContent() {
   const [activeTab, setActiveTab] = useState<"login" | "enroll" | "track" | "admin">(
     initialTab === "enroll" || initialTab === "track" || initialTab === "admin" ? initialTab : "login"
   );
+
+  // Demo Video Modal State (Matching Reference Image "Watch Demo")
+  const [demoVideoOpen, setDemoVideoOpen] = useState(false);
 
   // Student Login State
   const [studentUsername, setStudentUsername] = useState("");
@@ -263,18 +268,22 @@ function PortalAuthContent() {
 
   return (
     <main className="min-h-screen bg-background text-coffee-dark pt-24 sm:pt-28 pb-20 px-3 xs:px-4 sm:px-6 md:px-10 lg:px-12 relative overflow-hidden flex flex-col items-center justify-center">
-      {/* Dynamic Background Auras */}
+      {/* Concentric Circular Watermarks & Ambient Auras (Matching Reference Image) */}
+      <div className="absolute -top-32 -left-32 w-[520px] h-[520px] rounded-full border border-cappuccino/15 pointer-events-none" />
+      <div className="absolute top-1/4 left-1/4 w-[680px] h-[680px] rounded-full border border-cappuccino/10 pointer-events-none" />
+      <div className="absolute -bottom-40 left-12 w-[600px] h-[600px] rounded-full border border-cappuccino/15 pointer-events-none" />
+      <div className="absolute top-1/3 right-1/3 w-48 h-48 rounded-full bg-cappuccino/10 blur-2xl pointer-events-none" />
       <div className="absolute top-0 right-0 w-[550px] h-[550px] bg-cappuccino/15 rounded-full blur-[120px] pointer-events-none -translate-y-1/3 translate-x-1/4" />
       <div className="absolute bottom-0 left-0 w-[550px] h-[550px] bg-[#241A1A]/10 rounded-full blur-[120px] pointer-events-none translate-y-1/3 -translate-x-1/4" />
 
       {/* Main Canvas Container */}
-      <div className="w-full max-w-7xl mx-auto z-10 relative flex flex-col items-center justify-center min-h-[720px] py-2">
+      <div className="w-full max-w-[1450px] mx-auto z-10 relative flex flex-col lg:flex-row items-center justify-between min-h-[780px] py-4">
 
-        {/* MOBILE & TABLET COMPACT BRAND HEADER (< lg) */}
+        {/* MOBILE & TABLET TOP DOME CARD (< lg) */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="lg:hidden w-full max-w-xl mx-auto mb-6 bg-[#241A1A] rounded-3xl p-5 sm:p-6 border border-cappuccino/35 shadow-xl relative overflow-hidden"
+          className="lg:hidden w-full max-w-xl mx-auto mb-6 bg-[#241A1A] rounded-3xl p-5 sm:p-6 border border-cappuccino/35 shadow-xl relative overflow-hidden text-white"
         >
           {/* Subtle Background Action Image */}
           <div className="absolute inset-0 z-0 pointer-events-none">
@@ -288,190 +297,73 @@ function PortalAuthContent() {
           </div>
 
           <div className="relative z-10 text-center space-y-3">
-            <div className="flex items-center justify-center gap-3">
-              <div className="w-10 h-10 rounded-xl overflow-hidden border border-cappuccino/50 shadow-[0_0_15px_rgba(200,149,95,0.4)] flex items-center justify-center bg-white/5 shrink-0">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/images/logo_gold.jpeg"
-                  alt="Vajra Emblem"
-                  className="w-full h-full object-contain scale-110"
-                />
-              </div>
-              <div className="text-left">
-                <span className="font-serif text-xl font-bold tracking-tight italic text-white block leading-none">
-                  Vajra
-                </span>
-                <span className="text-cappuccino font-sans text-[7px] uppercase tracking-[0.3em] font-bold block">
-                  Virtual Academy
-                </span>
-              </div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cappuccino/15 border border-cappuccino/35 text-cappuccino text-[9px] font-bold uppercase tracking-[0.25em]">
+              <GraduationCap size={13} />
+              <span>Virtual Academy</span>
             </div>
+            <h2 className="text-xl sm:text-2xl font-serif font-bold text-white leading-tight">
+              Ancient Disciplines. <span className="italic text-cappuccino">Elite Virtual Mastery.</span>
+            </h2>
+            <p className="text-[11px] text-white/70 font-light">
+              Daily posture correction, personalized instructor feedback, and traditional martial arts mastery across 6 batches.
+            </p>
 
-            <div>
-              <h2 className="text-xl sm:text-2xl font-serif font-bold text-white leading-tight">
-                Ancient Disciplines. <span className="italic text-cappuccino">Elite Virtual Mastery.</span>
-              </h2>
-              <p className="text-[11px] text-white/70 font-light mt-1">
-                Live posture-corrected training, personal instructor feedback, and traditional martial arts mastery.
-              </p>
-            </div>
+            {/* Mobile Dual Action Buttons */}
+            <div className="flex items-center justify-center gap-3 pt-1">
+              <Link
+                href="/course"
+                className="px-5 py-2.5 rounded-full bg-gradient-to-r from-cappuccino to-[#DDA922] text-coffee-dark font-extrabold text-[11px] uppercase tracking-wider shadow-md active:scale-95 flex items-center gap-1.5"
+              >
+                <span>Courses</span>
+                <ArrowRight size={13} />
+              </Link>
 
-            {/* 4 Feature Pills on Mobile */}
-            <div className="grid grid-cols-2 gap-2 pt-1 text-left">
-              <div className="flex items-center gap-2 p-2 rounded-xl bg-white/[0.04] border border-white/5 text-[10px] text-white/80">
-                <Radio size={13} className="text-emerald-400 shrink-0 animate-pulse" />
-                <span className="truncate">Live Google Meet</span>
-              </div>
-              <div className="flex items-center gap-2 p-2 rounded-xl bg-white/[0.04] border border-white/5 text-[10px] text-white/80">
-                <Video size={13} className="text-cappuccino shrink-0" />
-                <span className="truncate">Private YouTube</span>
-              </div>
-              <div className="flex items-center gap-2 p-2 rounded-xl bg-white/[0.04] border border-white/5 text-[10px] text-white/80">
-                <MessageSquare size={13} className="text-[#25D366] shrink-0" />
-                <span className="truncate">WhatsApp Helpdesk</span>
-              </div>
-              <div className="flex items-center gap-2 p-2 rounded-xl bg-white/[0.04] border border-white/5 text-[10px] text-white/80">
-                <ShieldCheck size={13} className="text-amber-400 shrink-0" />
-                <span className="truncate">Official vajra-xxxx</span>
-              </div>
+              <button
+                type="button"
+                onClick={() => setDemoVideoOpen(true)}
+                className="flex items-center gap-2 px-4 py-2 rounded-full border border-cappuccino/50 bg-white/5 text-white text-[11px] font-bold uppercase tracking-wider cursor-pointer active:scale-95"
+              >
+                <Play size={12} className="fill-cappuccino text-cappuccino" />
+                <span>Watch Demo</span>
+              </button>
             </div>
           </div>
         </motion.div>
 
-        {/* DESKTOP SIDE OVAL-CUT BRAND SHOWCASE (lg: and above) */}
-        <motion.div
-          initial={{ opacity: 0, x: -40 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="hidden lg:flex absolute left-0 top-0 bottom-0 w-[320px] xl:w-[380px] 2xl:w-[440px] bg-[#241A1A] rounded-r-[160px] xl:rounded-r-[220px] 2xl:rounded-r-[280px] border-y border-l border-cappuccino/30 border-r-2 border-r-cappuccino/60 shadow-[20px_0_60px_rgba(0,0,0,0.5)] z-10 overflow-hidden flex-col justify-between p-6 xl:p-8 2xl:p-10"
-        >
-          {/* Subtle Background Martial Arts Action Photo with Warm Luxury Vignette */}
-          <div className="absolute inset-0 z-0 pointer-events-none">
-            <Image
-              src="/images/vajra_hero.jpg"
-              alt="Vajra Virtual Training Academy"
-              fill
-              className="object-cover opacity-20 filter saturate-50 contrast-125 scale-105"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#241A1A] via-[#241A1A]/85 to-[#1A1212]/95" />
-          </div>
+        {/* LEFT/MID SECTION: Floating Ring Logo & Authentication Console */}
+        <div className="w-full max-w-xl mx-auto lg:mx-0 lg:ml-6 xl:ml-12 2xl:ml-16 z-20 relative flex flex-col justify-center">
 
-          {/* Concentric Inner Oval Arch Guide Line (Architectural Luxury Cut Effect) */}
-          <div className="absolute inset-y-4 right-4 w-32 xl:w-44 rounded-r-[140px] xl:rounded-r-[200px] 2xl:rounded-r-[260px] border-r border-cappuccino/20 pointer-events-none" />
-
-          {/* Ambient Golden Radial Halo */}
-          <div className="absolute top-0 right-0 w-72 h-72 bg-cappuccino/20 rounded-full blur-3xl pointer-events-none -translate-y-1/3 translate-x-1/3" />
-          <div className="absolute bottom-10 left-0 w-48 h-48 bg-cappuccino/10 rounded-full blur-2xl pointer-events-none" />
-
-          {/* Brand Header & Headline */}
-          <div className="relative z-10 space-y-5 xl:space-y-6">
-            {/* Vajra Gold Crest & Emblem */}
-            <div className="flex items-center gap-3.5">
-              <div className="w-11 h-11 xl:w-12 xl:h-12 rounded-2xl overflow-hidden border border-cappuccino/50 shadow-[0_0_25px_rgba(200,149,95,0.45)] flex items-center justify-center bg-white/5 shrink-0">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/images/logo_gold.jpeg"
-                  alt="Vajra Emblem"
-                  className="w-full h-full object-contain scale-110"
-                />
-              </div>
-              <div>
-                <span className="font-serif text-xl xl:text-2xl font-bold tracking-tight italic text-white block leading-none">
-                  Vajra
-                </span>
-                <span className="text-cappuccino font-sans text-[8px] uppercase tracking-[0.3em] font-bold mt-0.5 block">
-                  Virtual Training Academy
-                </span>
-              </div>
+          {/* Floating Golden Ring Crest (Matching Reference Image's Circular Ring at Top) */}
+          <motion.div
+            initial={{ opacity: 0, y: -15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="flex flex-col items-center justify-center mb-5 sm:mb-6 text-center"
+          >
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border-2 border-cappuccino/60 bg-[#241A1A] p-2.5 flex items-center justify-center shadow-[0_0_35px_rgba(200,149,95,0.4)] relative group">
+              <div className="absolute -inset-1 rounded-full border border-cappuccino/30 animate-pulse pointer-events-none" />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/logo_gold.jpeg"
+                alt="Vajra Emblem"
+                className="w-full h-full object-contain scale-110 rounded-full"
+              />
             </div>
+            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-coffee-dark tracking-tight mt-3">
+              Vajra Virtual Studio
+            </h1>
+            <p className="text-[10px] sm:text-xs text-cappuccino uppercase tracking-[0.25em] font-bold mt-0.5">
+              Live Disciplines &amp; Online Admissions
+            </p>
+          </motion.div>
 
-            <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cappuccino/15 border border-cappuccino/35 text-cappuccino text-[9px] font-bold uppercase tracking-[0.25em] mb-3">
-                <GraduationCap size={13} className="text-cappuccino" />
-                <span>Online Class Portal</span>
-              </div>
-              <h2 className="text-2xl xl:text-3xl 2xl:text-4xl font-serif font-bold text-white leading-tight">
-                Ancient Disciplines. <br />
-                <span className="italic text-cappuccino">Elite Virtual Mastery.</span>
-              </h2>
-              <p className="text-xs text-white/70 font-light mt-2.5 leading-relaxed pr-4">
-                Connect daily from anywhere in the world for live posture-corrected training, personal instructor feedback, and traditional martial arts mastery.
-              </p>
-            </div>
-
-            {/* 4 Key Experience Pillars */}
-            <div className="space-y-2.5 xl:space-y-3 pt-1 pr-2">
-              <div className="flex items-start gap-3 p-2.5 xl:p-3 rounded-2xl bg-white/[0.04] border border-white/5 hover:border-cappuccino/30 transition-all">
-                <div className="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
-                  <Radio size={15} className="animate-pulse" />
-                </div>
-                <div>
-                  <h4 className="text-xs font-bold text-white">Daily Live Google Meet</h4>
-                  <p className="text-[10px] xl:text-[11px] text-white/60 leading-snug">
-                    Real-time visual form checking across all 6 official morning and evening batch slots.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3 p-2.5 xl:p-3 rounded-2xl bg-white/[0.04] border border-white/5 hover:border-cappuccino/30 transition-all">
-                <div className="w-8 h-8 rounded-xl bg-cappuccino/20 text-cappuccino flex items-center justify-center shrink-0 mt-0.5">
-                  <Video size={15} />
-                </div>
-                <div>
-                  <h4 className="text-xs font-bold text-white">Private YouTube Video Library</h4>
-                  <p className="text-[10px] xl:text-[11px] text-white/60 leading-snug">
-                    Step-by-step syllabus lessons recorded for home practice and posture perfection.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3 p-2.5 xl:p-3 rounded-2xl bg-white/[0.04] border border-white/5 hover:border-cappuccino/30 transition-all">
-                <div className="w-8 h-8 rounded-xl bg-[#25D366]/20 text-[#25D366] flex items-center justify-center shrink-0 mt-0.5">
-                  <MessageSquare size={15} />
-                </div>
-                <div>
-                  <h4 className="text-xs font-bold text-white">WhatsApp-Style Coach Helpdesk</h4>
-                  <p className="text-[10px] xl:text-[11px] text-white/60 leading-snug">
-                    Instant two-way chat directly with the Head Coach for technique doubts and guidance.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3 p-2.5 xl:p-3 rounded-2xl bg-white/[0.04] border border-white/5 hover:border-cappuccino/30 transition-all">
-                <div className="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0 mt-0.5">
-                  <ShieldCheck size={15} />
-                </div>
-                <div>
-                  <h4 className="text-xs font-bold text-white">Official vajra-xxxx Student ID</h4>
-                  <p className="text-[10px] xl:text-[11px] text-white/60 leading-snug">
-                    Verified temporary tracking code transition to permanent membership credentials.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Bottom Security / Trust Badge */}
-          <div className="relative z-10 pt-4 xl:pt-6 mt-4 xl:mt-6 border-t border-white/10 flex items-center justify-between text-[11px] text-white/50 pr-4">
-            <span className="flex items-center gap-1.5">
-              <Lock size={12} className="text-cappuccino" />
-              <span>Zero Spam • No Email Required</span>
-            </span>
-            <span className="font-semibold text-cappuccino font-mono">
-              6 Official Batches
-            </span>
-          </div>
-        </motion.div>
-
-        {/* MID (CENTER) INTERACTIVE CONSOLE: LOGIN, ENROLL & TRACK */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="w-full max-w-lg xl:max-w-xl mx-auto lg:max-xl:ml-[340px] lg:max-xl:mr-4 xl:mx-auto z-20 relative px-1 sm:px-0"
-        >
           {/* Main Glassmorphic Panel */}
-          <div className="bg-[#241A1A] text-white p-5 sm:p-7 md:p-8 rounded-3xl border border-cappuccino/35 shadow-[0_20px_50px_rgba(0,0,0,0.4)] relative overflow-hidden">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.1 }}
+            className="bg-[#241A1A] text-white p-5 sm:p-7 md:p-8 rounded-3xl border border-cappuccino/35 shadow-[0_25px_60px_rgba(0,0,0,0.45)] relative overflow-hidden"
+          >
             {/* Ambient Radial Highlights */}
             <div className="absolute top-0 right-0 w-72 h-72 bg-cappuccino/15 rounded-full blur-[80px] pointer-events-none -translate-y-1/2 translate-x-1/2" />
             <div className="absolute bottom-0 left-0 w-60 h-60 bg-cappuccino/10 rounded-full blur-[70px] pointer-events-none translate-y-1/2 -translate-x-1/2" />
@@ -1174,9 +1066,110 @@ function PortalAuthContent() {
                 </motion.div>
               )}
             </AnimatePresence>
+          </motion.div>
+        </div>
+
+        {/* DESKTOP GIANT CIRCULAR / OVAL DOME (lg: and above - Matching Reference Image) */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9, x: 50 }}
+          animate={{ opacity: 1, scale: 1, x: 0 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="hidden lg:flex absolute -right-24 xl:-right-16 2xl:right-0 top-1/2 -translate-y-1/2 w-[620px] xl:w-[740px] 2xl:w-[820px] h-[620px] xl:h-[740px] 2xl:h-[820px] rounded-full bg-[#241A1A] border-2 border-cappuccino/50 shadow-[-25px_0_70px_rgba(0,0,0,0.5)] z-10 overflow-hidden flex-col justify-center pl-16 xl:pl-20 2xl:pl-24 pr-12 xl:pr-16 text-white"
+        >
+          {/* Background Martial Arts Hero Image with Dark Luxury Vignette */}
+          <div className="absolute inset-0 z-0 pointer-events-none">
+            <Image
+              src="/images/vajra_hero.jpg"
+              alt="Vajra Virtual Training Academy"
+              fill
+              className="object-cover opacity-20 filter saturate-50 contrast-125 scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-l from-[#241A1A]/95 via-[#241A1A]/85 to-[#1A1212]/95" />
+          </div>
+
+          {/* Concentric Inner Circular Arc Guide Line */}
+          <div className="absolute inset-4 rounded-full border border-cappuccino/15 pointer-events-none" />
+
+          {/* Ambient Golden Radial Halo */}
+          <div className="absolute top-1/4 left-10 w-72 h-72 bg-cappuccino/20 rounded-full blur-3xl pointer-events-none" />
+
+          {/* Content Inside the Giant Circular Dome */}
+          <div className="relative z-10 space-y-4 xl:space-y-5 max-w-md xl:max-w-lg">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-cappuccino/15 border border-cappuccino/35 text-cappuccino text-[9px] xl:text-[10px] font-bold uppercase tracking-[0.25em]">
+              <GraduationCap size={14} />
+              <span>Vajra Virtual Training Academy</span>
+            </div>
+
+            <h2 className="text-3xl xl:text-4xl 2xl:text-5xl font-serif font-bold text-white leading-tight tracking-tight">
+              Ancient Disciplines. <br />
+              <span className="italic text-cappuccino">Elite Virtual Mastery.</span>
+            </h2>
+
+            <p className="text-xs xl:text-sm text-white/75 font-light leading-relaxed pr-6">
+              Connect daily from anywhere in the world for live posture-corrected training, personal instructor feedback, and traditional martial arts mastery across 6 official morning and evening batch slots.
+            </p>
+
+            {/* Dual Action Buttons (Matching Reference Image: Pill Button + Circular Play Button) */}
+            <div className="flex items-center gap-4 pt-2">
+              <Link
+                href="/course"
+                className="px-6 py-3 rounded-full bg-gradient-to-r from-cappuccino to-[#DDA922] hover:from-white hover:to-white text-coffee-dark font-extrabold text-xs uppercase tracking-wider transition-all shadow-md active:scale-95 flex items-center gap-2"
+              >
+                <span>Explore Courses</span>
+                <ArrowRight size={14} />
+              </Link>
+
+              <button
+                type="button"
+                onClick={() => setDemoVideoOpen(true)}
+                className="flex items-center gap-2.5 text-white/85 hover:text-cappuccino transition-colors group cursor-pointer"
+              >
+                <div className="w-11 h-11 rounded-full border-2 border-cappuccino/60 bg-white/5 group-hover:bg-cappuccino group-hover:text-coffee-dark flex items-center justify-center transition-all shadow-[0_0_20px_rgba(200,149,95,0.35)]">
+                  <Play size={15} className="ml-0.5 fill-current" />
+                </div>
+                <span className="text-xs font-bold uppercase tracking-wider">Watch Demo</span>
+              </button>
+            </div>
+
+            {/* 4 Core Pillars Badges */}
+            <div className="grid grid-cols-2 gap-2.5 pt-3 text-[11px] text-white/70 pr-6 border-t border-white/10">
+              <div className="flex items-center gap-2">
+                <Radio size={13} className="text-emerald-400 shrink-0 animate-pulse" />
+                <span>Daily Google Meet</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Video size={13} className="text-cappuccino shrink-0" />
+                <span>Private YouTube Library</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <MessageSquare size={13} className="text-[#25D366] shrink-0" />
+                <span>WhatsApp Coach Desk</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <ShieldCheck size={13} className="text-amber-400 shrink-0" />
+                <span>Official vajra-xxxx ID</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Trust Seal */}
+          <div className="relative z-10 pt-4 mt-4 border-t border-white/10 flex items-center gap-4 text-[11px] text-white/50">
+            <span className="flex items-center gap-1.5">
+              <Lock size={12} className="text-cappuccino" />
+              <span>Zero Spam • No Email Required</span>
+            </span>
+            <span>•</span>
+            <span className="font-semibold text-cappuccino font-mono">6 Official Batches</span>
           </div>
         </motion.div>
       </div>
+
+      {/* Video Demo Modal */}
+      <VideoModal
+        isOpen={demoVideoOpen}
+        onClose={() => setDemoVideoOpen(false)}
+        videoId="dQw4w9WgXcQ"
+      />
     </main>
   );
 }
