@@ -1,5 +1,22 @@
 {
-  "students": [],
+  "students": [
+    {
+      "id": "std_1789284374584_231",
+      "tempCode": "TEMP-6267",
+      "permanentCode": null,
+      "name": "selvakumaran",
+      "phone": "8668102797",
+      "course": "Silambam",
+      "batch": "4:30 AM - 5:15 AM (Morning)",
+      "age": "22",
+      "gender": "Male",
+      "city": "Ariyalur",
+      "notes": "",
+      "status": "PENDING",
+      "createdAt": "2026-09-13T07:26:14.584Z",
+      "approvedAt": null
+    }
+  ],
   "meetings": [],
   "videos": [],
   "messages": []

@@ -275,44 +275,105 @@ function PortalAuthContent() {
       {/* Main Canvas Container - Centered and Responsive */}
       <div className="w-full max-w-[1440px] mx-auto z-10 relative flex flex-col md:flex-row items-center md:items-stretch justify-center md:justify-between gap-6 md:gap-4 lg:gap-8">
 
-        {/* MOBILE ONLY TOP DOME CARD (md:hidden - Only shown on small phones < 768px) */}
+        {/* MOBILE ONLY TOP OVAL DOME (md:hidden - Luxury downward-curved oval canopy for mobile) */}
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="md:hidden w-full max-w-xl mx-auto mb-4 bg-[#241A1A] rounded-2xl p-5 border border-cappuccino/35 shadow-xl relative overflow-hidden text-white"
+          initial={{ opacity: 0, y: -20, scale: 0.98 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="md:hidden w-full max-w-lg mx-auto mb-5 bg-[#241A1A] rounded-t-3xl rounded-b-[110px] sm:rounded-b-[140px] pt-6 pb-9 px-5 sm:px-7 border-b-2 border-x border-cappuccino/50 shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative overflow-hidden text-white text-center"
         >
-          {/* Subtle Background Action Image */}
+          {/* Background Martial Arts Hero Image with Dark Luxury Vignette */}
           <div className="absolute inset-0 z-0 pointer-events-none">
             <Image
               src="/images/vajra_hero.jpg"
               alt="Vajra Virtual Training Academy"
               fill
-              className="object-cover opacity-20 filter saturate-50 contrast-125"
+              className="object-cover opacity-20 filter saturate-50 contrast-125 scale-105"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#241A1A] via-[#241A1A]/85 to-[#1A1212]/95" />
+            <div className="absolute inset-0 bg-gradient-to-b from-[#1A1212]/95 via-[#241A1A]/85 to-[#241A1A]/95" />
           </div>
 
-          <div className="relative z-10 text-center space-y-2.5">
-            <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-cappuccino/15 border border-cappuccino/35 text-cappuccino text-[9px] font-bold uppercase tracking-[0.25em]">
-              <GraduationCap size={13} />
-              <span>Virtual Academy</span>
+          {/* Concentric Inner Arched Oval Line */}
+          <div className="absolute inset-x-3.5 top-3.5 bottom-3.5 rounded-t-2xl rounded-b-[95px] sm:rounded-b-[125px] border-b border-cappuccino/25 pointer-events-none" />
+
+          {/* Ambient Golden Radial Halo */}
+          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-cappuccino/20 rounded-full blur-3xl pointer-events-none" />
+
+          <div className="relative z-10 space-y-3">
+            {/* Integrated Floating Golden Ring Crest */}
+            <div className="flex flex-col items-center justify-center">
+              <div className="w-12 h-12 rounded-full border-2 border-cappuccino/60 bg-[#241A1A] p-1.5 flex items-center justify-center shadow-[0_0_20px_rgba(200,149,95,0.35)] relative">
+                <div className="absolute -inset-1 rounded-full border border-cappuccino/30 animate-pulse pointer-events-none" />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/images/logo_gold.jpeg"
+                  alt="Vajra Emblem"
+                  className="w-full h-full object-contain scale-110 rounded-full"
+                />
+              </div>
+              <h1 className="text-lg font-serif font-bold text-white tracking-tight mt-1.5">
+                Vajra Virtual Studio
+              </h1>
+              <p className="text-[8.5px] text-cappuccino uppercase tracking-[0.2em] font-bold">
+                Live Disciplines &amp; Admissions
+              </p>
             </div>
-            <h2 className="text-lg sm:text-xl font-serif font-bold text-white leading-tight">
-              Ancient Disciplines. <span className="italic text-cappuccino">Elite Virtual Mastery.</span>
+
+            {/* Virtual Academy Pill Badge */}
+            <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-cappuccino/15 border border-cappuccino/35 text-cappuccino text-[9px] font-bold uppercase tracking-[0.2em]">
+              <GraduationCap size={12} />
+              <span>Virtual Training Academy</span>
+            </div>
+
+            {/* Title & Subtitle */}
+            <h2 className="text-xl sm:text-2xl font-serif font-bold text-white leading-tight">
+              Ancient Disciplines. <br />
+              <span className="italic text-cappuccino">Elite Virtual Mastery.</span>
             </h2>
-            <p className="text-[11px] text-white/70 font-light max-w-sm mx-auto">
-              Daily posture correction, personalized instructor feedback, and traditional martial arts mastery across 6 batches.
+
+            <p className="text-[11px] text-white/70 font-light max-w-sm mx-auto leading-relaxed">
+              Live posture-corrected training, personal instructor feedback, and traditional martial arts mastery across 6 official batches.
             </p>
 
-            {/* Mobile Action Button */}
-            <div className="flex items-center justify-center pt-1">
+            {/* Action Button */}
+            <div className="flex items-center justify-center pt-0.5">
               <Link
                 href="/course"
-                className="px-6 py-2.5 rounded-full bg-gradient-to-r from-cappuccino to-[#DDA922] text-coffee-dark font-extrabold text-[11px] uppercase tracking-wider shadow-md active:scale-95 flex items-center gap-1.5"
+                className="px-5 py-2 rounded-full bg-gradient-to-r from-cappuccino to-[#DDA922] text-coffee-dark font-extrabold text-[10.5px] uppercase tracking-wider shadow-md active:scale-95 inline-flex items-center gap-1.5"
               >
                 <span>Explore Courses</span>
                 <ArrowRight size={13} />
               </Link>
+            </div>
+
+            {/* 4 Core Pillars Badges (2x2 Grid) */}
+            <div className="grid grid-cols-2 gap-2 pt-2 text-[10.5px] text-white/75 border-t border-white/10 max-w-xs mx-auto text-left">
+              <div className="flex items-center gap-1.5">
+                <Radio size={12} className="text-emerald-400 shrink-0 animate-pulse" />
+                <span>Daily Google Meet</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Video size={12} className="text-cappuccino shrink-0" />
+                <span>YouTube Library</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <MessageSquare size={12} className="text-[#25D366] shrink-0" />
+                <span>WhatsApp Desk</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <ShieldCheck size={12} className="text-amber-400 shrink-0" />
+                <span>vajra-xxxx ID</span>
+              </div>
+            </div>
+
+            {/* Trust Seal */}
+            <div className="pt-1.5 border-t border-white/10 flex items-center justify-center gap-2 text-[9.5px] text-white/55">
+              <span className="flex items-center gap-1">
+                <Lock size={11} className="text-cappuccino" />
+                <span>Zero Spam</span>
+              </span>
+              <span>•</span>
+              <span className="font-semibold text-cappuccino">6 Official Batches</span>
             </div>
           </div>
         </motion.div>
@@ -320,12 +381,12 @@ function PortalAuthContent() {
         {/* LEFT COLUMN: Floating Ring Logo & Authentication Console */}
         <div className="w-full md:w-[47%] lg:w-[45%] xl:w-[43%] min-w-0 flex flex-col justify-center py-2 md:py-4 px-1 sm:px-2 z-20 relative">
 
-          {/* Floating Golden Ring Crest */}
+          {/* Floating Golden Ring Crest - Desktop Only (housed inside top oval dome on mobile) */}
           <motion.div
             initial={{ opacity: 0, y: -15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="flex flex-col items-center justify-center mb-2.5 sm:mb-3 text-center"
+            className="hidden md:flex flex-col items-center justify-center mb-2.5 sm:mb-3 text-center"
           >
             <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-cappuccino/60 bg-[#241A1A] p-2 flex items-center justify-center shadow-[0_0_25px_rgba(200,149,95,0.35)] relative group">
               <div className="absolute -inset-1 rounded-full border border-cappuccino/30 animate-pulse pointer-events-none" />
