@@ -36,12 +36,50 @@ import PortalLoadingScreen from "@/components/portal/PortalLoadingScreen";
 import StudentProfileModal from "@/components/portal/StudentProfileModal";
 import VideoModal from "@/components/VideoModal";
 
+// Helper function to format "X mins ago" uploaded time
+function formatTimeAgo(isoString?: string): string {
+  if (!isoString) return "";
+  const date = new Date(isoString);
+  const now = new Date();
+  const diffInSeconds = Math.max(0, Math.floor((now.getTime() - date.getTime()) / 1000));
+
+  if (diffInSeconds < 60) {
+    return "Uploaded just now";
+  }
+  const diffInMinutes = Math.floor(diffInSeconds / 60);
+  if (diffInMinutes === 1) {
+    return "Uploaded 1 min ago";
+  }
+  if (diffInMinutes < 60) {
+    return `Uploaded ${diffInMinutes} mins ago`;
+  }
+  const diffInHours = Math.floor(diffInMinutes / 60);
+  if (diffInHours === 1) {
+    return "Uploaded 1 hour ago";
+  }
+  if (diffInHours < 24) {
+    return `Uploaded ${diffInHours} hours ago`;
+  }
+  const diffInDays = Math.floor(diffInHours / 24);
+  if (diffInDays === 1) {
+    return "Uploaded 1 day ago";
+  }
+  return `Uploaded ${diffInDays} days ago`;
+}
+
 export default function StudentPortalPage() {
   const router = useRouter();
   const [student, setStudent] = useState<Student | null>(null);
   const [activeTab, setActiveTab] = useState<"meet" | "videos" | "doubt">("meet");
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [pageLoading, setPageLoading] = useState(true);
+
+  // Periodic timer tick to update "Uploaded X mins ago" continuously
+  const [, setTimeTick] = useState(0);
+  useEffect(() => {
+    const timer = setInterval(() => setTimeTick((t) => t + 1), 30000);
+    return () => clearInterval(timer);
+  }, []);
 
   // Video State & Compact Auto-Scroll Marquee
   const [videos, setVideos] = useState<VideoClass[]>([]);
@@ -124,14 +162,14 @@ export default function StudentPortalPage() {
     fetchMessages(std.id);
   };
 
-  // Auto-scroll marquee for compact videos carousel (identical continuous smooth logic as main website)
+  // Auto-scroll marquee for compact videos carousel (only runs when multiple lessons exist)
   useEffect(() => {
     if (
       activeTab !== "videos" ||
       isVideoPaused ||
       isVideoSliderHovered ||
       isVideoModalOpen ||
-      videos.length === 0
+      videos.length <= 2
     ) {
       return;
     }
@@ -139,11 +177,14 @@ export default function StudentPortalPage() {
     const interval = setInterval(() => {
       if (videoSliderRef.current) {
         videoSliderRef.current.scrollLeft += 1;
-        if (videoSliderRef.current.scrollLeft >= videoSliderRef.current.scrollWidth / 2) {
+        if (
+          videoSliderRef.current.scrollLeft >=
+          videoSliderRef.current.scrollWidth - videoSliderRef.current.clientWidth
+        ) {
           videoSliderRef.current.scrollLeft = 0;
         }
       }
-    }, 12);
+    }, 16);
 
     return () => clearInterval(interval);
   }, [activeTab, isVideoPaused, isVideoSliderHovered, isVideoModalOpen, videos.length]);
@@ -362,15 +403,22 @@ export default function StudentPortalPage() {
               </div>
 
               {activeMeeting?.meetUrl && (
-                <a
-                  href={activeMeeting.meetUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full sm:w-auto min-h-[40px] px-4 py-2 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-extrabold text-xs uppercase tracking-wider rounded-full shadow-sm transition-all flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer shrink-0 touch-manipulation"
-                >
-                  <Radio size={14} className="text-cappuccino animate-pulse shrink-0" />
-                  <span>Join Class</span>
-                </a>
+                <div className="flex flex-col items-stretch sm:items-end gap-1 w-full sm:w-auto">
+                  <a
+                    href={activeMeeting.meetUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full sm:w-auto min-h-[40px] px-4 py-2 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-extrabold text-xs uppercase tracking-wider rounded-full shadow-sm transition-all flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer shrink-0 touch-manipulation"
+                  >
+                    <Radio size={14} className="text-cappuccino animate-pulse shrink-0" />
+                    <span>Join Class</span>
+                  </a>
+                  {activeMeeting.createdAt && (
+                    <span className="text-[10px] text-emerald-700 font-semibold font-mono text-center sm:text-right">
+                      {formatTimeAgo(activeMeeting.createdAt)}
+                    </span>
+                  )}
+                </div>
               )}
             </div>
           </div>
@@ -392,6 +440,12 @@ export default function StudentPortalPage() {
                       <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
                       Official Live Classroom
                     </span>
+                    {activeMeeting?.createdAt && (
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100/70 text-emerald-900 border border-emerald-300/80 text-[11px] xs:text-xs font-bold font-mono">
+                        <Clock size={12} className="text-emerald-700 shrink-0" />
+                        <span>{formatTimeAgo(activeMeeting.createdAt)}</span>
+                      </span>
+                    )}
                     <span className="text-[11px] xs:text-xs text-coffee-dark/50 font-mono">
                       • Daily Virtual Training
                     </span>
@@ -431,20 +485,41 @@ export default function StudentPortalPage() {
                   {/* Join Google Meet CTA */}
                   <div className="pt-2 min-w-0">
                     {activeMeeting?.meetUrl ? (
-                      <div className="space-y-2.5 min-w-0">
-                        <a
-                          href={activeMeeting.meetUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex w-full sm:w-auto min-h-[44px] items-center justify-center gap-2.5 px-6 py-3.5 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-extrabold text-xs sm:text-sm uppercase tracking-[0.18em] rounded-full transition-all shadow-md active:scale-95 cursor-pointer text-center"
-                        >
-                          <Radio size={16} className="text-cappuccino animate-pulse shrink-0" />
-                          <span>Join Live Google Meet</span>
-                          <ExternalLink size={15} className="shrink-0" />
-                        </a>
+                      <div className="space-y-3 min-w-0">
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                          <a
+                            href={activeMeeting.meetUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex w-full sm:w-auto min-h-[44px] items-center justify-center gap-2.5 px-6 py-3.5 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-extrabold text-xs sm:text-sm uppercase tracking-[0.18em] rounded-full transition-all shadow-md active:scale-95 cursor-pointer text-center"
+                          >
+                            <Radio size={16} className="text-cappuccino animate-pulse shrink-0" />
+                            <span>Join Live Google Meet</span>
+                            <ExternalLink size={15} className="shrink-0" />
+                          </a>
+
+                          {activeMeeting.createdAt && (
+                            <div className="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-emerald-50 border border-emerald-300 text-emerald-800 text-xs font-semibold w-fit">
+                              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+                              <span className="font-bold">{formatTimeAgo(activeMeeting.createdAt)}</span>
+                              <span className="text-emerald-700/40">•</span>
+                              <span className="font-mono text-[11px] text-emerald-700">
+                                Posted {new Date(activeMeeting.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                              </span>
+                            </div>
+                          )}
+                        </div>
 
                         <p className="text-[11px] text-coffee-dark/60 font-mono break-all min-w-0">
-                          Room URL: <a href={activeMeeting.meetUrl} target="_blank" rel="noopener noreferrer" className="text-cappuccino underline hover:text-coffee-dark break-all">{activeMeeting.meetUrl}</a>
+                          Room URL:{" "}
+                          <a
+                            href={activeMeeting.meetUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-cappuccino underline hover:text-coffee-dark break-all"
+                          >
+                            {activeMeeting.meetUrl}
+                          </a>
                         </p>
                       </div>
                     ) : (
@@ -525,7 +600,7 @@ export default function StudentPortalPage() {
                     </p>
                   </div>
 
-                  {videos.length > 0 && (
+                  {videos.length > 2 && (
                     <div className="flex items-center gap-2 shrink-0 self-start sm:self-center">
                       <button
                         type="button"
@@ -586,24 +661,29 @@ export default function StudentPortalPage() {
                     onTouchStart={() => setIsVideoSliderHovered(true)}
                     onTouchEnd={() => setIsVideoSliderHovered(false)}
                   >
-                    {/* Gradient Fade Edges for Luxury Marquee Feel */}
-                    <div className="pointer-events-none hidden sm:block absolute top-0 bottom-0 left-0 w-8 md:w-12 bg-gradient-to-r from-[#FAF7F2] to-transparent z-10" />
-                    <div className="pointer-events-none hidden sm:block absolute top-0 bottom-0 right-0 w-8 md:w-12 bg-gradient-to-l from-[#FAF7F2] to-transparent z-10" />
+                    {/* Gradient Fade Edges for Luxury Marquee Feel when multiple videos */}
+                    {videos.length > 2 && (
+                      <>
+                        <div className="pointer-events-none hidden sm:block absolute top-0 bottom-0 left-0 w-8 md:w-12 bg-gradient-to-r from-[#FAF7F2] to-transparent z-10" />
+                        <div className="pointer-events-none hidden sm:block absolute top-0 bottom-0 right-0 w-8 md:w-12 bg-gradient-to-l from-[#FAF7F2] to-transparent z-10" />
+                      </>
+                    )}
 
-                    {/* Continuous Marquee Track */}
+                    {/* Videos Track */}
                     <div
                       ref={videoSliderRef}
-                      className="flex gap-4 sm:gap-6 overflow-x-auto [&::-webkit-scrollbar]:hidden touch-pan-x py-2 px-1"
+                      className={cn(
+                        "flex gap-4 sm:gap-6 py-2 px-1",
+                        videos.length > 2
+                          ? "overflow-x-auto [&::-webkit-scrollbar]:hidden touch-pan-x"
+                          : "flex-wrap justify-start"
+                      )}
                       style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
                     >
-                      {(videos.length < 4
-                        ? [...videos, ...videos, ...videos, ...videos]
-                        : [...videos, ...videos]
-                      ).map((vid, index) => {
-                        const uniqueKey = `${vid.id}-${index}`;
+                      {videos.map((vid) => {
                         return (
                           <div
-                            key={uniqueKey}
+                            key={vid.id}
                             role="button"
                             tabIndex={0}
                             onClick={() => {
@@ -683,10 +763,16 @@ export default function StudentPortalPage() {
 
                     {/* Bottom Helper Bar */}
                     <div className="pt-2.5 flex items-center justify-between text-[11px] text-coffee-dark/55 px-1 font-medium">
-                      <span>💡 Touch or hover cards to pause auto-scroll</span>
-                      <span className="hidden sm:inline font-mono text-[10px] text-coffee-dark/45 uppercase tracking-wider">
-                        Continuous Loop
+                      <span>
+                        {videos.length > 2
+                          ? "💡 Touch or hover cards to pause auto-scroll"
+                          : "💡 Tap video card to stream full lesson in HD player"}
                       </span>
+                      {videos.length > 2 && (
+                        <span className="hidden sm:inline font-mono text-[10px] text-coffee-dark/45 uppercase tracking-wider">
+                          Continuous Loop
+                        </span>
+                      )}
                     </div>
                   </div>
                 )}

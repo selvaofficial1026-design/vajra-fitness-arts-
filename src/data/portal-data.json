@@ -17,17 +17,29 @@
       "approvedAt": "2026-09-13T07:38:42.786Z"
     }
   ],
-  "meetings": [],
+  "meetings": [
+    {
+      "id": "meet_1789315980710",
+      "course": "Silambam",
+      "batch": "4:30 AM - 5:15 AM (Morning)",
+      "title": "silambam",
+      "meetUrl": "https://meet.google.com/eqp-vgkq-djs",
+      "scheduledTime": "Daily Class",
+      "instructor": "Head Coach",
+      "isActive": true,
+      "createdAt": "2026-09-13T16:13:00.710Z"
+    }
+  ],
   "videos": [
     {
-      "id": "vid_1789316004004",
-      "youtubeUrl": "https://youtu.be/blajJsKACv8",
+      "id": "vid_1789315082585",
+      "youtubeUrl": "https://youtu.be/blajJsKACv8?si=vd15jQdhTbd8jbfk",
       "youtubeId": "blajJsKACv8",
-      "title": "Warrior Mobility & Wrist Conditioning Flow",
+      "title": "silamban basic",
       "course": "Silambam",
-      "category": "Mobility",
-      "description": "Warm-up protocol designed to strengthen forearms, wrists, and shoulder stabilizers.",
-      "addedAt": "2026-09-13T16:15:00.000Z"
+      "category": "Foundations",
+      "description": "",
+      "addedAt": "2026-09-13T15:58:02.585Z"
     }
   ],
   "messages": [

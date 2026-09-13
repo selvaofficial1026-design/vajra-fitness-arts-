@@ -31,7 +31,7 @@ import {
   Award,
   Loader2
 } from "lucide-react";
-import { cn, extractYoutubeId } from "@/lib/utils";
+import { cn, extractYoutubeId, formatTimeAgo } from "@/lib/utils";
 import { Student, ClassMeeting, VideoClass, ChatMessage } from "@/lib/portalStore";
 import PortalNavbar, { PortalNavItem } from "@/components/portal/PortalNavbar";
 import PortalLoadingScreen from "@/components/portal/PortalLoadingScreen";
@@ -915,6 +915,11 @@ export default function AdminPortalPage() {
                               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                               {meet.scheduledTime || "Daily Class"}
                             </span>
+                            {meet.createdAt && (
+                              <span className="px-2 py-0.5 rounded-full bg-coffee-dark/5 text-coffee-dark/60 text-[9px] font-medium tracking-wide shrink-0">
+                                {formatTimeAgo(meet.createdAt)}
+                              </span>
+                            )}
                           </div>
                           <h5 className="font-bold text-sm text-coffee-dark break-words">{meet.title}</h5>
                           <a
