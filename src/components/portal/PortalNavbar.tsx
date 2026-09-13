@@ -26,6 +26,7 @@ export interface PortalNavbarProps {
     avatarLetter?: string;
   };
   onLogout: () => void;
+  onProfileClick?: () => void;
 }
 
 export default function PortalNavbar({
@@ -34,7 +35,8 @@ export default function PortalNavbar({
   activeNavId,
   onNavChange,
   user,
-  onLogout
+  onLogout,
+  onProfileClick
 }: PortalNavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -123,20 +125,41 @@ export default function PortalNavbar({
         </div>
 
         {/* Right Section: User snippet + Logout Button */}
-        <div className="flex items-center gap-3 sm:gap-4 shrink-0">
-          <div className="hidden sm:flex items-center gap-2.5 pr-2 border-r border-coffee-dark/10">
-            <div className="w-8 h-8 rounded-full border border-cappuccino/50 bg-coffee-dark text-cappuccino font-serif font-bold text-xs flex items-center justify-center shadow-sm">
-              {user.avatarLetter || user.name.charAt(0).toUpperCase()}
+        {/* Right Section: User snippet (Interactive Profile Button) + Logout Button */}
+        <div className="flex items-center gap-2.5 sm:gap-4 shrink-0">
+          {/* Desktop/Tablet Clickable Avatar & User Badge */}
+          <button
+            type="button"
+            onClick={onProfileClick}
+            className="hidden sm:flex items-center gap-2.5 pr-2.5 border-r border-coffee-dark/10 group cursor-pointer text-left hover:opacity-95 transition-all rounded-full py-0.5 pl-0.5 focus:outline-none"
+            title="Click to view Admin Profile & Change Password"
+          >
+            <div className="w-8 h-8 rounded-full border border-cappuccino/50 bg-coffee-dark text-cappuccino font-serif font-bold text-xs flex items-center justify-center shadow-sm group-hover:scale-105 group-hover:border-cappuccino group-hover:shadow-[0_0_15px_rgba(200,149,95,0.45)] transition-all relative">
+              <span>{user.avatarLetter || user.name.charAt(0).toUpperCase()}</span>
+              <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-500 border border-background" />
             </div>
             <div className="hidden lg:block text-left leading-tight">
-              <p className="font-serif font-bold text-xs text-coffee-dark truncate max-w-[110px]">
+              <p className="font-serif font-bold text-xs text-coffee-dark truncate max-w-[110px] group-hover:text-cappuccino transition-colors">
                 {user.name}
               </p>
               <p className="text-[7.5px] uppercase tracking-wider text-cappuccino font-bold truncate max-w-[110px]">
                 {user.badgeCode || user.roleName}
               </p>
             </div>
-          </div>
+          </button>
+
+          {/* Mobile Clickable Avatar Button directly in the pill navbar */}
+          {onProfileClick && (
+            <button
+              type="button"
+              onClick={onProfileClick}
+              className="sm:hidden w-8 h-8 rounded-full border border-cappuccino/60 bg-coffee-dark text-cappuccino font-serif font-bold text-xs flex items-center justify-center shadow-sm active:scale-95 cursor-pointer relative"
+              title="Open Admin Profile & Settings"
+            >
+              <span>{user.avatarLetter || user.name.charAt(0).toUpperCase()}</span>
+              <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-50 border border-background" />
+            </button>
+          )}
 
           <button
             type="button"
@@ -247,15 +270,28 @@ export default function PortalNavbar({
               })}
             </div>
 
-            {/* Drawer Bottom: User info & Logout */}
+            {/* Drawer Bottom: User info (Clickable to open profile) & Logout */}
             <div className="pt-5 border-t border-coffee-dark/10 space-y-3">
               <div className="flex items-center justify-between">
-                <div>
-                  <p className="font-serif font-bold text-sm text-coffee-dark">{user.name}</p>
-                  <p className="text-[9px] uppercase tracking-wider text-cappuccino font-bold">
-                    {user.badgeCode || user.roleName}
-                  </p>
-                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsOpen(false);
+                    if (onProfileClick) onProfileClick();
+                  }}
+                  className="flex items-center gap-2.5 text-left cursor-pointer group p-1 -ml-1 rounded-xl hover:bg-coffee-dark/5 transition-all"
+                  title="Open Admin Profile"
+                >
+                  <div className="w-9 h-9 rounded-full border border-cappuccino/60 bg-coffee-dark text-cappuccino font-serif font-bold text-sm flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
+                    {user.avatarLetter || user.name.charAt(0).toUpperCase()}
+                  </div>
+                  <div>
+                    <p className="font-serif font-bold text-sm text-coffee-dark group-hover:text-cappuccino transition-colors">{user.name}</p>
+                    <p className="text-[8.5px] uppercase tracking-wider text-cappuccino font-bold">
+                      {user.badgeCode || user.roleName} • View Profile
+                    </p>
+                  </div>
+                </button>
                 <button
                   type="button"
                   onClick={() => {

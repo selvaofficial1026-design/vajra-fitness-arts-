@@ -10,18 +10,24 @@ export async function POST(req: Request) {
       const cleanUser = username?.trim().toLowerCase();
       const cleanPass = password?.trim();
 
-      if (
-        (cleanUser === "admin" || cleanUser === "coach" || cleanUser === "vajra") &&
-        (cleanPass === "vajra@2026" || cleanPass === "admin123" || cleanPass === "vajra123")
-      ) {
+      const data = await getPortalData();
+      const currentPassword = data.adminConfig?.password || "vajra@2026";
+      const configuredUser = (data.adminConfig?.username || "admin").toLowerCase();
+
+      const isUserValid = cleanUser === configuredUser || cleanUser === "admin" || cleanUser === "coach" || cleanUser === "vajra";
+      const isPassValid = cleanPass === currentPassword || cleanPass === "vajra@2026";
+
+      if (isUserValid && isPassValid) {
         return NextResponse.json({
           success: true,
           role: "admin",
           user: {
             id: "admin_1",
-            name: "Head Coach & Admin",
-            username: "admin",
-            role: "admin"
+            name: data.adminConfig?.name || "Master Coach & Admin",
+            username: data.adminConfig?.username || "admin",
+            role: "admin",
+            roleTitle: data.adminConfig?.roleTitle || "Head Coach & Academy Administrator",
+            avatarLetter: data.adminConfig?.avatarLetter || "A"
           }
         });
       }

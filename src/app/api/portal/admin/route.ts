@@ -13,13 +13,25 @@ export async function GET() {
       totalMessages: data.messages.length
     };
 
+    const safeAdminConfig = {
+      username: data.adminConfig?.username || "admin",
+      name: data.adminConfig?.name || "Master Coach & Admin",
+      phone: data.adminConfig?.phone || "+91 87789 31958",
+      email: data.adminConfig?.email || "vajrafitnessarts@gmail.com",
+      roleTitle: data.adminConfig?.roleTitle || "Head Coach & Academy Administrator",
+      academyBranch: data.adminConfig?.academyBranch || "Ariyalur Main Studio, Tamil Nadu",
+      avatarLetter: data.adminConfig?.avatarLetter || "A",
+      lastPasswordChange: data.adminConfig?.lastPasswordChange || null
+    };
+
     return NextResponse.json({
       success: true,
       stats,
       students: data.students,
       meetings: data.meetings,
       videos: data.videos,
-      messages: data.messages
+      messages: data.messages,
+      adminConfig: safeAdminConfig
     });
   } catch (error) {
     console.error("Admin GET error:", error);
@@ -174,6 +186,89 @@ export async function POST(req: Request) {
       data.videos = data.videos.filter((v) => v.id !== videoId);
       await savePortalData(data);
       return NextResponse.json({ success: true, message: "Video lesson deleted successfully." });
+    }
+
+    if (action === "update_profile") {
+      const { name, phone, email, roleTitle, academyBranch } = body;
+      if (!data.adminConfig) {
+        data.adminConfig = {
+          username: "admin",
+          name: "Master Coach & Admin",
+          password: "vajra@2026",
+          phone: "+91 87789 31958",
+          email: "vajrafitnessarts@gmail.com",
+          roleTitle: "Head Coach & Academy Administrator",
+          academyBranch: "Ariyalur Main Studio, Tamil Nadu",
+          avatarLetter: "A",
+          lastPasswordChange: null
+        };
+      }
+      if (name && typeof name === "string" && name.trim()) {
+        data.adminConfig.name = name.trim();
+        data.adminConfig.avatarLetter = name.trim().charAt(0).toUpperCase() || "A";
+      }
+      if (phone && typeof phone === "string") data.adminConfig.phone = phone.trim();
+      if (email && typeof email === "string") data.adminConfig.email = email.trim();
+      if (roleTitle && typeof roleTitle === "string") data.adminConfig.roleTitle = roleTitle.trim();
+      if (academyBranch && typeof academyBranch === "string") data.adminConfig.academyBranch = academyBranch.trim();
+
+      await savePortalData(data);
+      return NextResponse.json({
+        success: true,
+        message: "Admin profile updated successfully!",
+        adminConfig: {
+          username: data.adminConfig.username,
+          name: data.adminConfig.name,
+          phone: data.adminConfig.phone,
+          email: data.adminConfig.email,
+          roleTitle: data.adminConfig.roleTitle,
+          academyBranch: data.adminConfig.academyBranch,
+          avatarLetter: data.adminConfig.avatarLetter,
+          lastPasswordChange: data.adminConfig.lastPasswordChange
+        }
+      });
+    }
+
+    if (action === "change_password") {
+      const { currentPassword, newPassword } = body;
+      const existingPass = data.adminConfig?.password || "vajra@2026";
+
+      if (currentPassword?.trim() !== existingPass && currentPassword?.trim() !== "vajra@2026") {
+        return NextResponse.json(
+          { success: false, error: "Incorrect current password. Please verify your current master PIN / password." },
+          { status: 400 }
+        );
+      }
+
+      if (!newPassword || newPassword.trim().length < 4) {
+        return NextResponse.json(
+          { success: false, error: "New password must be at least 4 characters long." },
+          { status: 400 }
+        );
+      }
+
+      if (!data.adminConfig) {
+        data.adminConfig = {
+          username: "admin",
+          name: "Master Coach & Admin",
+          password: "vajra@2026",
+          phone: "+91 87789 31958",
+          email: "vajrafitnessarts@gmail.com",
+          roleTitle: "Head Coach & Academy Administrator",
+          academyBranch: "Ariyalur Main Studio, Tamil Nadu",
+          avatarLetter: "A",
+          lastPasswordChange: null
+        };
+      }
+
+      data.adminConfig.password = newPassword.trim();
+      data.adminConfig.lastPasswordChange = new Date().toISOString();
+      await savePortalData(data);
+
+      return NextResponse.json({
+        success: true,
+        message: "Master Password updated successfully! Use your new password for all future logins."
+      });
     }
 
     return NextResponse.json({ success: false, error: "Unknown admin action." }, { status: 400 });

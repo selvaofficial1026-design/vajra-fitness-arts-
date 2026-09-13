@@ -28,12 +28,14 @@ import {
   CheckCheck,
   UserCheck,
   RefreshCw,
-  Award
+  Award,
+  KeyRound
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Student, ClassMeeting, VideoClass, ChatMessage } from "@/lib/portalStore";
 import PortalNavbar, { PortalNavItem } from "@/components/portal/PortalNavbar";
 import PortalLoadingScreen from "@/components/portal/PortalLoadingScreen";
+import AdminProfileModal, { AdminProfileData } from "@/components/portal/AdminProfileModal";
 
 const officialBatches = [
   "4:30 AM - 5:15 AM (Morning)",
@@ -60,6 +62,18 @@ export default function AdminPortalPage() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [loading, setLoading] = useState(true);
   const [actionMessage, setActionMessage] = useState<string | null>(null);
+
+  // Admin Profile Modal State
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [adminProfile, setAdminProfile] = useState<AdminProfileData>({
+    username: "admin",
+    name: "Master Coach & Admin",
+    phone: "+91 87789 31958",
+    email: "vajrafitnessarts@gmail.com",
+    roleTitle: "Head Coach & Academy Administrator",
+    academyBranch: "Ariyalur Main Studio, Tamil Nadu",
+    avatarLetter: "A"
+  });
 
   // Student Sub-Tab: Pending vs Enrolled
   const [studentFilter, setStudentFilter] = useState<"pending" | "approved" | "all">("pending");
@@ -129,6 +143,10 @@ export default function AdminPortalPage() {
         setMeetings(data.meetings || []);
         setVideos(data.videos || []);
         setMessages(data.messages || []);
+
+        if (data.adminConfig) {
+          setAdminProfile(data.adminConfig);
+        }
 
         if (!selectedStudentId && data.students?.length > 0) {
           const firstApproved = data.students.find((s: Student) => s.status === "APPROVED") || data.students[0];
@@ -382,12 +400,35 @@ export default function AdminPortalPage() {
         activeNavId={activeTab}
         onNavChange={(id) => setActiveTab(id as typeof activeTab)}
         user={{
-          name: adminUser.name || "Master Coach",
+          name: adminProfile.name || adminUser?.name || "Master Coach",
           roleName: "Super Admin",
           badgeCode: "HEAD COACH",
-          avatarLetter: "A"
+          avatarLetter: adminProfile.avatarLetter || "A"
         }}
         onLogout={handleLogout}
+        onProfileClick={() => setIsProfileOpen(true)}
+      />
+
+      {/* Admin Profile & Security Modal (Triggered by clicking A in Navbar) */}
+      <AdminProfileModal
+        isOpen={isProfileOpen}
+        onClose={() => setIsProfileOpen(false)}
+        adminProfile={adminProfile}
+        onProfileUpdated={(updated) => {
+          setAdminProfile(updated);
+          setAdminUser((prev) => (prev ? { ...prev, name: updated.name } : null));
+          const saved = localStorage.getItem("vajra_admin_session");
+          if (saved) {
+            try {
+              const parsed = JSON.parse(saved);
+              parsed.name = updated.name;
+              localStorage.setItem("vajra_admin_session", JSON.stringify(parsed));
+            } catch {}
+          }
+        }}
+        onLogout={handleLogout}
+        totalStudents={students.length}
+        approvedStudents={approvedStudents.length}
       />
 
       {/* Main Admin Page Content - SEAMLESS CANVAS (NO HEAVY BOXES) */}
@@ -396,9 +437,20 @@ export default function AdminPortalPage() {
           {/* Top Admin Header - Sits directly on background without chunky boxes */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-coffee-dark/10">
             <div className="space-y-1.5">
-              <div className="inline-flex items-center gap-2 text-[9.5px] font-mono font-bold uppercase tracking-[0.3em] text-cappuccino">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                <span>Head Coach Console • Vajra Virtual Studio</span>
+              <div className="flex items-center gap-2.5 flex-wrap">
+                <div className="inline-flex items-center gap-2 text-[9.5px] font-mono font-bold uppercase tracking-[0.3em] text-cappuccino">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  <span>Head Coach Console • Vajra Virtual Studio</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setIsProfileOpen(true)}
+                  className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-coffee-dark/5 hover:bg-cappuccino hover:text-coffee-dark text-coffee-dark/80 text-[9.5px] font-bold uppercase tracking-wider transition-all cursor-pointer border border-coffee-dark/10"
+                  title="Click to open Admin Profile & Password Settings"
+                >
+                  <KeyRound size={11} className="text-cappuccino" />
+                  <span>Profile &amp; Password</span>
+                </button>
               </div>
               <h1 className="text-2xl sm:text-4xl font-serif font-bold text-coffee-dark tracking-tight leading-none">
                 Admissions &amp; Batch Operations
