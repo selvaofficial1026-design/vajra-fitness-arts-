@@ -32,9 +32,8 @@ import {
   Flame,
   ChevronRight,
   HelpCircle,
-  Play
+  MapPin
 } from "lucide-react";
-import VideoModal from "@/components/VideoModal";
 
 const officialBatches = [
   "4:30 AM - 5:15 AM (Morning)",
@@ -60,9 +59,6 @@ function PortalAuthContent() {
   const [activeTab, setActiveTab] = useState<"login" | "enroll" | "track" | "admin">(
     initialTab === "enroll" || initialTab === "track" || initialTab === "admin" ? initialTab : "login"
   );
-
-  // Demo Video Modal State (Matching Reference Image "Watch Demo")
-  const [demoVideoOpen, setDemoVideoOpen] = useState(false);
 
   // Student Login State
   const [studentUsername, setStudentUsername] = useState("");
@@ -267,7 +263,7 @@ function PortalAuthContent() {
   };
 
   return (
-    <main className="min-h-screen bg-background text-coffee-dark pt-24 sm:pt-28 pb-20 px-3 xs:px-4 sm:px-6 md:px-10 lg:px-12 relative overflow-hidden flex flex-col items-center justify-center">
+    <main className="min-h-screen bg-background text-coffee-dark pt-16 sm:pt-20 md:pt-20 lg:pt-22 pb-8 md:pb-10 px-3 xs:px-4 sm:px-6 md:px-0 md:pl-6 lg:pl-10 xl:pl-14 md:pr-0 relative overflow-hidden flex flex-col items-center justify-center">
       {/* Concentric Circular Watermarks & Ambient Auras (Matching Reference Image) */}
       <div className="absolute -top-32 -left-32 w-[520px] h-[520px] rounded-full border border-cappuccino/15 pointer-events-none" />
       <div className="absolute top-1/4 left-1/4 w-[680px] h-[680px] rounded-full border border-cappuccino/10 pointer-events-none" />
@@ -276,14 +272,14 @@ function PortalAuthContent() {
       <div className="absolute top-0 right-0 w-[550px] h-[550px] bg-cappuccino/15 rounded-full blur-[120px] pointer-events-none -translate-y-1/3 translate-x-1/4" />
       <div className="absolute bottom-0 left-0 w-[550px] h-[550px] bg-[#241A1A]/10 rounded-full blur-[120px] pointer-events-none translate-y-1/3 -translate-x-1/4" />
 
-      {/* Main Canvas Container */}
-      <div className="w-full max-w-[1450px] mx-auto z-10 relative flex flex-col md:flex-row items-center md:items-stretch justify-between min-h-[740px] py-4 gap-6 md:gap-4 lg:gap-8">
+      {/* Main Canvas Container - Flush to Right on Desktop */}
+      <div className="w-full max-w-[1600px] ml-auto mr-0 z-10 relative flex flex-col md:flex-row items-center md:items-stretch justify-between gap-6 md:gap-4 lg:gap-8">
 
         {/* MOBILE ONLY TOP DOME CARD (md:hidden - Only shown on small phones < 768px) */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="md:hidden w-full max-w-xl mx-auto mb-6 bg-[#241A1A] rounded-3xl p-5 sm:p-6 border border-cappuccino/35 shadow-xl relative overflow-hidden text-white"
+          className="md:hidden w-full max-w-xl mx-auto mb-4 bg-[#241A1A] rounded-2xl p-5 border border-cappuccino/35 shadow-xl relative overflow-hidden text-white"
         >
           {/* Subtle Background Action Image */}
           <div className="absolute inset-0 z-0 pointer-events-none">
@@ -296,51 +292,42 @@ function PortalAuthContent() {
             <div className="absolute inset-0 bg-gradient-to-t from-[#241A1A] via-[#241A1A]/85 to-[#1A1212]/95" />
           </div>
 
-          <div className="relative z-10 text-center space-y-3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cappuccino/15 border border-cappuccino/35 text-cappuccino text-[9px] font-bold uppercase tracking-[0.25em]">
+          <div className="relative z-10 text-center space-y-2.5">
+            <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-cappuccino/15 border border-cappuccino/35 text-cappuccino text-[9px] font-bold uppercase tracking-[0.25em]">
               <GraduationCap size={13} />
               <span>Virtual Academy</span>
             </div>
-            <h2 className="text-xl sm:text-2xl font-serif font-bold text-white leading-tight">
+            <h2 className="text-lg sm:text-xl font-serif font-bold text-white leading-tight">
               Ancient Disciplines. <span className="italic text-cappuccino">Elite Virtual Mastery.</span>
             </h2>
-            <p className="text-[11px] text-white/70 font-light">
+            <p className="text-[11px] text-white/70 font-light max-w-sm mx-auto">
               Daily posture correction, personalized instructor feedback, and traditional martial arts mastery across 6 batches.
             </p>
 
-            {/* Mobile Dual Action Buttons */}
-            <div className="flex items-center justify-center gap-3 pt-1">
+            {/* Mobile Action Button */}
+            <div className="flex items-center justify-center pt-1">
               <Link
                 href="/course"
-                className="px-5 py-2.5 rounded-full bg-gradient-to-r from-cappuccino to-[#DDA922] text-coffee-dark font-extrabold text-[11px] uppercase tracking-wider shadow-md active:scale-95 flex items-center gap-1.5"
+                className="px-6 py-2.5 rounded-full bg-gradient-to-r from-cappuccino to-[#DDA922] text-coffee-dark font-extrabold text-[11px] uppercase tracking-wider shadow-md active:scale-95 flex items-center gap-1.5"
               >
-                <span>Courses</span>
+                <span>Explore Courses</span>
                 <ArrowRight size={13} />
               </Link>
-
-              <button
-                type="button"
-                onClick={() => setDemoVideoOpen(true)}
-                className="flex items-center gap-2 px-4 py-2 rounded-full border border-cappuccino/50 bg-white/5 text-white text-[11px] font-bold uppercase tracking-wider cursor-pointer active:scale-95"
-              >
-                <Play size={12} className="fill-cappuccino text-cappuccino" />
-                <span>Watch Demo</span>
-              </button>
             </div>
           </div>
         </motion.div>
 
         {/* LEFT COLUMN: Floating Ring Logo & Authentication Console */}
-        <div className="w-full md:w-[50%] lg:w-[48%] xl:w-[45%] flex flex-col justify-center py-4 px-2 sm:px-4 lg:px-6 z-20 relative">
+        <div className="w-full md:w-[48%] lg:w-[46%] xl:w-[44%] flex flex-col justify-center py-2 md:py-4 px-2 sm:px-4 lg:px-6 z-20 relative">
 
-          {/* Floating Golden Ring Crest (Matching Reference Image's Circular Ring at Top) */}
+          {/* Floating Golden Ring Crest */}
           <motion.div
             initial={{ opacity: 0, y: -15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="flex flex-col items-center justify-center mb-5 sm:mb-6 text-center"
+            className="flex flex-col items-center justify-center mb-2.5 sm:mb-3 text-center"
           >
-            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border-2 border-cappuccino/60 bg-[#241A1A] p-2.5 flex items-center justify-center shadow-[0_0_35px_rgba(200,149,95,0.4)] relative group">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-cappuccino/60 bg-[#241A1A] p-2 flex items-center justify-center shadow-[0_0_25px_rgba(200,149,95,0.35)] relative group">
               <div className="absolute -inset-1 rounded-full border border-cappuccino/30 animate-pulse pointer-events-none" />
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -349,40 +336,40 @@ function PortalAuthContent() {
                 className="w-full h-full object-contain scale-110 rounded-full"
               />
             </div>
-            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-coffee-dark tracking-tight mt-3">
+            <h1 className="text-xl sm:text-2xl font-serif font-bold text-coffee-dark tracking-tight mt-2">
               Vajra Virtual Studio
             </h1>
-            <p className="text-[10px] sm:text-xs text-cappuccino uppercase tracking-[0.25em] font-bold mt-0.5">
+            <p className="text-[9px] sm:text-[10px] text-cappuccino uppercase tracking-[0.2em] font-bold mt-0.5">
               Live Disciplines &amp; Online Admissions
             </p>
           </motion.div>
 
-          {/* Main Glassmorphic Panel */}
+          {/* Main Glassmorphic Panel - Sleek and Compact */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.1 }}
-            className="bg-[#241A1A] text-white p-5 sm:p-7 md:p-8 rounded-3xl border border-cappuccino/35 shadow-[0_25px_60px_rgba(0,0,0,0.45)] relative overflow-hidden max-w-xl mx-auto w-full"
+            className="bg-[#241A1A] text-white p-4 sm:p-5 md:p-6 lg:p-7 rounded-2xl md:rounded-3xl border border-cappuccino/35 shadow-[0_25px_60px_rgba(0,0,0,0.45)] relative overflow-hidden max-w-lg mx-auto w-full"
           >
             {/* Ambient Radial Highlights */}
             <div className="absolute top-0 right-0 w-72 h-72 bg-cappuccino/15 rounded-full blur-[80px] pointer-events-none -translate-y-1/2 translate-x-1/2" />
             <div className="absolute bottom-0 left-0 w-60 h-60 bg-cappuccino/10 rounded-full blur-[70px] pointer-events-none translate-y-1/2 -translate-x-1/2" />
 
             {/* MNC Segmented Control Navigation Tabs */}
-            <div className="relative z-10 bg-[#170F0F] p-1 rounded-2xl border border-white/10 shadow-inner mb-6 flex flex-wrap sm:flex-nowrap gap-1">
+            <div className="relative z-10 bg-[#170F0F] p-1 rounded-2xl border border-white/10 shadow-inner mb-3.5 md:mb-4 flex flex-wrap sm:flex-nowrap gap-1">
               <button
                 type="button"
                 onClick={() => {
                   setActiveTab("login");
                   setLoginError("");
                 }}
-                className={`flex-1 py-2.5 sm:py-3 px-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${
+                className={`flex-1 py-2 px-2 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-all duration-300 flex items-center justify-center gap-1.5 cursor-pointer ${
                   activeTab === "login"
                     ? "bg-[#241A1A] text-white shadow-md border border-cappuccino/50 text-cappuccino"
                     : "text-white/60 hover:text-white hover:bg-white/5"
                 }`}
               >
-                <LogIn size={14} className={activeTab === "login" ? "text-cappuccino" : ""} />
+                <LogIn size={13} className={activeTab === "login" ? "text-cappuccino" : ""} />
                 <span>Sign In</span>
               </button>
 
@@ -392,14 +379,14 @@ function PortalAuthContent() {
                   setActiveTab("enroll");
                   setEnrollError("");
                 }}
-                className={`flex-1 py-2.5 sm:py-3 px-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${
+                className={`flex-1 py-2 px-2 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-all duration-300 flex items-center justify-center gap-1.5 cursor-pointer ${
                   activeTab === "enroll"
                     ? "bg-[#241A1A] text-white shadow-md border border-cappuccino/50 text-cappuccino"
                     : "text-white/60 hover:text-white hover:bg-white/5"
                 }`}
               >
-                <Sparkles size={14} className={activeTab === "enroll" ? "text-cappuccino" : ""} />
-                <span>Enroll Online</span>
+                <Sparkles size={13} className={activeTab === "enroll" ? "text-cappuccino" : ""} />
+                <span>Enroll</span>
               </button>
 
               <button
@@ -408,14 +395,14 @@ function PortalAuthContent() {
                   setActiveTab("track");
                   setTrackError("");
                 }}
-                className={`flex-1 py-2.5 sm:py-3 px-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${
+                className={`flex-1 py-2 px-2 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-all duration-300 flex items-center justify-center gap-1.5 cursor-pointer ${
                   activeTab === "track"
                     ? "bg-[#241A1A] text-white shadow-md border border-cappuccino/50 text-cappuccino"
                     : "text-white/60 hover:text-white hover:bg-white/5"
                 }`}
               >
-                <Search size={14} className={activeTab === "track" ? "text-cappuccino" : ""} />
-                <span>Track Status</span>
+                <Search size={13} className={activeTab === "track" ? "text-cappuccino" : ""} />
+                <span>Track</span>
               </button>
 
               <button
@@ -424,15 +411,15 @@ function PortalAuthContent() {
                   setActiveTab("admin");
                   setAdminError("");
                 }}
-                className={`py-2.5 sm:py-3 px-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-300 flex items-center justify-center gap-1.5 cursor-pointer shrink-0 ${
+                className={`py-2 px-2.5 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-all duration-300 flex items-center justify-center gap-1 cursor-pointer shrink-0 ${
                   activeTab === "admin"
                     ? "bg-cappuccino text-coffee-dark shadow-md font-extrabold"
                     : "text-white/50 hover:text-white hover:bg-white/5"
                 }`}
                 title="Admin Management Console"
               >
-                <ShieldCheck size={15} />
-                <span className="hidden sm:inline">Admin</span>
+                <ShieldCheck size={14} />
+                <span>Admin</span>
               </button>
             </div>
 
@@ -445,11 +432,11 @@ function PortalAuthContent() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.25 }}
-                  className="space-y-5 relative z-10"
+                  className="space-y-3.5 relative z-10"
                 >
-                  <div className="border-b border-white/10 pb-3">
-                    <h3 className="text-xl font-serif font-bold text-white">Student Sign In</h3>
-                    <p className="text-xs text-white/60 mt-0.5">
+                  <div className="border-b border-white/10 pb-2">
+                    <h3 className="text-base sm:text-lg font-serif font-bold text-white">Student Sign In</h3>
+                    <p className="text-[11px] text-white/60 mt-0.5">
                       Enter your registered name and permanent student code to enter your classroom
                     </p>
                   </div>
@@ -458,26 +445,26 @@ function PortalAuthContent() {
                     <motion.div
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: "auto" }}
-                      className="p-3.5 rounded-xl bg-red-950/80 border border-red-500/50 text-red-200 text-xs flex items-start gap-2.5"
+                      className="p-3 rounded-xl bg-red-950/80 border border-red-500/50 text-red-200 text-xs flex items-start gap-2.5"
                     >
                       <AlertCircle size={15} className="shrink-0 mt-0.5 text-red-400" />
                       <span>{loginError}</span>
                     </motion.div>
                   )}
 
-                  <form onSubmit={handleStudentLogin} className="space-y-4">
+                  <form onSubmit={handleStudentLogin} className="space-y-3">
                     {/* Username */}
                     <div>
-                      <label className="text-[10px] uppercase tracking-[0.2em] text-white/70 font-bold block mb-1.5">
-                        Username / Registered Full Name
+                      <label className="text-[10px] uppercase tracking-[0.18em] text-white/70 font-bold block mb-1">
+                        Username / Registered Full Name <span className="text-cappuccino">*</span>
                       </label>
-                      <div className="relative">
-                        <User size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-cappuccino/60" />
+                      <div className="relative flex items-center">
+                        <User size={15} className="absolute left-3 text-cappuccino/70 pointer-events-none" />
                         <input
                           type="text"
                           value={studentUsername}
                           onChange={(e) => setStudentUsername(e.target.value)}
-                          className="w-full bg-[#181010] border border-white/20 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/50 text-white rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm focus:outline-none transition-all"
+                          className="w-full bg-[#160E0E] border border-white/20 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/50 text-white rounded-xl pl-9 pr-3 py-2 text-xs focus:outline-none transition-all"
                           required
                         />
                       </div>
@@ -485,9 +472,9 @@ function PortalAuthContent() {
 
                     {/* Permanent Code */}
                     <div>
-                      <div className="flex items-center justify-between mb-1.5">
-                        <label className="text-[10px] uppercase tracking-[0.2em] text-white/70 font-bold">
-                          Permanent Student Code
+                      <div className="flex items-center justify-between mb-1">
+                        <label className="text-[10px] uppercase tracking-[0.18em] text-white/70 font-bold">
+                          Permanent Student Code <span className="text-cappuccino">*</span>
                         </label>
                         <button
                           type="button"
@@ -497,13 +484,13 @@ function PortalAuthContent() {
                           Forgot or checking code?
                         </button>
                       </div>
-                      <div className="relative">
-                        <KeyRound size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-cappuccino/60" />
+                      <div className="relative flex items-center">
+                        <KeyRound size={15} className="absolute left-3 text-cappuccino/70 pointer-events-none" />
                         <input
                           type="text"
                           value={studentCode}
                           onChange={(e) => setStudentCode(e.target.value)}
-                          className="w-full bg-[#181010] border border-white/20 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/50 text-white font-mono rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm focus:outline-none transition-all"
+                          className="w-full bg-[#160E0E] border border-white/20 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/50 text-white font-mono rounded-xl pl-9 pr-3 py-2 text-xs focus:outline-none transition-all"
                           required
                         />
                       </div>
@@ -512,18 +499,18 @@ function PortalAuthContent() {
                       </span>
                     </div>
 
-                    <div className="pt-2">
+                    <div className="pt-1.5">
                       <button
                         type="submit"
                         disabled={loginLoading}
-                        className="w-full py-3.5 bg-cappuccino hover:bg-white text-coffee-dark font-extrabold text-xs uppercase tracking-[0.2em] rounded-full transition-all shadow-premium flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50"
+                        className="w-full py-2.5 sm:py-3 bg-cappuccino hover:bg-white text-coffee-dark font-extrabold text-xs uppercase tracking-[0.18em] rounded-full transition-all shadow-premium flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50"
                       >
                         {loginLoading ? (
                           <span>Verifying Credentials...</span>
                         ) : (
                           <>
                             <span>Enter Student Portal</span>
-                            <ArrowRight size={15} />
+                            <ArrowRight size={14} />
                           </>
                         )}
                       </button>
@@ -552,43 +539,43 @@ function PortalAuthContent() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.25 }}
-                  className="space-y-5 relative z-10"
+                  className="space-y-3.5 relative z-10"
                 >
                   {generatedTempCode ? (
                     /* MNC Success Modal */
-                    <div className="text-center py-4 space-y-5">
-                      <div className="w-16 h-16 rounded-2xl bg-emerald-500/20 border border-emerald-500/50 flex items-center justify-center text-emerald-400 mx-auto shadow-lg animate-bounce">
-                        <CheckCircle2 size={36} />
+                    <div className="text-center py-3 space-y-4">
+                      <div className="w-14 h-14 rounded-2xl bg-emerald-500/20 border border-emerald-500/50 flex items-center justify-center text-emerald-400 mx-auto shadow-lg">
+                        <CheckCircle2 size={32} />
                       </div>
 
                       <div>
-                        <span className="text-[10px] uppercase tracking-[0.3em] text-cappuccino font-bold block mb-1">
+                        <span className="text-[9px] uppercase tracking-[0.25em] text-cappuccino font-bold block mb-1">
                           Admission Submitted Successfully
                         </span>
-                        <h3 className="text-2xl font-serif font-bold text-white">Your Temporary Tracking Code</h3>
-                        <p className="text-xs text-white/70 max-w-sm mx-auto mt-1 leading-relaxed">
+                        <h3 className="text-xl font-serif font-bold text-white">Your Temporary Tracking Code</h3>
+                        <p className="text-[11px] text-white/70 max-w-sm mx-auto mt-1 leading-relaxed">
                           Please save this code. Our Head Coach will review and approve your slot, after which your permanent <code>vajra-xxxx</code> login code will be activated.
                         </p>
                       </div>
 
-                      <div className="bg-[#170F0F] border-2 border-cappuccino/60 rounded-2xl p-5 max-w-xs mx-auto shadow-inner relative group">
+                      <div className="bg-[#160E0E] border-2 border-cappuccino/60 rounded-2xl p-4 max-w-xs mx-auto shadow-inner relative group">
                         <span className="text-[9px] uppercase tracking-widest text-white/50 block mb-1">
                           Tracking Code
                         </span>
-                        <div className="text-3xl font-mono font-extrabold text-cappuccino tracking-widest">
+                        <div className="text-2xl sm:text-3xl font-mono font-extrabold text-cappuccino tracking-widest">
                           {generatedTempCode}
                         </div>
                         <button
                           type="button"
                           onClick={() => copyToClipboard(generatedTempCode)}
-                          className="mt-3 inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-white/10 hover:bg-cappuccino hover:text-coffee-dark text-xs font-bold transition-all cursor-pointer"
+                          className="mt-2.5 inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white/10 hover:bg-cappuccino hover:text-coffee-dark text-xs font-bold transition-all cursor-pointer"
                         >
                           {copiedCode ? <Check size={13} className="text-green-400" /> : <Copy size={13} />}
                           <span>{copiedCode ? "Copied!" : "Copy Code"}</span>
                         </button>
                       </div>
 
-                      <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+                      <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 pt-1">
                         <button
                           type="button"
                           onClick={() => {
@@ -596,10 +583,10 @@ function PortalAuthContent() {
                             setActiveTab("track");
                             performTrack(generatedTempCode);
                           }}
-                          className="w-full sm:w-auto px-7 py-3.5 bg-cappuccino text-coffee-dark font-extrabold text-xs uppercase tracking-[0.2em] rounded-full hover:bg-white transition-all shadow-premium inline-flex items-center justify-center gap-2 cursor-pointer"
+                          className="w-full sm:w-auto px-6 py-2.5 bg-cappuccino text-coffee-dark font-extrabold text-xs uppercase tracking-[0.18em] rounded-full hover:bg-white transition-all shadow-premium inline-flex items-center justify-center gap-2 cursor-pointer"
                         >
                           <span>Track Approval Status</span>
-                          <ArrowRight size={15} />
+                          <ArrowRight size={14} />
                         </button>
 
                         <button
@@ -617,7 +604,7 @@ function PortalAuthContent() {
                               notes: ""
                             });
                           }}
-                          className="w-full sm:w-auto px-5 py-3.5 border border-white/20 hover:bg-white/10 text-white font-bold text-xs uppercase tracking-wider rounded-full transition-all cursor-pointer"
+                          className="w-full sm:w-auto px-5 py-2.5 border border-white/20 hover:bg-white/10 text-white font-bold text-xs uppercase tracking-wider rounded-full transition-all cursor-pointer"
                         >
                           New Application
                         </button>
@@ -625,16 +612,16 @@ function PortalAuthContent() {
                     </div>
                   ) : (
                     /* MNC Minimalist Registration Form - STRICTLY NO PLACEHOLDERS */
-                    <div className="space-y-4">
-                      <div className="border-b border-white/10 pb-3">
+                    <div className="space-y-3">
+                      <div className="border-b border-white/10 pb-2">
                         <div className="flex items-center justify-between">
-                          <h3 className="text-xl font-serif font-bold text-white">Online Admission Form</h3>
-                          <span className="text-[10px] text-cappuccino font-semibold uppercase tracking-wider">
-                            Essential Details Only
+                          <h3 className="text-base sm:text-lg font-serif font-bold text-white">Online Admission Form</h3>
+                          <span className="text-[9px] text-cappuccino font-semibold uppercase tracking-wider">
+                            Essential Details
                           </span>
                         </div>
-                        <p className="text-xs text-white/60 mt-0.5">
-                          No email address required. Instant temporary code generation upon submission.
+                        <p className="text-[11px] text-white/60 mt-0.5">
+                          Instant temporary code generation upon submission. No email required.
                         </p>
                       </div>
 
@@ -642,20 +629,20 @@ function PortalAuthContent() {
                         <motion.div
                           initial={{ opacity: 0, height: 0 }}
                           animate={{ opacity: 1, height: "auto" }}
-                          className="p-3.5 rounded-xl bg-red-950/80 border border-red-500/50 text-red-200 text-xs flex items-start gap-2.5"
+                          className="p-3 rounded-xl bg-red-950/80 border border-red-500/50 text-red-200 text-xs flex items-start gap-2.5"
                         >
                           <AlertCircle size={15} className="shrink-0 mt-0.5 text-red-400" />
                           <span>{enrollError}</span>
                         </motion.div>
                       )}
 
-                      <form onSubmit={handleEnrollSubmit} className="space-y-4">
+                      <form onSubmit={handleEnrollSubmit} className="space-y-2.5">
                         {/* Interactive Course Selection Pill Cards */}
                         <div>
-                          <label className="text-[10px] uppercase tracking-[0.2em] text-white/70 font-bold block mb-2">
-                            Select Training Discipline *
+                          <label className="text-[10px] uppercase tracking-[0.18em] text-white/70 font-bold block mb-1.5">
+                            Select Training Discipline <span className="text-cappuccino">*</span>
                           </label>
-                          <div className="grid grid-cols-2 gap-2">
+                          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                             {courseOptions.map((c) => {
                               const isSelected = enrollForm.course === c.name;
                               return (
@@ -663,151 +650,152 @@ function PortalAuthContent() {
                                   key={c.name}
                                   type="button"
                                   onClick={() => setEnrollForm({ ...enrollForm, course: c.name })}
-                                  className={`p-3 rounded-2xl border text-left transition-all cursor-pointer flex items-center justify-between ${
+                                  className={`py-2 px-2 rounded-xl border text-center transition-all cursor-pointer flex flex-col items-center justify-center gap-0.5 ${
                                     isSelected
-                                      ? "bg-cappuccino text-coffee-dark border-cappuccino shadow-lg scale-[1.02] font-bold"
-                                      : "bg-[#181010] text-white/80 border-white/15 hover:border-cappuccino/40"
+                                      ? "bg-cappuccino text-coffee-dark border-cappuccino shadow-md font-bold"
+                                      : "bg-[#160E0E] text-white/80 border-white/15 hover:border-cappuccino/40"
                                   }`}
                                 >
-                                  <div>
-                                    <div className="flex items-center gap-1.5">
-                                      <span>{c.icon}</span>
-                                      <span className="text-xs font-bold">{c.name}</span>
-                                    </div>
-                                    <span className={`text-[9px] block mt-0.5 ${isSelected ? "text-coffee-dark/80" : "text-white/40"}`}>
-                                      {c.tag}
-                                    </span>
-                                  </div>
-                                  {isSelected && <CheckCircle2 size={16} className="text-coffee-dark shrink-0" />}
+                                  <span className="text-sm leading-none">{c.icon}</span>
+                                  <span className="text-xs font-bold leading-tight">{c.name}</span>
                                 </button>
                               );
                             })}
                           </div>
                         </div>
 
-                        {/* Full Name & Phone Number (NO Placeholders) */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                        {/* Full Name & Phone Number (Row 1 - Symmetrical 2 Columns) */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                           <div>
-                            <label className="text-[10px] uppercase tracking-[0.2em] text-white/70 font-bold block mb-1">
-                              Full Name *
+                            <label className="text-[10px] uppercase tracking-[0.18em] text-white/70 font-bold block mb-1">
+                              Full Name <span className="text-cappuccino">*</span>
                             </label>
-                            <div className="relative">
-                              <User size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-cappuccino/60" />
+                            <div className="relative flex items-center">
+                              <User size={15} className="absolute left-3 text-cappuccino/70 pointer-events-none" />
                               <input
                                 type="text"
                                 value={enrollForm.name}
                                 onChange={(e) => setEnrollForm({ ...enrollForm, name: e.target.value })}
-                                className="w-full bg-[#181010] border border-white/20 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/50 text-white rounded-xl pl-10 pr-3 py-2 text-xs sm:text-sm focus:outline-none transition-all"
+                                className="w-full bg-[#160E0E] border border-white/20 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/50 text-white rounded-xl pl-9 pr-3 py-2 text-xs focus:outline-none transition-all"
                                 required
                               />
                             </div>
                           </div>
 
                           <div>
-                            <label className="text-[10px] uppercase tracking-[0.2em] text-white/70 font-bold block mb-1">
-                              Phone Number (WhatsApp) *
+                            <label className="text-[10px] uppercase tracking-[0.18em] text-white/70 font-bold block mb-1">
+                              WhatsApp Phone Number <span className="text-cappuccino">*</span>
                             </label>
-                            <div className="relative">
-                              <Phone size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-cappuccino/60" />
+                            <div className="relative flex items-center">
+                              <Phone size={15} className="absolute left-3 text-cappuccino/70 pointer-events-none" />
                               <input
                                 type="tel"
                                 value={enrollForm.phone}
                                 onChange={(e) => setEnrollForm({ ...enrollForm, phone: e.target.value })}
-                                className="w-full bg-[#181010] border border-white/20 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/50 text-white rounded-xl pl-10 pr-3 py-2 text-xs sm:text-sm focus:outline-none transition-all"
+                                className="w-full bg-[#160E0E] border border-white/20 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/50 text-white rounded-xl pl-9 pr-3 py-2 text-xs focus:outline-none transition-all"
                                 required
                               />
                             </div>
                           </div>
                         </div>
 
-                        {/* Preferred Batch Timing */}
-                        <div>
-                          <label className="text-[10px] uppercase tracking-[0.2em] text-white/70 font-bold block mb-1">
-                            Preferred Batch Slot *
-                          </label>
-                          <div className="relative">
-                            <Clock size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-cappuccino/60" />
-                            <select
-                              value={enrollForm.batch}
-                              onChange={(e) => setEnrollForm({ ...enrollForm, batch: e.target.value })}
-                              className="w-full bg-[#181010] border border-white/20 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/50 text-white rounded-xl pl-10 pr-3 py-2 text-xs sm:text-sm focus:outline-none transition-all cursor-pointer"
-                            >
-                              {officialBatches.map((b) => (
-                                <option key={b} value={b} className="bg-[#181010] text-white">
-                                  {b}
-                                </option>
-                              ))}
-                            </select>
+                        {/* Preferred Batch & City (Row 2 - Symmetrical 2 Columns) */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                          <div>
+                            <label className="text-[10px] uppercase tracking-[0.18em] text-white/70 font-bold block mb-1">
+                              Preferred Batch Slot <span className="text-cappuccino">*</span>
+                            </label>
+                            <div className="relative flex items-center">
+                              <Clock size={15} className="absolute left-3 text-cappuccino/70 pointer-events-none" />
+                              <select
+                                value={enrollForm.batch}
+                                onChange={(e) => setEnrollForm({ ...enrollForm, batch: e.target.value })}
+                                className="w-full bg-[#160E0E] border border-white/20 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/50 text-white rounded-xl pl-9 pr-3 py-2 text-xs focus:outline-none transition-all cursor-pointer"
+                              >
+                                {officialBatches.map((b) => (
+                                  <option key={b} value={b} className="bg-[#181010] text-white">
+                                    {b}
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
+                          </div>
+
+                          <div>
+                            <label className="text-[10px] uppercase tracking-[0.18em] text-white/70 font-bold block mb-1">
+                              City <span className="text-cappuccino">*</span>
+                            </label>
+                            <div className="relative flex items-center">
+                              <MapPin size={15} className="absolute left-3 text-cappuccino/70 pointer-events-none" />
+                              <input
+                                type="text"
+                                value={enrollForm.city}
+                                onChange={(e) => setEnrollForm({ ...enrollForm, city: e.target.value })}
+                                className="w-full bg-[#160E0E] border border-white/20 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/50 text-white rounded-xl pl-9 pr-3 py-2 text-xs focus:outline-none transition-all"
+                                required
+                              />
+                            </div>
                           </div>
                         </div>
 
-                        {/* Age, Gender, City (NO Placeholders) */}
-                        <div className="grid grid-cols-3 gap-2.5">
+                        {/* Age & Gender (Row 3 - Symmetrical 2 Columns) */}
+                        <div className="grid grid-cols-2 gap-2.5">
                           <div>
-                            <label className="text-[10px] uppercase tracking-[0.2em] text-white/70 font-bold block mb-1">
+                            <label className="text-[10px] uppercase tracking-[0.18em] text-white/70 font-bold block mb-1">
                               Age
                             </label>
                             <input
                               type="number"
                               value={enrollForm.age}
                               onChange={(e) => setEnrollForm({ ...enrollForm, age: e.target.value })}
-                              className="w-full bg-[#181010] border border-white/20 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/50 text-white rounded-xl px-3 py-2 text-xs sm:text-sm focus:outline-none transition-all"
+                              className="w-full bg-[#160E0E] border border-white/20 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/50 text-white rounded-xl px-3 py-2 text-xs focus:outline-none transition-all"
                             />
                           </div>
 
                           <div>
-                            <label className="text-[10px] uppercase tracking-[0.2em] text-white/70 font-bold block mb-1">
+                            <label className="text-[10px] uppercase tracking-[0.18em] text-white/70 font-bold block mb-1">
                               Gender
                             </label>
-                            <select
-                              value={enrollForm.gender}
-                              onChange={(e) => setEnrollForm({ ...enrollForm, gender: e.target.value })}
-                              className="w-full bg-[#181010] border border-white/20 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/50 text-white rounded-xl px-2 py-2 text-xs sm:text-sm focus:outline-none transition-all cursor-pointer"
-                            >
-                              <option value="Male" className="bg-[#181010] text-white">Male</option>
-                              <option value="Female" className="bg-[#181010] text-white">Female</option>
-                              <option value="Other" className="bg-[#181010] text-white">Other</option>
-                            </select>
-                          </div>
-
-                          <div>
-                            <label className="text-[10px] uppercase tracking-[0.2em] text-white/70 font-bold block mb-1">
-                              City
-                            </label>
-                            <input
-                              type="text"
-                              value={enrollForm.city}
-                              onChange={(e) => setEnrollForm({ ...enrollForm, city: e.target.value })}
-                              className="w-full bg-[#181010] border border-white/20 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/50 text-white rounded-xl px-3 py-2 text-xs sm:text-sm focus:outline-none transition-all"
-                            />
+                            <div className="relative flex items-center">
+                              <UserCheck size={15} className="absolute left-3 text-cappuccino/70 pointer-events-none" />
+                              <select
+                                value={enrollForm.gender}
+                                onChange={(e) => setEnrollForm({ ...enrollForm, gender: e.target.value })}
+                                className="w-full bg-[#160E0E] border border-white/20 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/50 text-white rounded-xl pl-9 pr-2 py-2 text-xs focus:outline-none transition-all cursor-pointer"
+                              >
+                                <option value="Male" className="bg-[#181010] text-white">Male</option>
+                                <option value="Female" className="bg-[#181010] text-white">Female</option>
+                                <option value="Other" className="bg-[#181010] text-white">Other</option>
+                              </select>
+                            </div>
                           </div>
                         </div>
 
-                        {/* Goals / Notes (NO Placeholder) */}
+                        {/* Goals / Notes (Row 4) */}
                         <div>
-                          <label className="text-[10px] uppercase tracking-[0.2em] text-white/70 font-bold block mb-1">
+                          <label className="text-[10px] uppercase tracking-[0.18em] text-white/70 font-bold block mb-1">
                             Goals or Prior Experience (Optional)
                           </label>
                           <textarea
                             rows={2}
                             value={enrollForm.notes}
                             onChange={(e) => setEnrollForm({ ...enrollForm, notes: e.target.value })}
-                            className="w-full bg-[#181010] border border-white/20 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/50 text-white rounded-xl px-3.5 py-2 text-xs sm:text-sm focus:outline-none transition-all resize-none"
+                            className="w-full bg-[#160E0E] border border-white/20 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/50 text-white rounded-xl px-3 py-1.5 text-xs focus:outline-none transition-all resize-none"
                           />
                         </div>
 
-                        <div className="pt-2">
+                        <div className="pt-1">
                           <button
                             type="submit"
                             disabled={enrollLoading}
-                            className="w-full py-3.5 bg-[#25D366] hover:bg-[#20ba5a] text-black font-extrabold text-xs uppercase tracking-[0.2em] rounded-full transition-all shadow-[0_0_25px_rgba(37,211,102,0.4)] flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50"
+                            className="w-full py-2.5 sm:py-3 bg-[#25D366] hover:bg-[#20ba5a] text-black font-extrabold text-xs uppercase tracking-[0.18em] rounded-full transition-all shadow-[0_0_20px_rgba(37,211,102,0.35)] flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50"
                           >
                             {enrollLoading ? (
                               <span>Generating Temporary Code...</span>
                             ) : (
                               <>
                                 <span>Submit Admission &amp; Get Code</span>
-                                <Sparkles size={15} />
+                                <Sparkles size={14} />
                               </>
                             )}
                           </button>
@@ -826,11 +814,11 @@ function PortalAuthContent() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.25 }}
-                  className="space-y-5 relative z-10"
+                  className="space-y-3.5 relative z-10"
                 >
-                  <div className="border-b border-white/10 pb-3">
-                    <h3 className="text-xl font-serif font-bold text-white">Track Admission Approval</h3>
-                    <p className="text-xs text-white/60 mt-0.5">
+                  <div className="border-b border-white/10 pb-2">
+                    <h3 className="text-base sm:text-lg font-serif font-bold text-white">Track Admission Approval</h3>
+                    <p className="text-[11px] text-white/60 mt-0.5">
                       Enter your temporary code to inspect real-time review status and retrieve your permanent login code
                     </p>
                   </div>
@@ -839,7 +827,7 @@ function PortalAuthContent() {
                     <motion.div
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: "auto" }}
-                      className="p-3.5 rounded-xl bg-red-950/80 border border-red-500/50 text-red-200 text-xs flex items-start gap-2.5"
+                      className="p-3 rounded-xl bg-red-950/80 border border-red-500/50 text-red-200 text-xs flex items-start gap-2.5"
                     >
                       <AlertCircle size={15} className="shrink-0 mt-0.5 text-red-400" />
                       <span>{trackError}</span>
@@ -851,24 +839,27 @@ function PortalAuthContent() {
                       e.preventDefault();
                       performTrack();
                     }}
-                    className="space-y-3"
+                    className="space-y-2.5"
                   >
                     <div>
-                      <label className="text-[10px] uppercase tracking-[0.2em] text-white/70 font-bold block mb-1.5">
+                      <label className="text-[10px] uppercase tracking-[0.18em] text-white/70 font-bold block mb-1">
                         Temporary Tracking Code
                       </label>
                       <div className="flex gap-2">
-                        <input
-                          type="text"
-                          value={trackInputCode}
-                          onChange={(e) => setTrackInputCode(e.target.value.toUpperCase())}
-                          className="flex-1 bg-[#181010] border border-white/20 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/50 text-white font-mono tracking-widest uppercase rounded-xl px-4 py-2.5 text-sm focus:outline-none transition-all"
-                          required
-                        />
+                        <div className="relative flex-1 flex items-center">
+                          <KeyRound size={15} className="absolute left-3 text-cappuccino/70 pointer-events-none" />
+                          <input
+                            type="text"
+                            value={trackInputCode}
+                            onChange={(e) => setTrackInputCode(e.target.value.toUpperCase())}
+                            className="w-full bg-[#160E0E] border border-white/20 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/50 text-white font-mono tracking-widest uppercase rounded-xl pl-9 pr-3 py-2 text-xs focus:outline-none transition-all"
+                            required
+                          />
+                        </div>
                         <button
                           type="submit"
                           disabled={trackLoading}
-                          className="px-6 bg-cappuccino text-coffee-dark font-extrabold text-xs uppercase tracking-widest rounded-xl hover:bg-white transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50 shrink-0"
+                          className="px-5 py-2 bg-cappuccino hover:bg-white text-coffee-dark font-extrabold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50 shrink-0"
                         >
                           {trackLoading ? "Checking..." : "Inspect"}
                         </button>
@@ -881,31 +872,31 @@ function PortalAuthContent() {
                     <motion.div
                       initial={{ opacity: 0, scale: 0.96 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      className="p-5 rounded-2xl bg-[#170F0F] border border-cappuccino/40 space-y-4"
+                      className="p-4 rounded-xl bg-[#160E0E] border border-cappuccino/40 space-y-3"
                     >
-                      <div className="flex items-center justify-between flex-wrap gap-2 pb-3 border-b border-white/10">
+                      <div className="flex items-center justify-between flex-wrap gap-2 pb-2.5 border-b border-white/10">
                         <div>
                           <span className="text-[9px] uppercase tracking-wider text-white/50 block">Applicant</span>
-                          <h4 className="text-base font-bold text-white">{trackedStudent.name}</h4>
-                          <p className="text-xs text-cappuccino">{trackedStudent.course} • {trackedStudent.batch}</p>
+                          <h4 className="text-sm font-bold text-white">{trackedStudent.name}</h4>
+                          <p className="text-[11px] text-cappuccino">{trackedStudent.course} • {trackedStudent.batch}</p>
                         </div>
 
                         <div>
                           {trackedStudent.status === "APPROVED" && (
-                            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-500/50 text-xs font-bold uppercase tracking-wider">
-                              <CheckCircle2 size={14} />
+                            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-500/50 text-[10px] font-bold uppercase tracking-wider">
+                              <CheckCircle2 size={13} />
                               <span>Approved</span>
                             </div>
                           )}
                           {trackedStudent.status === "PENDING" && (
-                            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-950 text-amber-300 border border-amber-500/50 text-xs font-bold uppercase tracking-wider">
-                              <Clock size={14} className="animate-spin" />
+                            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-950 text-amber-300 border border-amber-500/50 text-[10px] font-bold uppercase tracking-wider">
+                              <Clock size={13} className="animate-spin" />
                               <span>Under Review</span>
                             </div>
                           )}
                           {trackedStudent.status === "REJECTED" && (
-                            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-950 text-red-300 border border-red-500/50 text-xs font-bold uppercase tracking-wider">
-                              <AlertCircle size={14} />
+                            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-red-950 text-red-300 border border-red-500/50 text-[10px] font-bold uppercase tracking-wider">
+                              <AlertCircle size={13} />
                               <span>Not Approved</span>
                             </div>
                           )}
@@ -914,16 +905,16 @@ function PortalAuthContent() {
 
                       {/* Approved with Permanent Code */}
                       {trackedStudent.status === "APPROVED" && trackedStudent.permanentCode && (
-                        <div className="p-4 rounded-xl bg-[#241A1A] border-2 border-emerald-500/50 space-y-2.5 text-center">
+                        <div className="p-3.5 rounded-xl bg-[#241A1A] border-2 border-emerald-500/50 space-y-2 text-center">
                           <span className="text-[9px] uppercase tracking-[0.25em] text-emerald-400 font-bold block">
                             Permanent Code Activated
                           </span>
-                          <div className="text-2xl sm:text-3xl font-mono font-extrabold text-white tracking-widest">
+                          <div className="text-2xl font-mono font-extrabold text-white tracking-widest">
                             {trackedStudent.permanentCode}
                           </div>
-                          <p className="text-xs text-white/70">
-                            Use your name <strong>{trackedStudent.name}</strong> and code{" "}
-                            <strong className="text-cappuccino">{trackedStudent.permanentCode}</strong> to login.
+                          <p className="text-[11px] text-white/70">
+                            Name: <strong>{trackedStudent.name}</strong> • Code:{" "}
+                            <strong className="text-cappuccino">{trackedStudent.permanentCode}</strong>
                           </p>
 
                           <button
@@ -933,9 +924,9 @@ function PortalAuthContent() {
                               setStudentCode(trackedStudent.permanentCode);
                               setActiveTab("login");
                             }}
-                            className="w-full py-3 bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs uppercase tracking-[0.2em] rounded-full transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer mt-1"
+                            className="w-full py-2.5 bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs uppercase tracking-[0.18em] rounded-full transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer mt-1"
                           >
-                            <LogIn size={14} />
+                            <LogIn size={13} />
                             <span>Proceed to Student Login</span>
                           </button>
                         </div>
@@ -943,9 +934,9 @@ function PortalAuthContent() {
 
                       {/* Pending Step-by-Step Progress */}
                       {trackedStudent.status === "PENDING" && (
-                        <div className="p-4 rounded-xl bg-amber-950/25 border border-amber-500/30 text-xs text-amber-200/90 space-y-2">
-                          <div className="flex items-center gap-2 font-bold text-amber-300">
-                            <Clock size={14} />
+                        <div className="p-3 rounded-xl bg-amber-950/25 border border-amber-500/30 text-xs text-amber-200/90 space-y-1.5">
+                          <div className="flex items-center gap-2 font-bold text-amber-300 text-xs">
+                            <Clock size={13} />
                             <span>Admission Verification in Progress</span>
                           </div>
                           <p className="text-[11px] leading-relaxed text-white/70">
@@ -966,14 +957,14 @@ function PortalAuthContent() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.25 }}
-                  className="space-y-5 relative z-10"
+                  className="space-y-3.5 relative z-10"
                 >
-                  <div className="border-b border-white/10 pb-3">
+                  <div className="border-b border-white/10 pb-2">
                     <div className="flex items-center gap-2">
-                      <ShieldCheck size={20} className="text-cappuccino" />
-                      <h3 className="text-xl font-serif font-bold text-white">Academy Admin Access</h3>
+                      <ShieldCheck size={18} className="text-cappuccino" />
+                      <h3 className="text-base sm:text-lg font-serif font-bold text-white">Academy Admin Access</h3>
                     </div>
-                    <p className="text-xs text-white/60 mt-0.5">
+                    <p className="text-[11px] text-white/60 mt-0.5">
                       Restricted to Head Coach and Academy Administration Desk
                     </p>
                   </div>
@@ -982,65 +973,65 @@ function PortalAuthContent() {
                     <motion.div
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: "auto" }}
-                      className="p-3.5 rounded-xl bg-red-950/80 border border-red-500/50 text-red-200 text-xs flex items-start gap-2.5"
+                      className="p-3 rounded-xl bg-red-950/80 border border-red-500/50 text-red-200 text-xs flex items-start gap-2.5"
                     >
                       <AlertCircle size={15} className="shrink-0 mt-0.5 text-red-400" />
                       <span>{adminError}</span>
                     </motion.div>
                   )}
 
-                  <form onSubmit={handleAdminLogin} className="space-y-4">
+                  <form onSubmit={handleAdminLogin} className="space-y-3">
                     <div>
-                      <label className="text-[10px] uppercase tracking-[0.2em] text-white/70 font-bold block mb-1.5">
-                        Admin Identifier
+                      <label className="text-[10px] uppercase tracking-[0.18em] text-white/70 font-bold block mb-1">
+                        Admin Identifier <span className="text-cappuccino">*</span>
                       </label>
-                      <div className="relative">
-                        <User size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-cappuccino/60" />
+                      <div className="relative flex items-center">
+                        <User size={15} className="absolute left-3 text-cappuccino/70 pointer-events-none" />
                         <input
                           type="text"
                           value={adminUsername}
                           onChange={(e) => setAdminUsername(e.target.value)}
-                          className="w-full bg-[#181010] border border-white/20 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/50 text-white rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm focus:outline-none transition-all"
+                          className="w-full bg-[#160E0E] border border-white/20 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/50 text-white rounded-xl pl-9 pr-3 py-2 text-xs focus:outline-none transition-all"
                           required
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="text-[10px] uppercase tracking-[0.2em] text-white/70 font-bold block mb-1.5">
-                        Master Secret PIN / Password
+                      <label className="text-[10px] uppercase tracking-[0.18em] text-white/70 font-bold block mb-1">
+                        Master Secret PIN / Password <span className="text-cappuccino">*</span>
                       </label>
-                      <div className="relative">
-                        <Lock size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-cappuccino/60" />
+                      <div className="relative flex items-center">
+                        <Lock size={15} className="absolute left-3 text-cappuccino/70 pointer-events-none" />
                         <input
                           type={showAdminPass ? "text" : "password"}
                           value={adminPassword}
                           onChange={(e) => setAdminPassword(e.target.value)}
-                          className="w-full bg-[#181010] border border-white/20 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/50 text-white rounded-xl pl-10 pr-10 py-2.5 text-xs sm:text-sm focus:outline-none transition-all"
+                          className="w-full bg-[#160E0E] border border-white/20 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/50 text-white rounded-xl pl-9 pr-9 py-2 text-xs focus:outline-none transition-all"
                           required
                         />
                         <button
                           type="button"
                           onClick={() => setShowAdminPass(!showAdminPass)}
-                          className="absolute right-3.5 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors cursor-pointer"
+                          className="absolute right-3 text-white/40 hover:text-white transition-colors cursor-pointer"
                         >
-                          {showAdminPass ? <EyeOff size={15} /> : <Eye size={15} />}
+                          {showAdminPass ? <EyeOff size={14} /> : <Eye size={14} />}
                         </button>
                       </div>
                     </div>
 
-                    <div className="pt-2">
+                    <div className="pt-1.5">
                       <button
                         type="submit"
                         disabled={adminLoading}
-                        className="w-full py-3.5 bg-cappuccino hover:bg-white text-coffee-dark font-extrabold text-xs uppercase tracking-[0.2em] rounded-full transition-all shadow-premium flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50"
+                        className="w-full py-2.5 sm:py-3 bg-cappuccino hover:bg-white text-coffee-dark font-extrabold text-xs uppercase tracking-[0.18em] rounded-full transition-all shadow-premium flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50"
                       >
                         {adminLoading ? (
                           <span>Verifying Access...</span>
                         ) : (
                           <>
                             <span>Authorize &amp; Open Desk</span>
-                            <ShieldCheck size={15} />
+                            <ShieldCheck size={14} />
                           </>
                         )}
                       </button>
@@ -1048,8 +1039,8 @@ function PortalAuthContent() {
                   </form>
 
                   {/* Admin Auto-Fill helper (preserved as requested) */}
-                  <div className="mt-4 pt-4 border-t border-white/10 text-xs text-white/60">
-                    <div className="bg-[#181010] p-3 rounded-xl border border-white/10 flex items-center justify-between">
+                  <div className="mt-3 pt-3 border-t border-white/10 text-xs text-white/60">
+                    <div className="bg-[#160E0E] p-2.5 rounded-xl border border-white/10 flex items-center justify-between text-[11px]">
                       <span>ID: <strong>admin</strong> | Key: <code className="text-cappuccino font-mono">vajra@2026</code></span>
                       <button
                         type="button"
@@ -1057,7 +1048,7 @@ function PortalAuthContent() {
                           setAdminUsername("admin");
                           setAdminPassword("vajra@2026");
                         }}
-                        className="px-3 py-1 bg-white/10 hover:bg-cappuccino hover:text-black rounded-lg text-[10px] font-bold uppercase transition-all cursor-pointer"
+                        className="px-2.5 py-1 bg-white/10 hover:bg-cappuccino hover:text-black rounded-lg text-[10px] font-bold uppercase transition-all cursor-pointer"
                       >
                         Fill
                       </button>
@@ -1071,10 +1062,10 @@ function PortalAuthContent() {
 
         {/* RIGHT COLUMN: DESKTOP GIANT CIRCULAR / OVAL DOME (md: and above - Matching Reference Image) */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.95, x: 30 }}
+          initial={{ opacity: 0, scale: 0.96, x: 20 }}
           animate={{ opacity: 1, scale: 1, x: 0 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="hidden md:flex w-full md:w-[48%] lg:w-[50%] xl:w-[52%] bg-[#241A1A] rounded-l-[180px] lg:rounded-l-[260px] xl:rounded-l-full border-l-2 border-y border-cappuccino/50 shadow-[-25px_0_70px_rgba(0,0,0,0.5)] relative overflow-hidden flex-col justify-center py-10 px-6 sm:px-8 lg:px-12 xl:px-16 text-white min-h-[660px] shrink-0 self-stretch my-auto z-10"
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="hidden md:flex w-full md:w-[48%] lg:w-[50%] xl:w-[52%] bg-[#241A1A] rounded-l-[160px] md:rounded-l-[220px] lg:rounded-l-[300px] xl:rounded-l-full border-l-2 border-y border-cappuccino/50 shadow-[-30px_0_80px_rgba(0,0,0,0.55)] relative overflow-hidden flex flex-col justify-center py-8 lg:py-10 pl-14 sm:pl-16 md:pl-16 lg:pl-24 xl:pl-28 pr-6 sm:pr-8 lg:pr-12 text-white shrink-0 self-stretch my-auto z-10"
         >
           {/* Background Martial Arts Hero Image with Dark Luxury Vignette */}
           <div className="absolute inset-0 z-0 pointer-events-none">
@@ -1088,51 +1079,40 @@ function PortalAuthContent() {
           </div>
 
           {/* Concentric Inner Circular Arc Guide Line */}
-          <div className="absolute inset-y-6 left-6 right-0 rounded-l-[160px] lg:rounded-l-[240px] xl:rounded-l-full border-l border-cappuccino/20 pointer-events-none" />
+          <div className="absolute inset-y-5 left-5 right-0 rounded-l-[140px] md:rounded-l-[200px] lg:rounded-l-[280px] xl:rounded-l-full border-l border-cappuccino/20 pointer-events-none" />
 
           {/* Ambient Golden Radial Halo */}
           <div className="absolute top-1/4 left-10 w-72 h-72 bg-cappuccino/20 rounded-full blur-3xl pointer-events-none" />
 
           {/* Content Inside the Giant Circular Dome */}
-          <div className="relative z-10 space-y-4 xl:space-y-5 max-w-md xl:max-w-lg">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-cappuccino/15 border border-cappuccino/35 text-cappuccino text-[9px] xl:text-[10px] font-bold uppercase tracking-[0.25em]">
-              <GraduationCap size={14} />
+          <div className="relative z-10 space-y-3.5 xl:space-y-4 max-w-md xl:max-w-lg">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cappuccino/15 border border-cappuccino/35 text-cappuccino text-[9px] xl:text-[10px] font-bold uppercase tracking-[0.25em]">
+              <GraduationCap size={13} />
               <span>Vajra Virtual Training Academy</span>
             </div>
 
-            <h2 className="text-3xl xl:text-4xl 2xl:text-5xl font-serif font-bold text-white leading-tight tracking-tight">
+            <h2 className="text-2xl sm:text-3xl xl:text-4xl font-serif font-bold text-white leading-tight tracking-tight">
               Ancient Disciplines. <br />
               <span className="italic text-cappuccino">Elite Virtual Mastery.</span>
             </h2>
 
-            <p className="text-xs xl:text-sm text-white/75 font-light leading-relaxed pr-6">
+            <p className="text-xs xl:text-sm text-white/75 font-light leading-relaxed pr-4">
               Connect daily from anywhere in the world for live posture-corrected training, personal instructor feedback, and traditional martial arts mastery across 6 official morning and evening batch slots.
             </p>
 
-            {/* Dual Action Buttons (Matching Reference Image: Pill Button + Circular Play Button) */}
-            <div className="flex items-center gap-4 pt-2">
+            {/* Pill CTA Button (Watch Demo removed as requested) */}
+            <div className="pt-1">
               <Link
                 href="/course"
-                className="px-6 py-3 rounded-full bg-gradient-to-r from-cappuccino to-[#DDA922] hover:from-white hover:to-white text-coffee-dark font-extrabold text-xs uppercase tracking-wider transition-all shadow-md active:scale-95 flex items-center gap-2"
+                className="px-6 py-2.5 lg:py-3 rounded-full bg-gradient-to-r from-cappuccino to-[#DDA922] hover:brightness-110 text-coffee-dark font-extrabold text-xs uppercase tracking-wider transition-all shadow-md active:scale-95 inline-flex items-center gap-2"
               >
                 <span>Explore Courses</span>
                 <ArrowRight size={14} />
               </Link>
-
-              <button
-                type="button"
-                onClick={() => setDemoVideoOpen(true)}
-                className="flex items-center gap-2.5 text-white/85 hover:text-cappuccino transition-colors group cursor-pointer"
-              >
-                <div className="w-11 h-11 rounded-full border-2 border-cappuccino/60 bg-white/5 group-hover:bg-cappuccino group-hover:text-coffee-dark flex items-center justify-center transition-all shadow-[0_0_20px_rgba(200,149,95,0.35)]">
-                  <Play size={15} className="ml-0.5 fill-current" />
-                </div>
-                <span className="text-xs font-bold uppercase tracking-wider">Watch Demo</span>
-              </button>
             </div>
 
             {/* 4 Core Pillars Badges */}
-            <div className="grid grid-cols-2 gap-2.5 pt-3 text-[11px] text-white/70 pr-6 border-t border-white/10">
+            <div className="grid grid-cols-2 gap-2 pt-2.5 text-[11px] text-white/70 pr-4 border-t border-white/10">
               <div className="flex items-center gap-2">
                 <Radio size={13} className="text-emerald-400 shrink-0 animate-pulse" />
                 <span>Daily Google Meet</span>
@@ -1153,7 +1133,7 @@ function PortalAuthContent() {
           </div>
 
           {/* Bottom Trust Seal */}
-          <div className="relative z-10 pt-4 mt-4 border-t border-white/10 flex items-center gap-4 text-[11px] text-white/50">
+          <div className="relative z-10 pt-3 mt-3 border-t border-white/10 flex items-center gap-3 text-[10px] xl:text-[11px] text-white/50">
             <span className="flex items-center gap-1.5">
               <Lock size={12} className="text-cappuccino" />
               <span>Zero Spam • No Email Required</span>
@@ -1163,13 +1143,6 @@ function PortalAuthContent() {
           </div>
         </motion.div>
       </div>
-
-      {/* Video Demo Modal */}
-      <VideoModal
-        isOpen={demoVideoOpen}
-        onClose={() => setDemoVideoOpen(false)}
-        videoId="dQw4w9WgXcQ"
-      />
     </main>
   );
 }
