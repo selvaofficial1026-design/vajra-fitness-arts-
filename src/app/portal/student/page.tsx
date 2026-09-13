@@ -22,12 +22,12 @@ import {
   Phone,
   MapPin,
   CheckCheck,
-  MessageCircle,
   HelpCircle,
   ShieldCheck,
   AlertCircle
 } from "lucide-react";
 import { Student, ClassMeeting, VideoClass, ChatMessage } from "@/lib/portalStore";
+import { cn } from "@/lib/utils";
 import PortalNavbar, { PortalNavItem } from "@/components/portal/PortalNavbar";
 import PortalLoadingScreen from "@/components/portal/PortalLoadingScreen";
 
@@ -46,7 +46,7 @@ export default function StudentPortalPage() {
   const [meetings, setMeetings] = useState<ClassMeeting[]>([]);
   const [meetLoading, setMeetLoading] = useState(false);
 
-  // Chat/Doubt State (WhatsApp style)
+  // Chat/Doubt State (Internal Academy Direct Channel)
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [newMessageText, setNewMessageText] = useState("");
   const [chatSending, setChatSending] = useState(false);
@@ -277,7 +277,7 @@ export default function StudentPortalPage() {
                   Class Timing
                 </span>
                 <span className="font-semibold text-cappuccino font-mono">
-                  {student.batch.split("(")[0]}
+                  {student.batch}
                 </span>
               </div>
 
@@ -514,147 +514,145 @@ export default function StudentPortalPage() {
               </motion.div>
             )}
 
-            {/* 3. DOUBT & CORRECTION DESK (WHATSAPP STYLE) */}
+            {/* ========================================================================= */}
+            {/* TAB 3: VAJRA DIRECT CLASSROOM DOUBT DESK (OPEN CANVAS - NO BOXES)         */}
+            {/* ========================================================================= */}
             {activeTab === "doubt" && (
               <motion.div
-                initial={{ opacity: 0, y: 10 }}
+                initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
-                className="space-y-4"
+                className="space-y-6"
               >
-                <div className="bg-[#241A1A] rounded-3xl border border-cappuccino/30 shadow-2xl overflow-hidden flex flex-col h-[560px]">
-                  {/* Chat Header */}
-                  <div className="p-4 bg-[#1D1414] border-b border-white/10 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="relative">
-                        <div className="w-9 h-9 rounded-full border border-cappuccino/50 bg-[#241A1A] p-1 flex items-center justify-center shadow-sm">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
-                            src="/images/logo_gold.jpeg"
-                            alt="Coach"
-                            className="w-full h-full object-contain rounded-full"
-                          />
-                        </div>
-                        <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-[#25D366] border-2 border-[#1D1414]" />
+                {/* Header Info Banner - Sits directly on background */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-coffee-dark/10">
+                  <div className="flex items-center gap-3">
+                    <div className="relative">
+                      <div className="w-10 h-10 rounded-full border border-cappuccino/50 bg-coffee-dark p-1 flex items-center justify-center shadow-xs">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src="/images/logo_gold.jpeg"
+                          alt="Coach"
+                          className="w-full h-full object-contain rounded-full"
+                        />
                       </div>
-                      <div>
-                        <h4 className="font-serif font-bold text-sm text-white flex items-center gap-1.5">
-                          <span>Vajra Head Coach Desk</span>
-                          <ShieldCheck size={14} className="text-cappuccino" />
-                        </h4>
-                        <p className="text-[10px] text-[#25D366] font-medium">
-                          Online • Direct Guidance &amp; Posture Corrections
-                        </p>
-                      </div>
+                      <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-[#FAF7F2]" />
                     </div>
-
-                    <a
-                      href={`https://wa.me/918778931958?text=${encodeURIComponent(
-                        `Hello Master, I am ${student.name} (${student.permanentCode}), student of ${student.course}. I have a doubt regarding today's training.`
-                      )}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#25D366]/20 border border-[#25D366]/40 text-[#25D366] text-xs font-bold hover:bg-[#25D366] hover:text-black transition-all cursor-pointer"
-                    >
-                      <MessageCircle size={13} />
-                      <span>WhatsApp App</span>
-                    </a>
+                    <div>
+                      <h4 className="font-serif font-bold text-base sm:text-lg text-coffee-dark flex items-center gap-1.5">
+                        <span>Vajra Head Coach Direct Desk</span>
+                        <ShieldCheck size={16} className="text-cappuccino" />
+                      </h4>
+                      <p className="text-xs text-coffee-dark/65 font-medium">
+                        Direct Guidance • Posture Corrections • Training Q&amp;A
+                      </p>
+                    </div>
                   </div>
 
-                  {/* Quick Prompts */}
-                  <div className="px-4 py-2 bg-[#170F0F] border-b border-white/5 flex gap-2 overflow-x-auto scrollbar-none text-[11px]">
-                    <span className="text-white/40 uppercase tracking-wider text-[9px] self-center shrink-0 font-bold">
-                      Quick Ask:
+                  <div className="flex items-center gap-2 self-start sm:self-auto">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-800 text-[10px] font-bold uppercase tracking-wider">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                      <span>Internal Academy Channel</span>
                     </span>
-                    {[
-                      "How to correct my wrist angle in Silambam?",
-                      "Can I attend the evening batch today?",
-                      "Please guide me on diet before morning class",
-                      "My stance feels unbalanced during kicks"
-                    ].map((quick, i) => (
-                      <button
-                        key={i}
-                        type="button"
-                        onClick={() => handleSendMessage(undefined, quick)}
-                        className="px-3 py-1 rounded-full bg-white/5 hover:bg-cappuccino hover:text-coffee-dark text-white/80 border border-white/10 whitespace-nowrap transition-all cursor-pointer shrink-0 text-[10.5px]"
-                      >
-                        {quick}
-                      </button>
-                    ))}
                   </div>
+                </div>
 
-                  {/* Messages Canvas */}
-                  <div className="flex-1 p-4 sm:p-6 overflow-y-auto space-y-3 bg-[#130D0D]">
-                    {messages.length === 0 ? (
-                      <div className="text-center py-16 space-y-2 text-white/40">
-                        <HelpCircle size={32} className="mx-auto text-cappuccino/60" />
-                        <p className="text-xs sm:text-sm">No doubts asked yet.</p>
-                        <p className="text-[11px] text-white/30">
-                          Type your question below to chat directly with your instructor!
-                        </p>
-                      </div>
-                    ) : (
-                      messages.map((msg) => {
-                        const isMe = msg.sender === "student";
-                        return (
+                {/* Quick Prompts */}
+                <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
+                  <span className="text-[10px] uppercase tracking-wider text-coffee-dark/50 font-bold shrink-0">
+                    Quick Ask:
+                  </span>
+                  {[
+                    "How to correct my wrist angle in Silambam?",
+                    "Can I attend the evening batch today?",
+                    "Please guide me on diet before morning class",
+                    "My stance feels unbalanced during kicks"
+                  ].map((quick, i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      onClick={() => handleSendMessage(undefined, quick)}
+                      className="px-3 py-1.5 rounded-full bg-white hover:bg-cappuccino hover:text-coffee-dark text-coffee-dark/80 border border-coffee-dark/15 whitespace-nowrap transition-all cursor-pointer shrink-0 text-[11px] font-medium shadow-2xs active:scale-95"
+                    >
+                      {quick}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Messages Canvas - Subtle open container */}
+                <div className="min-h-[360px] max-h-[460px] overflow-y-auto p-4 sm:p-6 space-y-3 rounded-2xl bg-white/40 border border-coffee-dark/10">
+                  {messages.length === 0 ? (
+                    <div className="text-center py-20 space-y-2 text-coffee-dark/40">
+                      <HelpCircle size={36} className="mx-auto text-cappuccino/60" />
+                      <p className="text-sm font-semibold text-coffee-dark">No doubts asked yet.</p>
+                      <p className="text-xs text-coffee-dark/60">
+                        Type your question below to chat directly with your instructor!
+                      </p>
+                    </div>
+                  ) : (
+                    messages.map((msg) => {
+                      const isMe = msg.sender === "student";
+                      return (
+                        <div
+                          key={msg.id}
+                          className={cn("flex", isMe ? "justify-end" : "justify-start")}
+                        >
                           <div
-                            key={msg.id}
-                            className={`flex ${isMe ? "justify-end" : "justify-start"}`}
+                            className={cn(
+                              "max-w-[88%] sm:max-w-[75%] px-4 py-2.5 rounded-2xl text-xs sm:text-sm leading-relaxed shadow-xs",
+                              isMe
+                                ? "bg-coffee-dark text-white rounded-tr-xs"
+                                : "bg-white text-coffee-dark border border-coffee-dark/10 rounded-tl-xs"
+                            )}
                           >
+                            {!isMe && (
+                              <span className="text-[10px] font-bold text-cappuccino block mb-0.5">
+                                Vajra Head Coach
+                              </span>
+                            )}
+                            <p className="whitespace-pre-wrap break-words">{msg.text}</p>
                             <div
-                              className={`max-w-[85%] sm:max-w-[70%] p-3 rounded-2xl text-xs leading-relaxed shadow-md ${
-                                isMe
-                                  ? "bg-[#005c4b] text-white rounded-tr-none"
-                                  : "bg-[#241A1A] text-white/95 rounded-tl-none border border-cappuccino/30"
-                              }`}
-                            >
-                              {!isMe && (
-                                <span className="text-[10px] font-bold text-cappuccino block mb-1">
-                                  Vajra Head Coach
-                                </span>
+                              className={cn(
+                                "flex items-center justify-end gap-1 text-[9px] mt-1.5",
+                                isMe ? "text-white/60" : "text-coffee-dark/50"
                               )}
-                              <p className="whitespace-pre-wrap">{msg.text}</p>
-                              <div
-                                className={`flex items-center justify-end gap-1 text-[9px] mt-1.5 ${
-                                  isMe ? "text-white/70" : "text-white/40"
-                                }`}
-                              >
-                                <span>
-                                  {new Date(msg.timestamp).toLocaleTimeString([], {
-                                    hour: "2-digit",
-                                    minute: "2-digit"
-                                  })}
-                                </span>
-                                {isMe && <CheckCheck size={13} className="text-[#53bdeb]" />}
-                              </div>
+                            >
+                              <span>
+                                {new Date(msg.timestamp).toLocaleTimeString([], {
+                                  hour: "2-digit",
+                                  minute: "2-digit"
+                                })}
+                              </span>
+                              {isMe && <CheckCheck size={12} className="text-[#53bdeb]" />}
                             </div>
                           </div>
-                        );
-                      })
-                    )}
-                    <div ref={chatBottomRef} />
-                  </div>
-
-                  {/* Chat Input Bar */}
-                  <form
-                    onSubmit={handleSendMessage}
-                    className="p-3 bg-[#1D1414] border-t border-white/10 flex items-center gap-2"
-                  >
-                    <input
-                      type="text"
-                      value={newMessageText}
-                      onChange={(e) => setNewMessageText(e.target.value)}
-                      className="flex-1 bg-[#130D0D] border border-white/10 focus:border-cappuccino text-white rounded-full px-4 py-2 text-xs focus:outline-none transition-colors"
-                    />
-                    <button
-                      type="submit"
-                      disabled={chatSending || !newMessageText.trim()}
-                      className="w-9 h-9 rounded-full bg-[#25D366] hover:bg-[#20ba5a] text-black flex items-center justify-center transition-all disabled:opacity-40 cursor-pointer shrink-0 shadow-md active:scale-95"
-                    >
-                      <Send size={15} />
-                    </button>
-                  </form>
+                        </div>
+                      );
+                    })
+                  )}
+                  <div ref={chatBottomRef} />
                 </div>
+
+                {/* Chat Input Bar - Sits cleanly on canvas */}
+                <form
+                  onSubmit={handleSendMessage}
+                  className="flex items-center gap-2 pt-1"
+                >
+                  <input
+                    type="text"
+                    value={newMessageText}
+                    onChange={(e) => setNewMessageText(e.target.value)}
+                    className="flex-1 bg-white/70 focus:bg-white border border-coffee-dark/20 focus:border-cappuccino text-coffee-dark rounded-xl px-4 py-2.5 text-xs sm:text-sm focus:outline-none transition-colors shadow-xs"
+                  />
+                  <button
+                    type="submit"
+                    disabled={chatSending || !newMessageText.trim()}
+                    className="px-5 py-2.5 rounded-xl bg-cappuccino hover:bg-[#d69f68] text-coffee-dark font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all disabled:opacity-40 cursor-pointer shrink-0 shadow-xs active:scale-95"
+                  >
+                    <Send size={15} />
+                    <span>Send</span>
+                  </button>
+                </form>
               </motion.div>
             )}
 
@@ -707,7 +705,7 @@ export default function StudentPortalPage() {
 
                     <div className="p-4 rounded-2xl bg-[#FAF7F2] border border-cream space-y-1">
                       <span className="text-[10px] uppercase tracking-wider text-coffee-dark/50 font-bold block">
-                        Phone Number (WhatsApp)
+                        Phone Number
                       </span>
                       <p className="text-sm font-bold text-coffee-dark flex items-center gap-2">
                         <Phone size={15} className="text-cappuccino" />

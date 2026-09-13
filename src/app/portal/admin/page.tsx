@@ -99,7 +99,7 @@ export default function AdminPortalPage() {
   });
   const [videoSubmitting, setVideoSubmitting] = useState(false);
 
-  // Messaging State (WhatsApp Desk)
+  // Messaging State (Direct Academy Desk)
   const [selectedStudentId, setSelectedStudentId] = useState<string | null>(null);
   const [replyText, setReplyText] = useState("");
   const [messageSending, setMessageSending] = useState(false);
@@ -618,7 +618,7 @@ export default function AdminPortalPage() {
                             </div>
                             <div>
                               <span className="block text-[9px] uppercase tracking-wider text-coffee-dark/50 font-semibold">
-                                WhatsApp Phone
+                                Phone Number
                               </span>
                               <a
                                 href={`tel:${std.phone}`}
@@ -1028,205 +1028,231 @@ export default function AdminPortalPage() {
           )}
 
           {/* ========================================================================= */}
-          {/* TAB 4: MESSAGE SYSTEM (WHATSAPP-STYLE COMMUNICATION DESK)                 */}
+          {/* TAB 4: VAJRA DIRECT CLASSROOM MESSAGING DESK (OPEN CANVAS - NO BOXES)     */}
           {/* ========================================================================= */}
           {activeTab === "messages" && (
             <motion.div
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
-              className="bg-white/80 backdrop-blur-md rounded-2xl sm:rounded-3xl border border-coffee-dark/10 shadow-sm overflow-hidden h-[480px] sm:h-[500px] flex flex-col md:flex-row"
+              className="space-y-6"
             >
-              {/* Left Column: Students Doubts List */}
-              <div className="w-full md:w-[270px] lg:w-[290px] shrink-0 border-b md:border-b-0 md:border-r border-coffee-dark/10 flex flex-col h-[180px] md:h-full bg-white/60">
-                <div className="px-3.5 py-2.5 border-b border-coffee-dark/10 flex items-center justify-between bg-white/50">
-                  <h4 className="font-serif font-bold text-xs sm:text-sm text-coffee-dark flex items-center gap-1.5">
-                    <MessageSquare size={13} className="text-cappuccino" />
-                    <span>Student Doubts</span>
-                  </h4>
-                  <span className="text-[9.5px] font-mono font-bold text-coffee-dark/60 bg-coffee-dark/5 px-2 py-0.5 rounded-full">
-                    {approvedStudents.length} Active
-                  </span>
+              {/* Header Info Banner - Sits directly on background */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-coffee-dark/10">
+                <div>
+                  <h3 className="text-xl sm:text-2xl font-serif font-bold text-coffee-dark flex items-center gap-2.5">
+                    <MessageSquare size={20} className="text-cappuccino" />
+                    <span>Direct Classroom Communication Desk</span>
+                  </h3>
+                  <p className="text-xs text-coffee-dark/65 font-light pt-1">
+                    Direct real-time 1-on-1 private messaging channel between Head Coach and enrolled academy students.
+                  </p>
                 </div>
-
-                <div className="flex-1 overflow-y-auto divide-y divide-coffee-dark/5">
-                  {approvedStudents.length === 0 ? (
-                    <div className="p-6 text-center text-coffee-dark/40 text-xs space-y-1">
-                      <p>No enrolled students yet.</p>
-                      <p className="text-[10px]">Approved students will appear here for direct feedback.</p>
-                    </div>
-                  ) : (
-                    approvedStudents.map((std) => {
-                      const isSelected = activeChatStudent?.id === std.id;
-                      const lastMsg = messages
-                        .filter((m) => m.studentId === std.id)
-                        .slice(-1)[0];
-
-                      return (
-                        <div
-                          key={std.id}
-                          onClick={() => setSelectedStudentId(std.id)}
-                          className={cn(
-                            "px-3 py-2 transition-all cursor-pointer flex items-center gap-2.5",
-                            isSelected
-                              ? "bg-cappuccino/15 border-l-2 border-cappuccino"
-                              : "hover:bg-coffee-dark/[0.03]"
-                          )}
-                        >
-                          <div className="w-7 h-7 rounded-full bg-coffee-dark text-cappuccino font-serif font-bold flex items-center justify-center text-[11px] shrink-0">
-                            {std.name.charAt(0).toUpperCase()}
-                          </div>
-                          <div className="min-w-0 flex-1">
-                            <div className="flex items-center justify-between">
-                              <h5 className="font-serif font-bold text-xs text-coffee-dark truncate">{std.name}</h5>
-                              <span className="text-[8px] text-coffee-dark/50 font-mono">
-                                {std.permanentCode || std.tempCode}
-                              </span>
-                            </div>
-                            <p className="text-[9.5px] text-cappuccino font-medium truncate">{std.course}</p>
-                            {lastMsg && (
-                              <p className="text-[9px] text-coffee-dark/60 truncate mt-0.5">
-                                {lastMsg.sender === "admin" ? "You: " : ""}{lastMsg.text}
-                              </p>
-                            )}
-                          </div>
-                        </div>
-                      );
-                    })
-                  )}
+                <div className="flex items-center gap-2 self-start sm:self-auto">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-800 text-[10px] font-bold uppercase tracking-wider">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    <span>Internal Academy Desk</span>
+                  </span>
                 </div>
               </div>
 
-              {/* Right Column: Active Conversation Desk */}
-              <div className="flex-1 flex flex-col h-[300px] md:h-full bg-background/30">
-                {activeChatStudent ? (
-                  <>
-                    <div className="px-4 py-2.5 bg-white/80 border-b border-coffee-dark/10 flex items-center justify-between">
-                      <div className="flex items-center gap-2.5">
-                        <div className="w-8 h-8 rounded-full bg-coffee-dark text-cappuccino font-serif font-bold flex items-center justify-center text-xs shrink-0">
-                          {activeChatStudent.name.charAt(0).toUpperCase()}
+              {/* Seamless Two-Column Workspace (No Card Boxes) */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                
+                {/* Left Column: Enrolled Students Directory (lg:col-span-4) */}
+                <div className="lg:col-span-4 space-y-3">
+                  <div className="flex items-center justify-between pb-2 border-b border-coffee-dark/10">
+                    <span className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold">
+                      Enrolled Students ({approvedStudents.length})
+                    </span>
+                    <span className="text-[9px] text-coffee-dark/40 font-mono">
+                      Select to message
+                    </span>
+                  </div>
+
+                  <div className="space-y-1.5 max-h-[500px] overflow-y-auto pr-1">
+                    {approvedStudents.length === 0 ? (
+                      <div className="py-12 text-center text-coffee-dark/40 text-xs space-y-1">
+                        <p>No enrolled students yet.</p>
+                        <p className="text-[10px]">Approve admissions in the Admissions tab to message them here.</p>
+                      </div>
+                    ) : (
+                      approvedStudents.map((std) => {
+                        const isSelected = activeChatStudent?.id === std.id;
+                        const lastMsg = messages
+                          .filter((m) => m.studentId === std.id)
+                          .slice(-1)[0];
+
+                        return (
+                          <div
+                            key={std.id}
+                            onClick={() => setSelectedStudentId(std.id)}
+                            className={cn(
+                              "p-3 rounded-2xl transition-all cursor-pointer flex items-start gap-3 border",
+                              isSelected
+                                ? "bg-white/80 border-cappuccino/60 shadow-xs"
+                                : "bg-white/30 hover:bg-white/60 border-coffee-dark/10"
+                            )}
+                          >
+                            <div className="w-8 h-8 rounded-full bg-coffee-dark text-cappuccino font-serif font-bold flex items-center justify-center text-xs shrink-0 mt-0.5">
+                              {std.name.charAt(0).toUpperCase()}
+                            </div>
+                            <div className="min-w-0 flex-1">
+                              <div className="flex items-baseline justify-between gap-1">
+                                <h5 className="font-serif font-bold text-xs sm:text-sm text-coffee-dark">
+                                  {std.name}
+                                </h5>
+                                <span className="text-[8.5px] text-cappuccino font-mono font-bold shrink-0">
+                                  {std.permanentCode || std.tempCode}
+                                </span>
+                              </div>
+                              <p className="text-[10px] text-coffee-dark/70 font-medium">
+                                <strong className="text-cappuccino">{std.course}</strong> • {std.batch}
+                              </p>
+                              {lastMsg && (
+                                <p className="text-[10.5px] text-coffee-dark/60 mt-1 line-clamp-2 leading-tight">
+                                  <strong className="text-coffee-dark/75">{lastMsg.sender === "admin" ? "You: " : ""}</strong>
+                                  {lastMsg.text}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })
+                    )}
+                  </div>
+                </div>
+
+                {/* Right Column: Direct Conversation Stream (lg:col-span-8) */}
+                <div className="lg:col-span-8 flex flex-col">
+                  {activeChatStudent ? (
+                    <div className="space-y-3">
+                      {/* Active Conversation Top Info Bar - Sits on canvas */}
+                      <div className="pb-3 border-b border-coffee-dark/10 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <div className="flex items-center gap-3">
+                          <div className="w-9 h-9 rounded-full bg-coffee-dark text-cappuccino font-serif font-bold flex items-center justify-center text-sm shrink-0">
+                            {activeChatStudent.name.charAt(0).toUpperCase()}
+                          </div>
+                          <div>
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <h4 className="font-serif font-bold text-sm sm:text-base text-coffee-dark leading-none">
+                                {activeChatStudent.name}
+                              </h4>
+                              <span className="px-2 py-0.5 rounded-full bg-cappuccino/20 border border-cappuccino/40 text-coffee-dark font-mono text-[9px] font-bold">
+                                {activeChatStudent.permanentCode || activeChatStudent.tempCode}
+                              </span>
+                            </div>
+                            <p className="text-xs text-coffee-dark/65 pt-0.5">
+                              Enrolled Discipline: <strong className="text-cappuccino">{activeChatStudent.course}</strong> • Batch Slot: {activeChatStudent.batch}
+                            </p>
+                          </div>
                         </div>
-                        <div>
-                          <h4 className="font-serif font-bold text-xs sm:text-sm text-coffee-dark flex items-center gap-1.5 leading-tight">
-                            <span>{activeChatStudent.name}</span>
-                            <span className="text-[9px] font-mono text-cappuccino font-bold">
-                              ({activeChatStudent.permanentCode || activeChatStudent.tempCode})
-                            </span>
-                          </h4>
-                          <p className="text-[9.5px] text-coffee-dark/60">
-                            {activeChatStudent.course} • Batch: {activeChatStudent.batch}
-                          </p>
+
+                        <div className="text-[10px] font-mono text-coffee-dark/50 self-start sm:self-auto">
+                          Phone: <a href={`tel:${activeChatStudent.phone}`} className="text-coffee-dark hover:text-cappuccino font-bold underline">+91 {activeChatStudent.phone}</a>
                         </div>
                       </div>
 
-                      <a
-                        href={`https://wa.me/91${activeChatStudent.phone.replace(/\D/g, "")}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="px-2.5 py-1 rounded-full bg-[#25D366]/15 border border-[#25D366]/30 text-emerald-800 text-[10px] font-bold hover:bg-[#25D366] hover:text-black transition-all flex items-center gap-1 cursor-pointer"
-                      >
-                        <Phone size={11} />
-                        <span>WhatsApp</span>
-                      </a>
-                    </div>
-
-                    <div className="flex-1 p-3 sm:p-4 overflow-y-auto space-y-2.5">
-                      {activeChatMessages.length === 0 ? (
-                        <div className="text-center py-14 text-coffee-dark/40 space-y-1">
-                          <MessageSquare size={26} className="mx-auto text-cappuccino/60" />
-                          <p className="text-xs font-semibold text-coffee-dark">No messages yet with {activeChatStudent.name}.</p>
-                          <p className="text-[10px]">Provide training instructions or corrections below.</p>
-                        </div>
-                      ) : (
-                        activeChatMessages.map((msg) => {
-                          const isAdmin = msg.sender === "admin";
-                          return (
-                            <div
-                              key={msg.id}
-                              className={cn("flex", isAdmin ? "justify-end" : "justify-start")}
-                            >
+                      {/* Chat Messages Stream */}
+                      <div className="min-h-[340px] max-h-[440px] overflow-y-auto p-4 sm:p-5 space-y-3 rounded-2xl bg-white/40 border border-coffee-dark/10">
+                        {activeChatMessages.length === 0 ? (
+                          <div className="text-center py-20 text-coffee-dark/40 space-y-1.5">
+                            <MessageSquare size={32} className="mx-auto text-cappuccino/60" />
+                            <p className="text-sm font-semibold text-coffee-dark">No conversation history yet with {activeChatStudent.name}.</p>
+                            <p className="text-xs text-coffee-dark/50">Send guidance, corrections, or advice directly through this desk.</p>
+                          </div>
+                        ) : (
+                          activeChatMessages.map((msg) => {
+                            const isAdmin = msg.sender === "admin";
+                            return (
                               <div
-                                className={cn(
-                                  "max-w-[85%] sm:max-w-[70%] px-3.5 py-2 rounded-2xl text-xs leading-relaxed shadow-2xs",
-                                  isAdmin
-                                    ? "bg-coffee-dark text-white rounded-tr-xs"
-                                    : "bg-white text-coffee-dark border border-coffee-dark/10 rounded-tl-xs"
-                                )}
+                                key={msg.id}
+                                className={cn("flex", isAdmin ? "justify-end" : "justify-start")}
                               >
-                                {!isAdmin && (
-                                  <span className="text-[9.5px] font-bold text-cappuccino block mb-0.5">
-                                    {activeChatStudent.name}
-                                  </span>
-                                )}
-                                <p className="whitespace-pre-wrap">{msg.text}</p>
                                 <div
                                   className={cn(
-                                    "flex items-center justify-end gap-1 text-[8.5px] mt-1",
-                                    isAdmin ? "text-white/60" : "text-coffee-dark/50"
+                                    "max-w-[88%] sm:max-w-[75%] px-4 py-2.5 rounded-2xl text-xs sm:text-sm leading-relaxed shadow-xs",
+                                    isAdmin
+                                      ? "bg-coffee-dark text-white rounded-tr-xs"
+                                      : "bg-white text-coffee-dark border border-coffee-dark/10 rounded-tl-xs"
                                   )}
                                 >
-                                  <span>
-                                    {new Date(msg.timestamp).toLocaleTimeString([], {
-                                      hour: "2-digit",
-                                      minute: "2-digit"
-                                    })}
-                                  </span>
-                                  {isAdmin && <CheckCheck size={11} className="text-[#53bdeb]" />}
+                                  {!isAdmin && (
+                                    <span className="text-[10px] font-bold text-cappuccino block mb-0.5">
+                                      {activeChatStudent.name}
+                                    </span>
+                                  )}
+                                  <p className="whitespace-pre-wrap break-words">{msg.text}</p>
+                                  <div
+                                    className={cn(
+                                      "flex items-center justify-end gap-1.5 text-[9px] mt-1.5",
+                                      isAdmin ? "text-white/60" : "text-coffee-dark/50"
+                                    )}
+                                  >
+                                    <span>
+                                      {new Date(msg.timestamp).toLocaleTimeString([], {
+                                        hour: "2-digit",
+                                        minute: "2-digit"
+                                      })}
+                                    </span>
+                                    {isAdmin && <CheckCheck size={12} className="text-[#53bdeb]" />}
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                          );
-                        })
-                      )}
-                      <div ref={chatScrollRef} />
-                    </div>
+                            );
+                          })
+                        )}
+                        <div ref={chatScrollRef} />
+                      </div>
 
-                    {/* Quick Response Chips */}
-                    <div className="px-3 py-1.5 bg-white/60 border-t border-coffee-dark/5 flex items-center gap-1.5 overflow-x-auto no-scrollbar">
-                      <span className="text-[9px] font-bold uppercase tracking-wider text-coffee-dark/40 shrink-0">Quick:</span>
-                      {[
-                        "Keep practicing daily!",
-                        "Approved for today's class.",
-                        "Keep your posture upright.",
-                        "Join today's Google Meet live class."
-                      ].map((quick) => (
-                        <button
-                          key={quick}
-                          type="button"
-                          onClick={(e) => handleSendReply(e, quick)}
-                          className="px-2.5 py-1 rounded-full bg-white hover:bg-cappuccino hover:text-coffee-dark text-coffee-dark/75 border border-coffee-dark/10 text-[10px] font-medium whitespace-nowrap transition-all cursor-pointer shadow-2xs active:scale-95"
-                        >
-                          {quick}
-                        </button>
-                      ))}
-                    </div>
+                      {/* Quick Coaching Guidance Chips */}
+                      <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1">
+                        <span className="text-[9.5px] font-bold uppercase tracking-wider text-coffee-dark/40 shrink-0">Quick Reply:</span>
+                        {[
+                          "Keep practicing daily!",
+                          "Approved for today's class.",
+                          "Keep your posture upright.",
+                          "Join today's Google Meet live class."
+                        ].map((quick) => (
+                          <button
+                            key={quick}
+                            type="button"
+                            onClick={(e) => handleSendReply(e, quick)}
+                            className="px-3 py-1 rounded-full bg-white hover:bg-cappuccino hover:text-coffee-dark text-coffee-dark/80 border border-coffee-dark/15 text-[10.5px] font-medium whitespace-nowrap transition-all cursor-pointer shadow-2xs active:scale-95"
+                          >
+                            {quick}
+                          </button>
+                        ))}
+                      </div>
 
-                    {/* Compact Reply Form - NO PLACEHOLDER */}
-                    <form
-                      onSubmit={handleSendReply}
-                      className="p-2.5 bg-white/90 border-t border-coffee-dark/10 flex items-center gap-2"
-                    >
-                      <input
-                        type="text"
-                        value={replyText}
-                        onChange={(e) => setReplyText(e.target.value)}
-                        className="flex-1 bg-background/80 border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-full px-3.5 py-1.5 text-xs focus:outline-none transition-colors shadow-2xs"
-                      />
-                      <button
-                        type="submit"
-                        disabled={messageSending || !replyText.trim()}
-                        className="w-7 h-7 rounded-full bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark flex items-center justify-center transition-all disabled:opacity-40 cursor-pointer shrink-0 shadow-2xs active:scale-95"
-                        title="Send Message"
+                      {/* Send Message Input Bar (Sits cleanly on background) */}
+                      <form
+                        onSubmit={handleSendReply}
+                        className="flex items-center gap-2 pt-1"
                       >
-                        <Send size={12} />
-                      </button>
-                    </form>
-                  </>
-                ) : (
-                  <div className="flex-1 flex items-center justify-center text-coffee-dark/40 text-xs">
-                    Select a student from the left panel to begin chat.
-                  </div>
-                )}
+                        <input
+                          type="text"
+                          value={replyText}
+                          onChange={(e) => setReplyText(e.target.value)}
+                          className="flex-1 bg-white/70 focus:bg-white border border-coffee-dark/20 focus:border-cappuccino text-coffee-dark rounded-xl px-4 py-2.5 text-xs sm:text-sm focus:outline-none transition-colors shadow-xs"
+                        />
+                        <button
+                          type="submit"
+                          disabled={messageSending || !replyText.trim()}
+                          className="px-5 py-2.5 rounded-xl bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 transition-all disabled:opacity-40 cursor-pointer shadow-xs active:scale-95 shrink-0"
+                          title="Send Message"
+                        >
+                          <span>Send</span>
+                          <Send size={13} />
+                        </button>
+                      </form>
+                    </div>
+                  ) : (
+                    <div className="py-20 text-center text-coffee-dark/40 text-xs">
+                      Select an enrolled student from the left panel to begin private classroom communication.
+                    </div>
+                  )}
+                </div>
               </div>
             </motion.div>
           )}

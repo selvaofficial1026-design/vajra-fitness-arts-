@@ -357,8 +357,8 @@ function PortalAuthContent() {
                 <span>YouTube Library</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <MessageSquare size={12} className="text-[#25D366] shrink-0" />
-                <span>WhatsApp Desk</span>
+                <MessageSquare size={12} className="text-cappuccino shrink-0" />
+                <span>Direct Message Desk</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <ShieldCheck size={12} className="text-amber-400 shrink-0" />
@@ -741,7 +741,7 @@ function PortalAuthContent() {
 
                           <div>
                             <label className="text-[10px] uppercase tracking-[0.18em] text-coffee-dark/70 font-bold block mb-1">
-                              WhatsApp Phone Number <span className="text-cappuccino">*</span>
+                              Phone Number <span className="text-cappuccino">*</span>
                             </label>
                             <div className="relative flex items-center">
                               <Phone size={15} className="absolute left-3 text-cappuccino pointer-events-none" />
@@ -1179,8 +1179,8 @@ function PortalAuthContent() {
                 <span>Private YouTube Library</span>
               </div>
               <div className="flex items-center gap-2">
-                <MessageSquare size={13} className="text-[#25D366] shrink-0" />
-                <span>WhatsApp Coach Desk</span>
+                <MessageSquare size={13} className="text-cappuccino shrink-0" />
+                <span>Direct Coach Desk</span>
               </div>
               <div className="flex items-center gap-2">
                 <ShieldCheck size={13} className="text-amber-400 shrink-0" />

@@ -35,6 +35,14 @@
       "text": "hi",
       "timestamp": "2026-09-13T12:33:01.660Z",
       "isRead": false
+    },
+    {
+      "id": "msg_1789303020617_632",
+      "studentId": "std_1789284374584_231",
+      "sender": "admin",
+      "text": "hai",
+      "timestamp": "2026-09-13T12:37:00.617Z",
+      "isRead": false
     }
   ],
   "adminConfig": {
