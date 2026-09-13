@@ -405,29 +405,25 @@ function PortalAuthContent() {
             </p>
           </motion.div>
 
-          {/* Main Glassmorphic Panel - Sleek and Compact */}
+          {/* Seamless Authentication Console - Box-Free & Blended with Background */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.1 }}
-            className="bg-[#241A1A] text-white p-4 sm:p-5 md:p-6 lg:p-7 rounded-2xl md:rounded-3xl border border-cappuccino/35 shadow-[0_25px_60px_rgba(0,0,0,0.45)] relative overflow-hidden max-w-[420px] sm:max-w-md w-full mx-auto"
+            className="text-coffee-dark relative max-w-[440px] sm:max-w-md w-full mx-auto"
           >
-            {/* Ambient Radial Highlights */}
-            <div className="absolute top-0 right-0 w-72 h-72 bg-cappuccino/15 rounded-full blur-[80px] pointer-events-none -translate-y-1/2 translate-x-1/2" />
-            <div className="absolute bottom-0 left-0 w-60 h-60 bg-cappuccino/10 rounded-full blur-[70px] pointer-events-none translate-y-1/2 -translate-x-1/2" />
-
-            {/* MNC Segmented Control Navigation Tabs */}
-            <div className="relative z-10 bg-[#170F0F] p-1 rounded-2xl border border-white/10 shadow-inner mb-3.5 md:mb-4 flex flex-wrap sm:flex-nowrap gap-1">
+            {/* Seamless Segmented Navigation Tabs */}
+            <div className="relative z-10 bg-white/70 backdrop-blur-md p-1 rounded-full border border-coffee-dark/10 shadow-xs mb-4 flex items-center gap-1">
               <button
                 type="button"
                 onClick={() => {
                   setActiveTab("login");
                   setLoginError("");
                 }}
-                className={`flex-1 py-2 px-2 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-all duration-300 flex items-center justify-center gap-1.5 cursor-pointer ${
+                className={`flex-1 py-2 px-2.5 rounded-full text-[11px] font-bold uppercase tracking-wider transition-all duration-300 flex items-center justify-center gap-1.5 cursor-pointer ${
                   activeTab === "login"
-                    ? "bg-[#241A1A] text-white shadow-md border border-cappuccino/50 text-cappuccino"
-                    : "text-white/60 hover:text-white hover:bg-white/5"
+                    ? "bg-coffee-dark text-cappuccino shadow-sm"
+                    : "text-coffee-dark/60 hover:text-coffee-dark hover:bg-black/5"
                 }`}
               >
                 <LogIn size={13} className={activeTab === "login" ? "text-cappuccino" : ""} />
@@ -440,10 +436,10 @@ function PortalAuthContent() {
                   setActiveTab("enroll");
                   setEnrollError("");
                 }}
-                className={`flex-1 py-2 px-2 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-all duration-300 flex items-center justify-center gap-1.5 cursor-pointer ${
+                className={`flex-1 py-2 px-2.5 rounded-full text-[11px] font-bold uppercase tracking-wider transition-all duration-300 flex items-center justify-center gap-1.5 cursor-pointer ${
                   activeTab === "enroll"
-                    ? "bg-[#241A1A] text-white shadow-md border border-cappuccino/50 text-cappuccino"
-                    : "text-white/60 hover:text-white hover:bg-white/5"
+                    ? "bg-coffee-dark text-cappuccino shadow-sm"
+                    : "text-coffee-dark/60 hover:text-coffee-dark hover:bg-black/5"
                 }`}
               >
                 <Sparkles size={13} className={activeTab === "enroll" ? "text-cappuccino" : ""} />
@@ -456,10 +452,10 @@ function PortalAuthContent() {
                   setActiveTab("track");
                   setTrackError("");
                 }}
-                className={`flex-1 py-2 px-2 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-all duration-300 flex items-center justify-center gap-1.5 cursor-pointer ${
+                className={`flex-1 py-2 px-2.5 rounded-full text-[11px] font-bold uppercase tracking-wider transition-all duration-300 flex items-center justify-center gap-1.5 cursor-pointer ${
                   activeTab === "track"
-                    ? "bg-[#241A1A] text-white shadow-md border border-cappuccino/50 text-cappuccino"
-                    : "text-white/60 hover:text-white hover:bg-white/5"
+                    ? "bg-coffee-dark text-cappuccino shadow-sm"
+                    : "text-coffee-dark/60 hover:text-coffee-dark hover:bg-black/5"
                 }`}
               >
                 <Search size={13} className={activeTab === "track" ? "text-cappuccino" : ""} />
@@ -472,10 +468,10 @@ function PortalAuthContent() {
                   setActiveTab("admin");
                   setAdminError("");
                 }}
-                className={`py-2 px-2.5 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-all duration-300 flex items-center justify-center gap-1 cursor-pointer shrink-0 ${
+                className={`py-2 px-3 rounded-full text-[11px] font-bold uppercase tracking-wider transition-all duration-300 flex items-center justify-center gap-1 cursor-pointer shrink-0 ${
                   activeTab === "admin"
-                    ? "bg-cappuccino text-coffee-dark shadow-md font-extrabold"
-                    : "text-white/50 hover:text-white hover:bg-white/5"
+                    ? "bg-cappuccino text-coffee-dark shadow-sm font-extrabold"
+                    : "text-coffee-dark/50 hover:text-coffee-dark hover:bg-black/5"
                 }`}
                 title="Admin Management Console"
               >
@@ -495,9 +491,9 @@ function PortalAuthContent() {
                   transition={{ duration: 0.25 }}
                   className="space-y-3.5 relative z-10"
                 >
-                  <div className="border-b border-white/10 pb-2">
-                    <h3 className="text-base sm:text-lg font-serif font-bold text-white">Student Sign In</h3>
-                    <p className="text-[11px] text-white/60 mt-0.5">
+                  <div className="border-b border-coffee-dark/10 pb-2.5">
+                    <h3 className="text-base sm:text-lg font-serif font-bold text-coffee-dark">Student Sign In</h3>
+                    <p className="text-[11px] text-coffee-dark/60 mt-0.5">
                       Enter your registered name and permanent student code to enter your classroom
                     </p>
                   </div>
@@ -506,9 +502,9 @@ function PortalAuthContent() {
                     <motion.div
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: "auto" }}
-                      className="p-3 rounded-xl bg-red-950/80 border border-red-500/50 text-red-200 text-xs flex items-start gap-2.5"
+                      className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-start gap-2.5"
                     >
-                      <AlertCircle size={15} className="shrink-0 mt-0.5 text-red-400" />
+                      <AlertCircle size={15} className="shrink-0 mt-0.5 text-red-500" />
                       <span>{loginError}</span>
                     </motion.div>
                   )}
@@ -516,16 +512,16 @@ function PortalAuthContent() {
                   <form onSubmit={handleStudentLogin} className="space-y-3">
                     {/* Username */}
                     <div>
-                      <label className="text-[10px] uppercase tracking-[0.18em] text-white/70 font-bold block mb-1">
+                      <label className="text-[10px] uppercase tracking-[0.18em] text-coffee-dark/70 font-bold block mb-1">
                         Username / Registered Full Name <span className="text-cappuccino">*</span>
                       </label>
                       <div className="relative flex items-center">
-                        <User size={15} className="absolute left-3 text-cappuccino/70 pointer-events-none" />
+                        <User size={15} className="absolute left-3 text-cappuccino pointer-events-none" />
                         <input
                           type="text"
                           value={studentUsername}
                           onChange={(e) => setStudentUsername(e.target.value)}
-                          className="w-full bg-[#160E0E] border border-white/20 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/50 text-white rounded-xl pl-9 pr-3 py-2 text-xs focus:outline-none transition-all"
+                          className="w-full bg-white/80 border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-3 py-2 text-xs focus:outline-none transition-all shadow-xs"
                           required
                         />
                       </div>
@@ -534,29 +530,29 @@ function PortalAuthContent() {
                     {/* Permanent Code */}
                     <div>
                       <div className="flex items-center justify-between mb-1">
-                        <label className="text-[10px] uppercase tracking-[0.18em] text-white/70 font-bold">
+                        <label className="text-[10px] uppercase tracking-[0.18em] text-coffee-dark/70 font-bold">
                           Permanent Student Code <span className="text-cappuccino">*</span>
                         </label>
                         <button
                           type="button"
                           onClick={() => setActiveTab("track")}
-                          className="text-[10px] text-cappuccino hover:underline transition-colors cursor-pointer"
+                          className="text-[10px] text-cappuccino hover:underline transition-colors cursor-pointer font-medium"
                         >
                           Forgot or checking code?
                         </button>
                       </div>
                       <div className="relative flex items-center">
-                        <KeyRound size={15} className="absolute left-3 text-cappuccino/70 pointer-events-none" />
+                        <KeyRound size={15} className="absolute left-3 text-cappuccino pointer-events-none" />
                         <input
                           type="text"
                           value={studentCode}
                           onChange={(e) => setStudentCode(e.target.value)}
-                          className="w-full bg-[#160E0E] border border-white/20 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/50 text-white font-mono rounded-xl pl-9 pr-3 py-2 text-xs focus:outline-none transition-all"
+                          className="w-full bg-white/80 border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark font-mono rounded-xl pl-9 pr-3 py-2 text-xs focus:outline-none transition-all shadow-xs"
                           required
                         />
                       </div>
-                      <span className="text-[10px] text-white/40 block mt-1">
-                        Format: <code className="text-cappuccino font-mono">vajra-xxxx</code>
+                      <span className="text-[10px] text-coffee-dark/50 block mt-1">
+                        Format: <code className="text-cappuccino font-mono font-bold">vajra-xxxx</code>
                       </span>
                     </div>
 
@@ -564,7 +560,7 @@ function PortalAuthContent() {
                       <button
                         type="submit"
                         disabled={loginLoading}
-                        className="w-full py-2.5 sm:py-3 bg-cappuccino hover:bg-white text-coffee-dark font-extrabold text-xs uppercase tracking-[0.18em] rounded-full transition-all shadow-premium flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50"
+                        className="w-full py-2.5 sm:py-3 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-extrabold text-xs uppercase tracking-[0.18em] rounded-full transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50"
                       >
                         {loginLoading ? (
                           <span>Verifying Credentials...</span>
@@ -579,12 +575,12 @@ function PortalAuthContent() {
                   </form>
 
                   {/* Need to Enroll? */}
-                  <div className="pt-2 text-center text-xs text-white/50 border-t border-white/10">
+                  <div className="pt-2 text-center text-xs text-coffee-dark/60 border-t border-coffee-dark/10">
                     New to online classes?{" "}
                     <button
                       type="button"
                       onClick={() => setActiveTab("enroll")}
-                      className="text-cappuccino font-bold underline hover:text-white transition-colors cursor-pointer"
+                      className="text-cappuccino font-bold underline hover:text-coffee-dark transition-colors cursor-pointer"
                     >
                       Enroll for Online Admission
                     </button>
@@ -603,9 +599,9 @@ function PortalAuthContent() {
                   className="space-y-3.5 relative z-10"
                 >
                   {generatedTempCode ? (
-                    /* MNC Success Modal */
+                    /* MNC Success State */
                     <div className="text-center py-3 space-y-4">
-                      <div className="w-14 h-14 rounded-2xl bg-emerald-500/20 border border-emerald-500/50 flex items-center justify-center text-emerald-400 mx-auto shadow-lg">
+                      <div className="w-14 h-14 rounded-2xl bg-emerald-50 border border-emerald-300 flex items-center justify-center text-emerald-600 mx-auto shadow-xs">
                         <CheckCircle2 size={32} />
                       </div>
 
@@ -613,25 +609,25 @@ function PortalAuthContent() {
                         <span className="text-[9px] uppercase tracking-[0.25em] text-cappuccino font-bold block mb-1">
                           Admission Submitted Successfully
                         </span>
-                        <h3 className="text-xl font-serif font-bold text-white">Your Temporary Tracking Code</h3>
-                        <p className="text-[11px] text-white/70 max-w-sm mx-auto mt-1 leading-relaxed">
+                        <h3 className="text-xl font-serif font-bold text-coffee-dark">Your Temporary Tracking Code</h3>
+                        <p className="text-[11px] text-coffee-dark/70 max-w-sm mx-auto mt-1 leading-relaxed">
                           Please save this code. Our Head Coach will review and approve your slot, after which your permanent <code>vajra-xxxx</code> login code will be activated.
                         </p>
                       </div>
 
-                      <div className="bg-[#160E0E] border-2 border-cappuccino/60 rounded-2xl p-4 max-w-xs mx-auto shadow-inner relative group">
-                        <span className="text-[9px] uppercase tracking-widest text-white/50 block mb-1">
+                      <div className="bg-white/80 border border-cappuccino/40 rounded-2xl p-4 max-w-xs mx-auto shadow-xs relative group">
+                        <span className="text-[9px] uppercase tracking-widest text-coffee-dark/50 block mb-1 font-semibold">
                           Tracking Code
                         </span>
-                        <div className="text-2xl sm:text-3xl font-mono font-extrabold text-cappuccino tracking-widest">
+                        <div className="text-2xl sm:text-3xl font-mono font-extrabold text-coffee-dark tracking-widest">
                           {generatedTempCode}
                         </div>
                         <button
                           type="button"
                           onClick={() => copyToClipboard(generatedTempCode)}
-                          className="mt-2.5 inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white/10 hover:bg-cappuccino hover:text-coffee-dark text-xs font-bold transition-all cursor-pointer"
+                          className="mt-2.5 inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-coffee-dark/5 hover:bg-coffee-dark hover:text-white text-coffee-dark text-xs font-bold transition-all cursor-pointer"
                         >
-                          {copiedCode ? <Check size={13} className="text-green-400" /> : <Copy size={13} />}
+                          {copiedCode ? <Check size={13} className="text-green-600" /> : <Copy size={13} />}
                           <span>{copiedCode ? "Copied!" : "Copy Code"}</span>
                         </button>
                       </div>
@@ -644,7 +640,7 @@ function PortalAuthContent() {
                             setActiveTab("track");
                             performTrack(generatedTempCode);
                           }}
-                          className="w-full sm:w-auto px-6 py-2.5 bg-cappuccino text-coffee-dark font-extrabold text-xs uppercase tracking-[0.18em] rounded-full hover:bg-white transition-all shadow-premium inline-flex items-center justify-center gap-2 cursor-pointer"
+                          className="w-full sm:w-auto px-6 py-2.5 bg-coffee-dark text-white font-extrabold text-xs uppercase tracking-[0.18em] rounded-full hover:bg-cappuccino hover:text-coffee-dark transition-all shadow-sm inline-flex items-center justify-center gap-2 cursor-pointer"
                         >
                           <span>Track Approval Status</span>
                           <ArrowRight size={14} />
@@ -665,23 +661,23 @@ function PortalAuthContent() {
                               notes: ""
                             });
                           }}
-                          className="w-full sm:w-auto px-5 py-2.5 border border-white/20 hover:bg-white/10 text-white font-bold text-xs uppercase tracking-wider rounded-full transition-all cursor-pointer"
+                          className="w-full sm:w-auto px-5 py-2.5 border border-coffee-dark/20 hover:bg-coffee-dark/5 text-coffee-dark font-bold text-xs uppercase tracking-wider rounded-full transition-all cursor-pointer"
                         >
                           New Application
                         </button>
                       </div>
                     </div>
                   ) : (
-                    /* MNC Minimalist Registration Form - STRICTLY NO PLACEHOLDERS */
+                    /* Minimalist Registration Form - STRICTLY NO PLACEHOLDERS */
                     <div className="space-y-3">
-                      <div className="border-b border-white/10 pb-2">
+                      <div className="border-b border-coffee-dark/10 pb-2.5">
                         <div className="flex items-center justify-between">
-                          <h3 className="text-base sm:text-lg font-serif font-bold text-white">Online Admission Form</h3>
+                          <h3 className="text-base sm:text-lg font-serif font-bold text-coffee-dark">Online Admission Form</h3>
                           <span className="text-[9px] text-cappuccino font-semibold uppercase tracking-wider">
                             Essential Details
                           </span>
                         </div>
-                        <p className="text-[11px] text-white/60 mt-0.5">
+                        <p className="text-[11px] text-coffee-dark/60 mt-0.5">
                           Instant temporary code generation upon submission. No email required.
                         </p>
                       </div>
@@ -690,9 +686,9 @@ function PortalAuthContent() {
                         <motion.div
                           initial={{ opacity: 0, height: 0 }}
                           animate={{ opacity: 1, height: "auto" }}
-                          className="p-3 rounded-xl bg-red-950/80 border border-red-500/50 text-red-200 text-xs flex items-start gap-2.5"
+                          className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-start gap-2.5"
                         >
-                          <AlertCircle size={15} className="shrink-0 mt-0.5 text-red-400" />
+                          <AlertCircle size={15} className="shrink-0 mt-0.5 text-red-500" />
                           <span>{enrollError}</span>
                         </motion.div>
                       )}
@@ -700,7 +696,7 @@ function PortalAuthContent() {
                       <form onSubmit={handleEnrollSubmit} className="space-y-2.5">
                         {/* Interactive Course Selection Pill Cards */}
                         <div>
-                          <label className="text-[10px] uppercase tracking-[0.18em] text-white/70 font-bold block mb-1.5">
+                          <label className="text-[10px] uppercase tracking-[0.18em] text-coffee-dark/70 font-bold block mb-1.5">
                             Select Training Discipline <span className="text-cappuccino">*</span>
                           </label>
                           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -713,8 +709,8 @@ function PortalAuthContent() {
                                   onClick={() => setEnrollForm({ ...enrollForm, course: c.name })}
                                   className={`py-2 px-2 rounded-xl border text-center transition-all cursor-pointer flex flex-col items-center justify-center gap-0.5 ${
                                     isSelected
-                                      ? "bg-cappuccino text-coffee-dark border-cappuccino shadow-md font-bold"
-                                      : "bg-[#160E0E] text-white/80 border-white/15 hover:border-cappuccino/40"
+                                      ? "bg-coffee-dark text-cappuccino border-coffee-dark shadow-sm font-bold"
+                                      : "bg-white/70 text-coffee-dark/80 border-coffee-dark/15 hover:border-cappuccino/60 hover:bg-white"
                                   }`}
                                 >
                                   <span className="text-sm leading-none">{c.icon}</span>
@@ -728,32 +724,32 @@ function PortalAuthContent() {
                         {/* Full Name & Phone Number (Row 1 - Symmetrical 2 Columns) */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                           <div>
-                            <label className="text-[10px] uppercase tracking-[0.18em] text-white/70 font-bold block mb-1">
+                            <label className="text-[10px] uppercase tracking-[0.18em] text-coffee-dark/70 font-bold block mb-1">
                               Full Name <span className="text-cappuccino">*</span>
                             </label>
                             <div className="relative flex items-center">
-                              <User size={15} className="absolute left-3 text-cappuccino/70 pointer-events-none" />
+                              <User size={15} className="absolute left-3 text-cappuccino pointer-events-none" />
                               <input
                                 type="text"
                                 value={enrollForm.name}
                                 onChange={(e) => setEnrollForm({ ...enrollForm, name: e.target.value })}
-                                className="w-full bg-[#160E0E] border border-white/20 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/50 text-white rounded-xl pl-9 pr-3 py-2 text-xs focus:outline-none transition-all"
+                                className="w-full bg-white/80 border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-3 py-2 text-xs focus:outline-none transition-all shadow-xs"
                                 required
                               />
                             </div>
                           </div>
 
                           <div>
-                            <label className="text-[10px] uppercase tracking-[0.18em] text-white/70 font-bold block mb-1">
+                            <label className="text-[10px] uppercase tracking-[0.18em] text-coffee-dark/70 font-bold block mb-1">
                               WhatsApp Phone Number <span className="text-cappuccino">*</span>
                             </label>
                             <div className="relative flex items-center">
-                              <Phone size={15} className="absolute left-3 text-cappuccino/70 pointer-events-none" />
+                              <Phone size={15} className="absolute left-3 text-cappuccino pointer-events-none" />
                               <input
                                 type="tel"
                                 value={enrollForm.phone}
                                 onChange={(e) => setEnrollForm({ ...enrollForm, phone: e.target.value })}
-                                className="w-full bg-[#160E0E] border border-white/20 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/50 text-white rounded-xl pl-9 pr-3 py-2 text-xs focus:outline-none transition-all"
+                                className="w-full bg-white/80 border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-3 py-2 text-xs focus:outline-none transition-all shadow-xs"
                                 required
                               />
                             </div>
@@ -763,18 +759,18 @@ function PortalAuthContent() {
                         {/* Preferred Batch & City (Row 2 - Symmetrical 2 Columns) */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                           <div>
-                            <label className="text-[10px] uppercase tracking-[0.18em] text-white/70 font-bold block mb-1">
+                            <label className="text-[10px] uppercase tracking-[0.18em] text-coffee-dark/70 font-bold block mb-1">
                               Preferred Batch Slot <span className="text-cappuccino">*</span>
                             </label>
                             <div className="relative flex items-center">
-                              <Clock size={15} className="absolute left-3 text-cappuccino/70 pointer-events-none" />
+                              <Clock size={15} className="absolute left-3 text-cappuccino pointer-events-none" />
                               <select
                                 value={enrollForm.batch}
                                 onChange={(e) => setEnrollForm({ ...enrollForm, batch: e.target.value })}
-                                className="w-full bg-[#160E0E] border border-white/20 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/50 text-white rounded-xl pl-9 pr-3 py-2 text-xs focus:outline-none transition-all cursor-pointer"
+                                className="w-full bg-white/80 border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-3 py-2 text-xs focus:outline-none transition-all cursor-pointer shadow-xs"
                               >
                                 {officialBatches.map((b) => (
-                                  <option key={b} value={b} className="bg-[#181010] text-white">
+                                  <option key={b} value={b} className="bg-background text-coffee-dark">
                                     {b}
                                   </option>
                                 ))}
@@ -783,16 +779,16 @@ function PortalAuthContent() {
                           </div>
 
                           <div>
-                            <label className="text-[10px] uppercase tracking-[0.18em] text-white/70 font-bold block mb-1">
+                            <label className="text-[10px] uppercase tracking-[0.18em] text-coffee-dark/70 font-bold block mb-1">
                               City <span className="text-cappuccino">*</span>
                             </label>
                             <div className="relative flex items-center">
-                              <MapPin size={15} className="absolute left-3 text-cappuccino/70 pointer-events-none" />
+                              <MapPin size={15} className="absolute left-3 text-cappuccino pointer-events-none" />
                               <input
                                 type="text"
                                 value={enrollForm.city}
                                 onChange={(e) => setEnrollForm({ ...enrollForm, city: e.target.value })}
-                                className="w-full bg-[#160E0E] border border-white/20 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/50 text-white rounded-xl pl-9 pr-3 py-2 text-xs focus:outline-none transition-all"
+                                className="w-full bg-white/80 border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-3 py-2 text-xs focus:outline-none transition-all shadow-xs"
                                 required
                               />
                             </div>
@@ -802,31 +798,31 @@ function PortalAuthContent() {
                         {/* Age & Gender (Row 3 - Symmetrical 2 Columns) */}
                         <div className="grid grid-cols-2 gap-2.5">
                           <div>
-                            <label className="text-[10px] uppercase tracking-[0.18em] text-white/70 font-bold block mb-1">
+                            <label className="text-[10px] uppercase tracking-[0.18em] text-coffee-dark/70 font-bold block mb-1">
                               Age
                             </label>
                             <input
                               type="number"
                               value={enrollForm.age}
                               onChange={(e) => setEnrollForm({ ...enrollForm, age: e.target.value })}
-                              className="w-full bg-[#160E0E] border border-white/20 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/50 text-white rounded-xl px-3 py-2 text-xs focus:outline-none transition-all"
+                              className="w-full bg-white/80 border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl px-3 py-2 text-xs focus:outline-none transition-all shadow-xs"
                             />
                           </div>
 
                           <div>
-                            <label className="text-[10px] uppercase tracking-[0.18em] text-white/70 font-bold block mb-1">
+                            <label className="text-[10px] uppercase tracking-[0.18em] text-coffee-dark/70 font-bold block mb-1">
                               Gender
                             </label>
                             <div className="relative flex items-center">
-                              <UserCheck size={15} className="absolute left-3 text-cappuccino/70 pointer-events-none" />
+                              <UserCheck size={15} className="absolute left-3 text-cappuccino pointer-events-none" />
                               <select
                                 value={enrollForm.gender}
                                 onChange={(e) => setEnrollForm({ ...enrollForm, gender: e.target.value })}
-                                className="w-full bg-[#160E0E] border border-white/20 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/50 text-white rounded-xl pl-9 pr-2 py-2 text-xs focus:outline-none transition-all cursor-pointer"
+                                className="w-full bg-white/80 border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-2 py-2 text-xs focus:outline-none transition-all cursor-pointer shadow-xs"
                               >
-                                <option value="Male" className="bg-[#181010] text-white">Male</option>
-                                <option value="Female" className="bg-[#181010] text-white">Female</option>
-                                <option value="Other" className="bg-[#181010] text-white">Other</option>
+                                <option value="Male" className="bg-background text-coffee-dark">Male</option>
+                                <option value="Female" className="bg-background text-coffee-dark">Female</option>
+                                <option value="Other" className="bg-background text-coffee-dark">Other</option>
                               </select>
                             </div>
                           </div>
@@ -834,14 +830,14 @@ function PortalAuthContent() {
 
                         {/* Goals / Notes (Row 4) */}
                         <div>
-                          <label className="text-[10px] uppercase tracking-[0.18em] text-white/70 font-bold block mb-1">
+                          <label className="text-[10px] uppercase tracking-[0.18em] text-coffee-dark/70 font-bold block mb-1">
                             Goals or Prior Experience (Optional)
                           </label>
                           <textarea
                             rows={2}
                             value={enrollForm.notes}
                             onChange={(e) => setEnrollForm({ ...enrollForm, notes: e.target.value })}
-                            className="w-full bg-[#160E0E] border border-white/20 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/50 text-white rounded-xl px-3 py-1.5 text-xs focus:outline-none transition-all resize-none"
+                            className="w-full bg-white/80 border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl px-3 py-1.5 text-xs focus:outline-none transition-all resize-none shadow-xs"
                           />
                         </div>
 
@@ -849,7 +845,7 @@ function PortalAuthContent() {
                           <button
                             type="submit"
                             disabled={enrollLoading}
-                            className="w-full py-2.5 sm:py-3 bg-[#25D366] hover:bg-[#20ba5a] text-black font-extrabold text-xs uppercase tracking-[0.18em] rounded-full transition-all shadow-[0_0_20px_rgba(37,211,102,0.35)] flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50"
+                            className="w-full py-2.5 sm:py-3 bg-[#25D366] hover:bg-[#20ba5a] text-black font-extrabold text-xs uppercase tracking-[0.18em] rounded-full transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50"
                           >
                             {enrollLoading ? (
                               <span>Generating Temporary Code...</span>
@@ -877,9 +873,9 @@ function PortalAuthContent() {
                   transition={{ duration: 0.25 }}
                   className="space-y-3.5 relative z-10"
                 >
-                  <div className="border-b border-white/10 pb-2">
-                    <h3 className="text-base sm:text-lg font-serif font-bold text-white">Track Admission Approval</h3>
-                    <p className="text-[11px] text-white/60 mt-0.5">
+                  <div className="border-b border-coffee-dark/10 pb-2.5">
+                    <h3 className="text-base sm:text-lg font-serif font-bold text-coffee-dark">Track Admission Approval</h3>
+                    <p className="text-[11px] text-coffee-dark/60 mt-0.5">
                       Enter your temporary code to inspect real-time review status and retrieve your permanent login code
                     </p>
                   </div>
@@ -888,9 +884,9 @@ function PortalAuthContent() {
                     <motion.div
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: "auto" }}
-                      className="p-3 rounded-xl bg-red-950/80 border border-red-500/50 text-red-200 text-xs flex items-start gap-2.5"
+                      className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-start gap-2.5"
                     >
-                      <AlertCircle size={15} className="shrink-0 mt-0.5 text-red-400" />
+                      <AlertCircle size={15} className="shrink-0 mt-0.5 text-red-500" />
                       <span>{trackError}</span>
                     </motion.div>
                   )}
@@ -903,24 +899,24 @@ function PortalAuthContent() {
                     className="space-y-2.5"
                   >
                     <div>
-                      <label className="text-[10px] uppercase tracking-[0.18em] text-white/70 font-bold block mb-1">
+                      <label className="text-[10px] uppercase tracking-[0.18em] text-coffee-dark/70 font-bold block mb-1">
                         Temporary Tracking Code
                       </label>
                       <div className="flex gap-2">
                         <div className="relative flex-1 flex items-center">
-                          <KeyRound size={15} className="absolute left-3 text-cappuccino/70 pointer-events-none" />
+                          <KeyRound size={15} className="absolute left-3 text-cappuccino pointer-events-none" />
                           <input
                             type="text"
                             value={trackInputCode}
                             onChange={(e) => setTrackInputCode(e.target.value.toUpperCase())}
-                            className="w-full bg-[#160E0E] border border-white/20 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/50 text-white font-mono tracking-widest uppercase rounded-xl pl-9 pr-3 py-2 text-xs focus:outline-none transition-all"
+                            className="w-full bg-white/80 border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark font-mono tracking-widest uppercase rounded-xl pl-9 pr-3 py-2 text-xs focus:outline-none transition-all shadow-xs"
                             required
                           />
                         </div>
                         <button
                           type="submit"
                           disabled={trackLoading}
-                          className="px-5 py-2 bg-cappuccino hover:bg-white text-coffee-dark font-extrabold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50 shrink-0"
+                          className="px-5 py-2 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-extrabold text-xs uppercase tracking-wider rounded-xl transition-all shadow-xs flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50 shrink-0"
                         >
                           {trackLoading ? "Checking..." : "Inspect"}
                         </button>
@@ -933,30 +929,30 @@ function PortalAuthContent() {
                     <motion.div
                       initial={{ opacity: 0, scale: 0.96 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      className="p-4 rounded-xl bg-[#160E0E] border border-cappuccino/40 space-y-3"
+                      className="p-4 rounded-2xl bg-white/80 border border-coffee-dark/15 shadow-xs space-y-3"
                     >
-                      <div className="flex items-center justify-between flex-wrap gap-2 pb-2.5 border-b border-white/10">
+                      <div className="flex items-center justify-between flex-wrap gap-2 pb-2.5 border-b border-coffee-dark/10">
                         <div>
-                          <span className="text-[9px] uppercase tracking-wider text-white/50 block">Applicant</span>
-                          <h4 className="text-sm font-bold text-white">{trackedStudent.name}</h4>
-                          <p className="text-[11px] text-cappuccino">{trackedStudent.course} • {trackedStudent.batch}</p>
+                          <span className="text-[9px] uppercase tracking-wider text-coffee-dark/50 block font-semibold">Applicant</span>
+                          <h4 className="text-sm font-bold text-coffee-dark">{trackedStudent.name}</h4>
+                          <p className="text-[11px] text-cappuccino font-medium">{trackedStudent.course} • {trackedStudent.batch}</p>
                         </div>
 
                         <div>
                           {trackedStudent.status === "APPROVED" && (
-                            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-500/50 text-[10px] font-bold uppercase tracking-wider">
+                            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-300 text-[10px] font-bold uppercase tracking-wider">
                               <CheckCircle2 size={13} />
                               <span>Approved</span>
                             </div>
                           )}
                           {trackedStudent.status === "PENDING" && (
-                            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-950 text-amber-300 border border-amber-500/50 text-[10px] font-bold uppercase tracking-wider">
+                            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-300 text-[10px] font-bold uppercase tracking-wider">
                               <Clock size={13} className="animate-spin" />
                               <span>Under Review</span>
                             </div>
                           )}
                           {trackedStudent.status === "REJECTED" && (
-                            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-red-950 text-red-300 border border-red-500/50 text-[10px] font-bold uppercase tracking-wider">
+                            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-red-50 text-red-700 border border-red-300 text-[10px] font-bold uppercase tracking-wider">
                               <AlertCircle size={13} />
                               <span>Not Approved</span>
                             </div>
@@ -966,15 +962,15 @@ function PortalAuthContent() {
 
                       {/* Approved with Permanent Code */}
                       {trackedStudent.status === "APPROVED" && trackedStudent.permanentCode && (
-                        <div className="p-3.5 rounded-xl bg-[#241A1A] border-2 border-emerald-500/50 space-y-2 text-center">
-                          <span className="text-[9px] uppercase tracking-[0.25em] text-emerald-400 font-bold block">
+                        <div className="p-3.5 rounded-xl bg-emerald-50/80 border border-emerald-300 space-y-2 text-center">
+                          <span className="text-[9px] uppercase tracking-[0.25em] text-emerald-700 font-bold block">
                             Permanent Code Activated
                           </span>
-                          <div className="text-2xl font-mono font-extrabold text-white tracking-widest">
+                          <div className="text-2xl font-mono font-extrabold text-coffee-dark tracking-widest">
                             {trackedStudent.permanentCode}
                           </div>
-                          <p className="text-[11px] text-white/70">
-                            Name: <strong>{trackedStudent.name}</strong> • Code:{" "}
+                          <p className="text-[11px] text-coffee-dark/70">
+                            Name: <strong className="text-coffee-dark">{trackedStudent.name}</strong> • Code:{" "}
                             <strong className="text-cappuccino">{trackedStudent.permanentCode}</strong>
                           </p>
 
@@ -985,7 +981,7 @@ function PortalAuthContent() {
                               setStudentCode(trackedStudent.permanentCode);
                               setActiveTab("login");
                             }}
-                            className="w-full py-2.5 bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs uppercase tracking-[0.18em] rounded-full transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer mt-1"
+                            className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs uppercase tracking-[0.18em] rounded-full transition-all shadow-xs flex items-center justify-center gap-2 cursor-pointer mt-1"
                           >
                             <LogIn size={13} />
                             <span>Proceed to Student Login</span>
@@ -995,13 +991,13 @@ function PortalAuthContent() {
 
                       {/* Pending Step-by-Step Progress */}
                       {trackedStudent.status === "PENDING" && (
-                        <div className="p-3 rounded-xl bg-amber-950/25 border border-amber-500/30 text-xs text-amber-200/90 space-y-1.5">
-                          <div className="flex items-center gap-2 font-bold text-amber-300 text-xs">
+                        <div className="p-3 rounded-xl bg-amber-50/80 border border-amber-300 text-xs text-coffee-dark/80 space-y-1.5">
+                          <div className="flex items-center gap-2 font-bold text-amber-800 text-xs">
                             <Clock size={13} />
                             <span>Admission Verification in Progress</span>
                           </div>
-                          <p className="text-[11px] leading-relaxed text-white/70">
-                            Your application is currently being allocated to a batch slot by our Head Coach. Once approved, your permanent <code>vajra-xxxx</code> code will be generated right here!
+                          <p className="text-[11px] leading-relaxed text-coffee-dark/70">
+                            Your application is currently being allocated to a batch slot by our Head Coach. Once approved, your permanent <code className="text-cappuccino font-mono">vajra-xxxx</code> code will be generated right here!
                           </p>
                         </div>
                       )}
@@ -1020,12 +1016,12 @@ function PortalAuthContent() {
                   transition={{ duration: 0.25 }}
                   className="space-y-3.5 relative z-10"
                 >
-                  <div className="border-b border-white/10 pb-2">
+                  <div className="border-b border-coffee-dark/10 pb-2.5">
                     <div className="flex items-center gap-2">
                       <ShieldCheck size={18} className="text-cappuccino" />
-                      <h3 className="text-base sm:text-lg font-serif font-bold text-white">Academy Admin Access</h3>
+                      <h3 className="text-base sm:text-lg font-serif font-bold text-coffee-dark">Academy Admin Access</h3>
                     </div>
-                    <p className="text-[11px] text-white/60 mt-0.5">
+                    <p className="text-[11px] text-coffee-dark/60 mt-0.5">
                       Restricted to Head Coach and Academy Administration Desk
                     </p>
                   </div>
@@ -1034,47 +1030,47 @@ function PortalAuthContent() {
                     <motion.div
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: "auto" }}
-                      className="p-3 rounded-xl bg-red-950/80 border border-red-500/50 text-red-200 text-xs flex items-start gap-2.5"
+                      className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-start gap-2.5"
                     >
-                      <AlertCircle size={15} className="shrink-0 mt-0.5 text-red-400" />
+                      <AlertCircle size={15} className="shrink-0 mt-0.5 text-red-500" />
                       <span>{adminError}</span>
                     </motion.div>
                   )}
 
                   <form onSubmit={handleAdminLogin} className="space-y-3">
                     <div>
-                      <label className="text-[10px] uppercase tracking-[0.18em] text-white/70 font-bold block mb-1">
+                      <label className="text-[10px] uppercase tracking-[0.18em] text-coffee-dark/70 font-bold block mb-1">
                         Admin Identifier <span className="text-cappuccino">*</span>
                       </label>
                       <div className="relative flex items-center">
-                        <User size={15} className="absolute left-3 text-cappuccino/70 pointer-events-none" />
+                        <User size={15} className="absolute left-3 text-cappuccino pointer-events-none" />
                         <input
                           type="text"
                           value={adminUsername}
                           onChange={(e) => setAdminUsername(e.target.value)}
-                          className="w-full bg-[#160E0E] border border-white/20 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/50 text-white rounded-xl pl-9 pr-3 py-2 text-xs focus:outline-none transition-all"
+                          className="w-full bg-white/80 border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-3 py-2 text-xs focus:outline-none transition-all shadow-xs"
                           required
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="text-[10px] uppercase tracking-[0.18em] text-white/70 font-bold block mb-1">
+                      <label className="text-[10px] uppercase tracking-[0.18em] text-coffee-dark/70 font-bold block mb-1">
                         Master Secret PIN / Password <span className="text-cappuccino">*</span>
                       </label>
                       <div className="relative flex items-center">
-                        <Lock size={15} className="absolute left-3 text-cappuccino/70 pointer-events-none" />
+                        <Lock size={15} className="absolute left-3 text-cappuccino pointer-events-none" />
                         <input
                           type={showAdminPass ? "text" : "password"}
                           value={adminPassword}
                           onChange={(e) => setAdminPassword(e.target.value)}
-                          className="w-full bg-[#160E0E] border border-white/20 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/50 text-white rounded-xl pl-9 pr-9 py-2 text-xs focus:outline-none transition-all"
+                          className="w-full bg-white/80 border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-9 py-2 text-xs focus:outline-none transition-all shadow-xs"
                           required
                         />
                         <button
                           type="button"
                           onClick={() => setShowAdminPass(!showAdminPass)}
-                          className="absolute right-3 text-white/40 hover:text-white transition-colors cursor-pointer"
+                          className="absolute right-3 text-coffee-dark/40 hover:text-coffee-dark transition-colors cursor-pointer"
                         >
                           {showAdminPass ? <EyeOff size={14} /> : <Eye size={14} />}
                         </button>
@@ -1085,7 +1081,7 @@ function PortalAuthContent() {
                       <button
                         type="submit"
                         disabled={adminLoading}
-                        className="w-full py-2.5 sm:py-3 bg-cappuccino hover:bg-white text-coffee-dark font-extrabold text-xs uppercase tracking-[0.18em] rounded-full transition-all shadow-premium flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50"
+                        className="w-full py-2.5 sm:py-3 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-extrabold text-xs uppercase tracking-[0.18em] rounded-full transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50"
                       >
                         {adminLoading ? (
                           <span>Verifying Access...</span>
@@ -1100,16 +1096,16 @@ function PortalAuthContent() {
                   </form>
 
                   {/* Admin Auto-Fill helper (preserved as requested) */}
-                  <div className="mt-3 pt-3 border-t border-white/10 text-xs text-white/60">
-                    <div className="bg-[#160E0E] p-2.5 rounded-xl border border-white/10 flex items-center justify-between text-[11px]">
-                      <span>ID: <strong>admin</strong> | Key: <code className="text-cappuccino font-mono">vajra@2026</code></span>
+                  <div className="mt-3 pt-3 border-t border-coffee-dark/10 text-xs text-coffee-dark/60">
+                    <div className="bg-white/70 p-2.5 rounded-xl border border-coffee-dark/10 flex items-center justify-between text-[11px]">
+                      <span>ID: <strong className="text-coffee-dark">admin</strong> | Key: <code className="text-cappuccino font-mono font-bold">vajra@2026</code></span>
                       <button
                         type="button"
                         onClick={() => {
                           setAdminUsername("admin");
                           setAdminPassword("vajra@2026");
                         }}
-                        className="px-2.5 py-1 bg-white/10 hover:bg-cappuccino hover:text-black rounded-lg text-[10px] font-bold uppercase transition-all cursor-pointer"
+                        className="px-2.5 py-1 bg-coffee-dark/10 hover:bg-coffee-dark hover:text-white text-coffee-dark rounded-lg text-[10px] font-bold uppercase transition-all cursor-pointer"
                       >
                         Fill
                       </button>
