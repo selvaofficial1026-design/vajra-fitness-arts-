@@ -10,7 +10,7 @@ export default function ContactPage() {
     name: "",
     phone: "",
     course: "Fitness",
-    batch: "Morning (6:00 AM - 8:30 AM)",
+    batch: "4:30 AM - 5:15 AM (Morning)",
     message: ""
   });
   const [phoneError, setPhoneError] = useState("");
@@ -65,8 +65,8 @@ I would like to inquire about admissions:
     {
       icon: Clock,
       title: "Daily Training Hours",
-      detail: "Morning: 6:00 AM - 8:30 AM | Evening: 5:00 PM - 8:30 PM",
-      sub: "Weekend Special Batches on Sat & Sun",
+      detail: "Morning: 4:30 AM - 9:15 AM | Evening: 3:45 PM - 6:45 PM",
+      sub: "6 Daily Batches: 4:30 AM, 5:30 AM, 8:30 AM & 3:45 PM, 5:00 PM, 6:00 PM",
       href: undefined,
       external: false
     }
@@ -301,9 +301,12 @@ I would like to inquire about admissions:
                         onChange={(e) => setFormData({ ...formData, batch: e.target.value })}
                         className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3.5 py-3 sm:py-2.5 text-xs sm:text-sm min-h-[44px] focus:outline-none transition-colors cursor-pointer"
                       >
-                        <option value="Morning (6:00 AM - 8:30 AM)" className="bg-[#191111] text-white">Morning (6:00 AM - 8:30 AM)</option>
-                        <option value="Evening (5:00 PM - 8:30 PM)" className="bg-[#191111] text-white">Evening (5:00 PM - 8:30 PM)</option>
-                        <option value="Weekend Special (Sat & Sun)" className="bg-[#191111] text-white">Weekend Special (Sat &amp; Sun)</option>
+                        <option value="4:30 AM - 5:15 AM (Morning)" className="bg-[#191111] text-white">4:30 AM - 5:15 AM (Morning)</option>
+                        <option value="5:30 AM - 6:00 AM (Morning)" className="bg-[#191111] text-white">5:30 AM - 6:00 AM (Morning)</option>
+                        <option value="8:30 AM - 9:15 AM (Morning)" className="bg-[#191111] text-white">8:30 AM - 9:15 AM (Morning)</option>
+                        <option value="3:45 PM - 4:30 PM (Evening)" className="bg-[#191111] text-white">3:45 PM - 4:30 PM (Evening)</option>
+                        <option value="5:00 PM - 5:45 PM (Evening)" className="bg-[#191111] text-white">5:00 PM - 5:45 PM (Evening)</option>
+                        <option value="6:00 PM - 6:45 PM (Evening)" className="bg-[#191111] text-white">6:00 PM - 6:45 PM (Evening)</option>
                       </select>
                     </div>
                   </div>

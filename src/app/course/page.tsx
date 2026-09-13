@@ -38,7 +38,7 @@ const courseCatalog: CourseItem[] = [
     subtitle: "Functional Strength & Conditioning",
     description: "Full-body functional fitness, bodyweight calisthenics, core stability, and cardio endurance for all fitness levels.",
     category: "Fitness",
-    schedule: "Daily | Morning: 6:00 AM - 8:30 AM & Evening: 5:00 PM - 8:30 PM",
+    schedule: "Morning: 4:30-5:15 AM, 5:30-6:00 AM, 8:30-9:15 AM | Evening: 3:45-4:30 PM, 5:00-5:45 PM, 6:00-6:45 PM",
     level: "All Levels (Beginner to Advanced)",
     age: "Teens & Adults",
     image: "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=1200&auto=format&fit=crop",
@@ -56,7 +56,7 @@ const courseCatalog: CourseItem[] = [
     subtitle: "Flexibility, Balance & Mindfulness",
     description: "Guided yoga classes designed to improve body flexibility, release joint tension, build core balance, and calm the mind.",
     category: "Yoga",
-    schedule: "Daily | Morning: 6:00 AM - 7:15 AM & Evening: 6:30 PM - 7:45 PM",
+    schedule: "Morning: 4:30-5:15 AM, 5:30-6:00 AM, 8:30-9:15 AM | Evening: 3:45-4:30 PM, 5:00-5:45 PM, 6:00-6:45 PM",
     level: "All Levels Welcome",
     age: "All Age Groups",
     image: "/images/yoga.jpg",
@@ -74,7 +74,7 @@ const courseCatalog: CourseItem[] = [
     subtitle: "Striking, Defense & Discipline",
     description: "Learn essential striking techniques, punch-kick combinations, defensive head movement, and practical self-defense.",
     category: "Martial Arts",
-    schedule: "Mon to Sat | Evening: 6:00 PM - 7:30 PM",
+    schedule: "Morning: 4:30-5:15 AM, 5:30-6:00 AM, 8:30-9:15 AM | Evening: 3:45-4:30 PM, 5:00-5:45 PM, 6:00-6:45 PM",
     level: "Beginner to Advanced",
     age: "Youth & Adults",
     image: "/images/martial_arts.jpg",
@@ -92,7 +92,7 @@ const courseCatalog: CourseItem[] = [
     subtitle: "Traditional Tamil Staff Art",
     description: "Learn the traditional art of Silambam, featuring footwork drills, continuous stick rotations, speed training, and combat forms.",
     category: "Silambam",
-    schedule: "Mon, Wed, Fri | Morning: 6:00 AM - 7:30 AM & Evening: 5:30 PM - 7:00 PM",
+    schedule: "Morning: 4:30-5:15 AM, 5:30-6:00 AM, 8:30-9:15 AM | Evening: 3:45-4:30 PM, 5:00-5:45 PM, 6:00-6:45 PM",
     level: "Beginner to Advanced",
     age: "Kids (6+) & Adults",
     image: "/images/vajra_hero.jpg",
@@ -278,9 +278,9 @@ export default function CoursesPage() {
 
                         {/* Course Meta Info */}
                         <div className="space-y-2 sm:space-y-2.5 pt-4 border-t border-cream text-xs text-coffee-dark/80 mb-5 sm:mb-6">
-                          <div className="flex items-start sm:items-center gap-2 sm:gap-2.5">
-                            <Clock size={15} className="text-cappuccino shrink-0 mt-0.5 sm:mt-0" />
-                            <span className="text-[11px] leading-tight">{course.schedule}</span>
+                          <div className="flex items-start gap-2 sm:gap-2.5">
+                            <Clock size={15} className="text-cappuccino shrink-0 mt-0.5" />
+                            <span className="text-[11px] leading-relaxed">{course.schedule}</span>
                           </div>
                           <div className="flex items-center gap-2 sm:gap-2.5">
                             <Award size={15} className="text-cappuccino shrink-0" />
