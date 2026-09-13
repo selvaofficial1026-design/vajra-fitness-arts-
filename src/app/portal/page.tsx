@@ -277,13 +277,13 @@ function PortalAuthContent() {
       <div className="absolute bottom-0 left-0 w-[550px] h-[550px] bg-[#241A1A]/10 rounded-full blur-[120px] pointer-events-none translate-y-1/3 -translate-x-1/4" />
 
       {/* Main Canvas Container */}
-      <div className="w-full max-w-[1450px] mx-auto z-10 relative flex flex-col lg:flex-row items-center justify-between min-h-[780px] py-4">
+      <div className="w-full max-w-[1450px] mx-auto z-10 relative flex flex-col md:flex-row items-center md:items-stretch justify-between min-h-[740px] py-4 gap-6 md:gap-4 lg:gap-8">
 
-        {/* MOBILE & TABLET TOP DOME CARD (< lg) */}
+        {/* MOBILE ONLY TOP DOME CARD (md:hidden - Only shown on small phones < 768px) */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="lg:hidden w-full max-w-xl mx-auto mb-6 bg-[#241A1A] rounded-3xl p-5 sm:p-6 border border-cappuccino/35 shadow-xl relative overflow-hidden text-white"
+          className="md:hidden w-full max-w-xl mx-auto mb-6 bg-[#241A1A] rounded-3xl p-5 sm:p-6 border border-cappuccino/35 shadow-xl relative overflow-hidden text-white"
         >
           {/* Subtle Background Action Image */}
           <div className="absolute inset-0 z-0 pointer-events-none">
@@ -330,8 +330,8 @@ function PortalAuthContent() {
           </div>
         </motion.div>
 
-        {/* LEFT/MID SECTION: Floating Ring Logo & Authentication Console */}
-        <div className="w-full max-w-xl mx-auto lg:mx-0 lg:ml-6 xl:ml-12 2xl:ml-16 z-20 relative flex flex-col justify-center">
+        {/* LEFT COLUMN: Floating Ring Logo & Authentication Console */}
+        <div className="w-full md:w-[50%] lg:w-[48%] xl:w-[45%] flex flex-col justify-center py-4 px-2 sm:px-4 lg:px-6 z-20 relative">
 
           {/* Floating Golden Ring Crest (Matching Reference Image's Circular Ring at Top) */}
           <motion.div
@@ -362,7 +362,7 @@ function PortalAuthContent() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.1 }}
-            className="bg-[#241A1A] text-white p-5 sm:p-7 md:p-8 rounded-3xl border border-cappuccino/35 shadow-[0_25px_60px_rgba(0,0,0,0.45)] relative overflow-hidden"
+            className="bg-[#241A1A] text-white p-5 sm:p-7 md:p-8 rounded-3xl border border-cappuccino/35 shadow-[0_25px_60px_rgba(0,0,0,0.45)] relative overflow-hidden max-w-xl mx-auto w-full"
           >
             {/* Ambient Radial Highlights */}
             <div className="absolute top-0 right-0 w-72 h-72 bg-cappuccino/15 rounded-full blur-[80px] pointer-events-none -translate-y-1/2 translate-x-1/2" />
@@ -1069,12 +1069,12 @@ function PortalAuthContent() {
           </motion.div>
         </div>
 
-        {/* DESKTOP GIANT CIRCULAR / OVAL DOME (lg: and above - Matching Reference Image) */}
+        {/* RIGHT COLUMN: DESKTOP GIANT CIRCULAR / OVAL DOME (md: and above - Matching Reference Image) */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.9, x: 50 }}
+          initial={{ opacity: 0, scale: 0.95, x: 30 }}
           animate={{ opacity: 1, scale: 1, x: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="hidden lg:flex absolute -right-24 xl:-right-16 2xl:right-0 top-1/2 -translate-y-1/2 w-[620px] xl:w-[740px] 2xl:w-[820px] h-[620px] xl:h-[740px] 2xl:h-[820px] rounded-full bg-[#241A1A] border-2 border-cappuccino/50 shadow-[-25px_0_70px_rgba(0,0,0,0.5)] z-10 overflow-hidden flex-col justify-center pl-16 xl:pl-20 2xl:pl-24 pr-12 xl:pr-16 text-white"
+          className="hidden md:flex w-full md:w-[48%] lg:w-[50%] xl:w-[52%] bg-[#241A1A] rounded-l-[180px] lg:rounded-l-[260px] xl:rounded-l-full border-l-2 border-y border-cappuccino/50 shadow-[-25px_0_70px_rgba(0,0,0,0.5)] relative overflow-hidden flex-col justify-center py-10 px-6 sm:px-8 lg:px-12 xl:px-16 text-white min-h-[660px] shrink-0 self-stretch my-auto z-10"
         >
           {/* Background Martial Arts Hero Image with Dark Luxury Vignette */}
           <div className="absolute inset-0 z-0 pointer-events-none">
@@ -1088,7 +1088,7 @@ function PortalAuthContent() {
           </div>
 
           {/* Concentric Inner Circular Arc Guide Line */}
-          <div className="absolute inset-4 rounded-full border border-cappuccino/15 pointer-events-none" />
+          <div className="absolute inset-y-6 left-6 right-0 rounded-l-[160px] lg:rounded-l-[240px] xl:rounded-l-full border-l border-cappuccino/20 pointer-events-none" />
 
           {/* Ambient Golden Radial Halo */}
           <div className="absolute top-1/4 left-10 w-72 h-72 bg-cappuccino/20 rounded-full blur-3xl pointer-events-none" />
