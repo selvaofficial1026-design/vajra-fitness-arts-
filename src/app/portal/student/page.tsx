@@ -269,64 +269,61 @@ export default function StudentPortalPage() {
       />
 
       {/* Main Student Page Content - SEAMLESS OPEN CANVAS (NO HEAVY BOXES) */}
-      <main className="min-h-screen bg-background text-coffee-dark pt-28 sm:pt-32 md:pt-36 pb-16 px-4 sm:px-6 md:px-12">
+      <main className="min-h-screen bg-background text-coffee-dark pt-28 sm:pt-32 md:pt-36 pb-16 px-3 xs:px-4 sm:px-6 md:px-12">
         <div className="max-w-7xl mx-auto space-y-8">
           {/* Top Student Header - Sits directly on background without chunky boxes */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-5 pb-6 border-b border-coffee-dark/10">
-            <div className="flex items-center gap-4">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-5 pb-5 sm:pb-6 border-b border-coffee-dark/10">
+            <div className="flex items-start xs:items-center gap-3 sm:gap-4 min-w-0 w-full md:w-auto">
               <button
                 type="button"
                 onClick={() => setIsProfileModalOpen(true)}
-                className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-coffee-dark border border-cappuccino/50 flex items-center justify-center text-cappuccino font-serif text-xl sm:text-2xl font-bold shrink-0 shadow-sm cursor-pointer hover:scale-105 active:scale-95 transition-transform"
+                className="w-12 h-12 min-w-[44px] min-h-[44px] sm:w-14 sm:h-14 rounded-2xl bg-coffee-dark border border-cappuccino/50 flex items-center justify-center text-cappuccino font-serif text-xl sm:text-2xl font-bold shrink-0 shadow-sm cursor-pointer hover:scale-105 active:scale-95 transition-transform touch-manipulation"
                 title="View Student Profile"
+                aria-label="View Student Profile"
               >
                 {student.name.charAt(0).toUpperCase()}
               </button>
-              <div className="space-y-1">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <h1 className="text-xl sm:text-2xl md:text-3xl font-serif font-bold text-coffee-dark tracking-tight leading-tight">
+              <div className="space-y-1 min-w-0 flex-1">
+                <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap min-w-0">
+                  <h1 className="text-lg xs:text-xl sm:text-2xl md:text-3xl font-serif font-bold text-coffee-dark tracking-tight leading-tight break-words min-w-0">
                     {student.name}
                   </h1>
-                  <span className="px-2.5 py-0.5 rounded-full bg-cappuccino/15 border border-cappuccino/30 text-coffee-dark font-mono text-[10px] font-bold uppercase tracking-wider">
+                  <span className="px-2.5 py-0.5 rounded-full bg-cappuccino/15 border border-cappuccino/30 text-coffee-dark font-mono text-[10px] font-bold uppercase tracking-wider break-words max-w-full">
                     {student.permanentCode || student.tempCode}
                   </span>
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-300 text-[10px] font-bold uppercase tracking-wider">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-300 text-[10px] font-bold uppercase tracking-wider shrink-0">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
                     Active Student
                   </span>
                 </div>
-                <p className="text-xs sm:text-sm text-coffee-dark/70">
+                <p className="text-xs sm:text-sm text-coffee-dark/70 break-words leading-relaxed">
                   Discipline: <strong className="text-coffee-dark font-bold">{student.course}</strong> • Batch Slot:{" "}
-                  <span className="text-coffee-dark font-mono font-medium">{student.batch}</span>
+                  <span className="text-coffee-dark font-mono font-medium break-words">{student.batch}</span>
                 </p>
               </div>
             </div>
 
             {/* Quick Class Timing & Live Class status on Header */}
-            <div className="flex items-center justify-between md:justify-end gap-3 pt-2 md:pt-0 border-t md:border-t-0 border-coffee-dark/10">
-              <div className="text-left md:text-right text-[11px] text-coffee-dark/60">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between md:justify-end gap-3 pt-3 md:pt-0 border-t md:border-t-0 border-coffee-dark/10 w-full md:w-auto">
+              <div className="flex items-center justify-between sm:block text-left md:text-right text-[11px] text-coffee-dark/60 min-w-0">
                 <span className="block text-coffee-dark/40 uppercase tracking-widest text-[9px] font-bold">
                   Daily Batch Slot
                 </span>
-                <span className="font-semibold text-coffee-dark font-mono">
+                <span className="font-semibold text-coffee-dark font-mono break-words">
                   {student.batch}
                 </span>
               </div>
 
-              {activeMeeting?.meetUrl ? (
+              {activeMeeting?.meetUrl && (
                 <a
                   href={activeMeeting.meetUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-4 py-2 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-extrabold text-xs uppercase tracking-wider rounded-full shadow-sm transition-all flex items-center gap-1.5 active:scale-95 cursor-pointer shrink-0"
+                  className="w-full sm:w-auto min-h-[40px] px-4 py-2 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-extrabold text-xs uppercase tracking-wider rounded-full shadow-sm transition-all flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer shrink-0 touch-manipulation"
                 >
-                  <Radio size={14} className="text-cappuccino animate-pulse" />
+                  <Radio size={14} className="text-cappuccino animate-pulse shrink-0" />
                   <span>Join Class</span>
                 </a>
-              ) : (
-                <span className="px-3 py-1.5 rounded-full bg-coffee-dark/5 text-coffee-dark/60 text-[11px] font-mono border border-coffee-dark/10">
-                  Room Pending
-                </span>
               )}
             </div>
           </div>
@@ -339,73 +336,73 @@ export default function StudentPortalPage() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
-                className="space-y-8"
+                className="space-y-8 min-w-0"
               >
                 {/* Main Classroom Header & Action - Sits directly on background */}
-                <div className="space-y-4 pb-8 border-b border-coffee-dark/10">
-                  <div className="flex items-center gap-2">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-300 text-xs font-bold uppercase tracking-wider">
-                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <div className="space-y-4 pb-8 border-b border-coffee-dark/10 min-w-0">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-300 text-[11px] xs:text-xs font-bold uppercase tracking-wider">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
                       Official Live Classroom
                     </span>
-                    <span className="text-xs text-coffee-dark/50 font-mono">
+                    <span className="text-[11px] xs:text-xs text-coffee-dark/50 font-mono">
                       • Daily Virtual Training
                     </span>
                   </div>
 
-                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-coffee-dark tracking-tight leading-tight">
+                  <h2 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-coffee-dark tracking-tight leading-tight break-words">
                     {activeMeeting?.title || `${student.course} Daily Live Training`}
                   </h2>
 
-                  <p className="text-xs sm:text-sm text-coffee-dark/70 leading-relaxed font-light max-w-2xl">
+                  <p className="text-xs sm:text-sm text-coffee-dark/70 leading-relaxed font-light max-w-2xl break-words">
                     Live interactive session guided by Head Coach. Practice techniques with direct visual posture analysis, real-time corrections, and authentic master drills.
                   </p>
 
                   {/* Inline details metrics - No heavy boxes, clean minimal cards */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-xl pt-1">
-                    <div className="p-3.5 rounded-2xl bg-white/60 border border-coffee-dark/10 space-y-1">
-                      <span className="text-[9.5px] uppercase tracking-widest text-coffee-dark/50 block font-bold">
+                    <div className="p-3.5 rounded-2xl bg-white/60 border border-coffee-dark/10 space-y-1 min-w-0">
+                      <span className="text-[9.5px] uppercase tracking-widest text-coffee-dark/50 block font-bold truncate">
                         Your Scheduled Batch
                       </span>
-                      <p className="text-sm font-bold text-coffee-dark flex items-center gap-2 font-mono">
-                        <Clock size={16} className="text-cappuccino" />
-                        <span>{student.batch}</span>
+                      <p className="text-xs xs:text-sm font-bold text-coffee-dark flex items-center gap-2 font-mono min-w-0">
+                        <Clock size={16} className="text-cappuccino shrink-0" />
+                        <span className="truncate">{student.batch}</span>
                       </p>
                     </div>
 
-                    <div className="p-3.5 rounded-2xl bg-white/60 border border-coffee-dark/10 space-y-1">
-                      <span className="text-[9.5px] uppercase tracking-widest text-coffee-dark/50 block font-bold">
+                    <div className="p-3.5 rounded-2xl bg-white/60 border border-coffee-dark/10 space-y-1 min-w-0">
+                      <span className="text-[9.5px] uppercase tracking-widest text-coffee-dark/50 block font-bold truncate">
                         Enrolled Discipline
                       </span>
-                      <p className="text-sm font-bold text-coffee-dark flex items-center gap-2">
-                        <Award size={16} className="text-cappuccino" />
-                        <span>{student.course} Academy</span>
+                      <p className="text-xs xs:text-sm font-bold text-coffee-dark flex items-center gap-2 min-w-0">
+                        <Award size={16} className="text-cappuccino shrink-0" />
+                        <span className="truncate">{student.course} Academy</span>
                       </p>
                     </div>
                   </div>
 
                   {/* Join Google Meet CTA */}
-                  <div className="pt-2">
+                  <div className="pt-2 min-w-0">
                     {activeMeeting?.meetUrl ? (
-                      <div className="space-y-2.5">
+                      <div className="space-y-2.5 min-w-0">
                         <a
                           href={activeMeeting.meetUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center justify-center gap-2.5 px-7 py-3.5 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-extrabold text-xs sm:text-sm uppercase tracking-[0.18em] rounded-full transition-all shadow-md active:scale-95 cursor-pointer"
+                          className="inline-flex w-full sm:w-auto min-h-[44px] items-center justify-center gap-2.5 px-6 py-3.5 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-extrabold text-xs sm:text-sm uppercase tracking-[0.18em] rounded-full transition-all shadow-md active:scale-95 cursor-pointer text-center"
                         >
-                          <Radio size={16} className="text-cappuccino animate-pulse" />
+                          <Radio size={16} className="text-cappuccino animate-pulse shrink-0" />
                           <span>Join Live Google Meet</span>
-                          <ExternalLink size={15} />
+                          <ExternalLink size={15} className="shrink-0" />
                         </a>
 
-                        <p className="text-[11px] text-coffee-dark/60 font-mono break-all">
-                          Room URL: <a href={activeMeeting.meetUrl} target="_blank" rel="noopener noreferrer" className="text-cappuccino underline hover:text-coffee-dark">{activeMeeting.meetUrl}</a>
+                        <p className="text-[11px] text-coffee-dark/60 font-mono break-all min-w-0">
+                          Room URL: <a href={activeMeeting.meetUrl} target="_blank" rel="noopener noreferrer" className="text-cappuccino underline hover:text-coffee-dark break-all">{activeMeeting.meetUrl}</a>
                         </p>
                       </div>
                     ) : (
-                      <div className="p-4 sm:p-5 rounded-2xl bg-white/50 border border-coffee-dark/10 text-center max-w-xl">
-                        <p className="text-xs sm:text-sm text-coffee-dark/70">
+                      <div className="p-4 sm:p-5 rounded-2xl bg-white/50 border border-coffee-dark/10 text-center max-w-xl min-w-0">
+                        <p className="text-xs sm:text-sm text-coffee-dark/70 break-words">
                           Google Meet room will be published by the coach shortly before your scheduled batch ({student.batch}).
                         </p>
                       </div>
@@ -414,37 +411,37 @@ export default function StudentPortalPage() {
                 </div>
 
                 {/* Class Guidelines Protocol - Editorial Grid (No chunky boxes) */}
-                <div className="space-y-3 pt-2">
+                <div className="space-y-3 pt-2 min-w-0">
                   <h3 className="text-xs uppercase tracking-[0.2em] text-coffee-dark/50 font-bold">
                     Classroom Preparation Protocol
                   </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div className="space-y-1.5 border-l-2 border-cappuccino pl-3.5">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+                    <div className="space-y-1.5 border-l-2 border-cappuccino pl-3.5 min-w-0">
                       <span className="text-[10px] uppercase tracking-wider text-cappuccino font-bold block">
                         01 • Camera &amp; Floor Space
                       </span>
                       <h4 className="font-serif font-bold text-sm text-coffee-dark">Clear Floor Area</h4>
-                      <p className="text-xs text-coffee-dark/70 leading-relaxed">
+                      <p className="text-xs text-coffee-dark/70 leading-relaxed break-words">
                         Position camera 6x6 feet away with clear floor space so head-to-toe postures and staff movements are visible.
                       </p>
                     </div>
 
-                    <div className="space-y-1.5 border-l-2 border-cappuccino pl-3.5">
+                    <div className="space-y-1.5 border-l-2 border-cappuccino pl-3.5 min-w-0">
                       <span className="text-[10px] uppercase tracking-wider text-cappuccino font-bold block">
                         02 • Training Attire
                       </span>
                       <h4 className="font-serif font-bold text-sm text-coffee-dark">Athletic Gear</h4>
-                      <p className="text-xs text-coffee-dark/70 leading-relaxed">
+                      <p className="text-xs text-coffee-dark/70 leading-relaxed break-words">
                         Wear comfortable stretchable athletic gear. Keep your practice stick/mat and hydration bottle ready.
                       </p>
                     </div>
 
-                    <div className="space-y-1.5 border-l-2 border-cappuccino pl-3.5">
+                    <div className="space-y-1.5 border-l-2 border-cappuccino pl-3.5 min-w-0">
                       <span className="text-[10px] uppercase tracking-wider text-cappuccino font-bold block">
                         03 • Punctuality
                       </span>
                       <h4 className="font-serif font-bold text-sm text-coffee-dark">Join 5 Mins Early</h4>
-                      <p className="text-xs text-coffee-dark/70 leading-relaxed">
+                      <p className="text-xs text-coffee-dark/70 leading-relaxed break-words">
                         Join the Google Meet room 5 minutes prior to your batch start time to complete warm-up drills on schedule.
                       </p>
                     </div>
@@ -462,44 +459,46 @@ export default function StudentPortalPage() {
                 className="space-y-6"
               >
                 {videos.length === 0 ? (
-                  <div className="py-16 text-center space-y-2">
-                    <VideoOff size={36} className="mx-auto text-coffee-dark/40" />
-                    <h3 className="text-lg font-serif font-bold text-coffee-dark">No Training Videos Yet</h3>
-                    <p className="text-xs text-coffee-dark/60">
+                  <div className="py-10 sm:py-16 px-4 text-center space-y-2.5 max-w-md mx-auto">
+                    <VideoOff size={36} className="mx-auto text-coffee-dark/40 shrink-0" />
+                    <h3 className="text-base sm:text-lg font-serif font-bold text-coffee-dark break-words">
+                      No Training Videos Yet
+                    </h3>
+                    <p className="text-xs text-coffee-dark/60 max-w-xs sm:max-w-sm mx-auto leading-relaxed break-words">
                       Your coach has not uploaded recorded lessons for {student.course} yet. Check back soon!
                     </p>
                   </div>
                 ) : (
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
                     {/* Main Video Player */}
-                    <div className="lg:col-span-8 space-y-4">
+                    <div className="lg:col-span-8 space-y-4 w-full min-w-0">
                       {selectedVideo && (
                         <div className="space-y-4">
-                          <div className="relative aspect-video rounded-2xl overflow-hidden bg-black shadow-lg border border-coffee-dark/15">
+                          <div className="relative w-full aspect-video rounded-xl sm:rounded-2xl overflow-hidden bg-black shadow-lg border border-coffee-dark/15">
                             <iframe
                               src={`https://www.youtube-nocookie.com/embed/${selectedVideo.youtubeId}?rel=0&modestbranding=1`}
                               title={selectedVideo.title}
                               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                               allowFullScreen
-                              className="w-full h-full border-0"
+                              className="absolute inset-0 w-full h-full border-0"
                             />
                           </div>
 
-                          <div className="space-y-2 pt-1">
+                          <div className="space-y-2 pt-1 min-w-0">
                             <div className="flex items-center gap-2 flex-wrap">
-                              <span className="px-2.5 py-0.5 rounded-full bg-cappuccino text-coffee-dark text-[9px] font-bold uppercase tracking-wider">
+                              <span className="px-2.5 py-0.5 rounded-full bg-cappuccino text-coffee-dark text-[9px] font-bold uppercase tracking-wider shrink-0">
                                 {selectedVideo.category}
                               </span>
-                              <span className="text-[11px] text-coffee-dark/60 font-mono">
+                              <span className="text-[11px] text-coffee-dark/60 font-mono break-words">
                                 Discipline: <strong className="text-coffee-dark">{selectedVideo.course}</strong>
                               </span>
                             </div>
 
-                            <h3 className="text-xl sm:text-2xl font-serif font-bold text-coffee-dark">
+                            <h3 className="text-lg sm:text-xl md:text-2xl font-serif font-bold text-coffee-dark break-words tracking-tight leading-snug">
                               {selectedVideo.title}
                             </h3>
 
-                            <p className="text-xs sm:text-sm text-coffee-dark/70 leading-relaxed font-light">
+                            <p className="text-xs sm:text-sm text-coffee-dark/70 leading-relaxed font-light break-words">
                               {selectedVideo.description ||
                                 "Guided training video provided for regular practice and technique perfection."}
                             </p>
@@ -509,38 +508,46 @@ export default function StudentPortalPage() {
                     </div>
 
                     {/* Playlist Sidebar - Open Canvas */}
-                    <div className="lg:col-span-4 space-y-3">
-                      <div className="flex items-center justify-between pb-3 border-b border-coffee-dark/10">
-                        <h4 className="font-serif text-sm font-bold text-coffee-dark">
+                    <div className="lg:col-span-4 space-y-3 w-full min-w-0">
+                      <div className="flex items-center justify-between gap-2 pb-2.5 sm:pb-3 border-b border-coffee-dark/10">
+                        <h4 className="font-serif text-sm font-bold text-coffee-dark truncate">
                           {student.course} Library ({videos.length})
                         </h4>
-                        <span className="text-[10px] font-mono text-cappuccino font-bold uppercase">
+                        <span className="text-[10px] font-mono text-cappuccino font-bold uppercase shrink-0">
                           Official Drills
                         </span>
                       </div>
 
-                      <div className="space-y-2 max-h-[500px] overflow-y-auto pr-1">
+                      <div className="space-y-2 max-h-[300px] sm:max-h-[400px] lg:max-h-[500px] overflow-y-auto pr-1 overscroll-contain">
                         {videos.map((vid) => {
                           const isSelected = selectedVideo?.id === vid.id;
                           return (
                             <div
                               key={vid.id}
+                              role="button"
+                              tabIndex={0}
                               onClick={() => setSelectedVideo(vid)}
-                              className={`p-2.5 rounded-2xl border transition-all cursor-pointer flex gap-3 items-center ${
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter" || e.key === " ") {
+                                  e.preventDefault();
+                                  setSelectedVideo(vid);
+                                }
+                              }}
+                              className={`min-h-[44px] p-2.5 rounded-2xl border transition-all cursor-pointer flex gap-3 items-center w-full text-left select-none active:scale-[0.99] ${
                                 isSelected
                                   ? "bg-coffee-dark text-white border-cappuccino/60 shadow-md"
                                   : "bg-white/60 hover:bg-white text-coffee-dark border-coffee-dark/10 hover:border-cappuccino/40"
                               }`}
                             >
                               <div className="w-10 h-10 rounded-xl bg-cappuccino/20 flex items-center justify-center shrink-0 text-cappuccino">
-                                <Play size={16} fill="currentColor" />
+                                <Play size={16} fill="currentColor" className="shrink-0 ml-0.5" />
                               </div>
-                              <div className="min-w-0 flex-1">
-                                <p className="font-serif font-bold text-xs truncate leading-tight">
+                              <div className="min-w-0 flex-1 py-0.5">
+                                <p className="font-serif font-bold text-xs line-clamp-2 leading-tight break-words">
                                   {vid.title}
                                 </p>
                                 <span
-                                  className={`text-[9px] uppercase tracking-wider font-semibold ${
+                                  className={`text-[9px] uppercase tracking-wider font-semibold block mt-0.5 truncate ${
                                     isSelected ? "text-cappuccino" : "text-coffee-dark/50"
                                   }`}
                                 >
@@ -569,8 +576,8 @@ export default function StudentPortalPage() {
               >
                 {/* Header Info Banner - Sits directly on background */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-coffee-dark/10">
-                  <div className="flex items-center gap-3">
-                    <div className="relative">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className="relative shrink-0">
                       <div className="w-10 h-10 rounded-full border border-cappuccino/50 bg-coffee-dark p-1 flex items-center justify-center shadow-xs">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
@@ -581,27 +588,27 @@ export default function StudentPortalPage() {
                       </div>
                       <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-[#FAF7F2]" />
                     </div>
-                    <div>
-                      <h4 className="font-serif font-bold text-base sm:text-lg text-coffee-dark flex items-center gap-1.5">
+                    <div className="min-w-0">
+                      <h4 className="font-serif font-bold text-base sm:text-lg text-coffee-dark flex flex-wrap items-center gap-1.5 leading-snug">
                         <span>Vajra Head Coach Direct Desk</span>
-                        <ShieldCheck size={16} className="text-cappuccino" />
+                        <ShieldCheck size={16} className="text-cappuccino shrink-0" />
                       </h4>
-                      <p className="text-xs text-coffee-dark/65 font-medium">
+                      <p className="text-[11px] sm:text-xs text-coffee-dark/65 font-medium leading-relaxed">
                         Direct Guidance • Posture Corrections • Training Q&amp;A
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2 self-start sm:self-auto">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-800 text-[10px] font-bold uppercase tracking-wider">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  <div className="flex flex-wrap items-center gap-2 self-start sm:self-auto shrink-0">
+                    <span className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-800 text-[10px] font-bold uppercase tracking-wider">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
                       <span>Internal Academy Channel</span>
                     </span>
                   </div>
                 </div>
 
                 {/* Quick Prompts */}
-                <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
+                <div className="flex items-center gap-2 overflow-x-auto no-scrollbar touch-pan-x py-1">
                   <span className="text-[10px] uppercase tracking-wider text-coffee-dark/50 font-bold shrink-0">
                     Quick Ask:
                   </span>
@@ -615,7 +622,7 @@ export default function StudentPortalPage() {
                       key={i}
                       type="button"
                       onClick={() => handleSendMessage(undefined, quick)}
-                      className="px-3 py-1.5 rounded-full bg-white hover:bg-cappuccino hover:text-coffee-dark text-coffee-dark/80 border border-coffee-dark/15 whitespace-nowrap transition-all cursor-pointer shrink-0 text-[11px] font-medium shadow-2xs active:scale-95"
+                      className="px-3 py-1.5 rounded-full bg-white hover:bg-cappuccino hover:text-coffee-dark text-coffee-dark/80 border border-coffee-dark/15 whitespace-nowrap transition-all cursor-pointer shrink-0 text-[11px] font-medium shadow-2xs active:scale-95 min-h-[32px] inline-flex items-center justify-center"
                     >
                       {quick}
                     </button>
@@ -623,7 +630,7 @@ export default function StudentPortalPage() {
                 </div>
 
                 {/* Messages Canvas - Subtle open container */}
-                <div className="min-h-[360px] max-h-[460px] overflow-y-auto p-4 sm:p-6 space-y-3 rounded-2xl bg-white/40 border border-coffee-dark/10">
+                <div className="min-h-[300px] max-h-[380px] sm:max-h-[460px] overflow-y-auto p-3.5 sm:p-6 space-y-3 rounded-2xl bg-white/40 border border-coffee-dark/10">
                   {messages.length === 0 ? (
                     <div className="text-center py-20 space-y-2 text-coffee-dark/40">
                       <HelpCircle size={36} className="mx-auto text-cappuccino/60" />
@@ -642,7 +649,7 @@ export default function StudentPortalPage() {
                         >
                           <div
                             className={cn(
-                              "max-w-[88%] sm:max-w-[75%] px-4 py-2.5 rounded-2xl text-xs sm:text-sm leading-relaxed shadow-xs",
+                              "max-w-[88%] sm:max-w-[75%] px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-2xl text-xs sm:text-sm leading-relaxed shadow-xs break-words [overflow-wrap:anywhere]",
                               isMe
                                 ? "bg-coffee-dark text-white rounded-tr-xs"
                                 : "bg-white text-coffee-dark border border-coffee-dark/10 rounded-tl-xs"
@@ -653,10 +660,10 @@ export default function StudentPortalPage() {
                                 Vajra Head Coach
                               </span>
                             )}
-                            <p className="whitespace-pre-wrap break-words">{msg.text}</p>
+                            <p className="whitespace-pre-wrap break-words [overflow-wrap:anywhere]">{msg.text}</p>
                             <div
                               className={cn(
-                                "flex items-center justify-end gap-1 text-[9px] mt-1.5",
+                                "flex items-center justify-end gap-1 text-[9px] mt-1.5 shrink-0 select-none",
                                 isMe ? "text-white/60" : "text-coffee-dark/50"
                               )}
                             >
@@ -666,7 +673,7 @@ export default function StudentPortalPage() {
                                   minute: "2-digit"
                                 })}
                               </span>
-                              {isMe && <CheckCheck size={12} className="text-[#53bdeb]" />}
+                              {isMe && <CheckCheck size={12} className="text-[#53bdeb] shrink-0" />}
                             </div>
                           </div>
                         </div>
@@ -685,14 +692,16 @@ export default function StudentPortalPage() {
                     type="text"
                     value={newMessageText}
                     onChange={(e) => setNewMessageText(e.target.value)}
-                    className="flex-1 bg-white/70 focus:bg-white border border-coffee-dark/20 focus:border-cappuccino text-coffee-dark rounded-xl px-4 py-2.5 text-xs sm:text-sm focus:outline-none transition-colors shadow-xs"
+                    placeholder="Ask coach your doubt..."
+                    className="flex-1 min-h-[42px] bg-white/70 focus:bg-white border border-coffee-dark/20 focus:border-cappuccino text-coffee-dark placeholder:text-coffee-dark/40 rounded-xl px-3.5 sm:px-4 py-2 text-base sm:text-sm focus:outline-none transition-colors shadow-xs"
                   />
                   <button
                     type="submit"
                     disabled={chatSending || !newMessageText.trim()}
-                    className="px-5 py-2.5 rounded-xl bg-cappuccino hover:bg-[#d69f68] text-coffee-dark font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all disabled:opacity-40 cursor-pointer shrink-0 shadow-xs active:scale-95"
+                    aria-label="Send doubt message"
+                    className="min-h-[42px] px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-cappuccino hover:bg-[#d69f68] text-coffee-dark font-bold text-sm flex items-center justify-center gap-1.5 sm:gap-2 transition-all disabled:opacity-40 cursor-pointer shrink-0 shadow-xs active:scale-95"
                   >
-                    <Send size={15} />
+                    <Send size={15} className="shrink-0" />
                     <span>Send</span>
                   </button>
                 </form>
