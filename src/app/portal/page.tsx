@@ -263,7 +263,7 @@ function PortalAuthContent() {
   };
 
   return (
-    <main className="min-h-screen bg-background text-coffee-dark pt-16 sm:pt-20 md:pt-20 lg:pt-22 pb-8 md:pb-10 px-3 xs:px-4 sm:px-6 md:px-0 md:pl-6 lg:pl-10 xl:pl-14 md:pr-0 relative overflow-hidden flex flex-col items-center justify-center">
+    <main className="min-h-screen bg-background text-coffee-dark pt-16 sm:pt-20 md:pt-20 lg:pt-22 pb-8 md:pb-10 px-4 sm:px-6 md:px-6 lg:px-8 xl:px-12 relative overflow-hidden flex flex-col items-center justify-center">
       {/* Concentric Circular Watermarks & Ambient Auras (Matching Reference Image) */}
       <div className="absolute -top-32 -left-32 w-[520px] h-[520px] rounded-full border border-cappuccino/15 pointer-events-none" />
       <div className="absolute top-1/4 left-1/4 w-[680px] h-[680px] rounded-full border border-cappuccino/10 pointer-events-none" />
@@ -272,8 +272,8 @@ function PortalAuthContent() {
       <div className="absolute top-0 right-0 w-[550px] h-[550px] bg-cappuccino/15 rounded-full blur-[120px] pointer-events-none -translate-y-1/3 translate-x-1/4" />
       <div className="absolute bottom-0 left-0 w-[550px] h-[550px] bg-[#241A1A]/10 rounded-full blur-[120px] pointer-events-none translate-y-1/3 -translate-x-1/4" />
 
-      {/* Main Canvas Container - Flush to Right on Desktop */}
-      <div className="w-full max-w-[1600px] ml-auto mr-0 z-10 relative flex flex-col md:flex-row items-center md:items-stretch justify-between gap-6 md:gap-4 lg:gap-8">
+      {/* Main Canvas Container - Centered and Responsive */}
+      <div className="w-full max-w-[1440px] mx-auto z-10 relative flex flex-col md:flex-row items-center md:items-stretch justify-center md:justify-between gap-6 md:gap-4 lg:gap-8">
 
         {/* MOBILE ONLY TOP DOME CARD (md:hidden - Only shown on small phones < 768px) */}
         <motion.div
@@ -318,7 +318,7 @@ function PortalAuthContent() {
         </motion.div>
 
         {/* LEFT COLUMN: Floating Ring Logo & Authentication Console */}
-        <div className="w-full md:w-[48%] lg:w-[46%] xl:w-[44%] flex flex-col justify-center py-2 md:py-4 px-2 sm:px-4 lg:px-6 z-20 relative">
+        <div className="w-full md:w-[47%] lg:w-[45%] xl:w-[43%] min-w-0 flex flex-col justify-center py-2 md:py-4 px-1 sm:px-2 z-20 relative">
 
           {/* Floating Golden Ring Crest */}
           <motion.div
@@ -349,7 +349,7 @@ function PortalAuthContent() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.1 }}
-            className="bg-[#241A1A] text-white p-4 sm:p-5 md:p-6 lg:p-7 rounded-2xl md:rounded-3xl border border-cappuccino/35 shadow-[0_25px_60px_rgba(0,0,0,0.45)] relative overflow-hidden max-w-lg mx-auto w-full"
+            className="bg-[#241A1A] text-white p-4 sm:p-5 md:p-6 lg:p-7 rounded-2xl md:rounded-3xl border border-cappuccino/35 shadow-[0_25px_60px_rgba(0,0,0,0.45)] relative overflow-hidden max-w-[420px] sm:max-w-md w-full mx-auto"
           >
             {/* Ambient Radial Highlights */}
             <div className="absolute top-0 right-0 w-72 h-72 bg-cappuccino/15 rounded-full blur-[80px] pointer-events-none -translate-y-1/2 translate-x-1/2" />
@@ -1065,7 +1065,7 @@ function PortalAuthContent() {
           initial={{ opacity: 0, scale: 0.96, x: 20 }}
           animate={{ opacity: 1, scale: 1, x: 0 }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="hidden md:flex w-full md:w-[48%] lg:w-[50%] xl:w-[52%] bg-[#241A1A] rounded-l-[160px] md:rounded-l-[220px] lg:rounded-l-[300px] xl:rounded-l-full border-l-2 border-y border-cappuccino/50 shadow-[-30px_0_80px_rgba(0,0,0,0.55)] relative overflow-hidden flex flex-col justify-center py-8 lg:py-10 pl-14 sm:pl-16 md:pl-16 lg:pl-24 xl:pl-28 pr-6 sm:pr-8 lg:pr-12 text-white shrink-0 self-stretch my-auto z-10"
+          className="hidden md:flex w-full md:w-[51%] lg:w-[53%] xl:w-[55%] min-w-0 bg-[#241A1A] rounded-l-[140px] md:rounded-l-[180px] lg:rounded-l-[240px] xl:rounded-l-[280px] border-l-2 border-y border-cappuccino/50 shadow-[-25px_0_60px_rgba(0,0,0,0.5)] relative overflow-hidden flex flex-col justify-center py-8 lg:py-10 text-white shrink-0 self-stretch my-auto z-10"
         >
           {/* Background Martial Arts Hero Image with Dark Luxury Vignette */}
           <div className="absolute inset-0 z-0 pointer-events-none">
@@ -1079,14 +1079,14 @@ function PortalAuthContent() {
           </div>
 
           {/* Concentric Inner Circular Arc Guide Line */}
-          <div className="absolute inset-y-5 left-5 right-0 rounded-l-[140px] md:rounded-l-[200px] lg:rounded-l-[280px] xl:rounded-l-full border-l border-cappuccino/20 pointer-events-none" />
+          <div className="absolute inset-y-5 left-5 right-0 rounded-l-[120px] md:rounded-l-[160px] lg:rounded-l-[220px] xl:rounded-l-[260px] border-l border-cappuccino/20 pointer-events-none" />
 
           {/* Ambient Golden Radial Halo */}
           <div className="absolute top-1/4 left-10 w-72 h-72 bg-cappuccino/20 rounded-full blur-3xl pointer-events-none" />
 
-          {/* Content Inside the Giant Circular Dome */}
-          <div className="relative z-10 space-y-3.5 xl:space-y-4 max-w-md xl:max-w-lg">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cappuccino/15 border border-cappuccino/35 text-cappuccino text-[9px] xl:text-[10px] font-bold uppercase tracking-[0.25em]">
+          {/* Content Inside the Giant Circular Dome - INSET AWAY FROM CURVE */}
+          <div className="relative z-10 space-y-3 xl:space-y-3.5 max-w-md xl:max-w-lg pl-16 sm:pl-20 md:pl-22 lg:pl-28 xl:pl-32 pr-4 sm:pr-6 lg:pr-8">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cappuccino/15 border border-cappuccino/35 text-cappuccino text-[9px] xl:text-[10px] font-bold uppercase tracking-[0.2em]">
               <GraduationCap size={13} />
               <span>Vajra Virtual Training Academy</span>
             </div>
@@ -1096,11 +1096,11 @@ function PortalAuthContent() {
               <span className="italic text-cappuccino">Elite Virtual Mastery.</span>
             </h2>
 
-            <p className="text-xs xl:text-sm text-white/75 font-light leading-relaxed pr-4">
+            <p className="text-xs xl:text-sm text-white/75 font-light leading-relaxed pr-2">
               Connect daily from anywhere in the world for live posture-corrected training, personal instructor feedback, and traditional martial arts mastery across 6 official morning and evening batch slots.
             </p>
 
-            {/* Pill CTA Button (Watch Demo removed as requested) */}
+            {/* Pill CTA Button */}
             <div className="pt-1">
               <Link
                 href="/course"
@@ -1112,7 +1112,7 @@ function PortalAuthContent() {
             </div>
 
             {/* 4 Core Pillars Badges */}
-            <div className="grid grid-cols-2 gap-2 pt-2.5 text-[11px] text-white/70 pr-4 border-t border-white/10">
+            <div className="grid grid-cols-2 gap-2 pt-2 text-[11px] text-white/70 pr-2 border-t border-white/10">
               <div className="flex items-center gap-2">
                 <Radio size={13} className="text-emerald-400 shrink-0 animate-pulse" />
                 <span>Daily Google Meet</span>
@@ -1130,16 +1130,16 @@ function PortalAuthContent() {
                 <span>Official vajra-xxxx ID</span>
               </div>
             </div>
-          </div>
 
-          {/* Bottom Trust Seal */}
-          <div className="relative z-10 pt-3 mt-3 border-t border-white/10 flex items-center gap-3 text-[10px] xl:text-[11px] text-white/50">
-            <span className="flex items-center gap-1.5">
-              <Lock size={12} className="text-cappuccino" />
-              <span>Zero Spam • No Email Required</span>
-            </span>
-            <span>•</span>
-            <span className="font-semibold text-cappuccino font-mono">6 Official Batches</span>
+            {/* Bottom Trust Seal - INSIDE SAFE AREA */}
+            <div className="pt-2 mt-2 border-t border-white/10 flex flex-wrap items-center gap-2.5 text-[10px] xl:text-[11px] text-white/50">
+              <span className="flex items-center gap-1.5">
+                <Lock size={12} className="text-cappuccino" />
+                <span>Zero Spam • No Email Required</span>
+              </span>
+              <span>•</span>
+              <span className="font-semibold text-cappuccino font-mono">6 Official Batches</span>
+            </div>
           </div>
         </motion.div>
       </div>
