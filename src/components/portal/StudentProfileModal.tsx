@@ -13,7 +13,6 @@ import {
   Copy,
   Check,
   LogOut,
-  Calendar,
   Sparkles,
   ShieldCheck
 } from "lucide-react";
@@ -56,39 +55,41 @@ export default function StudentProfileModal({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
             onClick={onClose}
-            className="fixed inset-0 bg-[#1A1212]/85 backdrop-blur-md"
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm cursor-pointer"
           />
 
-          {/* Modal Container */}
+          {/* Modal Container - Luxury Light Theme (#FAF7F2) */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 15 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 15 }}
             transition={{ type: "spring", damping: 26, stiffness: 320 }}
-            className="relative w-full max-w-lg bg-[#241A1A] text-white rounded-3xl border border-cappuccino/30 shadow-2xl overflow-hidden z-10 my-auto flex flex-col max-h-[90dvh]"
+            className="relative w-full max-w-lg bg-[#FAF7F2] text-coffee-dark rounded-3xl border border-cappuccino/40 shadow-2xl overflow-hidden z-10 my-auto flex flex-col max-h-[90dvh]"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Ambient Warm Golden Glow */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-cappuccino/10 rounded-full blur-3xl pointer-events-none -translate-y-1/2 translate-x-1/2" />
+            {/* Ambient Radial Golden Aura */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-cappuccino/15 rounded-full blur-3xl pointer-events-none -translate-y-1/2 translate-x-1/2" />
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-cappuccino/10 rounded-full blur-2xl pointer-events-none translate-y-1/2 -translate-x-1/2" />
 
             {/* Modal Header */}
-            <div className="relative p-5 sm:p-6 border-b border-white/10 flex items-center justify-between shrink-0">
+            <div className="relative p-5 sm:p-6 border-b border-coffee-dark/10 flex items-center justify-between shrink-0 z-10">
               <div className="flex items-center gap-3.5 min-w-0 pr-3">
-                <div className="w-12 h-12 rounded-2xl bg-cappuccino/20 border border-cappuccino/40 text-cappuccino flex items-center justify-center font-serif text-xl font-bold shrink-0 shadow-inner">
+                <div className="w-12 h-12 rounded-full border-2 border-cappuccino/70 bg-coffee-dark text-cappuccino font-serif font-bold text-xl flex items-center justify-center shadow-[0_0_15px_rgba(200,149,95,0.35)] shrink-0">
                   {student.name.charAt(0).toUpperCase()}
                 </div>
                 <div className="min-w-0">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <h3 className="text-lg sm:text-xl font-serif font-bold text-white truncate">
+                  <div className="flex items-center gap-2 flex-wrap mb-0.5">
+                    <h3 className="text-lg sm:text-xl font-serif font-bold text-coffee-dark truncate">
                       {student.name}
                     </h3>
-                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-500/40 text-[9px] font-bold uppercase tracking-wider shrink-0">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-300 text-[9px] font-bold uppercase tracking-wider shrink-0">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                       Active Student
                     </span>
                   </div>
-                  <p className="text-xs text-white/60 truncate">
+                  <p className="text-[11px] text-coffee-dark/65 truncate">
                     Vajra Virtual Studio • Student Profile
                   </p>
                 </div>
@@ -97,7 +98,7 @@ export default function StudentProfileModal({
               <button
                 type="button"
                 onClick={onClose}
-                className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-full bg-white/5 hover:bg-white/10 text-white/70 hover:text-white flex items-center justify-center transition-all cursor-pointer shrink-0 touch-manipulation active:scale-90"
+                className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-full text-coffee-dark/60 hover:text-coffee-dark hover:bg-coffee-dark/5 active:bg-coffee-dark/10 transition-colors flex items-center justify-center cursor-pointer shrink-0 touch-manipulation"
                 aria-label="Close modal"
               >
                 <X size={20} />
@@ -105,17 +106,17 @@ export default function StudentProfileModal({
             </div>
 
             {/* Modal Scrollable Content */}
-            <div className="p-5 sm:p-6 space-y-5 overflow-y-auto flex-1">
+            <div className="p-5 sm:p-6 space-y-4 sm:space-y-5 overflow-y-auto flex-1 relative z-10">
               {/* Permanent Code Spotlight Card */}
-              <div className="bg-[#191111] p-4 sm:p-4.5 rounded-2xl border border-cappuccino/30 flex items-center justify-between gap-3 shadow-inner">
+              <div className="bg-white/80 p-4 sm:p-4.5 rounded-2xl border border-cappuccino/30 flex items-center justify-between gap-3 shadow-xs">
                 <div className="min-w-0">
                   <span className="text-[9px] uppercase tracking-[0.2em] text-cappuccino font-bold block mb-0.5">
                     Official Student ID
                   </span>
-                  <div className="text-xl sm:text-2xl font-mono font-extrabold text-white tracking-widest truncate">
+                  <div className="text-xl sm:text-2xl font-mono font-extrabold text-coffee-dark tracking-widest truncate">
                     {activeCode}
                   </div>
-                  <p className="text-[10px] text-white/50">
+                  <p className="text-[10.5px] text-coffee-dark/60">
                     Use this ID to sign in to your student portal
                   </p>
                 </div>
@@ -123,10 +124,10 @@ export default function StudentProfileModal({
                 <button
                   type="button"
                   onClick={handleCopyCode}
-                  className="px-3.5 py-2 rounded-xl bg-cappuccino/20 hover:bg-cappuccino hover:text-coffee-dark text-cappuccino border border-cappuccino/40 text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer shrink-0 active:scale-95 touch-manipulation"
+                  className="px-3.5 py-2 rounded-xl bg-cappuccino/20 hover:bg-cappuccino hover:text-coffee-dark text-coffee-dark font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer shrink-0 active:scale-95 touch-manipulation border border-cappuccino/40 shadow-xs"
                   title="Copy Student ID"
                 >
-                  {copiedCode ? <Check size={14} /> : <Copy size={14} />}
+                  {copiedCode ? <Check size={14} className="text-emerald-700" /> : <Copy size={14} />}
                   <span>{copiedCode ? "Copied" : "Copy"}</span>
                 </button>
               </div>
@@ -134,44 +135,44 @@ export default function StudentProfileModal({
               {/* Student Details Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                 {/* Discipline */}
-                <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
-                  <span className="text-[9.5px] uppercase tracking-wider text-white/50 font-bold block">
+                <div className="p-3.5 rounded-xl bg-white/70 border border-coffee-dark/10 space-y-1 shadow-2xs">
+                  <span className="text-[9.5px] uppercase tracking-wider text-coffee-dark/50 font-bold block">
                     Enrolled Discipline
                   </span>
-                  <p className="text-sm font-bold text-white flex items-center gap-2">
+                  <p className="text-sm font-bold text-coffee-dark flex items-center gap-2">
                     <Award size={15} className="text-cappuccino shrink-0" />
                     <span className="truncate">{student.course} Academy</span>
                   </p>
                 </div>
 
                 {/* Batch Timing */}
-                <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
-                  <span className="text-[9.5px] uppercase tracking-wider text-white/50 font-bold block">
+                <div className="p-3.5 rounded-xl bg-white/70 border border-coffee-dark/10 space-y-1 shadow-2xs">
+                  <span className="text-[9.5px] uppercase tracking-wider text-coffee-dark/50 font-bold block">
                     Daily Batch Slot
                   </span>
-                  <p className="text-sm font-bold text-cappuccino flex items-center gap-2 font-mono">
+                  <p className="text-sm font-bold text-coffee-dark flex items-center gap-2 font-mono">
                     <Clock size={15} className="text-cappuccino shrink-0" />
                     <span className="truncate">{student.batch}</span>
                   </p>
                 </div>
 
                 {/* Phone */}
-                <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
-                  <span className="text-[9.5px] uppercase tracking-wider text-white/50 font-bold block">
+                <div className="p-3.5 rounded-xl bg-white/70 border border-coffee-dark/10 space-y-1 shadow-2xs">
+                  <span className="text-[9.5px] uppercase tracking-wider text-coffee-dark/50 font-bold block">
                     Phone Number
                   </span>
-                  <p className="text-sm font-semibold text-white/90 flex items-center gap-2">
+                  <p className="text-sm font-semibold text-coffee-dark flex items-center gap-2">
                     <Phone size={15} className="text-cappuccino shrink-0" />
                     <span>+91 {student.phone}</span>
                   </p>
                 </div>
 
                 {/* Location */}
-                <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
-                  <span className="text-[9.5px] uppercase tracking-wider text-white/50 font-bold block">
+                <div className="p-3.5 rounded-xl bg-white/70 border border-coffee-dark/10 space-y-1 shadow-2xs">
+                  <span className="text-[9.5px] uppercase tracking-wider text-coffee-dark/50 font-bold block">
                     Location / Studio
                   </span>
-                  <p className="text-sm font-semibold text-white/90 flex items-center gap-2">
+                  <p className="text-sm font-semibold text-coffee-dark flex items-center gap-2">
                     <MapPin size={15} className="text-cappuccino shrink-0" />
                     <span className="truncate">{student.city || "Ariyalur Main Studio"}</span>
                   </p>
@@ -179,11 +180,11 @@ export default function StudentProfileModal({
 
                 {/* Age & Gender (if provided) */}
                 {(student.age || student.gender) && (
-                  <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1 sm:col-span-2">
-                    <span className="text-[9.5px] uppercase tracking-wider text-white/50 font-bold block">
+                  <div className="p-3.5 rounded-xl bg-white/70 border border-coffee-dark/10 space-y-1 sm:col-span-2 shadow-2xs">
+                    <span className="text-[9.5px] uppercase tracking-wider text-coffee-dark/50 font-bold block">
                       Demographics
                     </span>
-                    <p className="text-xs font-semibold text-white/85 flex items-center gap-2">
+                    <p className="text-xs font-semibold text-coffee-dark flex items-center gap-2">
                       <User size={14} className="text-cappuccino shrink-0" />
                       <span>
                         {[student.age ? `Age: ${student.age}` : null, student.gender ? `Gender: ${student.gender}` : null]
@@ -196,20 +197,20 @@ export default function StudentProfileModal({
               </div>
 
               {/* Academy Creed */}
-              <div className="p-4 rounded-2xl bg-[#191111] border border-white/10 space-y-1.5">
-                <div className="flex items-center gap-2 text-cappuccino text-xs font-bold">
-                  <Sparkles size={14} />
+              <div className="p-4 rounded-2xl bg-white/70 border border-coffee-dark/10 space-y-1.5 shadow-2xs">
+                <div className="flex items-center gap-2 text-coffee-dark font-serif font-bold text-xs">
+                  <Sparkles size={14} className="text-cappuccino" />
                   <span>Vajra Training Creed</span>
                 </div>
-                <p className="text-xs text-white/70 leading-relaxed font-light italic">
+                <p className="text-xs text-coffee-dark/70 leading-relaxed font-light italic">
                   &ldquo;Consistency over intensity. Discipline over emotion. Respect for the ancient arts and dedication to daily physical mastery.&rdquo;
                 </p>
               </div>
             </div>
 
             {/* Modal Footer: Logout Action */}
-            <div className="p-4 sm:p-5 border-t border-white/10 bg-[#191111]/70 flex items-center justify-between gap-3 shrink-0">
-              <span className="text-[10px] text-white/50 font-mono">
+            <div className="p-4 sm:p-5 border-t border-coffee-dark/10 bg-white/40 flex items-center justify-between gap-3 shrink-0 relative z-10">
+              <span className="text-[10.5px] text-coffee-dark/50 font-mono">
                 Session Active
               </span>
 
@@ -219,7 +220,7 @@ export default function StudentProfileModal({
                   onClose();
                   onLogout();
                 }}
-                className="px-4 py-2 rounded-full bg-red-500/15 hover:bg-red-500 text-red-400 hover:text-white border border-red-500/30 text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer active:scale-95"
+                className="px-4 py-2 rounded-full bg-red-500/10 hover:bg-red-500 text-red-600 hover:text-white border border-red-500/20 text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer active:scale-95"
               >
                 <LogOut size={14} />
                 <span>Log Out</span>
