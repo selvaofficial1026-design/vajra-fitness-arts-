@@ -392,11 +392,11 @@ export default function AdminPortalPage() {
   // Only count unread messages sent by students (admin's own sent messages never trigger a badge)
   const unreadStudentMessages = messages.filter((m) => m.sender === "student" && !m.isRead);
 
-  // Exact matching nav items
+  // Exact matching nav items - Only pending approvals and unread messages show badges in Admin Panel
   const navItems: PortalNavItem[] = [
     { id: "students", label: "Admissions", badge: pendingStudents.length || undefined },
-    { id: "meet", label: "Google Meets", badge: meetings.length || undefined },
-    { id: "videos", label: "Videos", badge: videos.length || undefined },
+    { id: "meet", label: "Google Meets" },
+    { id: "videos", label: "Videos" },
     { id: "messages", label: "Message Desk", badge: unreadStudentMessages.length || undefined }
   ];
 
