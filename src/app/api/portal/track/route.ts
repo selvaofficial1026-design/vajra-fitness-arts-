@@ -1,0 +1,76 @@
+import { NextResponse } from "next/server";
+import { getPortalData } from "@/lib/portalStore";
+
+export async function GET(req: Request) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const code = searchParams.get("code")?.trim().toUpperCase();
+
+    if (!code) {
+      return NextResponse.json(
+        { success: false, error: "Temporary code is required." },
+        { status: 400 }
+      );
+    }
+
+    const data = await getPortalData();
+    const student = data.students.find(
+      (s) => s.tempCode.toUpperCase() === code || (s.permanentCode && s.permanentCode.toUpperCase() === code)
+    );
+
+    if (!student) {
+      return NextResponse.json(
+        { success: false, error: "No student enrollment found with this code. Please verify your temporary code." },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json({
+      success: true,
+      student
+    });
+  } catch (error) {
+    console.error("Track error:", error);
+    return NextResponse.json(
+      { success: false, error: "Failed to look up enrollment status." },
+      { status: 500 }
+    );
+  }
+}
+
+export async function POST(req: Request) {
+  try {
+    const body = await req.json();
+    const code = body.code?.trim().toUpperCase();
+
+    if (!code) {
+      return NextResponse.json(
+        { success: false, error: "Temporary code is required." },
+        { status: 400 }
+      );
+    }
+
+    const data = await getPortalData();
+    const student = data.students.find(
+      (s) => s.tempCode.toUpperCase() === code || (s.permanentCode && s.permanentCode.toUpperCase() === code)
+    );
+
+    if (!student) {
+      return NextResponse.json(
+        { success: false, error: "No student enrollment found with this code. Please verify your temporary code." },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json({
+      success: true,
+      student
+    });
+  } catch (error) {
+    console.error("Track error:", error);
+    return NextResponse.json(
+      { success: false, error: "Failed to look up enrollment status." },
+      { status: 500 }
+    );
+  }
+}

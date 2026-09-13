@@ -67,6 +67,7 @@ export default function Footer() {
             <li><Link href="/about" className="hover:text-cappuccino transition-colors flex items-center gap-3 group py-0.5"><div className="w-1.5 h-1.5 rounded-full bg-cappuccino/30 group-hover:bg-cappuccino transition-all shrink-0" /> About Our Academy</Link></li>
             <li><Link href="/course" className="hover:text-cappuccino transition-colors flex items-center gap-3 group py-0.5"><div className="w-1.5 h-1.5 rounded-full bg-cappuccino/30 group-hover:bg-cappuccino transition-all shrink-0" /> Training Courses</Link></li>
             <li><Link href="/gallery" className="hover:text-cappuccino transition-colors flex items-center gap-3 group py-0.5"><div className="w-1.5 h-1.5 rounded-full bg-cappuccino/30 group-hover:bg-cappuccino transition-all shrink-0" /> Action Gallery</Link></li>
+            <li><Link href="/portal" className="hover:text-cappuccino transition-colors flex items-center gap-3 group py-0.5"><div className="w-1.5 h-1.5 rounded-full bg-cappuccino/30 group-hover:bg-cappuccino transition-all shrink-0" /> Online Student Portal</Link></li>
             <li><Link href="/contact" className="hover:text-cappuccino transition-colors flex items-center gap-3 group py-0.5"><div className="w-1.5 h-1.5 rounded-full bg-cappuccino/30 group-hover:bg-cappuccino transition-all shrink-0" /> Contact &amp; Admissions</Link></li>
           </ul>
         </div>

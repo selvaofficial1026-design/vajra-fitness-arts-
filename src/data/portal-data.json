@@ -1,0 +1,190 @@
+{
+  "students": [
+    {
+      "id": "std_1789281041912_590",
+      "tempCode": "TEMP-1293",
+      "permanentCode": "vajra-8935",
+      "name": "Ravi Teja",
+      "phone": "9845123456",
+      "course": "Silambam",
+      "batch": "5:00 PM - 5:45 PM (Evening)",
+      "age": "22",
+      "gender": "Male",
+      "city": "Ariyalur",
+      "notes": "Testing online class enrollment",
+      "status": "APPROVED",
+      "createdAt": "2026-09-13T06:30:41.912Z",
+      "approvedAt": "2026-09-13T06:30:42.782Z"
+    },
+    {
+      "id": "std_1001",
+      "tempCode": "TEMP-1001",
+      "permanentCode": "vajra-1001",
+      "name": "Karthik Raja",
+      "phone": "9876543210",
+      "course": "Fitness",
+      "batch": "4:30 AM - 5:15 AM (Morning)",
+      "age": "24",
+      "gender": "Male",
+      "city": "Ariyalur",
+      "notes": "Interested in strength conditioning and calisthenics",
+      "status": "APPROVED",
+      "createdAt": "2026-09-10T06:00:00.000Z",
+      "approvedAt": "2026-09-10T08:00:00.000Z"
+    },
+    {
+      "id": "std_1002",
+      "tempCode": "TEMP-2045",
+      "permanentCode": null,
+      "name": "Deepak Kumar",
+      "phone": "9123456780",
+      "course": "Silambam",
+      "batch": "5:00 PM - 5:45 PM (Evening)",
+      "age": "19",
+      "gender": "Male",
+      "city": "Ariyalur",
+      "notes": "Beginner looking to learn traditional stick rotation",
+      "status": "PENDING",
+      "createdAt": "2026-09-13T09:30:00.000Z",
+      "approvedAt": null
+    }
+  ],
+  "meetings": [
+    {
+      "id": "meet_1",
+      "course": "Fitness",
+      "batch": "4:30 AM - 5:15 AM (Morning)",
+      "title": "Morning Functional Strength & Core Conditioning",
+      "meetUrl": "https://meet.google.com/xyz-vajra-fit",
+      "scheduledTime": "Daily 4:30 AM - 5:15 AM",
+      "instructor": "Head Coach",
+      "isActive": true,
+      "createdAt": "2026-09-13T00:00:00.000Z"
+    },
+    {
+      "id": "meet_2",
+      "course": "Silambam",
+      "batch": "5:00 PM - 5:45 PM (Evening)",
+      "title": "Evening Silambam Kaalvari & Spin Technique",
+      "meetUrl": "https://meet.google.com/abc-vajra-art",
+      "scheduledTime": "Daily 5:00 PM - 5:45 PM",
+      "instructor": "Head Coach",
+      "isActive": true,
+      "createdAt": "2026-09-13T00:00:00.000Z"
+    },
+    {
+      "id": "meet_3",
+      "course": "Yoga",
+      "batch": "5:30 AM - 6:00 AM (Morning)",
+      "title": "Holistic Surya Namaskar & Pranayama Breathing",
+      "meetUrl": "https://meet.google.com/def-vajra-yga",
+      "scheduledTime": "Daily 5:30 AM - 6:00 AM",
+      "instructor": "Head Coach",
+      "isActive": true,
+      "createdAt": "2026-09-13T00:00:00.000Z"
+    },
+    {
+      "id": "meet_4",
+      "course": "Martial Arts",
+      "batch": "6:00 PM - 6:45 PM (Evening)",
+      "title": "Striking Form, Stances & Defense Conditioning",
+      "meetUrl": "https://meet.google.com/ghi-vajra-mma",
+      "scheduledTime": "Daily 6:00 PM - 6:45 PM",
+      "instructor": "Head Coach",
+      "isActive": true,
+      "createdAt": "2026-09-13T00:00:00.000Z"
+    }
+  ],
+  "videos": [
+    {
+      "id": "vid_1",
+      "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "youtubeId": "dQw4w9WgXcQ",
+      "title": "Core Calisthenics & Strength Foundations",
+      "course": "Fitness",
+      "category": "Strength Training",
+      "description": "Fundamental core activation, push-up mechanics, and bodyweight posture stabilization.",
+      "addedAt": "2026-09-10T10:00:00.000Z"
+    },
+    {
+      "id": "vid_2",
+      "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "youtubeId": "dQw4w9WgXcQ",
+      "title": "Silambam Kaalvari Stances & Basic Spin Drills",
+      "course": "Silambam",
+      "category": "Foundations",
+      "description": "Essential footwork angles, wrist mobility warmup, and single-hand rotation technique.",
+      "addedAt": "2026-09-11T11:00:00.000Z"
+    },
+    {
+      "id": "vid_3",
+      "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "youtubeId": "dQw4w9WgXcQ",
+      "title": "Surya Namaskar 12-Step Gentle Guided Flow",
+      "course": "Yoga",
+      "category": "Mobility & Balance",
+      "description": "Complete breakdown of breath synchronization and postures for joint mobility.",
+      "addedAt": "2026-09-12T07:00:00.000Z"
+    },
+    {
+      "id": "vid_4",
+      "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "youtubeId": "dQw4w9WgXcQ",
+      "title": "Boxing Guard & Footwork Evasion Mechanics",
+      "course": "Martial Arts",
+      "category": "Striking Fundamentals",
+      "description": "Proper high-guard defense, pivot footwork, and basic jab-cross combination.",
+      "addedAt": "2026-09-12T16:00:00.000Z"
+    }
+  ],
+  "messages": [
+    {
+      "id": "msg_1",
+      "studentId": "std_1001",
+      "sender": "admin",
+      "text": "Welcome to Vajra Fitness Arts Online Classes! Your permanent code is vajra-1001. Check the Google Meet tab at 4:30 AM for your morning batch.",
+      "timestamp": "2026-09-10T08:05:00.000Z",
+      "isRead": true
+    },
+    {
+      "id": "msg_2",
+      "studentId": "std_1001",
+      "sender": "student",
+      "text": "Thank you Master! Should I keep any equipment ready for tomorrow morning?",
+      "timestamp": "2026-09-10T08:15:00.000Z",
+      "isRead": true
+    },
+    {
+      "id": "msg_3",
+      "studentId": "std_1001",
+      "sender": "admin",
+      "text": "Just a yoga mat, a water bottle, and comfortable workout attire. See you tomorrow at 4:30 AM!",
+      "timestamp": "2026-09-10T08:20:00.000Z",
+      "isRead": true
+    },
+    {
+      "id": "msg_1789281042782",
+      "studentId": "std_1789281041912_590",
+      "sender": "admin",
+      "text": "Namaskaram Ravi Teja! Your admission for Silambam (5:00 PM - 5:45 PM (Evening)) is approved! Your permanent login code is vajra-8935. Welcome to Vajra Fitness Arts!",
+      "timestamp": "2026-09-13T06:30:42.782Z",
+      "isRead": false
+    },
+    {
+      "id": "msg_1789281043489_279",
+      "studentId": "std_1789281041912_590",
+      "sender": "student",
+      "text": "Master, what is the stick length required for beginner Silambam?",
+      "timestamp": "2026-09-13T06:30:43.490Z",
+      "isRead": false
+    },
+    {
+      "id": "msg_1789281043522_25",
+      "studentId": "std_1789281041912_590",
+      "sender": "admin",
+      "text": "The stick should reach your eye level (typically 5 to 5.5 feet). Bamboo or rattan is ideal.",
+      "timestamp": "2026-09-13T06:30:43.522Z",
+      "isRead": false
+    }
+  ]
+}
