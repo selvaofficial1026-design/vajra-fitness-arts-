@@ -229,13 +229,13 @@ export default function PortalNavbar({
             type="button"
             onClick={onLogout}
             className={cn(
-              "rounded-full bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-sans text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-300 shadow-sm flex items-center gap-1.5 cursor-pointer active:scale-95",
+              "hidden sm:flex rounded-full bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-sans text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-300 shadow-sm items-center gap-1.5 cursor-pointer active:scale-95",
               scrolled ? "px-3.5 py-1.5" : "px-4 py-2"
             )}
             title="Log Out"
           >
             <LogOut size={12} />
-            <span className="hidden sm:inline">Logout</span>
+            <span>Logout</span>
           </button>
 
           {/* Mobile Toggle Button - EXACTLY matching main website navbar */}
@@ -244,7 +244,7 @@ export default function PortalNavbar({
             className="md:hidden p-2 -mr-1 rounded-full text-coffee-dark hover:bg-coffee-dark/5 transition-colors active:scale-90 touch-manipulation focus:outline-none cursor-pointer"
             onClick={() => setIsOpen(!isOpen)}
           >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
+            {isOpen ? <X size={26} /> : <Menu size={26} />}
           </button>
         </div>
       </div>
@@ -335,6 +335,36 @@ export default function PortalNavbar({
                   </motion.div>
                 );
               })}
+
+              {/* Quick Navigation to Main Website */}
+              <div className="mt-2 pt-3 border-t border-coffee-dark/10">
+                <span className="text-[8.5px] uppercase tracking-[0.25em] text-coffee-dark/45 font-bold block mb-2 px-3">
+                  Main Website
+                </span>
+                <div className="grid grid-cols-3 gap-2 px-1">
+                  <Link
+                    href="/"
+                    onClick={() => setIsOpen(false)}
+                    className="text-center text-xs font-bold text-coffee-dark/75 hover:text-cappuccino py-2 px-2 rounded-xl bg-coffee-dark/5 active:scale-95 transition-all"
+                  >
+                    Home
+                  </Link>
+                  <Link
+                    href="/course"
+                    onClick={() => setIsOpen(false)}
+                    className="text-center text-xs font-bold text-coffee-dark/75 hover:text-cappuccino py-2 px-2 rounded-xl bg-coffee-dark/5 active:scale-95 transition-all"
+                  >
+                    Courses
+                  </Link>
+                  <Link
+                    href="/contact"
+                    onClick={() => setIsOpen(false)}
+                    className="text-center text-xs font-bold text-coffee-dark/75 hover:text-cappuccino py-2 px-2 rounded-xl bg-coffee-dark/5 active:scale-95 transition-all"
+                  >
+                    Contact
+                  </Link>
+                </div>
+              </div>
             </div>
 
             {/* Drawer Bottom: User info (Clickable to open profile) & Logout */}
