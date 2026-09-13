@@ -30,11 +30,13 @@ import { Student, ClassMeeting, VideoClass, ChatMessage } from "@/lib/portalStor
 import { cn } from "@/lib/utils";
 import PortalNavbar, { PortalNavItem } from "@/components/portal/PortalNavbar";
 import PortalLoadingScreen from "@/components/portal/PortalLoadingScreen";
+import StudentProfileModal from "@/components/portal/StudentProfileModal";
 
 export default function StudentPortalPage() {
   const router = useRouter();
   const [student, setStudent] = useState<Student | null>(null);
-  const [activeTab, setActiveTab] = useState<"meet" | "videos" | "doubt" | "profile">("meet");
+  const [activeTab, setActiveTab] = useState<"meet" | "videos" | "doubt">("meet");
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [pageLoading, setPageLoading] = useState(true);
 
   // Video State
@@ -200,8 +202,7 @@ export default function StudentPortalPage() {
   const navItems: PortalNavItem[] = [
     { id: "meet", label: "Live Classroom", icon: Radio },
     { id: "videos", label: "Videos", icon: Video, badge: videos.length || undefined },
-    { id: "doubt", label: "Ask Doubt", icon: MessageSquare, badge: unreadCoachMessages.length || undefined },
-    { id: "profile", label: "My Profile", icon: User }
+    { id: "doubt", label: "Ask Doubt", icon: MessageSquare, badge: unreadCoachMessages.length || undefined }
   ];
 
   if (!student) {
@@ -243,6 +244,14 @@ export default function StudentPortalPage() {
         subtitle={`Welcome back, ${student.name}. Connecting to ${student.course} live batch...`}
       />
 
+      {/* Student Profile Modal (Triggered by clicking Student Avatar) */}
+      <StudentProfileModal
+        isOpen={isProfileModalOpen}
+        onClose={() => setIsProfileModalOpen(false)}
+        student={student}
+        onLogout={handleLogout}
+      />
+
       {/* Dedicated Portal Floating Navbar (Matching Website Navbar Style) */}
       <PortalNavbar
         role="student"
@@ -256,51 +265,50 @@ export default function StudentPortalPage() {
           avatarLetter: student.name.charAt(0)
         }}
         onLogout={handleLogout}
+        onProfileClick={() => setIsProfileModalOpen(true)}
       />
 
-      {/* Main Student Page Content */}
-      <main className="min-h-screen bg-background text-coffee-dark pt-28 sm:pt-32 md:pt-36 pb-16 px-4 sm:px-6 md:px-8">
-        <div className="max-w-7xl mx-auto space-y-6">
-          {/* Top Student Welcome Banner Card */}
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="bg-[#241A1A] text-white p-5 sm:p-7 rounded-3xl border border-cappuccino/30 shadow-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-5 relative overflow-hidden"
-          >
-            <div className="absolute top-0 right-0 w-80 h-80 bg-cappuccino/10 rounded-full blur-3xl pointer-events-none -translate-y-1/2 translate-x-1/2" />
-
-            <div className="flex items-center gap-4 z-10">
-              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-cappuccino/20 border border-cappuccino/40 flex items-center justify-center text-cappuccino font-serif text-xl sm:text-2xl font-bold shrink-0">
+      {/* Main Student Page Content - SEAMLESS OPEN CANVAS (NO HEAVY BOXES) */}
+      <main className="min-h-screen bg-background text-coffee-dark pt-28 sm:pt-32 md:pt-36 pb-16 px-4 sm:px-6 md:px-12">
+        <div className="max-w-7xl mx-auto space-y-8">
+          {/* Top Student Header - Sits directly on background without chunky boxes */}
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-5 pb-6 border-b border-coffee-dark/10">
+            <div className="flex items-center gap-4">
+              <button
+                type="button"
+                onClick={() => setIsProfileModalOpen(true)}
+                className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-coffee-dark border border-cappuccino/50 flex items-center justify-center text-cappuccino font-serif text-xl sm:text-2xl font-bold shrink-0 shadow-sm cursor-pointer hover:scale-105 active:scale-95 transition-transform"
+                title="View Student Profile"
+              >
                 {student.name.charAt(0).toUpperCase()}
-              </div>
-              <div>
-                <div className="flex items-center gap-2 flex-wrap mb-1">
-                  <h1 className="text-xl sm:text-2xl font-serif font-bold text-white leading-none">
+              </button>
+              <div className="space-y-1">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <h1 className="text-xl sm:text-2xl md:text-3xl font-serif font-bold text-coffee-dark tracking-tight leading-tight">
                     {student.name}
                   </h1>
-                  <span className="px-2.5 py-0.5 rounded-full bg-cappuccino/20 border border-cappuccino/50 text-cappuccino text-[10px] font-mono font-bold uppercase tracking-wider">
+                  <span className="px-2.5 py-0.5 rounded-full bg-cappuccino/15 border border-cappuccino/30 text-coffee-dark font-mono text-[10px] font-bold uppercase tracking-wider">
                     {student.permanentCode || student.tempCode}
                   </span>
-                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-500/40 text-[9px] font-bold uppercase tracking-wider">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-300 text-[10px] font-bold uppercase tracking-wider">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                     Active Student
                   </span>
                 </div>
-                <p className="text-xs text-white/70">
-                  Discipline: <strong className="text-cappuccino">{student.course}</strong> • Batch Slot:{" "}
-                  <span className="text-white/90">{student.batch}</span>
+                <p className="text-xs sm:text-sm text-coffee-dark/70">
+                  Discipline: <strong className="text-coffee-dark font-bold">{student.course}</strong> • Batch Slot:{" "}
+                  <span className="text-coffee-dark font-mono font-medium">{student.batch}</span>
                 </p>
               </div>
             </div>
 
-            {/* Live Class Quick Pill on Banner */}
-            <div className="z-10 w-full md:w-auto flex items-center justify-between md:justify-end gap-3 pt-2 md:pt-0 border-t md:border-t-0 border-white/10">
-              <div className="text-left md:text-right text-[11px] text-white/60">
-                <span className="block text-white/40 uppercase tracking-widest text-[9px] font-bold">
-                  Class Timing
+            {/* Quick Class Timing & Live Class status on Header */}
+            <div className="flex items-center justify-between md:justify-end gap-3 pt-2 md:pt-0 border-t md:border-t-0 border-coffee-dark/10">
+              <div className="text-left md:text-right text-[11px] text-coffee-dark/60">
+                <span className="block text-coffee-dark/40 uppercase tracking-widest text-[9px] font-bold">
+                  Daily Batch Slot
                 </span>
-                <span className="font-semibold text-cappuccino font-mono">
+                <span className="font-semibold text-coffee-dark font-mono">
                   {student.batch}
                 </span>
               </div>
@@ -310,131 +318,142 @@ export default function StudentPortalPage() {
                   href={activeMeeting.meetUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-4 py-2 bg-[#25D366] hover:bg-[#20ba5a] text-black font-extrabold text-xs uppercase tracking-wider rounded-full shadow-md transition-all flex items-center gap-1.5 active:scale-95 cursor-pointer"
+                  className="px-4 py-2 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-extrabold text-xs uppercase tracking-wider rounded-full shadow-sm transition-all flex items-center gap-1.5 active:scale-95 cursor-pointer shrink-0"
                 >
-                  <Radio size={14} className="animate-pulse" />
+                  <Radio size={14} className="text-cappuccino animate-pulse" />
                   <span>Join Class</span>
                 </a>
               ) : (
-                <span className="px-3 py-1.5 rounded-full bg-white/10 text-white/70 text-[11px] font-mono">
+                <span className="px-3 py-1.5 rounded-full bg-coffee-dark/5 text-coffee-dark/60 text-[11px] font-mono border border-coffee-dark/10">
                   Room Pending
                 </span>
               )}
             </div>
-          </motion.div>
+          </div>
 
           {/* Tab Content Display Area */}
           <div className="min-h-[480px]">
-            {/* 1. GOOGLE MEET SECTION */}
+            {/* 1. GOOGLE MEET SECTION (OPEN CANVAS - NO CHUNKY BOXES) */}
             {activeTab === "meet" && (
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
-                className="space-y-6"
+                className="space-y-8"
               >
-                <div className="bg-[#241A1A] text-white p-6 sm:p-8 rounded-3xl border border-cappuccino/30 shadow-2xl relative overflow-hidden">
-                  <div className="max-w-3xl space-y-4">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-500/40 text-xs font-bold uppercase tracking-wider">
-                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-                      <span>Official Live Classroom</span>
+                {/* Main Classroom Header & Action - Sits directly on background */}
+                <div className="space-y-4 pb-8 border-b border-coffee-dark/10">
+                  <div className="flex items-center gap-2">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-300 text-xs font-bold uppercase tracking-wider">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                      Official Live Classroom
+                    </span>
+                    <span className="text-xs text-coffee-dark/50 font-mono">
+                      • Daily Virtual Training
+                    </span>
+                  </div>
+
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-coffee-dark tracking-tight leading-tight">
+                    {activeMeeting?.title || `${student.course} Daily Live Training`}
+                  </h2>
+
+                  <p className="text-xs sm:text-sm text-coffee-dark/70 leading-relaxed font-light max-w-2xl">
+                    Live interactive session guided by Head Coach. Practice techniques with direct visual posture analysis, real-time corrections, and authentic master drills.
+                  </p>
+
+                  {/* Inline details metrics - No heavy boxes, clean minimal cards */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-xl pt-1">
+                    <div className="p-3.5 rounded-2xl bg-white/60 border border-coffee-dark/10 space-y-1">
+                      <span className="text-[9.5px] uppercase tracking-widest text-coffee-dark/50 block font-bold">
+                        Your Scheduled Batch
+                      </span>
+                      <p className="text-sm font-bold text-coffee-dark flex items-center gap-2 font-mono">
+                        <Clock size={16} className="text-cappuccino" />
+                        <span>{student.batch}</span>
+                      </p>
                     </div>
 
-                    <h2 className="text-2xl sm:text-3xl font-serif font-bold text-white">
-                      {activeMeeting?.title || `${student.course} Daily Live Training`}
-                    </h2>
-                    <p className="text-xs sm:text-sm text-white/70 leading-relaxed font-light">
-                      Live session guided by Head Coach. Practice techniques with direct visual corrections, posture analysis, and step-by-step master drills.
-                    </p>
+                    <div className="p-3.5 rounded-2xl bg-white/60 border border-coffee-dark/10 space-y-1">
+                      <span className="text-[9.5px] uppercase tracking-widest text-coffee-dark/50 block font-bold">
+                        Enrolled Discipline
+                      </span>
+                      <p className="text-sm font-bold text-coffee-dark flex items-center gap-2">
+                        <Award size={16} className="text-cappuccino" />
+                        <span>{student.course} Academy</span>
+                      </p>
+                    </div>
+                  </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-                      <div className="p-4 rounded-2xl bg-[#191111] border border-white/10 space-y-1">
-                        <span className="text-[10px] uppercase tracking-widest text-white/50 block font-bold">
-                          Your Scheduled Batch
-                        </span>
-                        <p className="text-sm font-bold text-cappuccino flex items-center gap-2">
-                          <Clock size={16} />
-                          <span>{student.batch}</span>
+                  {/* Join Google Meet CTA */}
+                  <div className="pt-2">
+                    {activeMeeting?.meetUrl ? (
+                      <div className="space-y-2.5">
+                        <a
+                          href={activeMeeting.meetUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center justify-center gap-2.5 px-7 py-3.5 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-extrabold text-xs sm:text-sm uppercase tracking-[0.18em] rounded-full transition-all shadow-md active:scale-95 cursor-pointer"
+                        >
+                          <Radio size={16} className="text-cappuccino animate-pulse" />
+                          <span>Join Live Google Meet</span>
+                          <ExternalLink size={15} />
+                        </a>
+
+                        <p className="text-[11px] text-coffee-dark/60 font-mono break-all">
+                          Room URL: <a href={activeMeeting.meetUrl} target="_blank" rel="noopener noreferrer" className="text-cappuccino underline hover:text-coffee-dark">{activeMeeting.meetUrl}</a>
                         </p>
                       </div>
-
-                      <div className="p-4 rounded-2xl bg-[#191111] border border-white/10 space-y-1">
-                        <span className="text-[10px] uppercase tracking-widest text-white/50 block font-bold">
-                          Enrolled Discipline
-                        </span>
-                        <p className="text-sm font-bold text-white flex items-center gap-2">
-                          <Award size={16} className="text-cappuccino" />
-                          <span>{student.course} Academy</span>
+                    ) : (
+                      <div className="p-4 sm:p-5 rounded-2xl bg-white/50 border border-coffee-dark/10 text-center max-w-xl">
+                        <p className="text-xs sm:text-sm text-coffee-dark/70">
+                          Google Meet room will be published by the coach shortly before your scheduled batch ({student.batch}).
                         </p>
                       </div>
-                    </div>
-
-                    {/* Join Button */}
-                    <div className="pt-3">
-                      {activeMeeting?.meetUrl ? (
-                        <div className="space-y-3">
-                          <a
-                            href={activeMeeting.meetUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-[#25D366] hover:bg-[#20ba5a] text-black font-extrabold text-xs sm:text-sm uppercase tracking-[0.2em] rounded-full transition-all shadow-[0_0_30px_rgba(37,211,102,0.4)] active:scale-95 cursor-pointer"
-                          >
-                            <Radio size={18} className="animate-pulse" />
-                            <span>Join Live Google Meet</span>
-                            <ExternalLink size={16} />
-                          </a>
-
-                          <p className="text-[11px] text-white/50 font-mono">
-                            Room URL: <span className="text-cappuccino underline">{activeMeeting.meetUrl}</span>
-                          </p>
-                        </div>
-                      ) : (
-                        <div className="p-6 rounded-2xl bg-[#191111] text-center border border-white/10">
-                          <p className="text-xs sm:text-sm text-white/70">
-                            Google Meet link will be published by the coach shortly before your batch timing ({student.batch}).
-                          </p>
-                        </div>
-                      )}
-                    </div>
+                    )}
                   </div>
                 </div>
 
-                {/* Class Guidelines Protocol */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="bg-white p-5 rounded-3xl border border-cream shadow-premium space-y-2">
-                    <div className="w-8 h-8 rounded-xl bg-cappuccino/20 text-cappuccino flex items-center justify-center font-bold text-xs">
-                      1
+                {/* Class Guidelines Protocol - Editorial Grid (No chunky boxes) */}
+                <div className="space-y-3 pt-2">
+                  <h3 className="text-xs uppercase tracking-[0.2em] text-coffee-dark/50 font-bold">
+                    Classroom Preparation Protocol
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="space-y-1.5 border-l-2 border-cappuccino pl-3.5">
+                      <span className="text-[10px] uppercase tracking-wider text-cappuccino font-bold block">
+                        01 • Camera &amp; Floor Space
+                      </span>
+                      <h4 className="font-serif font-bold text-sm text-coffee-dark">Clear Floor Area</h4>
+                      <p className="text-xs text-coffee-dark/70 leading-relaxed">
+                        Position camera 6x6 feet away with clear floor space so head-to-toe postures and staff movements are visible.
+                      </p>
                     </div>
-                    <h4 className="font-serif font-bold text-sm text-coffee-dark">Camera &amp; Floor Space</h4>
-                    <p className="text-xs text-coffee-dark/70 leading-relaxed">
-                      Set up your camera with 6x6 feet of clear floor space so full body movements can be evaluated.
-                    </p>
-                  </div>
 
-                  <div className="bg-white p-5 rounded-3xl border border-cream shadow-premium space-y-2">
-                    <div className="w-8 h-8 rounded-xl bg-cappuccino/20 text-cappuccino flex items-center justify-center font-bold text-xs">
-                      2
+                    <div className="space-y-1.5 border-l-2 border-cappuccino pl-3.5">
+                      <span className="text-[10px] uppercase tracking-wider text-cappuccino font-bold block">
+                        02 • Training Attire
+                      </span>
+                      <h4 className="font-serif font-bold text-sm text-coffee-dark">Athletic Gear</h4>
+                      <p className="text-xs text-coffee-dark/70 leading-relaxed">
+                        Wear comfortable stretchable athletic gear. Keep your practice stick/mat and hydration bottle ready.
+                      </p>
                     </div>
-                    <h4 className="font-serif font-bold text-sm text-coffee-dark">Training Attire</h4>
-                    <p className="text-xs text-coffee-dark/70 leading-relaxed">
-                      Wear comfortable stretchable athletic gear. Keep a practice stick/mat and water bottle ready.
-                    </p>
-                  </div>
 
-                  <div className="bg-white p-5 rounded-3xl border border-cream shadow-premium space-y-2">
-                    <div className="w-8 h-8 rounded-xl bg-cappuccino/20 text-cappuccino flex items-center justify-center font-bold text-xs">
-                      3
+                    <div className="space-y-1.5 border-l-2 border-cappuccino pl-3.5">
+                      <span className="text-[10px] uppercase tracking-wider text-cappuccino font-bold block">
+                        03 • Punctuality
+                      </span>
+                      <h4 className="font-serif font-bold text-sm text-coffee-dark">Join 5 Mins Early</h4>
+                      <p className="text-xs text-coffee-dark/70 leading-relaxed">
+                        Join the Google Meet room 5 minutes prior to your batch start time to complete warm-up drills on schedule.
+                      </p>
                     </div>
-                    <h4 className="font-serif font-bold text-sm text-coffee-dark">Join 5 Mins Early</h4>
-                    <p className="text-xs text-coffee-dark/70 leading-relaxed">
-                      Please join the Google Meet room 5 minutes prior to your batch start time to complete warm-up drills on schedule.
-                    </p>
                   </div>
                 </div>
               </motion.div>
             )}
 
-            {/* 2. VIDEOS FETCH FROM YOUTUBE */}
+            {/* 2. VIDEOS FETCH FROM YOUTUBE (OPEN CANVAS - NO CHUNKY BOXES) */}
             {activeTab === "videos" && (
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
@@ -443,7 +462,7 @@ export default function StudentPortalPage() {
                 className="space-y-6"
               >
                 {videos.length === 0 ? (
-                  <div className="bg-white p-12 rounded-3xl border border-cream text-center shadow-premium space-y-2">
+                  <div className="py-16 text-center space-y-2">
                     <VideoOff size={36} className="mx-auto text-coffee-dark/40" />
                     <h3 className="text-lg font-serif font-bold text-coffee-dark">No Training Videos Yet</h3>
                     <p className="text-xs text-coffee-dark/60">
@@ -451,12 +470,12 @@ export default function StudentPortalPage() {
                     </p>
                   </div>
                 ) : (
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                     {/* Main Video Player */}
                     <div className="lg:col-span-8 space-y-4">
                       {selectedVideo && (
-                        <div className="bg-[#241A1A] p-4 sm:p-6 rounded-3xl border border-cappuccino/30 shadow-2xl space-y-4 text-white">
-                          <div className="relative aspect-video rounded-2xl overflow-hidden bg-black shadow-inner">
+                        <div className="space-y-4">
+                          <div className="relative aspect-video rounded-2xl overflow-hidden bg-black shadow-lg border border-coffee-dark/15">
                             <iframe
                               src={`https://www.youtube-nocookie.com/embed/${selectedVideo.youtubeId}?rel=0&modestbranding=1`}
                               title={selectedVideo.title}
@@ -466,21 +485,21 @@ export default function StudentPortalPage() {
                             />
                           </div>
 
-                          <div className="space-y-2">
-                            <div className="flex items-center gap-2">
+                          <div className="space-y-2 pt-1">
+                            <div className="flex items-center gap-2 flex-wrap">
                               <span className="px-2.5 py-0.5 rounded-full bg-cappuccino text-coffee-dark text-[9px] font-bold uppercase tracking-wider">
                                 {selectedVideo.category}
                               </span>
-                              <span className="text-[10px] text-white/50 font-mono">
-                                Discipline: {selectedVideo.course}
+                              <span className="text-[11px] text-coffee-dark/60 font-mono">
+                                Discipline: <strong className="text-coffee-dark">{selectedVideo.course}</strong>
                               </span>
                             </div>
 
-                            <h3 className="text-xl sm:text-2xl font-serif font-bold text-white">
+                            <h3 className="text-xl sm:text-2xl font-serif font-bold text-coffee-dark">
                               {selectedVideo.title}
                             </h3>
 
-                            <p className="text-xs sm:text-sm text-white/70 leading-relaxed font-light">
+                            <p className="text-xs sm:text-sm text-coffee-dark/70 leading-relaxed font-light">
                               {selectedVideo.description ||
                                 "Guided training video provided for regular practice and technique perfection."}
                             </p>
@@ -489,9 +508,9 @@ export default function StudentPortalPage() {
                       )}
                     </div>
 
-                    {/* Playlist Sidebar */}
-                    <div className="lg:col-span-4 bg-white p-5 rounded-3xl border border-cream shadow-premium space-y-3">
-                      <div className="flex items-center justify-between border-b border-cream pb-3">
+                    {/* Playlist Sidebar - Open Canvas */}
+                    <div className="lg:col-span-4 space-y-3">
+                      <div className="flex items-center justify-between pb-3 border-b border-coffee-dark/10">
                         <h4 className="font-serif text-sm font-bold text-coffee-dark">
                           {student.course} Library ({videos.length})
                         </h4>
@@ -509,8 +528,8 @@ export default function StudentPortalPage() {
                               onClick={() => setSelectedVideo(vid)}
                               className={`p-2.5 rounded-2xl border transition-all cursor-pointer flex gap-3 items-center ${
                                 isSelected
-                                  ? "bg-[#241A1A] text-white border-cappuccino/60 shadow-md"
-                                  : "bg-[#FAF7F2] text-coffee-dark border-cream hover:border-cappuccino/40"
+                                  ? "bg-coffee-dark text-white border-cappuccino/60 shadow-md"
+                                  : "bg-white/60 hover:bg-white text-coffee-dark border-coffee-dark/10 hover:border-cappuccino/40"
                               }`}
                             >
                               <div className="w-10 h-10 rounded-xl bg-cappuccino/20 flex items-center justify-center shrink-0 text-cappuccino">
@@ -677,86 +696,6 @@ export default function StudentPortalPage() {
                     <span>Send</span>
                   </button>
                 </form>
-              </motion.div>
-            )}
-
-            {/* 4. STUDENT PROFILE SECTION */}
-            {activeTab === "profile" && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-                className="max-w-3xl mx-auto space-y-6"
-              >
-                <div className="bg-white p-6 sm:p-8 rounded-3xl border border-cream shadow-premium space-y-6">
-                  <div className="flex items-center gap-4 pb-6 border-b border-cream">
-                    <div className="w-14 h-14 rounded-2xl bg-[#241A1A] text-cappuccino border border-cappuccino/40 flex items-center justify-center font-serif text-2xl font-bold">
-                      {student.name.charAt(0).toUpperCase()}
-                    </div>
-                    <div>
-                      <h3 className="text-xl sm:text-2xl font-serif font-bold text-coffee-dark">
-                        {student.name}
-                      </h3>
-                      <p className="text-xs text-coffee-dark/60">
-                        Permanent Student ID:{" "}
-                        <strong className="text-cappuccino font-mono text-sm">
-                          {student.permanentCode || student.tempCode}
-                        </strong>
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-                    <div className="p-4 rounded-2xl bg-[#FAF7F2] border border-cream space-y-1">
-                      <span className="text-[10px] uppercase tracking-wider text-coffee-dark/50 font-bold block">
-                        Enrolled Discipline
-                      </span>
-                      <p className="text-sm font-bold text-coffee-dark flex items-center gap-2">
-                        <Award size={15} className="text-cappuccino" />
-                        <span>{student.course}</span>
-                      </p>
-                    </div>
-
-                    <div className="p-4 rounded-2xl bg-[#FAF7F2] border border-cream space-y-1">
-                      <span className="text-[10px] uppercase tracking-wider text-coffee-dark/50 font-bold block">
-                        Batch Slot
-                      </span>
-                      <p className="text-sm font-bold text-coffee-dark flex items-center gap-2">
-                        <Clock size={15} className="text-cappuccino" />
-                        <span>{student.batch}</span>
-                      </p>
-                    </div>
-
-                    <div className="p-4 rounded-2xl bg-[#FAF7F2] border border-cream space-y-1">
-                      <span className="text-[10px] uppercase tracking-wider text-coffee-dark/50 font-bold block">
-                        Phone Number
-                      </span>
-                      <p className="text-sm font-bold text-coffee-dark flex items-center gap-2">
-                        <Phone size={15} className="text-cappuccino" />
-                        <span>+91 {student.phone}</span>
-                      </p>
-                    </div>
-
-                    <div className="p-4 rounded-2xl bg-[#FAF7F2] border border-cream space-y-1">
-                      <span className="text-[10px] uppercase tracking-wider text-coffee-dark/50 font-bold block">
-                        Location / City
-                      </span>
-                      <p className="text-sm font-bold text-coffee-dark flex items-center gap-2">
-                        <MapPin size={15} className="text-cappuccino" />
-                        <span>{student.city || "Ariyalur"}</span>
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="p-5 rounded-2xl bg-[#241A1A] text-white space-y-2 border border-cappuccino/20">
-                    <h4 className="font-serif font-bold text-sm text-cappuccino">
-                      Vajra Fitness Arts Training Creed
-                    </h4>
-                    <p className="text-xs text-white/75 leading-relaxed font-light">
-                      &ldquo;Consistency over intensity. Discipline over emotion. Respect for the ancient arts and dedication to daily physical mastery.&rdquo;
-                    </p>
-                  </div>
-                </div>
               </motion.div>
             )}
           </div>

@@ -26,7 +26,7 @@
       "sender": "admin",
       "text": "Namaskaram selvakumaran! Your admission for Silambam (4:30 AM - 5:15 AM (Morning)) is approved! Your permanent login code is vajra-6482. Welcome to Vajra Fitness Arts!",
       "timestamp": "2026-09-13T07:38:42.786Z",
-      "isRead": false
+      "isRead": true
     },
     {
       "id": "msg_1789302781660_93",
@@ -34,7 +34,7 @@
       "sender": "admin",
       "text": "hi",
       "timestamp": "2026-09-13T12:33:01.660Z",
-      "isRead": false
+      "isRead": true
     },
     {
       "id": "msg_1789303020617_632",
@@ -42,7 +42,7 @@
       "sender": "admin",
       "text": "hai",
       "timestamp": "2026-09-13T12:37:00.617Z",
-      "isRead": false
+      "isRead": true
     }
   ],
   "adminConfig": {
