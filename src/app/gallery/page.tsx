@@ -22,14 +22,6 @@ interface GalleryItem {
   description: string;
 }
 
-const galleryCategories = [
-  "All",
-  "Fitness",
-  "Yoga",
-  "Martial Arts",
-  "Silambam"
-];
-
 const galleryImages: GalleryItem[] = [
   // --- Silambam ---
   {

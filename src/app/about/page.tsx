@@ -1,12 +1,10 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
 import SectionHeading from "@/components/SectionHeading";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Shield, Sparkles, Flame, Target, CheckCircle2, ArrowRight, MessageCircle } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 const founderDisciplines = [
   {
