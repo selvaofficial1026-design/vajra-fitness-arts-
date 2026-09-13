@@ -267,18 +267,86 @@ function PortalAuthContent() {
       <div className="absolute top-0 right-0 w-[550px] h-[550px] bg-cappuccino/15 rounded-full blur-[120px] pointer-events-none -translate-y-1/3 translate-x-1/4" />
       <div className="absolute bottom-0 left-0 w-[550px] h-[550px] bg-[#241A1A]/10 rounded-full blur-[120px] pointer-events-none translate-y-1/3 -translate-x-1/4" />
 
-      {/* MNC Split-Canvas Container */}
-      <div className="w-full max-w-6xl mx-auto z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch">
-        
-        {/* LEFT COLUMN: MNC Brand & Academy Experience Showcase (Visible on Desktop/Tablet) */}
+      {/* Main Canvas Container */}
+      <div className="w-full max-w-7xl mx-auto z-10 relative flex flex-col items-center justify-center min-h-[720px] py-2">
+
+        {/* MOBILE & TABLET COMPACT BRAND HEADER (< lg) */}
         <motion.div
-          initial={{ opacity: 0, x: -30 }}
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="lg:hidden w-full max-w-xl mx-auto mb-6 bg-[#241A1A] rounded-3xl p-5 sm:p-6 border border-cappuccino/35 shadow-xl relative overflow-hidden"
+        >
+          {/* Subtle Background Action Image */}
+          <div className="absolute inset-0 z-0 pointer-events-none">
+            <Image
+              src="/images/vajra_hero.jpg"
+              alt="Vajra Virtual Training Academy"
+              fill
+              className="object-cover opacity-20 filter saturate-50 contrast-125"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#241A1A] via-[#241A1A]/85 to-[#1A1212]/95" />
+          </div>
+
+          <div className="relative z-10 text-center space-y-3">
+            <div className="flex items-center justify-center gap-3">
+              <div className="w-10 h-10 rounded-xl overflow-hidden border border-cappuccino/50 shadow-[0_0_15px_rgba(200,149,95,0.4)] flex items-center justify-center bg-white/5 shrink-0">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/images/logo_gold.jpeg"
+                  alt="Vajra Emblem"
+                  className="w-full h-full object-contain scale-110"
+                />
+              </div>
+              <div className="text-left">
+                <span className="font-serif text-xl font-bold tracking-tight italic text-white block leading-none">
+                  Vajra
+                </span>
+                <span className="text-cappuccino font-sans text-[7px] uppercase tracking-[0.3em] font-bold block">
+                  Virtual Academy
+                </span>
+              </div>
+            </div>
+
+            <div>
+              <h2 className="text-xl sm:text-2xl font-serif font-bold text-white leading-tight">
+                Ancient Disciplines. <span className="italic text-cappuccino">Elite Virtual Mastery.</span>
+              </h2>
+              <p className="text-[11px] text-white/70 font-light mt-1">
+                Live posture-corrected training, personal instructor feedback, and traditional martial arts mastery.
+              </p>
+            </div>
+
+            {/* 4 Feature Pills on Mobile */}
+            <div className="grid grid-cols-2 gap-2 pt-1 text-left">
+              <div className="flex items-center gap-2 p-2 rounded-xl bg-white/[0.04] border border-white/5 text-[10px] text-white/80">
+                <Radio size={13} className="text-emerald-400 shrink-0 animate-pulse" />
+                <span className="truncate">Live Google Meet</span>
+              </div>
+              <div className="flex items-center gap-2 p-2 rounded-xl bg-white/[0.04] border border-white/5 text-[10px] text-white/80">
+                <Video size={13} className="text-cappuccino shrink-0" />
+                <span className="truncate">Private YouTube</span>
+              </div>
+              <div className="flex items-center gap-2 p-2 rounded-xl bg-white/[0.04] border border-white/5 text-[10px] text-white/80">
+                <MessageSquare size={13} className="text-[#25D366] shrink-0" />
+                <span className="truncate">WhatsApp Helpdesk</span>
+              </div>
+              <div className="flex items-center gap-2 p-2 rounded-xl bg-white/[0.04] border border-white/5 text-[10px] text-white/80">
+                <ShieldCheck size={13} className="text-amber-400 shrink-0" />
+                <span className="truncate">Official vajra-xxxx</span>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* DESKTOP SIDE OVAL-CUT BRAND SHOWCASE (lg: and above) */}
+        <motion.div
+          initial={{ opacity: 0, x: -40 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="lg:col-span-5 bg-[#241A1A] rounded-3xl p-7 sm:p-9 md:p-10 border border-cappuccino/30 shadow-2xl relative overflow-hidden flex flex-col justify-between"
+          className="hidden lg:flex absolute left-0 top-0 bottom-0 w-[320px] xl:w-[380px] 2xl:w-[440px] bg-[#241A1A] rounded-r-[160px] xl:rounded-r-[220px] 2xl:rounded-r-[280px] border-y border-l border-cappuccino/30 border-r-2 border-r-cappuccino/60 shadow-[20px_0_60px_rgba(0,0,0,0.5)] z-10 overflow-hidden flex-col justify-between p-6 xl:p-8 2xl:p-10"
         >
-          {/* Subtle Background Action Image with Warm Luxury Vignette */}
-          <div className="absolute inset-0 z-0">
+          {/* Subtle Background Martial Arts Action Photo with Warm Luxury Vignette */}
+          <div className="absolute inset-0 z-0 pointer-events-none">
             <Image
               src="/images/vajra_hero.jpg"
               alt="Vajra Virtual Training Academy"
@@ -288,13 +356,18 @@ function PortalAuthContent() {
             <div className="absolute inset-0 bg-gradient-to-t from-[#241A1A] via-[#241A1A]/85 to-[#1A1212]/95" />
           </div>
 
-          {/* Golden Ambient Glow */}
-          <div className="absolute top-0 right-0 w-64 h-64 bg-cappuccino/20 rounded-full blur-3xl pointer-events-none -translate-y-1/2 translate-x-1/2" />
+          {/* Concentric Inner Oval Arch Guide Line (Architectural Luxury Cut Effect) */}
+          <div className="absolute inset-y-4 right-4 w-32 xl:w-44 rounded-r-[140px] xl:rounded-r-[200px] 2xl:rounded-r-[260px] border-r border-cappuccino/20 pointer-events-none" />
 
-          {/* Brand Identity & Header */}
-          <div className="relative z-10 space-y-6">
+          {/* Ambient Golden Radial Halo */}
+          <div className="absolute top-0 right-0 w-72 h-72 bg-cappuccino/20 rounded-full blur-3xl pointer-events-none -translate-y-1/3 translate-x-1/3" />
+          <div className="absolute bottom-10 left-0 w-48 h-48 bg-cappuccino/10 rounded-full blur-2xl pointer-events-none" />
+
+          {/* Brand Header & Headline */}
+          <div className="relative z-10 space-y-5 xl:space-y-6">
+            {/* Vajra Gold Crest & Emblem */}
             <div className="flex items-center gap-3.5">
-              <div className="w-12 h-12 rounded-2xl overflow-hidden border border-cappuccino/50 shadow-[0_0_20px_rgba(200,149,95,0.4)] flex items-center justify-center bg-white/5 shrink-0">
+              <div className="w-11 h-11 xl:w-12 xl:h-12 rounded-2xl overflow-hidden border border-cappuccino/50 shadow-[0_0_25px_rgba(200,149,95,0.45)] flex items-center justify-center bg-white/5 shrink-0">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="/images/logo_gold.jpeg"
@@ -303,7 +376,7 @@ function PortalAuthContent() {
                 />
               </div>
               <div>
-                <span className="font-serif text-2xl font-bold tracking-tight italic text-white block leading-none">
+                <span className="font-serif text-xl xl:text-2xl font-bold tracking-tight italic text-white block leading-none">
                   Vajra
                 </span>
                 <span className="text-cappuccino font-sans text-[8px] uppercase tracking-[0.3em] font-bold mt-0.5 block">
@@ -317,60 +390,60 @@ function PortalAuthContent() {
                 <GraduationCap size={13} className="text-cappuccino" />
                 <span>Online Class Portal</span>
               </div>
-              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-white leading-tight">
+              <h2 className="text-2xl xl:text-3xl 2xl:text-4xl font-serif font-bold text-white leading-tight">
                 Ancient Disciplines. <br />
                 <span className="italic text-cappuccino">Elite Virtual Mastery.</span>
               </h2>
-              <p className="text-xs text-white/70 font-light mt-2.5 leading-relaxed">
+              <p className="text-xs text-white/70 font-light mt-2.5 leading-relaxed pr-4">
                 Connect daily from anywhere in the world for live posture-corrected training, personal instructor feedback, and traditional martial arts mastery.
               </p>
             </div>
 
-            {/* MNC 4 Key Experience Pillars */}
-            <div className="space-y-3 pt-2">
-              <div className="flex items-start gap-3 p-3 rounded-2xl bg-white/[0.04] border border-white/5 hover:border-cappuccino/30 transition-all">
+            {/* 4 Key Experience Pillars */}
+            <div className="space-y-2.5 xl:space-y-3 pt-1 pr-2">
+              <div className="flex items-start gap-3 p-2.5 xl:p-3 rounded-2xl bg-white/[0.04] border border-white/5 hover:border-cappuccino/30 transition-all">
                 <div className="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
-                  <Radio size={16} className="animate-pulse" />
+                  <Radio size={15} className="animate-pulse" />
                 </div>
                 <div>
                   <h4 className="text-xs font-bold text-white">Daily Live Google Meet</h4>
-                  <p className="text-[11px] text-white/60 leading-snug">
+                  <p className="text-[10px] xl:text-[11px] text-white/60 leading-snug">
                     Real-time visual form checking across all 6 official morning and evening batch slots.
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 p-3 rounded-2xl bg-white/[0.04] border border-white/5 hover:border-cappuccino/30 transition-all">
+              <div className="flex items-start gap-3 p-2.5 xl:p-3 rounded-2xl bg-white/[0.04] border border-white/5 hover:border-cappuccino/30 transition-all">
                 <div className="w-8 h-8 rounded-xl bg-cappuccino/20 text-cappuccino flex items-center justify-center shrink-0 mt-0.5">
-                  <Video size={16} />
+                  <Video size={15} />
                 </div>
                 <div>
                   <h4 className="text-xs font-bold text-white">Private YouTube Video Library</h4>
-                  <p className="text-[11px] text-white/60 leading-snug">
+                  <p className="text-[10px] xl:text-[11px] text-white/60 leading-snug">
                     Step-by-step syllabus lessons recorded for home practice and posture perfection.
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 p-3 rounded-2xl bg-white/[0.04] border border-white/5 hover:border-cappuccino/30 transition-all">
+              <div className="flex items-start gap-3 p-2.5 xl:p-3 rounded-2xl bg-white/[0.04] border border-white/5 hover:border-cappuccino/30 transition-all">
                 <div className="w-8 h-8 rounded-xl bg-[#25D366]/20 text-[#25D366] flex items-center justify-center shrink-0 mt-0.5">
-                  <MessageSquare size={16} />
+                  <MessageSquare size={15} />
                 </div>
                 <div>
                   <h4 className="text-xs font-bold text-white">WhatsApp-Style Coach Helpdesk</h4>
-                  <p className="text-[11px] text-white/60 leading-snug">
+                  <p className="text-[10px] xl:text-[11px] text-white/60 leading-snug">
                     Instant two-way chat directly with the Head Coach for technique doubts and guidance.
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 p-3 rounded-2xl bg-white/[0.04] border border-white/5 hover:border-cappuccino/30 transition-all">
+              <div className="flex items-start gap-3 p-2.5 xl:p-3 rounded-2xl bg-white/[0.04] border border-white/5 hover:border-cappuccino/30 transition-all">
                 <div className="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0 mt-0.5">
-                  <ShieldCheck size={16} />
+                  <ShieldCheck size={15} />
                 </div>
                 <div>
                   <h4 className="text-xs font-bold text-white">Official vajra-xxxx Student ID</h4>
-                  <p className="text-[11px] text-white/60 leading-snug">
+                  <p className="text-[10px] xl:text-[11px] text-white/60 leading-snug">
                     Verified temporary tracking code transition to permanent membership credentials.
                   </p>
                 </div>
@@ -379,7 +452,7 @@ function PortalAuthContent() {
           </div>
 
           {/* Bottom Security / Trust Badge */}
-          <div className="relative z-10 pt-6 mt-6 border-t border-white/10 flex items-center justify-between text-[11px] text-white/50">
+          <div className="relative z-10 pt-4 xl:pt-6 mt-4 xl:mt-6 border-t border-white/10 flex items-center justify-between text-[11px] text-white/50 pr-4">
             <span className="flex items-center gap-1.5">
               <Lock size={12} className="text-cappuccino" />
               <span>Zero Spam • No Email Required</span>
@@ -390,15 +463,15 @@ function PortalAuthContent() {
           </div>
         </motion.div>
 
-        {/* RIGHT COLUMN: MNC Luxury Authentication & Admission Console */}
+        {/* MID (CENTER) INTERACTIVE CONSOLE: LOGIN, ENROLL & TRACK */}
         <motion.div
-          initial={{ opacity: 0, x: 30 }}
-          animate={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="lg:col-span-7 flex flex-col justify-center"
+          className="w-full max-w-lg xl:max-w-xl mx-auto lg:max-xl:ml-[340px] lg:max-xl:mr-4 xl:mx-auto z-20 relative px-1 sm:px-0"
         >
           {/* Main Glassmorphic Panel */}
-          <div className="bg-[#241A1A] text-white p-5 sm:p-7 md:p-9 rounded-3xl border border-cappuccino/35 shadow-[0_20px_50px_rgba(0,0,0,0.4)] relative overflow-hidden">
+          <div className="bg-[#241A1A] text-white p-5 sm:p-7 md:p-8 rounded-3xl border border-cappuccino/35 shadow-[0_20px_50px_rgba(0,0,0,0.4)] relative overflow-hidden">
             {/* Ambient Radial Highlights */}
             <div className="absolute top-0 right-0 w-72 h-72 bg-cappuccino/15 rounded-full blur-[80px] pointer-events-none -translate-y-1/2 translate-x-1/2" />
             <div className="absolute bottom-0 left-0 w-60 h-60 bg-cappuccino/10 rounded-full blur-[70px] pointer-events-none translate-y-1/2 -translate-x-1/2" />
