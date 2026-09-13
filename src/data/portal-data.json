@@ -18,7 +18,18 @@
     }
   ],
   "meetings": [],
-  "videos": [],
+  "videos": [
+    {
+      "id": "vid_1789314972629",
+      "youtubeUrl": "https://youtu.be/blajJsKACv8?si=Nz0g6Z1B0Dy27Qwb",
+      "youtubeId": "blajJsKACv8",
+      "title": "silamban basic course",
+      "course": "Fitness",
+      "category": "Foundations",
+      "description": "",
+      "addedAt": "2026-09-13T15:56:12.629Z"
+    }
+  ],
   "messages": [
     {
       "id": "msg_1789285122786",

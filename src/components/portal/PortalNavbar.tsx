@@ -335,36 +335,6 @@ export default function PortalNavbar({
                   </motion.div>
                 );
               })}
-
-              {/* Quick Navigation to Main Website */}
-              <div className="mt-2 pt-3 border-t border-coffee-dark/10">
-                <span className="text-[8.5px] uppercase tracking-[0.25em] text-coffee-dark/45 font-bold block mb-2 px-3">
-                  Main Website
-                </span>
-                <div className="grid grid-cols-3 gap-2 px-1">
-                  <Link
-                    href="/"
-                    onClick={() => setIsOpen(false)}
-                    className="text-center text-xs font-bold text-coffee-dark/75 hover:text-cappuccino py-2 px-2 rounded-xl bg-coffee-dark/5 active:scale-95 transition-all"
-                  >
-                    Home
-                  </Link>
-                  <Link
-                    href="/course"
-                    onClick={() => setIsOpen(false)}
-                    className="text-center text-xs font-bold text-coffee-dark/75 hover:text-cappuccino py-2 px-2 rounded-xl bg-coffee-dark/5 active:scale-95 transition-all"
-                  >
-                    Courses
-                  </Link>
-                  <Link
-                    href="/contact"
-                    onClick={() => setIsOpen(false)}
-                    className="text-center text-xs font-bold text-coffee-dark/75 hover:text-cappuccino py-2 px-2 rounded-xl bg-coffee-dark/5 active:scale-95 transition-all"
-                  >
-                    Contact
-                  </Link>
-                </div>
-              </div>
             </div>
 
             {/* Drawer Bottom: User info (Clickable to open profile) & Logout */}
