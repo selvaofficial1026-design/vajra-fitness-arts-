@@ -77,8 +77,21 @@ function PortalAuthContent() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [trackedStudent, setTrackedStudent] = useState<any | null>(null);
 
-  // Auto-fill track code if passed via URL or generated
+  // Auto-fill track code or switch to enroll tab if passed via URL
   useEffect(() => {
+    const tabParam = searchParams.get("tab");
+    if (tabParam === "enroll" || tabParam === "track" || tabParam === "login" || tabParam === "admin") {
+      setActiveTab(tabParam);
+    }
+
+    const courseParam = searchParams.get("course");
+    if (courseParam) {
+      const matched = courseOptions.find((c) => c.toLowerCase() === courseParam.toLowerCase());
+      if (matched) {
+        setEnrollForm((prev) => ({ ...prev, course: matched }));
+      }
+    }
+
     const codeParam = searchParams.get("code");
     if (codeParam) {
       setTrackInputCode(codeParam);

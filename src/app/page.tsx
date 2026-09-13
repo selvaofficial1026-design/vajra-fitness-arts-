@@ -308,10 +308,10 @@ export default function Home() {
               <ArrowRight size={16} />
             </a>
             <Link
-              href="/course"
+              href="/portal?tab=enroll"
               className="w-full sm:w-auto px-6 sm:px-10 py-4 sm:py-5 border border-cappuccino/50 hover:bg-cappuccino hover:text-coffee-dark text-white font-bold text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] rounded-full transition-all backdrop-blur-sm shadow-premium inline-flex items-center justify-center gap-3 active:scale-95"
             >
-              <span>Explore All Batches</span>
+              <span>Enroll in Online Class</span>
             </Link>
           </div>
         </div>

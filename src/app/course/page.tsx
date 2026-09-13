@@ -6,7 +6,7 @@ import Link from "next/link";
 import SectionHeading from "@/components/SectionHeading";
 import VideoModal from "@/components/VideoModal";
 import { motion, AnimatePresence } from "framer-motion";
-import { Play, Clock, Users, Award, CheckCircle2, ArrowRight, MessageCircle, X } from "lucide-react";
+import { Play, Clock, Users, Award, CheckCircle2, ArrowRight, MessageCircle, X, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface CourseItem {
@@ -302,13 +302,12 @@ export default function CoursesPage() {
                         >
                           Curriculum Details +
                         </button>
-                        <Link href="/contact">
-                          <button
-                            type="button"
-                            className="px-4 sm:px-5 py-2.5 bg-coffee-dark text-white rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-cappuccino transition-all flex items-center gap-1.5 shadow-sm active:scale-95 cursor-pointer"
-                          >
-                            Enroll <ArrowRight size={12} />
-                          </button>
+                        <Link 
+                          href={`/portal?tab=enroll&course=${encodeURIComponent(course.name)}`}
+                          className="px-4 sm:px-5 py-2.5 bg-coffee-dark text-white rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-cappuccino transition-all flex items-center gap-1.5 shadow-sm active:scale-95 cursor-pointer"
+                        >
+                          <span>Enroll</span>
+                          <ArrowRight size={12} />
                         </Link>
                       </div>
                     </div>
@@ -386,6 +385,15 @@ export default function CoursesPage() {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-1">
+                {/* Enroll in Online Portal */}
+                <Link
+                  href={`/portal?tab=enroll&course=${encodeURIComponent(selectedCourse.name)}`}
+                  className="w-full sm:flex-1 py-3.5 sm:py-4 bg-[#241A1A] hover:bg-cappuccino hover:text-coffee-dark text-white font-extrabold text-xs uppercase tracking-[0.2em] transition-all shadow-premium text-center flex items-center justify-center gap-2 active:scale-[0.98] rounded-full cursor-pointer"
+                >
+                  <Sparkles size={16} className="text-cappuccino shrink-0" />
+                  <span>Enroll in Online Class</span>
+                </Link>
+
                 {/* Authentic WhatsApp Button with green #25D366 and high contrast black text */}
                 <a
                   href={`https://wa.me/918778931958?text=${encodeURIComponent(`Hello Vajra Fitness Arts, I would like to inquire about admissions for ${selectedCourse.name}.`)}`}
