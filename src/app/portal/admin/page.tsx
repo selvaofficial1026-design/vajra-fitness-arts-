@@ -2238,86 +2238,86 @@ export default function AdminPortalPage() {
             >
               {/* CMS Header & Sub-Navigation */}
               <div className="space-y-4 pb-6 border-b border-coffee-dark/10">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="flex flex-col gap-4">
                   <div>
                     <div className="flex items-center gap-2 mb-1">
                       <span className="p-1.5 rounded-lg bg-cappuccino/20 text-coffee-dark">
                         <Globe size={16} className="text-cappuccino" />
                       </span>
-                      <h3 className="text-xl font-serif font-bold text-coffee-dark">
+                      <h3 className="text-xl sm:text-2xl font-serif font-bold text-coffee-dark">
                         Website CMS &amp; Main Portal Manager
                       </h3>
                     </div>
-                    <p className="text-xs text-coffee-dark/65 font-light">
+                    <p className="text-xs sm:text-sm text-coffee-dark/65 font-light">
                       Manage courses, upload course thumbnails &amp; syllabus, publish gallery photos, and update live website details.
                     </p>
                   </div>
 
-                  {/* Sub-Tabs Selector - Horizontally scrollable and finger-friendly on mobile */}
-                  <div className="w-full sm:w-auto flex items-center gap-1.5 p-1.5 rounded-2xl sm:rounded-full bg-white/70 border border-coffee-dark/15 overflow-x-auto no-scrollbar touch-pan-x">
+                  {/* Sub-Tabs Selector - Fully flexible wrapping with zero clipping */}
+                  <div className="w-full flex items-center flex-wrap gap-2 p-1.5 rounded-2xl bg-white/80 border border-coffee-dark/15 shadow-2xs">
                     <button
                       type="button"
                       onClick={() => setCmsSubTab("courses")}
                       className={cn(
-                        "shrink-0 px-3 sm:px-3.5 py-1.5 rounded-xl sm:rounded-full text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer min-h-[36px]",
+                        "px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer min-h-[38px] select-none",
                         cmsSubTab === "courses"
                           ? "bg-coffee-dark text-white shadow-xs"
                           : "text-coffee-dark/70 hover:text-coffee-dark hover:bg-black/5"
                       )}
                     >
-                      <BookOpen size={13} />
+                      <BookOpen size={14} className={cmsSubTab === "courses" ? "text-cappuccino" : "text-coffee-dark/60"} />
                       <span>Courses ({courses.length})</span>
                     </button>
                     <button
                       type="button"
                       onClick={() => setCmsSubTab("gallery")}
                       className={cn(
-                        "shrink-0 px-3 sm:px-3.5 py-1.5 rounded-xl sm:rounded-full text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer min-h-[36px]",
+                        "px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer min-h-[38px] select-none",
                         cmsSubTab === "gallery"
                           ? "bg-coffee-dark text-white shadow-xs"
                           : "text-coffee-dark/70 hover:text-coffee-dark hover:bg-black/5"
                       )}
                     >
-                      <ImageIcon size={13} />
+                      <ImageIcon size={14} className={cmsSubTab === "gallery" ? "text-cappuccino" : "text-coffee-dark/60"} />
                       <span>Gallery ({gallery.length})</span>
                     </button>
                     <button
                       type="button"
                       onClick={() => setCmsSubTab("reviews")}
                       className={cn(
-                        "shrink-0 px-3 sm:px-3.5 py-1.5 rounded-xl sm:rounded-full text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer min-h-[36px]",
+                        "px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer min-h-[38px] select-none",
                         cmsSubTab === "reviews"
                           ? "bg-coffee-dark text-white shadow-xs"
                           : "text-coffee-dark/70 hover:text-coffee-dark hover:bg-black/5"
                       )}
                     >
-                      <Star size={13} />
+                      <Star size={14} className={cmsSubTab === "reviews" ? "text-cappuccino" : "text-coffee-dark/60"} />
                       <span>Reviews ({reviews.length})</span>
                     </button>
                     <button
                       type="button"
                       onClick={() => setCmsSubTab("about")}
                       className={cn(
-                        "shrink-0 px-3 sm:px-3.5 py-1.5 rounded-xl sm:rounded-full text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer min-h-[36px]",
+                        "px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer min-h-[38px] select-none",
                         cmsSubTab === "about"
                           ? "bg-coffee-dark text-white shadow-xs"
                           : "text-coffee-dark/70 hover:text-coffee-dark hover:bg-black/5"
                       )}
                     >
-                      <Info size={13} />
+                      <Info size={14} className={cmsSubTab === "about" ? "text-cappuccino" : "text-coffee-dark/60"} />
                       <span>About Page</span>
                     </button>
                     <button
                       type="button"
                       onClick={() => setCmsSubTab("settings")}
                       className={cn(
-                        "shrink-0 px-3 sm:px-3.5 py-1.5 rounded-xl sm:rounded-full text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer min-h-[36px]",
+                        "px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer min-h-[38px] select-none",
                         cmsSubTab === "settings"
                           ? "bg-coffee-dark text-white shadow-xs"
                           : "text-coffee-dark/70 hover:text-coffee-dark hover:bg-black/5"
                       )}
                     >
-                      <Sliders size={13} />
+                      <Sliders size={14} className={cmsSubTab === "settings" ? "text-cappuccino" : "text-coffee-dark/60"} />
                       <span>Notice &amp; Details</span>
                     </button>
                   </div>

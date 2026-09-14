@@ -290,9 +290,9 @@ export default function CoursesPage() {
 
                         {/* Course Meta Info */}
                         <div className="space-y-2 sm:space-y-2.5 pt-4 border-t border-cream text-xs text-coffee-dark/80 mb-5 sm:mb-6">
-                          <div className="flex items-start gap-2 sm:gap-2.5">
+                          <div className="flex items-start gap-2 sm:gap-2.5 min-w-0">
                             <Clock size={15} className="text-cappuccino shrink-0 mt-0.5" />
-                            <span className="text-[11px] leading-relaxed">{course.schedule}</span>
+                            <span className="text-[11px] leading-relaxed break-words min-w-0">{course.schedule}</span>
                           </div>
                           <div className="flex items-center gap-2 sm:gap-2.5">
                             <Award size={15} className="text-cappuccino shrink-0" />

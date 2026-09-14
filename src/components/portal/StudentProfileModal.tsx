@@ -120,7 +120,7 @@ export default function StudentProfileModal({
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[120] flex items-center justify-center p-3 xs:p-4 sm:p-6 overflow-y-auto">
+        <div className="fixed inset-0 z-[120] flex items-center justify-center p-2.5 xs:p-4 sm:p-6 overflow-y-auto">
           {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -152,7 +152,7 @@ export default function StudentProfileModal({
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-1.5 xs:gap-2 flex-wrap mb-0.5 min-w-0">
-                    <h3 className="text-base xs:text-lg sm:text-xl font-serif font-bold text-coffee-dark truncate min-w-0">
+                    <h3 className="text-sm xs:text-base sm:text-xl font-serif font-bold text-coffee-dark truncate max-w-full min-w-0">
                       {student.name}
                     </h3>
                     <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-300 text-[9px] font-bold uppercase tracking-wider shrink-0">
@@ -177,30 +177,36 @@ export default function StudentProfileModal({
             </div>
 
             {/* Sub-Navigation Tabs */}
-            <div className="relative z-10 flex items-center gap-1 p-1 bg-white/70 backdrop-blur-md rounded-full border border-coffee-dark/10 shadow-xs mx-3 xs:mx-4 sm:mx-6 my-2 shrink-0">
+            <div className="relative z-10 flex items-center gap-1 p-1 bg-white/70 backdrop-blur-md rounded-full border border-coffee-dark/10 shadow-xs mx-2.5 xs:mx-4 sm:mx-6 my-2 shrink-0">
               <button
                 type="button"
                 onClick={() => setActiveSubTab("profile")}
-                className={`flex-1 py-1.5 px-2 rounded-full text-[10px] sm:text-[11px] font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer min-h-[34px] ${
+                className={`flex-1 py-2 px-2 xs:px-3 rounded-full text-[10px] sm:text-[11px] font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer min-h-[38px] sm:min-h-[40px] touch-manipulation ${
                   activeSubTab === "profile"
                     ? "bg-coffee-dark text-cappuccino shadow-sm"
                     : "text-coffee-dark/60 hover:text-coffee-dark hover:bg-black/5"
                 }`}
               >
-                <User size={12} className="shrink-0" />
-                <span>Profile &amp; ID</span>
+                <User size={13} className="shrink-0" />
+                <span className="truncate">
+                  <span className="inline xs:hidden">Profile</span>
+                  <span className="hidden xs:inline">Profile Details</span>
+                </span>
               </button>
               <button
                 type="button"
                 onClick={() => setActiveSubTab("password")}
-                className={`flex-1 py-1.5 px-2 rounded-full text-[10px] sm:text-[11px] font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer min-h-[34px] ${
+                className={`flex-1 py-2 px-2 xs:px-3 rounded-full text-[10px] sm:text-[11px] font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer min-h-[38px] sm:min-h-[40px] touch-manipulation ${
                   activeSubTab === "password"
                     ? "bg-coffee-dark text-cappuccino shadow-sm"
                     : "text-coffee-dark/60 hover:text-coffee-dark hover:bg-black/5"
                 }`}
               >
-                <KeyRound size={12} className="shrink-0" />
-                <span>Change Password</span>
+                <KeyRound size={13} className="shrink-0" />
+                <span className="truncate">
+                  <span className="inline xs:hidden">Password</span>
+                  <span className="hidden xs:inline">Change Password</span>
+                </span>
               </button>
             </div>
 
@@ -215,10 +221,10 @@ export default function StudentProfileModal({
                       <span className="text-[9px] uppercase tracking-[0.2em] text-cappuccino font-bold block mb-0.5">
                         Official Student ID
                       </span>
-                      <div className="text-lg xs:text-xl sm:text-2xl font-mono font-extrabold text-coffee-dark tracking-wider sm:tracking-widest break-all">
+                      <div className="text-lg xs:text-xl sm:text-2xl font-mono font-extrabold text-coffee-dark tracking-wider sm:tracking-widest break-all select-all leading-tight">
                         {activeCode}
                       </div>
-                      <p className="text-[10px] xs:text-[10.5px] text-coffee-dark/60 leading-snug">
+                      <p className="text-[10px] xs:text-[10.5px] text-coffee-dark/60 leading-snug mt-0.5">
                         Use this ID or your custom password to sign in
                       </p>
                     </div>
@@ -226,11 +232,12 @@ export default function StudentProfileModal({
                     <button
                       type="button"
                       onClick={handleCopyCode}
-                      className="w-full xs:w-auto min-h-[40px] px-3.5 py-2 rounded-xl bg-cappuccino/20 hover:bg-cappuccino hover:text-coffee-dark text-coffee-dark font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all cursor-pointer shrink-0 active:scale-95 touch-manipulation border border-cappuccino/40 shadow-xs"
+                      className="w-full xs:w-auto min-h-[44px] px-4 py-2.5 rounded-xl bg-cappuccino/20 hover:bg-cappuccino hover:text-coffee-dark text-coffee-dark font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all cursor-pointer shrink-0 active:scale-95 touch-manipulation border border-cappuccino/40 shadow-xs"
                       title="Copy Student ID"
+                      aria-label={copiedCode ? "Student ID copied" : "Copy Student ID"}
                     >
-                      {copiedCode ? <Check size={14} className="text-emerald-700" /> : <Copy size={14} />}
-                      <span>{copiedCode ? "Copied" : "Copy"}</span>
+                      {copiedCode ? <Check size={15} className="text-emerald-700 shrink-0" /> : <Copy size={15} className="shrink-0" />}
+                      <span>{copiedCode ? "Copied" : "Copy ID"}</span>
                     </button>
                   </div>
 
@@ -351,7 +358,7 @@ export default function StudentProfileModal({
                         Current Student ID / Code *
                       </label>
                       <div className="relative flex items-center">
-                        <ShieldCheck size={14} className="absolute left-3 text-cappuccino pointer-events-none" />
+                        <ShieldCheck size={15} className="absolute left-3 text-cappuccino pointer-events-none shrink-0" />
                         <input
                           type={showCurrentCode ? "text" : "password"}
                           name="vajra_stud_cur_code"
@@ -361,16 +368,16 @@ export default function StudentProfileModal({
                           autoComplete="new-password"
                           data-lpignore="true"
                           data-form-type="other"
-                          className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-10 py-2.5 text-xs focus:outline-none transition-all shadow-xs"
+                          className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-11 py-2.5 min-h-[44px] text-xs xs:text-sm focus:outline-none transition-all shadow-xs"
                           required
                         />
                         <button
                           type="button"
                           onClick={() => setShowCurrentCode(!showCurrentCode)}
-                          className="absolute right-0 inset-y-0 w-10 flex items-center justify-center text-coffee-dark/40 hover:text-coffee-dark active:text-coffee-dark transition-colors cursor-pointer touch-manipulation"
+                          className="absolute right-0 inset-y-0 w-11 min-h-[44px] min-w-[44px] flex items-center justify-center text-coffee-dark/40 hover:text-coffee-dark active:text-coffee-dark transition-colors cursor-pointer touch-manipulation"
                           aria-label={showCurrentCode ? "Hide current code" : "Show current code"}
                         >
-                          {showCurrentCode ? <EyeOff size={15} /> : <Eye size={15} />}
+                          {showCurrentCode ? <EyeOff size={16} /> : <Eye size={16} />}
                         </button>
                       </div>
                     </div>
@@ -381,7 +388,7 @@ export default function StudentProfileModal({
                         New Password *
                       </label>
                       <div className="relative flex items-center">
-                        <Lock size={14} className="absolute left-3 text-cappuccino pointer-events-none" />
+                        <Lock size={15} className="absolute left-3 text-cappuccino pointer-events-none shrink-0" />
                         <input
                           type={showNewPass ? "text" : "password"}
                           name="vajra_stud_new_pwd"
@@ -391,17 +398,17 @@ export default function StudentProfileModal({
                           autoComplete="new-password"
                           data-lpignore="true"
                           data-form-type="other"
-                          className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-10 py-2.5 text-xs focus:outline-none transition-all shadow-xs"
+                          className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-11 py-2.5 min-h-[44px] text-xs xs:text-sm focus:outline-none transition-all shadow-xs"
                           required
                           minLength={4}
                         />
                         <button
                           type="button"
                           onClick={() => setShowNewPass(!showNewPass)}
-                          className="absolute right-0 inset-y-0 w-10 flex items-center justify-center text-coffee-dark/40 hover:text-coffee-dark active:text-coffee-dark transition-colors cursor-pointer touch-manipulation"
+                          className="absolute right-0 inset-y-0 w-11 min-h-[44px] min-w-[44px] flex items-center justify-center text-coffee-dark/40 hover:text-coffee-dark active:text-coffee-dark transition-colors cursor-pointer touch-manipulation"
                           aria-label={showNewPass ? "Hide new password" : "Show new password"}
                         >
-                          {showNewPass ? <EyeOff size={15} /> : <Eye size={15} />}
+                          {showNewPass ? <EyeOff size={16} /> : <Eye size={16} />}
                         </button>
                       </div>
                     </div>
@@ -412,7 +419,7 @@ export default function StudentProfileModal({
                         Confirm New Password *
                       </label>
                       <div className="relative flex items-center">
-                        <Lock size={14} className="absolute left-3 text-cappuccino pointer-events-none" />
+                        <Lock size={15} className="absolute left-3 text-cappuccino pointer-events-none shrink-0" />
                         <input
                           type={showConfirmPass ? "text" : "password"}
                           name="vajra_stud_cnf_pwd"
@@ -422,16 +429,16 @@ export default function StudentProfileModal({
                           autoComplete="new-password"
                           data-lpignore="true"
                           data-form-type="other"
-                          className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-10 py-2.5 text-xs focus:outline-none transition-all shadow-xs"
+                          className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-11 py-2.5 min-h-[44px] text-xs xs:text-sm focus:outline-none transition-all shadow-xs"
                           required
                         />
                         <button
                           type="button"
                           onClick={() => setShowConfirmPass(!showConfirmPass)}
-                          className="absolute right-0 inset-y-0 w-10 flex items-center justify-center text-coffee-dark/40 hover:text-coffee-dark active:text-coffee-dark transition-colors cursor-pointer touch-manipulation"
+                          className="absolute right-0 inset-y-0 w-11 min-h-[44px] min-w-[44px] flex items-center justify-center text-coffee-dark/40 hover:text-coffee-dark active:text-coffee-dark transition-colors cursor-pointer touch-manipulation"
                           aria-label={showConfirmPass ? "Hide confirm password" : "Show confirm password"}
                         >
-                          {showConfirmPass ? <EyeOff size={15} /> : <Eye size={15} />}
+                          {showConfirmPass ? <EyeOff size={16} /> : <Eye size={16} />}
                         </button>
                       </div>
                     </div>
@@ -440,13 +447,16 @@ export default function StudentProfileModal({
                       <button
                         type="submit"
                         disabled={passLoading}
-                        className="w-full py-3 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-extrabold text-xs uppercase tracking-[0.18em] rounded-full transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50 min-h-[44px] touch-manipulation"
+                        className="w-full py-3 px-4 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-extrabold text-xs uppercase tracking-[0.18em] rounded-full transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] touch-manipulation"
                       >
                         {passLoading ? (
-                          <span>Updating Password...</span>
+                          <>
+                            <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin shrink-0" />
+                            <span>Updating Password...</span>
+                          </>
                         ) : (
                           <>
-                            <KeyRound size={13} />
+                            <KeyRound size={14} className="shrink-0" />
                             <span>Save Student Password</span>
                           </>
                         )}
@@ -469,7 +479,7 @@ export default function StudentProfileModal({
                   onClose();
                   onLogout();
                 }}
-                className="min-h-[40px] px-4 py-2 rounded-full bg-red-500/10 hover:bg-red-500 text-red-600 hover:text-white border border-red-500/20 text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 touch-manipulation shrink-0"
+                className="min-h-[44px] px-4.5 py-2.5 rounded-full bg-red-500/10 hover:bg-red-500 text-red-600 hover:text-white border border-red-500/20 text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 touch-manipulation shrink-0"
               >
                 <LogOut size={14} className="shrink-0" />
                 <span>Log Out</span>

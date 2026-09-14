@@ -4,12 +4,13 @@ import React from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Play } from "lucide-react";
+import { Play, Clock } from "lucide-react";
 
 interface MenuItemCardProps {
   name: string;
   description: string;
   price: string;
+  schedule?: string;
   image: string;
   category?: string;
   is4K?: boolean;
@@ -19,7 +20,19 @@ interface MenuItemCardProps {
   onPlay?: (youtubeId: string) => void;
 }
 
-export default function MenuItemCard({ name, description, price, image, category, is4K, tag, youtubeId, index = 0, onPlay }: MenuItemCardProps) {
+export default function MenuItemCard({
+  name,
+  description,
+  price,
+  schedule,
+  image,
+  category,
+  is4K,
+  tag,
+  youtubeId,
+  index = 0,
+  onPlay
+}: MenuItemCardProps) {
   const router = useRouter();
 
   const handleCardClick = () => {
@@ -93,17 +106,33 @@ export default function MenuItemCard({ name, description, price, image, category
 
       <div className="p-4 sm:p-5 flex flex-col flex-1 justify-between">
         <div>
+          {/* Header row with Name and Badge */}
           <div className="flex justify-between items-baseline gap-2 mb-2">
             <h3 className="text-base sm:text-lg font-serif text-coffee-dark font-bold group-hover:text-cappuccino transition-colors duration-300 line-clamp-1">
               {name}
             </h3>
-            <span className="text-cappuccino font-bold font-sans text-xs sm:text-sm shrink-0 px-2.5 py-0.5 rounded-full bg-cappuccino/10 border border-cappuccino/30">
-              {price}
+            <span className="text-cappuccino font-bold font-sans text-xs shrink-0 px-2.5 py-0.5 rounded-full bg-cappuccino/10 border border-cappuccino/30 max-w-[130px] truncate">
+              {price && price.length > 20 ? "Daily Batches" : price}
             </span>
           </div>
           <p className="text-coffee-dark/80 text-xs font-sans line-clamp-2 leading-relaxed font-normal min-h-[2.5rem]">
             {description}
           </p>
+
+          {/* Dedicated responsive Batch Timings box that fits cleanly on all mobile screens */}
+          {(schedule || (price && price.length > 20)) && (
+            <div className="mt-3 p-2.5 rounded-xl bg-cappuccino/10 border border-cappuccino/20 flex items-start gap-2">
+              <Clock size={13} className="text-cappuccino shrink-0 mt-0.5" />
+              <div className="min-w-0 flex-1">
+                <span className="text-[9px] uppercase tracking-wider text-coffee-dark/60 font-bold block">
+                  Batch Timings:
+                </span>
+                <p className="text-[10.5px] text-coffee-dark/85 font-medium leading-snug break-words">
+                  {schedule || price}
+                </p>
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-cappuccino/20 flex justify-between items-center gap-2">

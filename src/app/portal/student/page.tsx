@@ -458,7 +458,7 @@ export default function StudentPortalPage() {
                     href={activeMeeting.meetUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full sm:w-auto min-h-[40px] px-4 py-2 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-extrabold text-xs uppercase tracking-wider rounded-full shadow-sm transition-all flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer shrink-0 touch-manipulation"
+                    className="w-full sm:w-auto min-h-[44px] px-4 py-2 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-extrabold text-xs uppercase tracking-wider rounded-full shadow-sm transition-all flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer shrink-0 touch-manipulation"
                   >
                     <Radio size={14} className="text-cappuccino animate-pulse shrink-0" />
                     <span>Join Class</span>
@@ -515,9 +515,9 @@ export default function StudentPortalPage() {
                       <span className="text-[9.5px] uppercase tracking-widest text-coffee-dark/50 block font-bold truncate">
                         Your Scheduled Batch
                       </span>
-                      <p className="text-xs xs:text-sm font-bold text-coffee-dark flex items-center gap-2 font-mono min-w-0">
-                        <Clock size={16} className="text-cappuccino shrink-0" />
-                        <span className="truncate">{student.batch}</span>
+                      <p className="text-xs xs:text-sm font-bold text-coffee-dark flex items-start gap-2 font-mono min-w-0">
+                        <Clock size={16} className="text-cappuccino shrink-0 mt-0.5" />
+                        <span className="break-words min-w-0">{student.batch}</span>
                       </p>
                     </div>
 
@@ -525,9 +525,9 @@ export default function StudentPortalPage() {
                       <span className="text-[9.5px] uppercase tracking-widest text-coffee-dark/50 block font-bold truncate">
                         Enrolled Discipline
                       </span>
-                      <p className="text-xs xs:text-sm font-bold text-coffee-dark flex items-center gap-2 min-w-0">
-                        <Award size={16} className="text-cappuccino shrink-0" />
-                        <span className="truncate">{student.course} Academy</span>
+                      <p className="text-xs xs:text-sm font-bold text-coffee-dark flex items-start gap-2 min-w-0">
+                        <Award size={16} className="text-cappuccino shrink-0 mt-0.5" />
+                        <span className="break-words min-w-0">{student.course} Academy</span>
                       </p>
                     </div>
                   </div>
@@ -541,26 +541,26 @@ export default function StudentPortalPage() {
                             href={activeMeeting.meetUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex w-full sm:w-auto min-h-[44px] items-center justify-center gap-2.5 px-6 py-3.5 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-extrabold text-xs sm:text-sm uppercase tracking-[0.18em] rounded-full transition-all shadow-md active:scale-95 cursor-pointer text-center"
+                            className="inline-flex w-full sm:w-auto min-h-[44px] items-center justify-center gap-2.5 px-4 sm:px-6 py-3.5 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-extrabold text-xs sm:text-sm uppercase tracking-wider sm:tracking-[0.18em] rounded-full transition-all shadow-md active:scale-95 cursor-pointer text-center touch-manipulation"
                           >
                             <Radio size={16} className="text-cappuccino animate-pulse shrink-0" />
-                            <span>Join Live Google Meet</span>
+                            <span>Join Live Google Meet Room</span>
                             <ExternalLink size={15} className="shrink-0" />
                           </a>
 
                           {activeMeeting.createdAt && (
-                            <div className="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-emerald-50 border border-emerald-300 text-emerald-800 text-xs font-semibold w-fit">
+                            <div className="flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-full bg-emerald-50 border border-emerald-300 text-emerald-800 text-xs font-semibold w-fit max-w-full flex-wrap">
                               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-                              <span className="font-bold">{formatTimeAgo(activeMeeting.createdAt)}</span>
-                              <span className="text-emerald-700/40">•</span>
-                              <span className="font-mono text-[11px] text-emerald-700">
+                              <span className="font-bold shrink-0">{formatTimeAgo(activeMeeting.createdAt)}</span>
+                              <span className="text-emerald-700/40 shrink-0">•</span>
+                              <span className="font-mono text-[11px] text-emerald-700 break-words">
                                 Posted {new Date(activeMeeting.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                               </span>
                             </div>
                           )}
                         </div>
 
-                        <p className="text-[11px] text-coffee-dark/60 font-mono break-all min-w-0">
+                        <p className="text-[11px] text-coffee-dark/60 font-mono break-all min-w-0 overflow-hidden">
                           Room URL:{" "}
                           <a
                             href={activeMeeting.meetUrl}
@@ -592,7 +592,7 @@ export default function StudentPortalPage() {
                       <span className="text-[10px] uppercase tracking-wider text-cappuccino font-bold block">
                         01 • Camera &amp; Floor Space
                       </span>
-                      <h4 className="font-serif font-bold text-sm text-coffee-dark">Clear Floor Area</h4>
+                      <h4 className="font-serif font-bold text-sm text-coffee-dark break-words">Clear Floor Area</h4>
                       <p className="text-xs text-coffee-dark/70 leading-relaxed break-words">
                         Position camera 6x6 feet away with clear floor space so head-to-toe postures and staff movements are visible.
                       </p>
@@ -602,7 +602,7 @@ export default function StudentPortalPage() {
                       <span className="text-[10px] uppercase tracking-wider text-cappuccino font-bold block">
                         02 • Training Attire
                       </span>
-                      <h4 className="font-serif font-bold text-sm text-coffee-dark">Athletic Gear</h4>
+                      <h4 className="font-serif font-bold text-sm text-coffee-dark break-words">Athletic Gear</h4>
                       <p className="text-xs text-coffee-dark/70 leading-relaxed break-words">
                         Wear comfortable stretchable athletic gear. Keep your practice stick/mat and hydration bottle ready.
                       </p>
@@ -612,7 +612,7 @@ export default function StudentPortalPage() {
                       <span className="text-[10px] uppercase tracking-wider text-cappuccino font-bold block">
                         03 • Punctuality
                       </span>
-                      <h4 className="font-serif font-bold text-sm text-coffee-dark">Join 5 Mins Early</h4>
+                      <h4 className="font-serif font-bold text-sm text-coffee-dark break-words">Join 5 Mins Early</h4>
                       <p className="text-xs text-coffee-dark/70 leading-relaxed break-words">
                         Join the Google Meet room 5 minutes prior to your batch start time to complete warm-up drills on schedule.
                       </p>
@@ -650,55 +650,57 @@ export default function StudentPortalPage() {
                     </p>
                   </div>
 
-                  <div className="flex items-center gap-2 shrink-0 self-start sm:self-center flex-wrap">
+                  <div className="flex items-center gap-2 shrink-0 self-stretch sm:self-center justify-between sm:justify-end flex-wrap">
                     <button
                       type="button"
                       onClick={() => fetchVideos(student.course)}
                       disabled={videosLoading}
                       aria-label="Refresh video library"
-                      className="h-9 px-3.5 rounded-full bg-white/80 hover:bg-white border border-coffee-dark/15 text-coffee-dark text-xs font-semibold flex items-center gap-1.5 transition-all shadow-2xs cursor-pointer active:scale-95 select-none disabled:opacity-50"
+                      className="min-h-[40px] h-10 px-3.5 sm:px-4 rounded-full bg-white/80 hover:bg-white border border-coffee-dark/15 text-coffee-dark text-xs font-semibold flex items-center gap-1.5 transition-all shadow-2xs cursor-pointer active:scale-95 select-none disabled:opacity-50 touch-manipulation"
                     >
-                      <RefreshCw size={12} className={cn("text-cappuccino shrink-0", videosLoading && "animate-spin")} />
+                      <RefreshCw size={13} className={cn("text-cappuccino shrink-0", videosLoading && "animate-spin")} />
                       <span>{videosLoading ? "Refreshing..." : "Refresh"}</span>
                     </button>
 
-                    {videos.length > 2 && (
+                    {videos.length > 1 && (
                       <>
-                        <button
-                          type="button"
-                          onClick={() => setIsVideoPaused((prev) => !prev)}
-                          aria-label={isVideoPaused ? "Resume auto-scrolling" : "Pause auto-scrolling"}
-                          className="h-9 px-3.5 rounded-full bg-white/80 hover:bg-white border border-coffee-dark/15 text-coffee-dark text-xs font-semibold flex items-center gap-1.5 transition-all shadow-2xs cursor-pointer active:scale-95 select-none"
-                        >
-                          {isVideoPaused ? (
-                            <>
-                              <Play size={12} fill="currentColor" className="text-cappuccino shrink-0" />
-                              <span>Resume</span>
-                            </>
-                          ) : (
-                            <>
-                              <Pause size={12} className="text-coffee-dark shrink-0" />
-                              <span>Pause</span>
-                            </>
-                          )}
-                        </button>
+                        {videos.length > 2 && (
+                          <button
+                            type="button"
+                            onClick={() => setIsVideoPaused((prev) => !prev)}
+                            aria-label={isVideoPaused ? "Resume auto-scrolling" : "Pause auto-scrolling"}
+                            className="min-h-[40px] h-10 px-3.5 sm:px-4 rounded-full bg-white/80 hover:bg-white border border-coffee-dark/15 text-coffee-dark text-xs font-semibold flex items-center gap-1.5 transition-all shadow-2xs cursor-pointer active:scale-95 select-none touch-manipulation"
+                          >
+                            {isVideoPaused ? (
+                              <>
+                                <Play size={13} fill="currentColor" className="text-cappuccino shrink-0" />
+                                <span>Resume</span>
+                              </>
+                            ) : (
+                              <>
+                                <Pause size={13} className="text-coffee-dark shrink-0" />
+                                <span>Pause</span>
+                              </>
+                            )}
+                          </button>
+                        )}
 
-                        <div className="flex items-center gap-1">
+                        <div className="flex items-center gap-1.5">
                           <button
                             type="button"
                             onClick={() => handleScrollVideos("left")}
                             aria-label="Scroll videos left"
-                            className="w-9 h-9 rounded-full bg-white/80 hover:bg-white border border-coffee-dark/15 text-coffee-dark flex items-center justify-center transition-all shadow-2xs cursor-pointer active:scale-90 select-none"
+                            className="w-10 h-10 min-w-[40px] min-h-[40px] rounded-full bg-white/80 hover:bg-white border border-coffee-dark/15 text-coffee-dark flex items-center justify-center transition-all shadow-2xs cursor-pointer active:scale-90 select-none touch-manipulation"
                           >
-                            <ChevronLeft size={16} />
+                            <ChevronLeft size={18} />
                           </button>
                           <button
                             type="button"
                             onClick={() => handleScrollVideos("right")}
                             aria-label="Scroll videos right"
-                            className="w-9 h-9 rounded-full bg-white/80 hover:bg-white border border-coffee-dark/15 text-coffee-dark flex items-center justify-center transition-all shadow-2xs cursor-pointer active:scale-90 select-none"
+                            className="w-10 h-10 min-w-[40px] min-h-[40px] rounded-full bg-white/80 hover:bg-white border border-coffee-dark/15 text-coffee-dark flex items-center justify-center transition-all shadow-2xs cursor-pointer active:scale-90 select-none touch-manipulation"
                           >
-                            <ChevronRight size={16} />
+                            <ChevronRight size={18} />
                           </button>
                         </div>
                       </>
@@ -707,21 +709,22 @@ export default function StudentPortalPage() {
                 </div>
 
                 {videos.length === 0 ? (
-                  <div className="py-12 sm:py-16 px-4 text-center space-y-3 max-w-md mx-auto">
-                    <VideoOff size={36} className="mx-auto text-coffee-dark/40 shrink-0" />
-                    <h3 className="text-base sm:text-lg font-serif font-bold text-coffee-dark break-words">
+                  <div className="py-12 sm:py-16 px-4 text-center space-y-3.5 max-w-md mx-auto">
+                    <VideoOff size={38} className="mx-auto text-coffee-dark/40 shrink-0" />
+                    <h3 className="text-base sm:text-lg font-serif font-bold text-coffee-dark break-words tracking-tight">
                       No Training Videos Yet
                     </h3>
-                    <p className="text-xs text-coffee-dark/60 max-w-xs sm:max-w-sm mx-auto leading-relaxed break-words">
+                    <p className="text-xs sm:text-sm text-coffee-dark/65 max-w-xs sm:max-w-sm mx-auto leading-relaxed break-words font-light">
                       Your coach has not uploaded recorded lessons for {student.course} yet. Check back soon!
                     </p>
                     <button
                       type="button"
                       onClick={() => fetchVideos(student.course)}
                       disabled={videosLoading}
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cappuccino text-coffee-dark font-bold text-xs hover:bg-[#d69f68] transition-all cursor-pointer shadow-xs active:scale-95"
+                      aria-label="Check for new video lessons"
+                      className="inline-flex items-center justify-center gap-2 min-h-[42px] px-5 py-2.5 rounded-full bg-cappuccino hover:bg-[#d69f68] text-coffee-dark font-bold text-xs sm:text-sm transition-all cursor-pointer shadow-xs active:scale-95 select-none disabled:opacity-50 touch-manipulation"
                     >
-                      <RefreshCw size={13} className={cn(videosLoading && "animate-spin")} />
+                      <RefreshCw size={14} className={cn(videosLoading && "animate-spin")} />
                       <span>Check for New Lessons</span>
                     </button>
                   </div>
@@ -741,15 +744,10 @@ export default function StudentPortalPage() {
                       </>
                     )}
 
-                    {/* Videos Track */}
+                    {/* Videos Track - Always horizontal, never vertical stacking */}
                     <div
                       ref={videoSliderRef}
-                      className={cn(
-                        "flex gap-4 sm:gap-6 py-2 px-1",
-                        videos.length > 2
-                          ? "overflow-x-auto [&::-webkit-scrollbar]:hidden touch-pan-x"
-                          : "flex-wrap justify-start"
-                      )}
+                      className="flex flex-row flex-nowrap items-stretch gap-4 sm:gap-6 py-2 px-1 overflow-x-auto [&::-webkit-scrollbar]:hidden touch-pan-x scroll-smooth"
                       style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
                     >
                       {videos.map((vid) => {
@@ -769,7 +767,7 @@ export default function StudentPortalPage() {
                                 setIsVideoModalOpen(true);
                               }
                             }}
-                            className="group/card relative w-[74vw] xs:w-[68vw] sm:w-[280px] md:w-[310px] shrink-0 bg-white rounded-2xl overflow-hidden border border-coffee-dark/10 hover:border-cappuccino/60 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col cursor-pointer select-none active:scale-[0.98]"
+                            className="group/card relative w-[74vw] xs:w-[68vw] sm:w-[280px] md:w-[310px] shrink-0 bg-white rounded-2xl overflow-hidden border border-coffee-dark/10 hover:border-cappuccino/60 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col cursor-pointer select-none active:scale-[0.98] touch-manipulation"
                           >
                             {/* Poster / Thumbnail Area */}
                             <div className="relative aspect-[16/10] w-full overflow-hidden bg-coffee-dark">
@@ -786,21 +784,21 @@ export default function StudentPortalPage() {
 
                               {/* Category Badge */}
                               <div className="absolute top-2.5 left-2.5 z-10">
-                                <span className="px-2.5 py-0.5 rounded-full bg-coffee-dark/85 backdrop-blur-md text-cappuccino border border-cappuccino/30 text-[9px] font-bold uppercase tracking-wider shadow-sm">
+                                <span className="px-2.5 py-0.5 rounded-full bg-coffee-dark/85 backdrop-blur-md text-cappuccino border border-cappuccino/30 text-[9px] font-bold uppercase tracking-wider shadow-sm truncate max-w-[95px] xs:max-w-[110px] inline-block">
                                   {vid.category || "Technique"}
                                 </span>
                               </div>
 
                               {/* Course Tag */}
                               <div className="absolute top-2.5 right-2.5 z-10">
-                                <span className="px-2 py-0.5 rounded-full bg-white/90 backdrop-blur-md text-coffee-dark text-[9px] font-semibold shadow-sm truncate max-w-[100px] block">
+                                <span className="px-2 py-0.5 rounded-full bg-white/90 backdrop-blur-md text-coffee-dark text-[9px] font-semibold shadow-sm truncate max-w-[85px] xs:max-w-[100px] block">
                                   {vid.course}
                                 </span>
                               </div>
 
                               {/* Centered Glowing Play Button Overlay */}
-                              <div className="absolute inset-0 flex items-center justify-center">
-                                <div className="w-12 h-12 rounded-full bg-cappuccino/90 backdrop-blur-md text-white flex items-center justify-center shadow-[0_0_20px_rgba(200,149,95,0.6)] group-hover/card:scale-110 group-hover/card:bg-white group-hover/card:text-coffee-dark transition-all duration-300">
+                              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-cappuccino/90 backdrop-blur-md text-white flex items-center justify-center shadow-[0_0_20px_rgba(200,149,95,0.6)] group-hover/card:scale-110 group-hover/card:bg-white group-hover/card:text-coffee-dark transition-all duration-300">
                                   <Play size={18} fill="currentColor" className="ml-0.5" />
                                 </div>
                               </div>
@@ -837,7 +835,7 @@ export default function StudentPortalPage() {
                     <div className="pt-2.5 flex items-center justify-between text-[11px] text-coffee-dark/55 px-1 font-medium">
                       <span>
                         {videos.length > 2
-                          ? "💡 Touch or hover cards to pause auto-scroll"
+                          ? "💡 Swipe to browse • Tap card to stream HD lesson"
                           : "💡 Tap video card to stream full lesson in HD player"}
                       </span>
                       {videos.length > 2 && (
@@ -875,27 +873,27 @@ export default function StudentPortalPage() {
                       </div>
                       <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-[#FAF7F2]" />
                     </div>
-                    <div className="min-w-0">
-                      <h4 className="font-serif font-bold text-base sm:text-lg text-coffee-dark flex flex-wrap items-center gap-1.5 leading-snug">
+                    <div className="min-w-0 flex-1">
+                      <h4 className="font-serif font-bold text-base sm:text-lg text-coffee-dark flex flex-wrap items-center gap-1.5 leading-snug break-words">
                         <span>Vajra Head Coach Direct Desk</span>
                         <ShieldCheck size={16} className="text-cappuccino shrink-0" />
                       </h4>
-                      <p className="text-[11px] sm:text-xs text-coffee-dark/65 font-medium leading-relaxed">
+                      <p className="text-[11px] sm:text-xs text-coffee-dark/65 font-medium leading-relaxed break-words">
                         Direct Guidance • Posture Corrections • Training Q&amp;A
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex flex-wrap items-center gap-2 self-start sm:self-auto shrink-0">
-                    <span className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-800 text-[10px] font-bold uppercase tracking-wider">
+                  <div className="flex flex-wrap items-center gap-2 self-start sm:self-auto sm:shrink-0 max-w-full">
+                    <span className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-800 text-[10px] font-bold uppercase tracking-wider max-w-full">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-                      <span>Internal Academy Channel</span>
+                      <span className="break-words">Internal Academy Channel</span>
                     </span>
                   </div>
                 </div>
 
                 {/* Quick Prompts */}
-                <div className="flex items-center gap-2 overflow-x-auto no-scrollbar touch-pan-x py-1">
+                <div className="flex items-center gap-2 overflow-x-auto no-scrollbar touch-pan-x scroll-smooth py-1 px-0.5">
                   <span className="text-[10px] uppercase tracking-wider text-coffee-dark/50 font-bold shrink-0">
                     Quick Ask:
                   </span>
@@ -909,7 +907,7 @@ export default function StudentPortalPage() {
                       key={i}
                       type="button"
                       onClick={() => handleSendMessage(undefined, quick)}
-                      className="px-3 py-1.5 rounded-full bg-white hover:bg-cappuccino hover:text-coffee-dark text-coffee-dark/80 border border-coffee-dark/15 whitespace-nowrap transition-all cursor-pointer shrink-0 text-[11px] font-medium shadow-2xs active:scale-95 min-h-[32px] inline-flex items-center justify-center"
+                      className="px-3 py-1.5 rounded-full bg-white hover:bg-cappuccino hover:text-coffee-dark text-coffee-dark/80 border border-coffee-dark/15 whitespace-nowrap transition-all cursor-pointer shrink-0 text-[11px] font-medium shadow-2xs active:scale-95 min-h-[32px] inline-flex items-center justify-center select-none"
                     >
                       {quick}
                     </button>
@@ -919,7 +917,7 @@ export default function StudentPortalPage() {
                 {/* Messages Canvas - Subtle open container */}
                 <div className="min-h-[300px] max-h-[380px] sm:max-h-[460px] overflow-y-auto p-3.5 sm:p-6 space-y-3 rounded-2xl bg-white/40 border border-coffee-dark/10">
                   {messages.length === 0 ? (
-                    <div className="text-center py-20 space-y-2 text-coffee-dark/40">
+                    <div className="text-center py-16 sm:py-20 space-y-2 text-coffee-dark/40">
                       <HelpCircle size={36} className="mx-auto text-cappuccino/60" />
                       <p className="text-sm font-semibold text-coffee-dark">No doubts asked yet.</p>
                       <p className="text-xs text-coffee-dark/60">
@@ -927,45 +925,56 @@ export default function StudentPortalPage() {
                       </p>
                     </div>
                   ) : (
-                    messages.map((msg) => {
-                      const isMe = msg.sender === "student";
-                      return (
-                        <div
-                          key={msg.id}
-                          className={cn("flex", isMe ? "justify-end" : "justify-start")}
-                        >
+                    <>
+                      {messages.map((msg) => {
+                        const isMe = msg.sender === "student";
+                        return (
                           <div
-                            className={cn(
-                              "max-w-[88%] sm:max-w-[75%] px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-2xl text-xs sm:text-sm leading-relaxed shadow-xs break-words [overflow-wrap:anywhere]",
-                              isMe
-                                ? "bg-coffee-dark text-white rounded-tr-xs"
-                                : "bg-white text-coffee-dark border border-coffee-dark/10 rounded-tl-xs"
-                            )}
+                            key={msg.id}
+                            className={cn("flex w-full min-w-0", isMe ? "justify-end" : "justify-start")}
                           >
-                            {!isMe && (
-                              <span className="text-[10px] font-bold text-cappuccino block mb-0.5">
-                                Vajra Head Coach
-                              </span>
-                            )}
-                            <p className="whitespace-pre-wrap break-words [overflow-wrap:anywhere]">{msg.text}</p>
                             <div
                               className={cn(
-                                "flex items-center justify-end gap-1 text-[9px] mt-1.5 shrink-0 select-none",
-                                isMe ? "text-white/60" : "text-coffee-dark/50"
+                                "max-w-[88%] sm:max-w-[75%] px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-2xl text-xs sm:text-sm leading-relaxed shadow-xs break-words [overflow-wrap:anywhere] min-w-0",
+                                isMe
+                                  ? "bg-coffee-dark text-white rounded-tr-xs"
+                                  : "bg-white text-coffee-dark border border-coffee-dark/10 rounded-tl-xs"
                               )}
                             >
-                              <span>
-                                {new Date(msg.timestamp).toLocaleTimeString([], {
-                                  hour: "2-digit",
-                                  minute: "2-digit"
-                                })}
-                              </span>
-                              {isMe && <CheckCheck size={12} className="text-[#53bdeb] shrink-0" />}
+                              {!isMe && (
+                                <span className="text-[10px] font-bold text-cappuccino block mb-0.5">
+                                  Vajra Head Coach
+                                </span>
+                              )}
+                              <p className="whitespace-pre-wrap break-words [overflow-wrap:anywhere] min-w-0">{msg.text}</p>
+                              <div
+                                className={cn(
+                                  "flex items-center justify-end gap-1 text-[9px] mt-1.5 shrink-0 select-none",
+                                  isMe ? "text-white/60" : "text-coffee-dark/50"
+                                )}
+                              >
+                                <span>
+                                  {new Date(msg.timestamp).toLocaleTimeString([], {
+                                    hour: "2-digit",
+                                    minute: "2-digit"
+                                  })}
+                                </span>
+                                {isMe && <CheckCheck size={12} className="text-[#53bdeb] shrink-0" />}
+                              </div>
                             </div>
                           </div>
+                        );
+                      })}
+
+                      {chatSending && (
+                        <div className="flex w-full min-w-0 justify-end">
+                          <div className="max-w-[88%] sm:max-w-[75%] px-3.5 sm:px-4 py-2 rounded-2xl text-xs sm:text-sm bg-coffee-dark/85 text-white/90 rounded-tr-xs shadow-xs flex items-center gap-2">
+                            <RefreshCw size={11} className="animate-spin text-cappuccino shrink-0" />
+                            <span className="text-[11px] font-medium">Sending doubt to coach...</span>
+                          </div>
                         </div>
-                      );
-                    })
+                      )}
+                    </>
                   )}
                   <div ref={chatBottomRef} />
                 </div>
@@ -986,10 +995,14 @@ export default function StudentPortalPage() {
                     type="submit"
                     disabled={chatSending || !newMessageText.trim()}
                     aria-label="Send doubt message"
-                    className="min-h-[42px] px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-cappuccino hover:bg-[#d69f68] text-coffee-dark font-bold text-sm flex items-center justify-center gap-1.5 sm:gap-2 transition-all disabled:opacity-40 cursor-pointer shrink-0 shadow-xs active:scale-95"
+                    className="min-h-[42px] px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-cappuccino hover:bg-[#d69f68] text-coffee-dark font-bold text-sm flex items-center justify-center gap-1.5 sm:gap-2 transition-all disabled:opacity-40 cursor-pointer shrink-0 shadow-xs active:scale-95 select-none"
                   >
-                    <Send size={15} className="shrink-0" />
-                    <span>Send</span>
+                    {chatSending ? (
+                      <RefreshCw size={14} className="shrink-0 animate-spin" />
+                    ) : (
+                      <Send size={15} className="shrink-0" />
+                    )}
+                    <span>{chatSending ? "Sending..." : "Send"}</span>
                   </button>
                 </form>
               </motion.div>

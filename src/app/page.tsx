@@ -127,7 +127,8 @@ export default function Home() {
           const mapped = data.courses.map((c: any) => ({
             name: c.name,
             description: c.description,
-            price: c.schedule || "Daily Batches",
+            price: "Daily Batches",
+            schedule: c.schedule || "Morning & Evening Batches",
             image: c.image,
             category: c.category,
             tag: c.subtitle || c.category,
