@@ -16,13 +16,17 @@ export async function GET(req: Request) {
     }
 
     const data = await getPortalData();
+    const cleanDigits = code.replace(/\D/g, "");
     const student = data.students.find(
-      (s) => s.tempCode.toUpperCase() === code || (s.permanentCode && s.permanentCode.toUpperCase() === code)
+      (s) =>
+        s.tempCode.toUpperCase() === code ||
+        (s.permanentCode && s.permanentCode.toUpperCase() === code) ||
+        (cleanDigits.length >= 10 && s.phone.replace(/\D/g, "") === cleanDigits)
     );
 
     if (!student) {
       return NextResponse.json(
-        { success: false, error: "No student enrollment found with this code. Please verify your temporary code." },
+        { success: false, error: "No student enrollment found with this code or phone number. Please verify your details." },
         { status: 404 }
       );
     }
@@ -47,19 +51,23 @@ export async function POST(req: Request) {
 
     if (!code) {
       return NextResponse.json(
-        { success: false, error: "Temporary code is required." },
+        { success: false, error: "Tracking code or phone number is required." },
         { status: 400 }
       );
     }
 
     const data = await getPortalData();
+    const cleanDigits = code.replace(/\D/g, "");
     const student = data.students.find(
-      (s) => s.tempCode.toUpperCase() === code || (s.permanentCode && s.permanentCode.toUpperCase() === code)
+      (s) =>
+        s.tempCode.toUpperCase() === code ||
+        (s.permanentCode && s.permanentCode.toUpperCase() === code) ||
+        (cleanDigits.length >= 10 && s.phone.replace(/\D/g, "") === cleanDigits)
     );
 
     if (!student) {
       return NextResponse.json(
-        { success: false, error: "No student enrollment found with this code. Please verify your temporary code." },
+        { success: false, error: "No student enrollment found with this code or phone number. Please verify your details." },
         { status: 404 }
       );
     }

@@ -685,24 +685,26 @@ export default function StudentPortalPage() {
                           </button>
                         )}
 
-                        <div className="flex items-center gap-1.5">
-                          <button
-                            type="button"
-                            onClick={() => handleScrollVideos("left")}
-                            aria-label="Scroll videos left"
-                            className="w-10 h-10 min-w-[40px] min-h-[40px] rounded-full bg-white/80 hover:bg-white border border-coffee-dark/15 text-coffee-dark flex items-center justify-center transition-all shadow-2xs cursor-pointer active:scale-90 select-none touch-manipulation"
-                          >
-                            <ChevronLeft size={18} />
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => handleScrollVideos("right")}
-                            aria-label="Scroll videos right"
-                            className="w-10 h-10 min-w-[40px] min-h-[40px] rounded-full bg-white/80 hover:bg-white border border-coffee-dark/15 text-coffee-dark flex items-center justify-center transition-all shadow-2xs cursor-pointer active:scale-90 select-none touch-manipulation"
-                          >
-                            <ChevronRight size={18} />
-                          </button>
-                        </div>
+                        {videos.length > 1 && (
+                          <div className="flex items-center gap-1.5">
+                            <button
+                              type="button"
+                              onClick={() => handleScrollVideos("left")}
+                              aria-label="Scroll videos left"
+                              className="w-10 h-10 min-w-[40px] min-h-[40px] rounded-full bg-white/80 hover:bg-white border border-coffee-dark/15 text-coffee-dark flex items-center justify-center transition-all shadow-2xs cursor-pointer active:scale-90 select-none touch-manipulation"
+                            >
+                              <ChevronLeft size={18} />
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleScrollVideos("right")}
+                              aria-label="Scroll videos right"
+                              className="w-10 h-10 min-w-[40px] min-h-[40px] rounded-full bg-white/80 hover:bg-white border border-coffee-dark/15 text-coffee-dark flex items-center justify-center transition-all shadow-2xs cursor-pointer active:scale-90 select-none touch-manipulation"
+                            >
+                              <ChevronRight size={18} />
+                            </button>
+                          </div>
+                        )}
                       </>
                     )}
                   </div>

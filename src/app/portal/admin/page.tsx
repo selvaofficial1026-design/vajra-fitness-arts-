@@ -509,20 +509,24 @@ export default function AdminPortalPage() {
     try {
       const res = await fetch(`/api/portal/fetch-youtube-title?url=${encodeURIComponent(trimmed)}`);
       const data = await res.json();
-      if (data.success && data.title) {
+      if (data.success && data.title && lastFetchedUrlRef.current === videoId) {
         setNewVideo((prev) => ({
           ...prev,
           title: data.title
         }));
         setTitleFetchStatus("success");
-      } else {
+      } else if (lastFetchedUrlRef.current === videoId) {
         setTitleFetchStatus("error");
       }
     } catch (err) {
       console.error("Failed to auto-fetch video title:", err);
-      setTitleFetchStatus("error");
+      if (lastFetchedUrlRef.current === videoId) {
+        setTitleFetchStatus("error");
+      }
     } finally {
-      setIsFetchingTitle(false);
+      if (lastFetchedUrlRef.current === videoId) {
+        setIsFetchingTitle(false);
+      }
     }
   };
 

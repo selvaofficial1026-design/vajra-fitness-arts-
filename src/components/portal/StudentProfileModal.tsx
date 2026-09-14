@@ -103,8 +103,15 @@ export default function StudentProfileModal({
         setCurrentCode("");
         setNewPassword("");
         setConfirmPassword("");
-        if (data.student && onStudentUpdated) {
-          onStudentUpdated(data.student);
+        if (data.student) {
+          try {
+            localStorage.setItem("vajra_student_session", JSON.stringify(data.student));
+          } catch {
+            // Ignored
+          }
+          if (onStudentUpdated) {
+            onStudentUpdated(data.student);
+          }
         }
         setTimeout(() => setPassSuccess(null), 5000);
       } else {

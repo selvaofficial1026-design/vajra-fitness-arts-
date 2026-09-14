@@ -230,10 +230,50 @@ function PortalAuthContent() {
   };
 
   // Handle Track Lookup
+  const fallbackCopyText = (text: string) => {
+    try {
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      textArea.style.position = "fixed";
+      textArea.style.left = "-9999px";
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textArea);
+    } catch {
+      // Ignored
+    }
+  };
+
+  const copyToClipboard = (text: string) => {
+    try {
+      if (typeof navigator !== "undefined" && navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+          setCopiedCode(true);
+          setTimeout(() => setCopiedCode(false), 2500);
+        }).catch(() => {
+          fallbackCopyText(text);
+          setCopiedCode(true);
+          setTimeout(() => setCopiedCode(false), 2500);
+        });
+      } else {
+        fallbackCopyText(text);
+        setCopiedCode(true);
+        setTimeout(() => setCopiedCode(false), 2500);
+      }
+    } catch {
+      fallbackCopyText(text);
+      setCopiedCode(true);
+      setTimeout(() => setCopiedCode(false), 2500);
+    }
+  };
+
+  // Handle Track Lookup
   const performTrack = async (codeToTrack?: string) => {
-    const code = (codeToTrack || trackInputCode).trim().toUpperCase();
+    const raw = codeToTrack || trackInputCode;
+    const code = raw.trim();
     if (!code) {
-      setTrackError("Please enter your temporary tracking code (e.g. TEMP-xxxx).");
+      setTrackError("Please enter your tracking code or Student ID (e.g. TEMP-xxxx or vajra-xxxx).");
       return;
     }
 
@@ -255,12 +295,6 @@ function PortalAuthContent() {
     } finally {
       setTrackLoading(false);
     }
-  };
-
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
-    setCopiedCode(true);
-    setTimeout(() => setCopiedCode(false), 2500);
   };
 
   return (
@@ -960,6 +994,11 @@ function PortalAuthContent() {
                               <span>Not Approved</span>
                             </div>
                           )}
+                          {trackedStudent.status === "LEFT" && (
+                            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-stone-100 text-stone-700 border border-stone-300 text-[10px] font-bold uppercase tracking-wider">
+                              <span>Inactive / Alumni</span>
+                            </div>
+                          )}
                         </div>
                       </div>
 
@@ -1001,6 +1040,16 @@ function PortalAuthContent() {
                           </div>
                           <p className="text-[11px] leading-relaxed text-coffee-dark/70">
                             Your application is currently being allocated to a batch slot by our Head Coach. Once approved, your permanent <code className="text-cappuccino font-mono">vajra-xxxx</code> code will be generated right here!
+                          </p>
+                        </div>
+                      )}
+
+                      {/* Left / Inactive message */}
+                      {trackedStudent.status === "LEFT" && (
+                        <div className="p-3 rounded-xl bg-stone-50 border border-stone-200 text-xs text-coffee-dark/80 space-y-1 text-center">
+                          <p className="font-semibold text-stone-700">Student Record Inactive</p>
+                          <p className="text-[11px] text-coffee-dark/60 leading-relaxed">
+                            This enrollment slot has concluded or was marked inactive. Please contact the academy coach to rejoin or reactivate.
                           </p>
                         </div>
                       )}

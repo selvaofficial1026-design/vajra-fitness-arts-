@@ -15,6 +15,14 @@ export async function POST(req: Request) {
       );
     }
 
+    const cleanPhone = String(phone).replace(/\D/g, "");
+    if (cleanPhone.length < 7 || cleanPhone.length > 15) {
+      return NextResponse.json(
+        { success: false, error: "Please provide a valid phone number (7 to 15 digits)." },
+        { status: 400 }
+      );
+    }
+
     const data = await getPortalData();
 
     // Generate unique temporary code
