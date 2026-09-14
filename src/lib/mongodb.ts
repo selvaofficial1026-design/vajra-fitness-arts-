@@ -1,5 +1,5 @@
 import dns from "dns";
-import { MongoClient, Db } from "mongodb";
+import { MongoClient, Db, MongoClientOptions } from "mongodb";
 
 // Ensure DNS SRV lookups work reliably across all ISPs and cloud environments
 try {
@@ -8,39 +8,55 @@ try {
   // Ignored if permissions restrict setting DNS servers
 }
 
-const uri = process.env.MONGODB_URI;
-
 declare global {
   // eslint-disable-next-line no-var
   var _mongoClientPromise: Promise<MongoClient> | undefined;
 }
 
-let clientPromise: Promise<MongoClient> | null = null;
+const mongoOptions: MongoClientOptions = {
+  maxPoolSize: 10, // Optimized for MongoDB Atlas Free Tier (M0) to prevent connection saturation
+  minPoolSize: 0,  // Allows idle connections to close cleanly in serverless lambdas
+  serverSelectionTimeoutMS: 5000, // Fail quickly (5s) if cluster is unreachable
+  connectTimeoutMS: 8000,
+  socketTimeoutMS: 20000,
+};
 
-if (uri) {
+function getClientPromise(): Promise<MongoClient> | null {
+  const uri = process.env.MONGODB_URI;
+  if (!uri) {
+    return null;
+  }
+
   if (process.env.NODE_ENV === "development") {
     if (!global._mongoClientPromise) {
-      const client = new MongoClient(uri);
+      const client = new MongoClient(uri, mongoOptions);
       global._mongoClientPromise = client.connect();
     }
-    clientPromise = global._mongoClientPromise;
+    return global._mongoClientPromise;
   } else {
-    const client = new MongoClient(uri);
-    clientPromise = client.connect();
+    // In production / serverless, reuse client across lambda warm invocations
+    if (!global._mongoClientPromise) {
+      const client = new MongoClient(uri, mongoOptions);
+      global._mongoClientPromise = client.connect();
+    }
+    return global._mongoClientPromise;
   }
 }
 
 export async function getDatabase(): Promise<Db | null> {
+  const clientPromise = getClientPromise();
   if (!clientPromise) {
     return null;
   }
   try {
     const client = await clientPromise;
-    return client.db("vajra_fitness");
+    const dbName = process.env.MONGODB_DB || "vajra_fitness";
+    return client.db(dbName);
   } catch (err) {
     console.error("MongoDB Atlas connection error:", err);
     return null;
   }
 }
 
-export default clientPromise;
+export default getClientPromise;
+
