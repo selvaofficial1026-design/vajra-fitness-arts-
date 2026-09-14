@@ -573,10 +573,19 @@ export default function StudentPortalPage() {
                         </p>
                       </div>
                     ) : (
-                      <div className="p-4 sm:p-5 rounded-2xl bg-white/50 border border-coffee-dark/10 text-center max-w-xl min-w-0">
-                        <p className="text-xs sm:text-sm text-coffee-dark/70 break-words">
+                      <div className="p-4 sm:p-5 rounded-2xl bg-white/50 border border-coffee-dark/10 text-center max-w-xl min-w-0 space-y-3">
+                        <p className="text-xs sm:text-sm text-coffee-dark/70 break-words leading-relaxed">
                           Google Meet room will be published by the coach shortly before your scheduled batch ({student.batch}).
                         </p>
+                        <button
+                          type="button"
+                          onClick={() => fetchMeetings(student.course, student.batch)}
+                          disabled={meetLoading}
+                          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-coffee-dark/5 hover:bg-coffee-dark hover:text-white text-coffee-dark text-xs font-bold transition-all cursor-pointer select-none active:scale-95 disabled:opacity-50 touch-manipulation"
+                        >
+                          <RefreshCw size={13} className={cn(meetLoading && "animate-spin")} />
+                          <span>{meetLoading ? "Checking..." : "Check for Active Room"}</span>
+                        </button>
                       </div>
                     )}
                   </div>

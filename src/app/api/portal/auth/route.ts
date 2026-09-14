@@ -102,7 +102,8 @@ export async function POST(req: Request) {
     const student = data.students.find((s) => {
       const matchCode =
         (s.permanentCode && s.permanentCode.toLowerCase() === cleanCode) ||
-        (s.password && s.password.toLowerCase() === cleanCode);
+        (s.password && s.password.toLowerCase() === cleanCode) ||
+        (s.tempCode && s.tempCode.toLowerCase() === cleanCode);
       const matchNameOrPhone =
         s.name.toLowerCase() === cleanUsername ||
         s.name.toLowerCase().includes(cleanUsername) ||

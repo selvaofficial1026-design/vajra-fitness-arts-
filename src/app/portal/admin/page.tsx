@@ -1058,6 +1058,7 @@ export default function AdminPortalPage() {
           if (data.success) {
             setStudents((prev) => prev.filter((s) => s.id !== studentId));
             setMessages((prev) => prev.filter((m) => m.studentId !== studentId));
+            setSelectedStudentId((prev) => (prev === studentId ? null : prev));
             setActionMessage("Student permanently removed.");
             setTimeout(() => setActionMessage(null), 4000);
           } else {
@@ -3942,6 +3943,7 @@ export default function AdminPortalPage() {
         onStudentDeleted={(deletedId) => {
           setStudents((prev) => prev.filter((s) => s.id !== deletedId));
           setMessages((prev) => prev.filter((m) => m.studentId !== deletedId));
+          setSelectedStudentId((prev) => (prev === deletedId ? null : prev));
           setActionMessage("Student permanently removed.");
           setTimeout(() => setActionMessage(null), 4000);
         }}
