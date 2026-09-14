@@ -336,7 +336,7 @@ export default function Home() {
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
-              href="https://wa.me/918778931958?text=Hello%20Vajra%20Fitness%20Arts,%20I%20would%20like%20to%20know%20more%20about%20admissions%20and%20batch%20timings."
+              href="https://wa.me/919047743533?text=Hello%20Vajra%20Fitness%20Arts,%20I%20would%20like%20to%20know%20more%20about%20admissions%20and%20batch%20timings."
               target="_blank"
               rel="noopener noreferrer"
               className="w-full sm:w-auto py-3.5 px-7 bg-[#25D366] hover:bg-[#20ba5a] text-black font-bold text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] rounded-full transition-all shadow-premium hover:shadow-[0_0_30px_rgba(37,211,102,0.4)] inline-flex items-center justify-center gap-3 active:scale-95"

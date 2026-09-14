@@ -43,7 +43,7 @@ I would like to inquire about admissions:
 • Course: ${formData.course}
 • Preferred Batch: ${formData.batch}${trimmedMessage ? `\n• Notes/Goals: ${trimmedMessage}` : ""}`;
 
-    const waUrl = `https://wa.me/918778931958?text=${encodeURIComponent(text)}`;
+    const waUrl = `https://wa.me/919047743533?text=${encodeURIComponent(text)}`;
     window.open(waUrl, "_blank", "noopener,noreferrer");
   };
 
@@ -59,9 +59,9 @@ I would like to inquire about admissions:
     {
       icon: Phone,
       title: "Admissions Line",
-      detail: "+91 87789 31958",
+      detail: "+91 90477 43533",
       sub: "Available 6:00 AM - 9:00 PM • Tap to Call Directly",
-      href: "tel:+918778931958",
+      href: "tel:+919047743533",
       external: false
     },
     {
@@ -178,7 +178,7 @@ I would like to inquire about admissions:
 
               {/* Quick WhatsApp Action */}
               <a
-                href="https://wa.me/918778931958?text=Hello%20Vajra%20Fitness%20Arts,%20I%20would%20like%20to%20know%20more%20about%20admissions%20and%20batch%20timings."
+                href="https://wa.me/919047743533?text=Hello%20Vajra%20Fitness%20Arts,%20I%20would%20like%20to%20know%20more%20about%20admissions%20and%20batch%20timings."
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2.5 sm:gap-3 p-4 sm:p-5 rounded-2xl sm:rounded-[1.5rem] bg-[#1d3527] text-[#4ede80] hover:bg-[#15271d] border border-[#275338] transition-all duration-300 font-bold text-xs uppercase tracking-[0.15em] sm:tracking-[0.2em] shadow-lg text-center"

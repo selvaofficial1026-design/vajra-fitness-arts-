@@ -55,7 +55,7 @@ export default function AdminProfileModal({
 
   // Edit Profile Form State
   const [name, setName] = useState(adminProfile.name || "Master Coach & Admin");
-  const [phone, setPhone] = useState(adminProfile.phone || "+91 87789 31958");
+  const [phone, setPhone] = useState(adminProfile.phone || "+91 90477 43533");
   const [email, setEmail] = useState(adminProfile.email || "vajrafitnessarts@gmail.com");
   const [roleTitle, setRoleTitle] = useState(adminProfile.roleTitle || "Head Coach & Academy Administrator");
   const [academyBranch, setAcademyBranch] = useState(adminProfile.academyBranch || "Ariyalur Main Studio, Tamil Nadu");
@@ -80,7 +80,7 @@ export default function AdminProfileModal({
   // Sync props when adminProfile changes
   useEffect(() => {
     setName(adminProfile.name || "Master Coach & Admin");
-    setPhone(adminProfile.phone || "+91 87789 31958");
+    setPhone(adminProfile.phone || "+91 90477 43533");
     setEmail(adminProfile.email || "vajrafitnessarts@gmail.com");
     setRoleTitle(adminProfile.roleTitle || "Head Coach & Academy Administrator");
     setAcademyBranch(adminProfile.academyBranch || "Ariyalur Main Studio, Tamil Nadu");

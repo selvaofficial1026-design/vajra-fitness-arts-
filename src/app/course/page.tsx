@@ -408,7 +408,7 @@ export default function CoursesPage() {
 
                 {/* Authentic WhatsApp Button with green #25D366 and high contrast black text */}
                 <a
-                  href={`https://wa.me/918778931958?text=${encodeURIComponent(`Hello Vajra Fitness Arts, I would like to inquire about admissions for ${selectedCourse.name}.`)}`}
+                  href={`https://wa.me/919047743533?text=${encodeURIComponent(`Hello Vajra Fitness Arts, I would like to inquire about admissions for ${selectedCourse.name}.`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full sm:flex-1 py-3.5 sm:py-4 bg-[#25D366] text-black font-extrabold text-xs uppercase tracking-[0.2em] hover:bg-[#20bd5a] transition-all shadow-premium text-center flex items-center justify-center gap-2 active:scale-[0.98] rounded-full cursor-pointer"

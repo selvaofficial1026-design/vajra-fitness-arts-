@@ -175,7 +175,7 @@ export default function AdminPortalPage() {
   const [adminProfile, setAdminProfile] = useState<AdminProfileData>({
     username: "admin",
     name: "Master Coach & Admin",
-    phone: "+91 87789 31958",
+    phone: "+91 90477 43533",
     email: "vajrafitnessarts@gmail.com",
     roleTitle: "Head Coach & Academy Administrator",
     academyBranch: "Ariyalur Main Studio, Tamil Nadu",

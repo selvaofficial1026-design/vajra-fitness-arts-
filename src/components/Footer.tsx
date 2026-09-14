@@ -40,7 +40,7 @@ export default function Footer() {
           </p>
           <div className="flex gap-3">
             <a 
-              href="https://instagram.com" 
+              href="https://www.instagram.com/crown_of_vajramurali?stkn=MWN1MTh4YmtjeGZlOQ%3D%3D&utm_source=qr" 
               target="_blank" 
               rel="noopener noreferrer" 
               aria-label="Instagram" 
@@ -49,16 +49,7 @@ export default function Footer() {
               <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
             </a>
             <a 
-              href="https://facebook.com" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              aria-label="Facebook" 
-              className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/5 text-white/80 flex items-center justify-center hover:bg-cappuccino hover:text-coffee-dark hover:scale-105 active:scale-95 transition-all duration-300"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-            </a>
-            <a 
-              href="https://youtube.com" 
+              href="https://youtube.com/@teamvajrafitnessarts?si=Us6QA1zflzspQU3W" 
               target="_blank" 
               rel="noopener noreferrer" 
               aria-label="YouTube" 
@@ -89,13 +80,13 @@ export default function Footer() {
             </li>
             <li>
               <a 
-                href="tel:+918778931958" 
+                href="tel:+919047743533" 
                 className="flex gap-2.5 sm:gap-3 items-center group active:scale-95 transition-all duration-300"
-                aria-label="Call Vajra Fitness Arts at +91 87789 31958"
+                aria-label="Call Vajra Fitness Arts at +91 90477 43533"
               >
                 <Phone className="text-cappuccino shrink-0 group-hover:scale-110 group-hover:drop-shadow-[0_0_8px_rgba(200,160,120,0.8)] transition-all duration-300 w-4 h-4" />
                 <span className="text-xs sm:text-sm text-white/70 group-hover:text-white transition-colors duration-300">
-                  +91 87789 31958
+                  +91 90477 43533
                 </span>
               </a>
             </li>

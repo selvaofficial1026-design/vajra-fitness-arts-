@@ -248,9 +248,8 @@ export default function Navbar() {
             <div className="pt-5 border-t border-coffee-dark/10 space-y-3">
               <p className="text-[10px] uppercase tracking-[0.3em] text-coffee-dark/50 font-bold">Connect With Us</p>
               <div className="flex gap-6 text-coffee-dark">
-                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-xs font-bold uppercase tracking-widest hover:text-cappuccino transition-colors py-1">Instagram</a>
-                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-xs font-bold uppercase tracking-widest hover:text-cappuccino transition-colors py-1">Facebook</a>
-                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="text-xs font-bold uppercase tracking-widest hover:text-cappuccino transition-colors py-1">YouTube</a>
+                <a href="https://www.instagram.com/crown_of_vajramurali?stkn=MWN1MTh4YmtjeGZlOQ%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer" className="text-xs font-bold uppercase tracking-widest hover:text-cappuccino transition-colors py-1">Instagram</a>
+                <a href="https://youtube.com/@teamvajrafitnessarts?si=Us6QA1zflzspQU3W" target="_blank" rel="noopener noreferrer" className="text-xs font-bold uppercase tracking-widest hover:text-cappuccino transition-colors py-1">YouTube</a>
               </div>
             </div>
           </motion.div>

@@ -262,7 +262,7 @@ export default function AboutPage() {
                 {/* Direct WhatsApp Coaching Button Link - Authentic WhatsApp green #25D366 and high contrast black text */}
                 <div className="pt-3 sm:pt-4 flex flex-col sm:flex-row items-center gap-3 sm:gap-4 w-full">
                   <a
-                    href={`https://wa.me/918778931958?text=${encodeURIComponent("Hello Vajra Fitness Arts, I would like to inquire about direct coaching with the Founder & Head Coach.")}`}
+                    href={`https://wa.me/919047743533?text=${encodeURIComponent("Hello Vajra Fitness Arts, I would like to inquire about direct coaching with the Founder & Head Coach.")}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-full sm:w-auto px-6 sm:px-8 py-3.5 sm:py-4 bg-[#25D366] text-black font-extrabold text-[11px] sm:text-xs uppercase tracking-[0.15em] sm:tracking-[0.2em] rounded-full hover:bg-[#20bd5a] transition-all shadow-premium hover:shadow-[0_0_25px_rgba(37,211,102,0.4)] flex items-center justify-center gap-2 text-center active:scale-[0.98] cursor-pointer"
