@@ -1,5 +1,6 @@
 import fs from "fs/promises";
 import path from "path";
+import { getDatabase } from "./mongodb";
 
 export * from "./cmsDefaults";
 import {
@@ -14,82 +15,85 @@ import {
 
 const DATA_FILE_PATH = path.join(process.cwd(), "src", "data", "portal-data.json");
 
-
-
 // In-memory fallback if file system access fails in serverless environments
 let memoryStore: PortalData | null = null;
 
+function normalizePortalData(data: Partial<PortalData>): PortalData {
+  return {
+    students: data.students || [],
+    meetings: data.meetings || [],
+    videos: data.videos || [],
+    messages: data.messages || [],
+    adminConfig: data.adminConfig ? { ...DEFAULT_ADMIN_CONFIG, ...data.adminConfig } : { ...DEFAULT_ADMIN_CONFIG },
+    courses: data.courses && data.courses.length > 0 ? data.courses : [...DEFAULT_COURSES],
+    gallery: data.gallery && data.gallery.length > 0 ? data.gallery : [...DEFAULT_GALLERY],
+    siteSettings: data.siteSettings ? { ...DEFAULT_SITE_SETTINGS, ...data.siteSettings } : { ...DEFAULT_SITE_SETTINGS },
+    reviews: data.reviews && data.reviews.length > 0 ? data.reviews : [...DEFAULT_REVIEWS],
+    aboutSettings: data.aboutSettings ? { ...DEFAULT_ABOUT_SETTINGS, ...data.aboutSettings } : { ...DEFAULT_ABOUT_SETTINGS }
+  };
+}
+
 export async function getPortalData(): Promise<PortalData> {
+  // 1. Try fetching from MongoDB Atlas if configured
+  try {
+    const db = await getDatabase();
+    if (db) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const doc = await db.collection("portal_store").findOne({ _id: "main_portal_data" as any });
+      if (doc) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const normalized = normalizePortalData(doc as any);
+        memoryStore = normalized;
+        return normalized;
+      }
+    }
+  } catch (err) {
+    console.warn("MongoDB fetch failed, trying local file fallback:", err);
+  }
+
+  // 2. Fallback to local JSON file
   try {
     const raw = await fs.readFile(DATA_FILE_PATH, "utf-8");
     const data: PortalData = JSON.parse(raw);
-    if (!data.adminConfig) {
-      data.adminConfig = { ...DEFAULT_ADMIN_CONFIG };
-    }
-    if (!data.courses || data.courses.length === 0) {
-      data.courses = [...DEFAULT_COURSES];
-    }
-    if (!data.gallery || data.gallery.length === 0) {
-      data.gallery = [...DEFAULT_GALLERY];
-    }
-    if (!data.siteSettings) {
-      data.siteSettings = { ...DEFAULT_SITE_SETTINGS };
-    }
-    if (!data.reviews || data.reviews.length === 0) {
-      data.reviews = [...DEFAULT_REVIEWS];
-    }
-    if (!data.aboutSettings) {
-      data.aboutSettings = { ...DEFAULT_ABOUT_SETTINGS };
-    }
-    memoryStore = data;
-    return data;
+    const normalized = normalizePortalData(data);
+    memoryStore = normalized;
+    return normalized;
   } catch {
     if (memoryStore) {
-      if (!memoryStore.adminConfig) {
-        memoryStore.adminConfig = { ...DEFAULT_ADMIN_CONFIG };
-      }
-      if (!memoryStore.courses || memoryStore.courses.length === 0) {
-        memoryStore.courses = [...DEFAULT_COURSES];
-      }
-      if (!memoryStore.gallery || memoryStore.gallery.length === 0) {
-        memoryStore.gallery = [...DEFAULT_GALLERY];
-      }
-      if (!memoryStore.siteSettings) {
-        memoryStore.siteSettings = { ...DEFAULT_SITE_SETTINGS };
-      }
-      if (!memoryStore.reviews || memoryStore.reviews.length === 0) {
-        memoryStore.reviews = [...DEFAULT_REVIEWS];
-      }
-      if (!memoryStore.aboutSettings) {
-        memoryStore.aboutSettings = { ...DEFAULT_ABOUT_SETTINGS };
-      }
       return memoryStore;
     }
-    // Default structure with pre-seeded courses, gallery, settings, reviews, and about
-    const defaultData: PortalData = {
-      students: [],
-      meetings: [],
-      videos: [],
-      messages: [],
-      adminConfig: { ...DEFAULT_ADMIN_CONFIG },
-      courses: [...DEFAULT_COURSES],
-      gallery: [...DEFAULT_GALLERY],
-      siteSettings: { ...DEFAULT_SITE_SETTINGS },
-      reviews: [...DEFAULT_REVIEWS],
-      aboutSettings: { ...DEFAULT_ABOUT_SETTINGS }
-    };
+    const defaultData = normalizePortalData({});
+    memoryStore = defaultData;
     return defaultData;
   }
 }
 
 export async function savePortalData(data: PortalData): Promise<void> {
   memoryStore = data;
+
+  // 1. Save to MongoDB Atlas
+  try {
+    const db = await getDatabase();
+    if (db) {
+      await db.collection("portal_store").replaceOne(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        { _id: "main_portal_data" as any },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        { _id: "main_portal_data" as any, ...data, updatedAt: new Date() },
+        { upsert: true }
+      );
+    }
+  } catch (err) {
+    console.error("Failed to save portal data to MongoDB Atlas:", err);
+  }
+
+  // 2. Also save to local JSON file as backup
   try {
     const dir = path.dirname(DATA_FILE_PATH);
     await fs.mkdir(dir, { recursive: true });
     await fs.writeFile(DATA_FILE_PATH, JSON.stringify(data, null, 2), "utf-8");
-  } catch (err) {
-    console.error("Failed to save portal data to disk:", err);
+  } catch {
+    // In serverless / read-only environment, local disk write might fail, which is expected
   }
 }
 
