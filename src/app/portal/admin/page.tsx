@@ -29,10 +29,32 @@ import {
   UserCheck,
   RefreshCw,
   Award,
-  Loader2
+  Loader2,
+  Globe,
+  Image as ImageIcon,
+  BookOpen,
+  Sliders,
+  Edit3,
+  UploadCloud,
+  RotateCcw,
+  Layout,
+  Bell,
+  MapPin,
+  Mail
 } from "lucide-react";
 import { cn, extractYoutubeId, formatTimeAgo } from "@/lib/utils";
-import { Student, ClassMeeting, VideoClass, ChatMessage } from "@/lib/portalStore";
+import {
+  Student,
+  ClassMeeting,
+  VideoClass,
+  ChatMessage,
+  CourseItem,
+  GalleryItem,
+  SiteSettings,
+  DEFAULT_COURSES,
+  DEFAULT_GALLERY,
+  DEFAULT_SITE_SETTINGS
+} from "@/lib/cmsDefaults";
 import PortalNavbar, { PortalNavItem } from "@/components/portal/PortalNavbar";
 import PortalLoadingScreen from "@/components/portal/PortalLoadingScreen";
 import AdminProfileModal, { AdminProfileData } from "@/components/portal/AdminProfileModal";
@@ -52,8 +74,53 @@ const courseOptions = ["All Courses", "Fitness", "Silambam", "Yoga", "Martial Ar
 export default function AdminPortalPage() {
   const router = useRouter();
   const [adminUser, setAdminUser] = useState<{ username: string; name: string } | null>(null);
-  const [activeTab, setActiveTab] = useState<"students" | "meet" | "videos" | "messages">("students");
+  const [activeTab, setActiveTab] = useState<"students" | "meet" | "videos" | "messages" | "cms">("students");
   const [pageLoading, setPageLoading] = useState(true);
+
+  // --- WEBSITE CMS & MAIN PORTAL MANAGER STATE ---
+  const [cmsSubTab, setCmsSubTab] = useState<"courses" | "gallery" | "settings">("courses");
+  const [courses, setCourses] = useState<CourseItem[]>(DEFAULT_COURSES);
+  const [gallery, setGallery] = useState<GalleryItem[]>(DEFAULT_GALLERY);
+  const [siteSettings, setSiteSettings] = useState<SiteSettings>(DEFAULT_SITE_SETTINGS);
+
+  // Course Form State
+  const initialCourseForm = {
+    id: "",
+    name: "",
+    subtitle: "",
+    category: "Fitness",
+    schedule: "Morning: 4:30 AM - 5:15 AM | Evening: 5:00 PM - 5:45 PM",
+    level: "All Levels (Beginner to Advanced)",
+    age: "Teens & Adults",
+    image: "",
+    videoId: "dQw4w9WgXcQ",
+    description: "",
+    syllabus: [
+      "Foundational postures and warm-up routines",
+      "Skill drills, speed, and endurance conditioning"
+    ]
+  };
+  const [courseForm, setCourseForm] = useState(initialCourseForm);
+  const [isEditingCourse, setIsEditingCourse] = useState(false);
+  const [courseSubmitting, setCourseSubmitting] = useState(false);
+  const [courseUploading, setCourseUploading] = useState(false);
+  const [newSyllabusItem, setNewSyllabusItem] = useState("");
+
+  // Gallery Form State
+  const initialGalleryForm = {
+    id: "",
+    title: "",
+    category: "Silambam",
+    image: "",
+    description: ""
+  };
+  const [galleryForm, setGalleryForm] = useState(initialGalleryForm);
+  const [gallerySubmitting, setGallerySubmitting] = useState(false);
+  const [galleryUploading, setGalleryUploading] = useState(false);
+  const [galleryCategoryFilter, setGalleryCategoryFilter] = useState("All");
+
+  // Settings Form State
+  const [settingsSubmitting, setSettingsSubmitting] = useState(false);
 
   // Admin Data State
   const [students, setStudents] = useState<Student[]>([]);
@@ -146,6 +213,16 @@ export default function AdminPortalPage() {
         setMeetings(data.meetings || []);
         setVideos(data.videos || []);
         setMessages(data.messages || []);
+
+        if (data.courses && data.courses.length > 0) {
+          setCourses(data.courses);
+        }
+        if (data.gallery && data.gallery.length > 0) {
+          setGallery(data.gallery);
+        }
+        if (data.siteSettings) {
+          setSiteSettings(data.siteSettings);
+        }
 
         if (data.adminConfig) {
           setAdminProfile(data.adminConfig);
@@ -383,6 +460,226 @@ export default function AdminPortalPage() {
     }
   };
 
+  // --- CMS HANDLERS ---
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, target: "course" | "gallery") => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (target === "course") setCourseUploading(true);
+    if (target === "gallery") setGalleryUploading(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const res = await fetch("/api/portal/upload", {
+        method: "POST",
+        body: formData
+      });
+      const data = await res.json();
+      if (data.success && data.url) {
+        if (target === "course") {
+          setCourseForm((prev) => ({ ...prev, image: data.url }));
+        } else {
+          setGalleryForm((prev) => ({ ...prev, image: data.url }));
+        }
+        setActionMessage("Image uploaded successfully!");
+        setTimeout(() => setActionMessage(null), 3000);
+      } else {
+        alert(data.error || "Failed to upload image.");
+      }
+    } catch (err) {
+      console.error("Upload error:", err);
+      alert("Failed to upload image. You can also paste an image URL directly.");
+    } finally {
+      if (target === "course") setCourseUploading(false);
+      if (target === "gallery") setGalleryUploading(false);
+    }
+  };
+
+  const handleSaveCourse = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!courseForm.name.trim()) return;
+
+    setCourseSubmitting(true);
+    try {
+      const res = await fetch("/api/portal/cms", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "saveCourse",
+          course: {
+            ...courseForm,
+            videoId: extractYoutubeId(courseForm.videoId) || "dQw4w9WgXcQ"
+          }
+        })
+      });
+      const data = await res.json();
+      if (data.success && data.courses) {
+        setCourses(data.courses);
+        setActionMessage(isEditingCourse ? "Course updated on website!" : "New course published to website!");
+        setTimeout(() => setActionMessage(null), 4000);
+        setCourseForm(initialCourseForm);
+        setIsEditingCourse(false);
+      } else {
+        alert(data.error || "Failed to save course.");
+      }
+    } catch (err) {
+      console.error("Save course error:", err);
+    } finally {
+      setCourseSubmitting(false);
+    }
+  };
+
+  const handleDeleteCourse = async (courseId: string) => {
+    if (!confirm("Are you sure you want to remove this course from the main website?")) return;
+    try {
+      const res = await fetch("/api/portal/cms", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "deleteCourse", id: courseId })
+      });
+      const data = await res.json();
+      if (data.success && data.courses) {
+        setCourses(data.courses);
+        setActionMessage("Course removed from website.");
+        setTimeout(() => setActionMessage(null), 3000);
+      }
+    } catch (err) {
+      console.error("Delete course error:", err);
+    }
+  };
+
+  const handleEditCourse = (course: CourseItem) => {
+    setCourseForm({
+      id: course.id,
+      name: course.name,
+      subtitle: course.subtitle,
+      category: course.category,
+      schedule: course.schedule,
+      level: course.level,
+      age: course.age,
+      image: course.image,
+      videoId: course.videoId,
+      description: course.description,
+      syllabus: course.syllabus || []
+    });
+    setIsEditingCourse(true);
+    setCmsSubTab("courses");
+    window.scrollTo({ top: 300, behavior: "smooth" });
+  };
+
+  const handleAddSyllabusItem = () => {
+    if (!newSyllabusItem.trim()) return;
+    setCourseForm((prev) => ({
+      ...prev,
+      syllabus: [...prev.syllabus, newSyllabusItem.trim()]
+    }));
+    setNewSyllabusItem("");
+  };
+
+  const handleRemoveSyllabusItem = (index: number) => {
+    setCourseForm((prev) => ({
+      ...prev,
+      syllabus: prev.syllabus.filter((_, i) => i !== index)
+    }));
+  };
+
+  const handleSaveGallery = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!galleryForm.title.trim() || !galleryForm.image.trim()) return;
+
+    setGallerySubmitting(true);
+    try {
+      const res = await fetch("/api/portal/cms", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "saveGalleryItem",
+          galleryItem: galleryForm
+        })
+      });
+      const data = await res.json();
+      if (data.success && data.gallery) {
+        setGallery(data.gallery);
+        setActionMessage("New photo added to gallery!");
+        setTimeout(() => setActionMessage(null), 4000);
+        setGalleryForm(initialGalleryForm);
+      } else {
+        alert(data.error || "Failed to save gallery photo.");
+      }
+    } catch (err) {
+      console.error("Save gallery error:", err);
+    } finally {
+      setGallerySubmitting(false);
+    }
+  };
+
+  const handleDeleteGallery = async (id: string | number) => {
+    if (!confirm("Are you sure you want to remove this photo from the gallery?")) return;
+    try {
+      const res = await fetch("/api/portal/cms", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "deleteGalleryItem", id })
+      });
+      const data = await res.json();
+      if (data.success && data.gallery) {
+        setGallery(data.gallery);
+        setActionMessage("Photo removed from gallery.");
+        setTimeout(() => setActionMessage(null), 3000);
+      }
+    } catch (err) {
+      console.error("Delete gallery error:", err);
+    }
+  };
+
+  const handleSaveSettings = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSettingsSubmitting(true);
+    try {
+      const res = await fetch("/api/portal/cms", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "saveSettings",
+          settings: siteSettings
+        })
+      });
+      const data = await res.json();
+      if (data.success && data.siteSettings) {
+        setSiteSettings(data.siteSettings);
+        setActionMessage("Academy details & notice banner updated successfully!");
+        setTimeout(() => setActionMessage(null), 4000);
+      }
+    } catch (err) {
+      console.error("Save settings error:", err);
+    } finally {
+      setSettingsSubmitting(false);
+    }
+  };
+
+  const handleResetCms = async (target: "courses" | "gallery" | "settings" | "all") => {
+    if (!confirm(`Are you sure you want to reset ${target} back to academy defaults?`)) return;
+    try {
+      const res = await fetch("/api/portal/cms", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "resetDefaults", target })
+      });
+      const data = await res.json();
+      if (data.success) {
+        if (data.courses) setCourses(data.courses);
+        if (data.gallery) setGallery(data.gallery);
+        if (data.siteSettings) setSiteSettings(data.siteSettings);
+        setActionMessage("Reset to academy defaults completed.");
+        setTimeout(() => setActionMessage(null), 3000);
+      }
+    } catch (err) {
+      console.error("Reset CMS error:", err);
+    }
+  };
+
   const handleLogout = () => {
     localStorage.removeItem("vajra_admin_session");
     router.push("/portal?tab=admin");
@@ -445,7 +742,8 @@ export default function AdminPortalPage() {
     { id: "students", label: "Admissions", badge: pendingStudents.length || undefined },
     { id: "meet", label: "Google Meets" },
     { id: "videos", label: "Videos" },
-    { id: "messages", label: "Message Desk", badge: unreadStudentMessages.length || undefined }
+    { id: "messages", label: "Message Desk", badge: unreadStudentMessages.length || undefined },
+    { id: "cms", label: "Website Manager" }
   ];
 
   if (!adminUser) {
@@ -1463,6 +1761,885 @@ export default function AdminPortalPage() {
                   )}
                 </div>
               </div>
+            </motion.div>
+          )}
+
+          {/* ========================================================================= */}
+          {/* TAB 5: WEBSITE CMS & MAIN PORTAL MANAGER                                  */}
+          {/* ========================================================================= */}
+          {activeTab === "cms" && (
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+              className="space-y-8 min-w-0"
+            >
+              {/* CMS Header & Sub-Navigation */}
+              <div className="space-y-4 pb-6 border-b border-coffee-dark/10">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="p-1.5 rounded-lg bg-cappuccino/20 text-coffee-dark">
+                        <Globe size={16} className="text-cappuccino" />
+                      </span>
+                      <h3 className="text-xl font-serif font-bold text-coffee-dark">
+                        Website CMS &amp; Main Portal Manager
+                      </h3>
+                    </div>
+                    <p className="text-xs text-coffee-dark/65 font-light">
+                      Manage courses, upload course thumbnails &amp; syllabus, publish gallery photos, and update live website details.
+                    </p>
+                  </div>
+
+                  {/* Sub-Tabs Selector */}
+                  <div className="flex items-center gap-1.5 p-1 rounded-full bg-white/70 border border-coffee-dark/15 self-start sm:self-center">
+                    <button
+                      type="button"
+                      onClick={() => setCmsSubTab("courses")}
+                      className={cn(
+                        "px-3.5 py-1.5 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer",
+                        cmsSubTab === "courses"
+                          ? "bg-coffee-dark text-white shadow-xs"
+                          : "text-coffee-dark/70 hover:text-coffee-dark"
+                      )}
+                    >
+                      <BookOpen size={13} />
+                      <span>Courses ({courses.length})</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setCmsSubTab("gallery")}
+                      className={cn(
+                        "px-3.5 py-1.5 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer",
+                        cmsSubTab === "gallery"
+                          ? "bg-coffee-dark text-white shadow-xs"
+                          : "text-coffee-dark/70 hover:text-coffee-dark"
+                      )}
+                    >
+                      <ImageIcon size={13} />
+                      <span>Gallery ({gallery.length})</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setCmsSubTab("settings")}
+                      className={cn(
+                        "px-3.5 py-1.5 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer",
+                        cmsSubTab === "settings"
+                          ? "bg-coffee-dark text-white shadow-xs"
+                          : "text-coffee-dark/70 hover:text-coffee-dark"
+                      )}
+                    >
+                      <Sliders size={13} />
+                      <span>Notice &amp; Details</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* ----------------------------------------------------------------- */}
+              {/* SUB-TAB 1: COURSES & SYLLABUS MANAGER                             */}
+              {/* ----------------------------------------------------------------- */}
+              {cmsSubTab === "courses" && (
+                <div className="space-y-10">
+                  {/* Course Form */}
+                  <div className="p-5 sm:p-7 rounded-2xl sm:rounded-3xl bg-white/70 border border-coffee-dark/15 space-y-6 shadow-sm">
+                    <div className="flex items-center justify-between gap-3 border-b border-coffee-dark/10 pb-4">
+                      <div>
+                        <h4 className="font-serif text-lg font-bold text-coffee-dark">
+                          {isEditingCourse ? "Edit Academy Course" : "Add New Course to Main Website"}
+                        </h4>
+                        <p className="text-xs text-coffee-dark/60 font-light">
+                          {isEditingCourse
+                            ? "Modify course metadata, thumbnail image, or syllabus details."
+                            : "New courses will appear on the /course page, enrollment form, and home page."}
+                        </p>
+                      </div>
+                      {isEditingCourse && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setIsEditingCourse(false);
+                            setCourseForm(initialCourseForm);
+                          }}
+                          className="px-3 py-1.5 rounded-full text-xs font-bold bg-coffee-dark/10 hover:bg-coffee-dark/20 text-coffee-dark transition-colors cursor-pointer"
+                        >
+                          Cancel Editing
+                        </button>
+                      )}
+                    </div>
+
+                    <form onSubmit={handleSaveCourse} className="space-y-5">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                        <div>
+                          <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
+                            Course Name *
+                          </label>
+                          <input
+                            type="text"
+                            value={courseForm.name}
+                            onChange={(e) => setCourseForm({ ...courseForm, name: e.target.value })}
+                            placeholder="e.g. Silambam Advanced"
+                            required
+                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none transition-colors shadow-2xs"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
+                            Subtitle / Tagline
+                          </label>
+                          <input
+                            type="text"
+                            value={courseForm.subtitle}
+                            onChange={(e) => setCourseForm({ ...courseForm, subtitle: e.target.value })}
+                            placeholder="e.g. Traditional Tamil Staff Heritage"
+                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none transition-colors shadow-2xs"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
+                            Discipline Category *
+                          </label>
+                          <select
+                            value={courseForm.category}
+                            onChange={(e) => setCourseForm({ ...courseForm, category: e.target.value })}
+                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none cursor-pointer transition-colors shadow-2xs"
+                          >
+                            <option value="Fitness">Fitness</option>
+                            <option value="Silambam">Silambam</option>
+                            <option value="Yoga">Yoga</option>
+                            <option value="Martial Arts">Martial Arts</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                        <div>
+                          <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
+                            Batch Schedule Timings
+                          </label>
+                          <input
+                            type="text"
+                            value={courseForm.schedule}
+                            onChange={(e) => setCourseForm({ ...courseForm, schedule: e.target.value })}
+                            placeholder="e.g. Morning: 4:30 AM - 5:15 AM | Evening: 5:00 PM"
+                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none transition-colors shadow-2xs"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
+                            Target Age Group
+                          </label>
+                          <input
+                            type="text"
+                            value={courseForm.age}
+                            onChange={(e) => setCourseForm({ ...courseForm, age: e.target.value })}
+                            placeholder="e.g. Kids (6+) & Adults"
+                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none transition-colors shadow-2xs"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
+                            Skill Level
+                          </label>
+                          <input
+                            type="text"
+                            value={courseForm.level}
+                            onChange={(e) => setCourseForm({ ...courseForm, level: e.target.value })}
+                            placeholder="e.g. Beginner to Advanced"
+                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none transition-colors shadow-2xs"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Course Thumbnail Image & YouTube Video */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-2">
+                        {/* Thumbnail Image Picker / Uploader */}
+                        <div className="space-y-2">
+                          <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block">
+                            Course Thumbnail Image *
+                          </label>
+                          <div className="flex flex-col sm:flex-row gap-2.5">
+                            <input
+                              type="text"
+                              value={courseForm.image}
+                              onChange={(e) => setCourseForm({ ...courseForm, image: e.target.value })}
+                              placeholder="Paste Image URL or upload below..."
+                              required
+                              className="flex-1 min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none transition-colors shadow-2xs"
+                            />
+                            <label className="min-h-[42px] px-4 rounded-xl bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer shrink-0 shadow-2xs">
+                              {courseUploading ? (
+                                <RefreshCw size={14} className="animate-spin" />
+                              ) : (
+                                <UploadCloud size={14} />
+                              )}
+                              <span>{courseUploading ? "Uploading..." : "Upload File"}</span>
+                              <input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => handleImageUpload(e, "course")}
+                                className="hidden"
+                              />
+                            </label>
+                          </div>
+
+                          {/* Live Thumbnail Preview */}
+                          {courseForm.image && (
+                            <div className="relative aspect-video max-w-xs rounded-xl overflow-hidden border border-coffee-dark/20 bg-coffee-dark/5 shadow-inner mt-2">
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img
+                                src={courseForm.image}
+                                alt="Course thumbnail preview"
+                                className="w-full h-full object-cover"
+                                onError={(e) => {
+                                  (e.target as HTMLElement).style.display = "none";
+                                }}
+                              />
+                              <span className="absolute bottom-1.5 right-1.5 bg-black/70 text-white text-[9px] px-2 py-0.5 rounded font-mono">
+                                Live Preview
+                              </span>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* YouTube Demo Video */}
+                        <div className="space-y-2">
+                          <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block">
+                            Demo Video (YouTube Link or ID)
+                          </label>
+                          <input
+                            type="text"
+                            value={courseForm.videoId}
+                            onChange={(e) => setCourseForm({ ...courseForm, videoId: e.target.value })}
+                            placeholder="e.g. https://youtu.be/... or video ID"
+                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs font-mono focus:outline-none transition-colors shadow-2xs"
+                          />
+                          <p className="text-[10.5px] text-coffee-dark/50">
+                            Plays in the HD syllabus video modal when students click &ldquo;Watch Demo&rdquo;.
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Course Description */}
+                      <div>
+                        <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
+                          Course Description
+                        </label>
+                        <textarea
+                          rows={2}
+                          value={courseForm.description}
+                          onChange={(e) => setCourseForm({ ...courseForm, description: e.target.value })}
+                          placeholder="Brief overview of course benefits and training focus..."
+                          className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl p-3 text-xs focus:outline-none transition-colors shadow-2xs leading-relaxed"
+                        />
+                      </div>
+
+                      {/* Syllabus Bullet Points */}
+                      <div className="space-y-3 pt-2">
+                        <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block">
+                          Course Syllabus Topics ({courseForm.syllabus.length})
+                        </label>
+                        <div className="space-y-2">
+                          {courseForm.syllabus.map((item, index) => (
+                            <div key={index} className="flex items-center gap-2">
+                              <span className="text-xs text-cappuccino font-bold w-5 shrink-0">
+                                {index + 1}.
+                              </span>
+                              <input
+                                type="text"
+                                value={item}
+                                onChange={(e) => {
+                                  const updated = [...courseForm.syllabus];
+                                  updated[index] = e.target.value;
+                                  setCourseForm({ ...courseForm, syllabus: updated });
+                                }}
+                                className="flex-1 bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3 py-1.5 text-xs focus:outline-none transition-colors"
+                              />
+                              <button
+                                type="button"
+                                onClick={() => handleRemoveSyllabusItem(index)}
+                                className="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+                                title="Remove topic"
+                              >
+                                <Trash2 size={14} />
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+
+                        {/* Add New Topic Row */}
+                        <div className="flex items-center gap-2 pt-1">
+                          <input
+                            type="text"
+                            value={newSyllabusItem}
+                            onChange={(e) => setNewSyllabusItem(e.target.value)}
+                            placeholder="Add a new syllabus topic..."
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter") {
+                                e.preventDefault();
+                                handleAddSyllabusItem();
+                              }
+                            }}
+                            className="flex-1 bg-white/60 focus:bg-white border border-dashed border-coffee-dark/25 focus:border-cappuccino text-coffee-dark rounded-xl px-3 py-2 text-xs focus:outline-none"
+                          />
+                          <button
+                            type="button"
+                            onClick={handleAddSyllabusItem}
+                            className="px-3.5 py-2 rounded-xl bg-coffee-dark/10 hover:bg-coffee-dark hover:text-white text-coffee-dark text-xs font-bold transition-all flex items-center gap-1 cursor-pointer"
+                          >
+                            <Plus size={13} />
+                            <span>Add Topic</span>
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Submit Actions */}
+                      <div className="pt-3 border-t border-coffee-dark/10 flex items-center gap-3">
+                        <button
+                          type="submit"
+                          disabled={courseSubmitting}
+                          className="min-h-[44px] px-7 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-bold text-xs uppercase tracking-wider rounded-full transition-all shadow-sm flex items-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50"
+                        >
+                          {courseSubmitting ? (
+                            <RefreshCw size={14} className="animate-spin" />
+                          ) : (
+                            <Check size={14} />
+                          )}
+                          <span>
+                            {courseSubmitting
+                              ? "Saving Course..."
+                              : isEditingCourse
+                              ? "Update Course on Website"
+                              : "Publish Course to Website"}
+                          </span>
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+
+                  {/* Active Courses Catalog Grid */}
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between gap-3">
+                      <div>
+                        <h4 className="font-serif text-lg font-bold text-coffee-dark">
+                          Active Website Courses ({courses.length})
+                        </h4>
+                        <p className="text-xs text-coffee-dark/60 font-light">
+                          Click Edit to modify details or thumbnail image.
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => handleResetCms("courses")}
+                        className="text-[11px] text-coffee-dark/50 hover:text-coffee-dark underline font-mono cursor-pointer"
+                      >
+                        Reset to Defaults
+                      </button>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                      {courses.map((course) => (
+                        <div
+                          key={course.id}
+                          className="p-4 rounded-2xl bg-white/70 border border-coffee-dark/15 hover:border-cappuccino/50 transition-all flex flex-col justify-between gap-4 shadow-2xs"
+                        >
+                          <div className="flex gap-3.5">
+                            <div className="relative w-28 aspect-video rounded-xl overflow-hidden bg-coffee-dark shrink-0 border border-coffee-dark/15">
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img
+                                src={course.image}
+                                alt={course.name}
+                                className="w-full h-full object-cover"
+                              />
+                              <span className="absolute top-1 left-1 bg-cappuccino/90 text-coffee-dark text-[8px] font-bold px-1.5 py-0.2 rounded-full uppercase">
+                                {course.category}
+                              </span>
+                            </div>
+                            <div className="min-w-0 flex-1 space-y-1">
+                              <h5 className="font-serif font-bold text-base text-coffee-dark truncate">
+                                {course.name}
+                              </h5>
+                              <p className="text-[11px] text-cappuccino font-semibold truncate">
+                                {course.subtitle || course.category}
+                              </p>
+                              <p className="text-[11px] text-coffee-dark/70 font-mono truncate">
+                                {course.schedule}
+                              </p>
+                            </div>
+                          </div>
+
+                          <div className="text-[11px] text-coffee-dark/70 line-clamp-2 leading-relaxed">
+                            {course.description}
+                          </div>
+
+                          <div className="pt-2 border-t border-coffee-dark/10 flex items-center justify-between gap-2">
+                            <span className="text-[10px] text-coffee-dark/50 font-mono">
+                              {course.syllabus?.length || 0} Syllabus Topics
+                            </span>
+                            <div className="flex items-center gap-2">
+                              <button
+                                type="button"
+                                onClick={() => handleEditCourse(course)}
+                                className="px-3 py-1.5 rounded-lg bg-coffee-dark/5 hover:bg-coffee-dark hover:text-white text-coffee-dark text-xs font-bold transition-colors flex items-center gap-1 cursor-pointer"
+                              >
+                                <Edit3 size={12} />
+                                <span>Edit</span>
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => handleDeleteCourse(course.id)}
+                                className="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+                                title="Delete course"
+                              >
+                                <Trash2 size={14} />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* ----------------------------------------------------------------- */}
+              {/* SUB-TAB 2: GALLERY PHOTOS MANAGER                                 */}
+              {/* ----------------------------------------------------------------- */}
+              {cmsSubTab === "gallery" && (
+                <div className="space-y-10">
+                  {/* Add Gallery Photo Form */}
+                  <div className="p-5 sm:p-7 rounded-2xl sm:rounded-3xl bg-white/70 border border-coffee-dark/15 space-y-5 shadow-sm">
+                    <div className="border-b border-coffee-dark/10 pb-4">
+                      <h4 className="font-serif text-lg font-bold text-coffee-dark">
+                        Add New Photo to Academy Gallery
+                      </h4>
+                      <p className="text-xs text-coffee-dark/60 font-light">
+                        Upload or link training photographs. They will appear immediately on /gallery with category filters and lightbox view.
+                      </p>
+                    </div>
+
+                    <form onSubmit={handleSaveGallery} className="space-y-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
+                            Photo Title *
+                          </label>
+                          <input
+                            type="text"
+                            value={galleryForm.title}
+                            onChange={(e) => setGalleryForm({ ...galleryForm, title: e.target.value })}
+                            placeholder="e.g. Silambam Fast Rotations"
+                            required
+                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none transition-colors shadow-2xs"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
+                            Discipline Category *
+                          </label>
+                          <select
+                            value={galleryForm.category}
+                            onChange={(e) => setGalleryForm({ ...galleryForm, category: e.target.value })}
+                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none cursor-pointer transition-colors shadow-2xs"
+                          >
+                            <option value="Silambam">Silambam</option>
+                            <option value="Martial Arts">Martial Arts</option>
+                            <option value="Yoga">Yoga</option>
+                            <option value="Fitness">Fitness</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      {/* Photo Image URL & Upload */}
+                      <div className="space-y-2">
+                        <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block">
+                          Photo Image File or URL *
+                        </label>
+                        <div className="flex flex-col sm:flex-row gap-2.5">
+                          <input
+                            type="text"
+                            value={galleryForm.image}
+                            onChange={(e) => setGalleryForm({ ...galleryForm, image: e.target.value })}
+                            placeholder="Paste Image URL or click Upload File..."
+                            required
+                            className="flex-1 min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none transition-colors shadow-2xs"
+                          />
+                          <label className="min-h-[42px] px-4 rounded-xl bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer shrink-0 shadow-2xs">
+                            {galleryUploading ? (
+                              <RefreshCw size={14} className="animate-spin" />
+                            ) : (
+                              <UploadCloud size={14} />
+                            )}
+                            <span>{galleryUploading ? "Uploading..." : "Upload Photo"}</span>
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={(e) => handleImageUpload(e, "gallery")}
+                              className="hidden"
+                            />
+                          </label>
+                        </div>
+
+                        {/* Live Photo Preview */}
+                        {galleryForm.image && (
+                          <div className="relative aspect-[4/3] max-w-xs rounded-xl overflow-hidden border border-coffee-dark/20 bg-coffee-dark/5 shadow-inner mt-2">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={galleryForm.image}
+                              alt="Gallery preview"
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                (e.target as HTMLElement).style.display = "none";
+                              }}
+                            />
+                            <span className="absolute bottom-1.5 right-1.5 bg-black/70 text-white text-[9px] px-2 py-0.5 rounded font-mono">
+                              Preview
+                            </span>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Photo Description / Caption */}
+                      <div>
+                        <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
+                          Caption / Details
+                        </label>
+                        <textarea
+                          rows={2}
+                          value={galleryForm.description}
+                          onChange={(e) => setGalleryForm({ ...galleryForm, description: e.target.value })}
+                          placeholder="Describe the drill, form, or context of this photo..."
+                          className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl p-3 text-xs focus:outline-none transition-colors shadow-2xs leading-relaxed"
+                        />
+                      </div>
+
+                      <div className="pt-2">
+                        <button
+                          type="submit"
+                          disabled={gallerySubmitting}
+                          className="min-h-[44px] px-6 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-bold text-xs uppercase tracking-wider rounded-full transition-all shadow-sm flex items-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50"
+                        >
+                          {gallerySubmitting ? (
+                            <RefreshCw size={14} className="animate-spin" />
+                          ) : (
+                            <Plus size={14} />
+                          )}
+                          <span>{gallerySubmitting ? "Adding Photo..." : "Add Photo to Gallery"}</span>
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+
+                  {/* Gallery Grid Display */}
+                  <div className="space-y-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                      <div>
+                        <h4 className="font-serif text-lg font-bold text-coffee-dark">
+                          Current Gallery Photos ({gallery.length})
+                        </h4>
+                        <p className="text-xs text-coffee-dark/60 font-light">
+                          Filter by category or delete outdated photos.
+                        </p>
+                      </div>
+
+                      {/* Category Filter Pills */}
+                      <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1">
+                        {["All", "Silambam", "Martial Arts", "Yoga", "Fitness"].map((cat) => (
+                          <button
+                            key={cat}
+                            type="button"
+                            onClick={() => setGalleryCategoryFilter(cat)}
+                            className={cn(
+                              "px-3 py-1 rounded-full text-[11px] font-bold transition-all cursor-pointer",
+                              galleryCategoryFilter === cat
+                                ? "bg-coffee-dark text-cappuccino shadow-2xs"
+                                : "bg-white/80 text-coffee-dark/60 hover:text-coffee-dark border border-coffee-dark/10"
+                            )}
+                          >
+                            {cat}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                      {gallery
+                        .filter(
+                          (g) =>
+                            galleryCategoryFilter === "All" ||
+                            g.category.toLowerCase() === galleryCategoryFilter.toLowerCase()
+                        )
+                        .map((item) => (
+                          <div
+                            key={item.id}
+                            className="group relative rounded-2xl overflow-hidden bg-white border border-coffee-dark/15 shadow-2xs hover:shadow-md transition-all flex flex-col"
+                          >
+                            <div className="relative aspect-[4/3] bg-coffee-dark overflow-hidden">
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img
+                                src={item.image}
+                                alt={item.title}
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                              />
+                              <span className="absolute top-2 left-2 bg-black/70 text-cappuccino text-[9px] font-bold px-2 py-0.5 rounded-full uppercase">
+                                {item.category}
+                              </span>
+                              <button
+                                type="button"
+                                onClick={() => handleDeleteGallery(item.id)}
+                                className="absolute top-2 right-2 p-1.5 bg-red-600/90 hover:bg-red-600 text-white rounded-full transition-colors cursor-pointer shadow-md opacity-90 sm:opacity-0 sm:group-hover:opacity-100"
+                                title="Delete photo"
+                              >
+                                <Trash2 size={13} />
+                              </button>
+                            </div>
+                            <div className="p-3 space-y-1 flex-1 flex flex-col justify-between">
+                              <h5 className="font-bold text-xs text-coffee-dark line-clamp-1">{item.title}</h5>
+                              <p className="text-[11px] text-coffee-dark/65 line-clamp-2 leading-relaxed">
+                                {item.description}
+                              </p>
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* ----------------------------------------------------------------- */}
+              {/* SUB-TAB 3: ACADEMY NOTICE & IMPORTANT SETTINGS                     */}
+              {/* ----------------------------------------------------------------- */}
+              {cmsSubTab === "settings" && (
+                <form onSubmit={handleSaveSettings} className="space-y-8">
+                  {/* Notice / Announcement Banner Card */}
+                  <div className="p-5 sm:p-7 rounded-2xl sm:rounded-3xl bg-white/70 border border-coffee-dark/15 space-y-5 shadow-sm">
+                    <div className="flex items-center justify-between gap-3 border-b border-coffee-dark/10 pb-4">
+                      <div>
+                        <div className="flex items-center gap-2 mb-1">
+                          <Bell size={16} className="text-cappuccino" />
+                          <h4 className="font-serif text-lg font-bold text-coffee-dark">
+                            Live Website Announcement Banner
+                          </h4>
+                        </div>
+                        <p className="text-xs text-coffee-dark/60 font-light">
+                          When active, a golden banner displays at the very top of the website with your custom message and action button.
+                        </p>
+                      </div>
+
+                      {/* Active Toggle */}
+                      <label className="flex items-center gap-2 cursor-pointer select-none">
+                        <span className="text-xs font-bold text-coffee-dark">
+                          {siteSettings.announcementActive ? "Active on Site" : "Hidden"}
+                        </span>
+                        <input
+                          type="checkbox"
+                          checked={siteSettings.announcementActive}
+                          onChange={(e) =>
+                            setSiteSettings({ ...siteSettings, announcementActive: e.target.checked })
+                          }
+                          className="sr-only peer"
+                        />
+                        <div className="w-11 h-6 bg-coffee-dark/20 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-coffee-dark/20 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600 relative" />
+                      </label>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      <div>
+                        <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
+                          Badge Label
+                        </label>
+                        <input
+                          type="text"
+                          value={siteSettings.announcementBadge}
+                          onChange={(e) =>
+                            setSiteSettings({ ...siteSettings, announcementBadge: e.target.value })
+                          }
+                          placeholder="e.g. Admissions Open"
+                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none shadow-2xs"
+                        />
+                      </div>
+
+                      <div className="sm:col-span-2">
+                        <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
+                          Announcement Message Text
+                        </label>
+                        <input
+                          type="text"
+                          value={siteSettings.announcementText}
+                          onChange={(e) =>
+                            setSiteSettings({ ...siteSettings, announcementText: e.target.value })
+                          }
+                          placeholder="e.g. Admissions open for new morning & evening batches..."
+                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none shadow-2xs"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
+                        Target Page Link
+                      </label>
+                      <input
+                        type="text"
+                        value={siteSettings.announcementLink}
+                        onChange={(e) =>
+                          setSiteSettings({ ...siteSettings, announcementLink: e.target.value })
+                        }
+                        placeholder="e.g. /portal?tab=enroll or /contact"
+                        className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs font-mono focus:outline-none shadow-2xs"
+                      />
+                    </div>
+
+                    {/* Banner Live Simulation Preview */}
+                    <div className="p-3 rounded-xl bg-coffee-dark text-white space-y-1 text-xs">
+                      <span className="text-[9px] uppercase tracking-widest text-cappuccino font-bold block">
+                        Live Preview on Site Header:
+                      </span>
+                      <div className="flex items-center gap-2 py-1">
+                        <span className="px-2 py-0.5 rounded-full bg-cappuccino text-coffee-dark font-bold text-[9px] uppercase tracking-wider shrink-0">
+                          {siteSettings.announcementBadge || "Notice"}
+                        </span>
+                        <span className="text-xs text-white/90 truncate">
+                          {siteSettings.announcementText || "Announcement text here..."}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Academy Contact & Studio Information Card */}
+                  <div className="p-5 sm:p-7 rounded-2xl sm:rounded-3xl bg-white/70 border border-coffee-dark/15 space-y-5 shadow-sm">
+                    <div className="border-b border-coffee-dark/10 pb-4">
+                      <h4 className="font-serif text-lg font-bold text-coffee-dark">
+                        Official Academy Contact &amp; Studio Details
+                      </h4>
+                      <p className="text-xs text-coffee-dark/60 font-light">
+                        These details sync across the contact page, footer, and inquiry buttons on the main website.
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
+                          Admissions Telephone Line
+                        </label>
+                        <div className="relative">
+                          <Phone size={14} className="absolute left-3.5 top-3 text-coffee-dark/40" />
+                          <input
+                            type="text"
+                            value={siteSettings.phone}
+                            onChange={(e) => setSiteSettings({ ...siteSettings, phone: e.target.value })}
+                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl pl-9 pr-3.5 py-2 text-xs font-mono focus:outline-none shadow-2xs"
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
+                          Direct WhatsApp Number
+                        </label>
+                        <div className="relative">
+                          <Phone size={14} className="absolute left-3.5 top-3 text-emerald-600" />
+                          <input
+                            type="text"
+                            value={siteSettings.whatsapp}
+                            onChange={(e) =>
+                              setSiteSettings({ ...siteSettings, whatsapp: e.target.value })
+                            }
+                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl pl-9 pr-3.5 py-2 text-xs font-mono focus:outline-none shadow-2xs"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
+                          Official Email Address
+                        </label>
+                        <div className="relative">
+                          <Mail size={14} className="absolute left-3.5 top-3 text-coffee-dark/40" />
+                          <input
+                            type="email"
+                            value={siteSettings.email}
+                            onChange={(e) => setSiteSettings({ ...siteSettings, email: e.target.value })}
+                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl pl-9 pr-3.5 py-2 text-xs font-mono focus:outline-none shadow-2xs"
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
+                          Daily Training Hours Summary
+                        </label>
+                        <input
+                          type="text"
+                          value={siteSettings.trainingHours}
+                          onChange={(e) =>
+                            setSiteSettings({ ...siteSettings, trainingHours: e.target.value })
+                          }
+                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none shadow-2xs"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
+                        Studio Physical Address
+                      </label>
+                      <div className="relative">
+                        <MapPin size={14} className="absolute left-3.5 top-3 text-coffee-dark/40" />
+                        <input
+                          type="text"
+                          value={siteSettings.address}
+                          onChange={(e) => setSiteSettings({ ...siteSettings, address: e.target.value })}
+                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl pl-9 pr-3.5 py-2 text-xs focus:outline-none shadow-2xs"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
+                        Google Maps Location URL
+                      </label>
+                      <input
+                        type="url"
+                        value={siteSettings.mapsUrl}
+                        onChange={(e) => setSiteSettings({ ...siteSettings, mapsUrl: e.target.value })}
+                        className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs font-mono focus:outline-none shadow-2xs"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Save Settings Action Button */}
+                  <div className="flex items-center justify-between gap-4 pt-2">
+                    <button
+                      type="submit"
+                      disabled={settingsSubmitting}
+                      className="min-h-[44px] px-8 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-bold text-xs uppercase tracking-wider rounded-full transition-all shadow-sm flex items-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50"
+                    >
+                      {settingsSubmitting ? (
+                        <RefreshCw size={14} className="animate-spin" />
+                      ) : (
+                        <Check size={14} />
+                      )}
+                      <span>{settingsSubmitting ? "Saving Settings..." : "Save Academy Details"}</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => handleResetCms("settings")}
+                      className="text-xs text-coffee-dark/50 hover:text-coffee-dark underline font-mono cursor-pointer"
+                    >
+                      Reset Details to Defaults
+                    </button>
+                  </div>
+                </form>
+              )}
             </motion.div>
           )}
         </div>

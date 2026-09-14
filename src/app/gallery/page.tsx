@@ -145,15 +145,27 @@ const galleryImages: GalleryItem[] = [
 ];
 
 export default function GalleryPage() {
+  const [galleryList, setGalleryList] = useState<GalleryItem[]>(galleryImages);
   const [activeCategory, setActiveCategory] = useState("All");
   const [activeItem, setActiveItem] = useState<GalleryItem | null>(null);
   const [isAutoScrolling, setIsAutoScrolling] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
   const sliderRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    fetch("/api/portal/cms?type=gallery")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.gallery && data.gallery.length > 0) {
+          setGalleryList(data.gallery);
+        }
+      })
+      .catch(console.error);
+  }, []);
+
   const filteredItems = activeCategory === "All"
-    ? galleryImages
-    : galleryImages.filter((item) => item.category === activeCategory);
+    ? galleryList
+    : galleryList.filter((item) => item.category === activeCategory);
 
   // Seamless duplicated items for infinite auto-scroll
   const duplicatedItems = filteredItems.length < 4

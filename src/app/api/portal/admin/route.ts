@@ -31,6 +31,9 @@ export async function GET() {
       meetings: data.meetings,
       videos: data.videos,
       messages: data.messages,
+      courses: data.courses,
+      gallery: data.gallery,
+      siteSettings: data.siteSettings,
       adminConfig: safeAdminConfig
     });
   } catch (error) {

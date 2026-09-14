@@ -107,9 +107,21 @@ const courseCatalog: CourseItem[] = [
 ];
 
 export default function CoursesPage() {
+  const [courses, setCourses] = useState<CourseItem[]>(courseCatalog);
   const [activeCategory, setActiveCategory] = useState("All");
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
   const [selectedCourse, setSelectedCourse] = useState<CourseItem | null>(null);
+
+  useEffect(() => {
+    fetch("/api/portal/cms?type=courses")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.courses && data.courses.length > 0) {
+          setCourses(data.courses);
+        }
+      })
+      .catch(console.error);
+  }, []);
 
   // Prevent background scrolling when syllabus modal is open
   useEffect(() => {
@@ -135,12 +147,12 @@ export default function CoursesPage() {
   }, [selectedCourse]);
 
   const filteredCourses = activeCategory === "All"
-    ? courseCatalog
-    : courseCatalog.filter((item) => item.category === activeCategory);
+    ? courses
+    : courses.filter((item) => item.category === activeCategory);
 
   const getCategoryCount = (category: string) => {
-    if (category === "All") return courseCatalog.length;
-    return courseCatalog.filter((item) => item.category === category).length;
+    if (category === "All") return courses.length;
+    return courses.filter((item) => item.category === category).length;
   };
 
   return (

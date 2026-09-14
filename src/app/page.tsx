@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Hero from "@/components/Hero";
@@ -115,6 +115,28 @@ const disciplines = [
 
 export default function Home() {
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
+  const [dynamicCourses, setDynamicCourses] = useState(featuredCourses);
+
+  useEffect(() => {
+    fetch("/api/portal/cms?type=courses")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.courses && data.courses.length > 0) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const mapped = data.courses.map((c: any) => ({
+            name: c.name,
+            description: c.description,
+            price: c.schedule || "Daily Batches",
+            image: c.image,
+            category: c.category,
+            tag: c.subtitle || c.category,
+            youtubeId: c.videoId || "dQw4w9WgXcQ"
+          }));
+          setDynamicCourses(mapped);
+        }
+      })
+      .catch(console.error);
+  }, []);
 
   return (
     <main className="min-h-screen flex flex-col pt-0 bg-background relative">
@@ -128,7 +150,7 @@ export default function Home() {
             title="Master the Arts of Strength &amp; Focus"
           />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 max-w-3xl mx-auto">
-            {featuredCourses.slice(0, 2).map((item, index) => (
+            {dynamicCourses.slice(0, 2).map((item, index) => (
               <MenuItemCard 
                 key={index} 
                 index={index} 

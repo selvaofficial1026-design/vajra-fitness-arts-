@@ -1,89 +1,18 @@
 import fs from "fs/promises";
 import path from "path";
 
-export interface Student {
-  id: string;
-  tempCode: string;
-  permanentCode: string | null;
-  name: string;
-  phone: string;
-  course: string;
-  batch: string;
-  age: string;
-  gender: string;
-  city: string;
-  notes?: string;
-  status: "PENDING" | "APPROVED" | "REJECTED";
-  createdAt: string;
-  approvedAt: string | null;
-}
-
-export interface ClassMeeting {
-  id: string;
-  course: string;
-  batch: string;
-  title: string;
-  meetUrl: string;
-  scheduledTime: string;
-  instructor?: string;
-  isActive: boolean;
-  createdAt: string;
-}
-
-export interface VideoClass {
-  id: string;
-  youtubeUrl: string;
-  youtubeId: string;
-  title: string;
-  course: string;
-  category: string;
-  description: string;
-  addedAt: string;
-}
-
-export interface ChatMessage {
-  id: string;
-  studentId: string;
-  sender: "student" | "admin";
-  text: string;
-  timestamp: string;
-  isRead: boolean;
-}
-
-export interface AdminConfig {
-  username: string;
-  name: string;
-  password?: string;
-  phone?: string;
-  email?: string;
-  roleTitle?: string;
-  academyBranch?: string;
-  avatarLetter?: string;
-  lastPasswordChange?: string | null;
-}
-
-export interface PortalData {
-  students: Student[];
-  meetings: ClassMeeting[];
-  videos: VideoClass[];
-  messages: ChatMessage[];
-  adminConfig?: AdminConfig;
-}
+export * from "./cmsDefaults";
+import {
+  PortalData,
+  DEFAULT_ADMIN_CONFIG,
+  DEFAULT_COURSES,
+  DEFAULT_GALLERY,
+  DEFAULT_SITE_SETTINGS
+} from "./cmsDefaults";
 
 const DATA_FILE_PATH = path.join(process.cwd(), "src", "data", "portal-data.json");
 
-// Default Admin configuration
-export const DEFAULT_ADMIN_CONFIG: AdminConfig = {
-  username: "admin",
-  name: "Master Coach & Admin",
-  password: "vajra@2026",
-  phone: "+91 87789 31958",
-  email: "vajrafitnessarts@gmail.com",
-  roleTitle: "Head Coach & Academy Administrator",
-  academyBranch: "Ariyalur Main Studio, Tamil Nadu",
-  avatarLetter: "A",
-  lastPasswordChange: null
-};
+
 
 // In-memory fallback if file system access fails in serverless environments
 let memoryStore: PortalData | null = null;
@@ -95,6 +24,15 @@ export async function getPortalData(): Promise<PortalData> {
     if (!data.adminConfig) {
       data.adminConfig = { ...DEFAULT_ADMIN_CONFIG };
     }
+    if (!data.courses || data.courses.length === 0) {
+      data.courses = [...DEFAULT_COURSES];
+    }
+    if (!data.gallery || data.gallery.length === 0) {
+      data.gallery = [...DEFAULT_GALLERY];
+    }
+    if (!data.siteSettings) {
+      data.siteSettings = { ...DEFAULT_SITE_SETTINGS };
+    }
     memoryStore = data;
     return data;
   } catch {
@@ -102,15 +40,27 @@ export async function getPortalData(): Promise<PortalData> {
       if (!memoryStore.adminConfig) {
         memoryStore.adminConfig = { ...DEFAULT_ADMIN_CONFIG };
       }
+      if (!memoryStore.courses || memoryStore.courses.length === 0) {
+        memoryStore.courses = [...DEFAULT_COURSES];
+      }
+      if (!memoryStore.gallery || memoryStore.gallery.length === 0) {
+        memoryStore.gallery = [...DEFAULT_GALLERY];
+      }
+      if (!memoryStore.siteSettings) {
+        memoryStore.siteSettings = { ...DEFAULT_SITE_SETTINGS };
+      }
       return memoryStore;
     }
-    // Default empty structure
+    // Default structure with pre-seeded courses, gallery, and settings
     const defaultData: PortalData = {
       students: [],
       meetings: [],
       videos: [],
       messages: [],
-      adminConfig: { ...DEFAULT_ADMIN_CONFIG }
+      adminConfig: { ...DEFAULT_ADMIN_CONFIG },
+      courses: [...DEFAULT_COURSES],
+      gallery: [...DEFAULT_GALLERY],
+      siteSettings: { ...DEFAULT_SITE_SETTINGS }
     };
     return defaultData;
   }

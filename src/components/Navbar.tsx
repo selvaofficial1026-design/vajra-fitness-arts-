@@ -19,7 +19,24 @@ const navLinks = [
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [siteSettings, setSiteSettings] = useState<{
+    announcementActive: boolean;
+    announcementBadge: string;
+    announcementText: string;
+    announcementLink: string;
+  } | null>(null);
   const pathname = usePathname();
+
+  useEffect(() => {
+    fetch("/api/portal/cms?type=settings")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.siteSettings) {
+          setSiteSettings(data.siteSettings);
+        }
+      })
+      .catch(console.error);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -64,13 +81,44 @@ export default function Navbar() {
     return null;
   }
 
+  const isBannerVisible = Boolean(
+    siteSettings?.announcementActive && siteSettings?.announcementText?.trim()
+  );
+
   return (
-    <nav
-      className={cn(
-        "fixed left-0 right-0 z-50 transition-all duration-700 px-3 xs:px-4 sm:px-6 md:px-12 pointer-events-none flex justify-center",
-        scrolled ? "top-3 sm:top-6" : "top-0"
+    <>
+      {/* Top Live Announcement Banner (Synced with Admin CMS) */}
+      {isBannerVisible && (
+        <div className="fixed top-0 left-0 right-0 z-[60] bg-[#241A1A] text-white border-b border-cappuccino/30 py-1.5 px-3 text-center text-[10px] sm:text-xs flex items-center justify-center gap-2 shadow-sm pointer-events-auto">
+          <span className="px-2 py-0.5 rounded-full bg-cappuccino text-coffee-dark font-bold text-[8.5px] sm:text-[9px] uppercase tracking-wider shrink-0">
+            {siteSettings?.announcementBadge || "Notice"}
+          </span>
+          <span className="truncate max-w-[65vw] sm:max-w-none text-white/90">
+            {siteSettings?.announcementText}
+          </span>
+          {siteSettings?.announcementLink && (
+            <Link
+              href={siteSettings.announcementLink}
+              className="text-cappuccino hover:text-white underline font-bold shrink-0 ml-1"
+            >
+              Enroll &rarr;
+            </Link>
+          )}
+        </div>
       )}
-    >
+
+      <nav
+        className={cn(
+          "fixed left-0 right-0 z-50 transition-all duration-700 px-3 xs:px-4 sm:px-6 md:px-12 pointer-events-none flex justify-center",
+          scrolled
+            ? isBannerVisible
+              ? "top-8 sm:top-10"
+              : "top-3 sm:top-6"
+            : isBannerVisible
+            ? "top-7 sm:top-8"
+            : "top-0"
+        )}
+      >
       <div className={cn(
         "transition-all duration-700 pointer-events-auto flex items-center justify-between",
         scrolled 
@@ -209,5 +257,6 @@ export default function Navbar() {
         )}
       </AnimatePresence>
     </nav>
+    </>
   );
 }
