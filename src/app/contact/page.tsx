@@ -51,9 +51,9 @@ I would like to inquire about admissions:
     {
       icon: MapPin,
       title: "Training Center",
-      detail: "18, Usman Street, Opp Dmart, Ariyalur - 621704, Tamil Nadu",
+      detail: "8/73B B, Periyar Nagar 1st Cross, Ariyalur - 621704, Tamil Nadu, India",
       sub: "Main Training Facility • Tap for Directions",
-      href: "https://maps.google.com/?q=18+Usman+Street+Opp+Dmart+Ariyalur+Tamil+Nadu",
+      href: "https://maps.google.com/?q=8/73B+B,+Periyar+Nagar+1st+Cross,+Ariyalur,+Tamil+Nadu+621704,+India",
       external: true
     },
     {
@@ -372,13 +372,13 @@ I would like to inquire about admissions:
                 Vajra Fitness Arts Center
               </h4>
               <p className="text-coffee-dark/65 leading-relaxed font-light text-xs sm:text-sm max-w-2xl">
-                Located conveniently on Usman Street directly opposite D-Mart in Ariyalur, our facility features dedicated practice spaces for Silambam, Yoga, Martial Arts, and Fitness.
+                Located conveniently at 8/73B B, Periyar Nagar 1st Cross in Ariyalur, our facility features dedicated practice spaces for Silambam, Yoga, Martial Arts, and Fitness.
               </p>
             </div>
 
             <div className="w-full sm:w-auto shrink-0 flex items-center justify-center">
               <a
-                href="https://maps.google.com/?q=18+Usman+Street+Opp+Dmart+Ariyalur+Tamil+Nadu"
+                href="https://maps.google.com/?q=8/73B+B,+Periyar+Nagar+1st+Cross,+Ariyalur,+Tamil+Nadu+621704,+India"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full sm:w-auto justify-center px-6 sm:px-8 py-3.5 sm:py-4 min-h-[44px] bg-coffee-dark text-white rounded-full font-bold text-[10px] uppercase tracking-[0.2em] hover:bg-cappuccino transition-all flex items-center gap-2 text-center shadow-md hover:shadow-lg"

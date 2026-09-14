@@ -66,7 +66,7 @@ export default function Footer() {
           <ul className="space-y-3 sm:space-y-3.5">
             <li>
               <a 
-                href="https://maps.google.com/?q=18,+Usman+Street,+Opp+to+Dmart,+Ariyalur+-+621704,+Tamil+Nadu" 
+                href="https://maps.google.com/?q=8/73B+B,+Periyar+Nagar+1st+Cross,+Ariyalur,+Tamil+Nadu+621704,+India" 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="flex gap-2.5 sm:gap-3 items-start group active:scale-95 transition-all duration-300"
@@ -74,7 +74,7 @@ export default function Footer() {
               >
                 <MapPin className="text-cappuccino shrink-0 mt-0.5 group-hover:scale-110 group-hover:drop-shadow-[0_0_8px_rgba(200,160,120,0.8)] transition-all duration-300 w-4 h-4" />
                 <span className="text-xs sm:text-sm leading-relaxed text-white/70 group-hover:text-white transition-colors duration-300">
-                  18, Usman Street, Opp to Dmart, Ariyalur - 621704, Tamil Nadu
+                  8/73B B, Periyar Nagar 1st Cross, Ariyalur - 621704, Tamil Nadu, India
                 </span>
               </a>
             </li>
