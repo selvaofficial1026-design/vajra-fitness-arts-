@@ -1217,33 +1217,33 @@ export default function AdminPortalPage() {
         <div className="max-w-7xl mx-auto space-y-8">
           {/* Top Admin Header - Sits directly on background without chunky boxes */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-5 sm:gap-6 pb-6 border-b border-coffee-dark/10">
-            <div className="space-y-1.5">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-coffee-dark tracking-tight leading-[1.15] sm:leading-tight">
+            <div className="space-y-1.5 min-w-0">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-coffee-dark tracking-tight leading-[1.15] sm:leading-tight break-words">
                 Admissions &amp; Batch Operations
               </h1>
-              <p className="text-xs sm:text-sm text-coffee-dark/65 font-light max-w-xl leading-relaxed pt-0.5">
+              <p className="text-xs sm:text-sm text-coffee-dark/65 font-light max-w-xl leading-relaxed pt-0.5 break-words">
                 Approve new admissions, issue official permanent codes, broadcast live Google Meet classrooms, and manage student training inquiries.
               </p>
             </div>
 
             {/* Clean inline stat counters separated by hairlines - NO BOXES */}
-            <div className="flex items-center justify-between sm:justify-start gap-3 sm:gap-7 w-full md:w-auto pt-3 md:pt-0 border-t md:border-t-0 border-coffee-dark/10">
+            <div className="flex items-center justify-between sm:justify-start gap-2 min-[360px]:gap-3 sm:gap-7 w-full md:w-auto pt-3 md:pt-0 border-t md:border-t-0 border-coffee-dark/10 min-w-0">
               <div className="text-left flex-1 sm:flex-initial min-w-0">
-                <span className="text-[8.5px] sm:text-[9px] uppercase tracking-wider text-coffee-dark/50 font-bold block truncate">Pending</span>
+                <span className="text-[8px] min-[360px]:text-[8.5px] sm:text-[9px] uppercase tracking-wider text-coffee-dark/50 font-bold block truncate">Pending</span>
                 <p className="font-mono font-bold text-lg sm:text-xl text-amber-600 mt-0.5 leading-none">
                   {pendingStudents.length}
                 </p>
               </div>
               <div className="h-7 sm:h-8 w-[1px] bg-coffee-dark/15 shrink-0" />
               <div className="text-left flex-1 sm:flex-initial min-w-0">
-                <span className="text-[8.5px] sm:text-[9px] uppercase tracking-wider text-coffee-dark/50 font-bold block truncate">Enrolled</span>
+                <span className="text-[8px] min-[360px]:text-[8.5px] sm:text-[9px] uppercase tracking-wider text-coffee-dark/50 font-bold block truncate">Enrolled</span>
                 <p className="font-mono font-bold text-lg sm:text-xl text-emerald-600 mt-0.5 leading-none">
                   {approvedStudents.length}
                 </p>
               </div>
               <div className="h-7 sm:h-8 w-[1px] bg-coffee-dark/15 shrink-0" />
               <div className="text-left flex-1 sm:flex-initial min-w-0">
-                <span className="text-[8.5px] sm:text-[9px] uppercase tracking-wider text-coffee-dark/50 font-bold block truncate">Live Rooms</span>
+                <span className="text-[8px] min-[360px]:text-[8.5px] sm:text-[9px] uppercase tracking-wider text-coffee-dark/50 font-bold block truncate">Live Rooms</span>
                 <p className="font-mono font-bold text-lg sm:text-xl text-cappuccino mt-0.5 leading-none">
                   {meetings.length}
                 </p>
@@ -1256,16 +1256,16 @@ export default function AdminPortalPage() {
             <motion.div
               initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
-              className="p-3 sm:p-3.5 rounded-2xl bg-emerald-950 text-emerald-300 border border-emerald-500/40 text-xs font-bold flex items-center justify-between gap-3 shadow-sm"
+              className="p-3 sm:p-3.5 rounded-2xl bg-emerald-950 text-emerald-300 border border-emerald-500/40 text-xs font-bold flex items-start sm:items-center justify-between gap-3 shadow-sm min-w-0"
             >
-              <div className="flex items-center gap-2 min-w-0 flex-1">
-                <CheckCircle2 size={15} className="shrink-0 text-emerald-400" />
-                <span className="break-words leading-snug">{actionMessage}</span>
+              <div className="flex items-start sm:items-center gap-2.5 min-w-0 flex-1 pt-0.5 sm:pt-0">
+                <CheckCircle2 size={16} className="shrink-0 text-emerald-400 mt-0.5 sm:mt-0" />
+                <span className="break-words leading-snug min-w-0">{actionMessage}</span>
               </div>
               <button
                 type="button"
                 onClick={() => setActionMessage(null)}
-                className="w-8 h-8 min-w-[32px] min-h-[32px] -mr-1 rounded-full flex items-center justify-center text-emerald-400 hover:text-white hover:bg-emerald-900/50 text-lg cursor-pointer shrink-0 transition-colors"
+                className="w-9 h-9 min-w-[36px] min-h-[36px] sm:w-8 sm:h-8 sm:min-w-[32px] sm:min-h-[32px] -mr-1 -my-1 rounded-full flex items-center justify-center text-emerald-400 hover:text-white hover:bg-emerald-900/50 text-xl sm:text-lg cursor-pointer shrink-0 transition-colors self-start sm:self-center active:scale-95"
                 aria-label="Dismiss message"
               >
                 &times;
@@ -1284,13 +1284,13 @@ export default function AdminPortalPage() {
               className="space-y-6"
             >
               {/* Filter Pills & Search Bar - Blends with background */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 sm:gap-4 pb-3 border-b border-coffee-dark/10">
-                <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 -mx-4 px-4 sm:mx-0 sm:px-0 sm:pb-0 sm:flex-wrap">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 sm:gap-4 pb-3 border-b border-coffee-dark/10 min-w-0">
+                <div className="flex items-center gap-2 overflow-x-auto overscroll-x-contain no-scrollbar touch-pan-x pb-1 -mx-4 px-4 sm:mx-0 sm:px-0 sm:pb-0 sm:flex-wrap min-w-0 max-w-full">
                   <button
                     type="button"
                     onClick={() => setStudentFilter("pending")}
                     className={cn(
-                      "min-h-[40px] px-3.5 sm:px-4 py-2 sm:py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1.5 shrink-0 select-none active:scale-95",
+                      "min-h-[42px] px-3.5 sm:px-4 py-2 sm:py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1.5 shrink-0 select-none active:scale-95",
                       studentFilter === "pending"
                         ? "bg-coffee-dark text-cappuccino shadow-sm"
                         : "text-coffee-dark/70 hover:text-coffee-dark hover:bg-coffee-dark/5"
@@ -1304,7 +1304,7 @@ export default function AdminPortalPage() {
                     type="button"
                     onClick={() => setStudentFilter("approved")}
                     className={cn(
-                      "min-h-[40px] px-3.5 sm:px-4 py-2 sm:py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer shrink-0 select-none active:scale-95",
+                      "min-h-[42px] px-3.5 sm:px-4 py-2 sm:py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer shrink-0 select-none active:scale-95",
                       studentFilter === "approved"
                         ? "bg-coffee-dark text-cappuccino shadow-sm"
                         : "text-coffee-dark/70 hover:text-coffee-dark hover:bg-coffee-dark/5"
@@ -1318,7 +1318,7 @@ export default function AdminPortalPage() {
                     type="button"
                     onClick={() => setStudentFilter("left")}
                     className={cn(
-                      "min-h-[40px] px-3.5 sm:px-4 py-2 sm:py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer shrink-0 select-none active:scale-95",
+                      "min-h-[42px] px-3.5 sm:px-4 py-2 sm:py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer shrink-0 select-none active:scale-95",
                       studentFilter === "left"
                         ? "bg-coffee-dark text-cappuccino shadow-sm"
                         : "text-coffee-dark/70 hover:text-coffee-dark hover:bg-coffee-dark/5"
@@ -1332,7 +1332,7 @@ export default function AdminPortalPage() {
                     type="button"
                     onClick={() => setStudentFilter("all")}
                     className={cn(
-                      "min-h-[40px] px-3.5 sm:px-4 py-2 sm:py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all cursor-pointer shrink-0 select-none active:scale-95",
+                      "min-h-[42px] px-3.5 sm:px-4 py-2 sm:py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all cursor-pointer shrink-0 select-none active:scale-95",
                       studentFilter === "all"
                         ? "bg-coffee-dark text-cappuccino shadow-sm"
                         : "text-coffee-dark/70 hover:text-coffee-dark hover:bg-coffee-dark/5"
@@ -1342,23 +1342,24 @@ export default function AdminPortalPage() {
                   </button>
                 </div>
 
-                <div className="relative w-full sm:w-64">
+                <div className="relative w-full sm:w-64 min-w-0">
                   <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-coffee-dark/40 pointer-events-none" />
                   <input
                     type="text"
                     value={searchStudent}
                     onChange={(e) => setSearchStudent(e.target.value)}
                     placeholder="Search name, phone, code..."
-                    className="w-full bg-coffee-dark/[0.03] sm:bg-transparent border border-coffee-dark/15 sm:border-0 sm:border-b sm:border-coffee-dark/20 focus:border-cappuccino rounded-xl sm:rounded-none text-coffee-dark pl-9 pr-8 py-2.5 sm:py-1 text-sm sm:text-xs outline-none placeholder:text-coffee-dark/40 transition-colors min-h-[40px] sm:min-h-0"
+                    className="w-full bg-coffee-dark/[0.03] sm:bg-transparent border border-coffee-dark/15 sm:border-0 sm:border-b sm:border-coffee-dark/20 focus:border-cappuccino rounded-xl sm:rounded-none text-coffee-dark pl-9 pr-9 py-2.5 sm:py-1.5 text-base sm:text-xs outline-none placeholder:text-coffee-dark/40 transition-colors min-h-[42px] sm:min-h-0"
                   />
                   {searchStudent && (
                     <button
                       type="button"
                       onClick={() => setSearchStudent("")}
-                      className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-coffee-dark/40 hover:text-coffee-dark rounded-full cursor-pointer"
+                      className="absolute right-1 top-1/2 -translate-y-1/2 w-8 h-8 min-w-[32px] min-h-[32px] flex items-center justify-center text-coffee-dark/40 hover:text-coffee-dark rounded-full cursor-pointer transition-colors"
                       title="Clear search"
+                      aria-label="Clear search input"
                     >
-                      <XCircle size={14} />
+                      <XCircle size={15} />
                     </button>
                   )}
                 </div>
@@ -1385,34 +1386,36 @@ export default function AdminPortalPage() {
                         className="py-5 sm:py-6 transition-colors hover:bg-coffee-dark/[0.02] -mx-2 sm:-mx-3 px-2 sm:px-3 rounded-2xl flex flex-col lg:flex-row lg:items-center justify-between gap-4"
                       >
                         <div className="space-y-2.5 flex-1 min-w-0">
-                          <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
-                            <h3 className="text-base sm:text-lg font-serif font-bold text-coffee-dark break-words">
+                          {/* Student Card Header with Name & Status Badges */}
+                          <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap min-w-0">
+                            <h3 className="text-base sm:text-lg font-serif font-bold text-coffee-dark break-words min-w-0 max-w-full">
                               {std.name}
                             </h3>
 
                             {isPending ? (
-                              <span className="shrink-0 whitespace-nowrap px-2.5 py-0.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-800 text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
+                              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-800 text-[10px] font-bold uppercase tracking-wider break-words max-w-full">
                                 <Clock size={11} className="shrink-0" />
                                 <span>Pending Approval</span>
                               </span>
                             ) : std.status === "LEFT" ? (
-                              <span className="shrink-0 whitespace-nowrap px-2.5 py-0.5 rounded-full bg-rose-500/15 border border-rose-500/30 text-rose-800 text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
+                              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-rose-500/15 border border-rose-500/30 text-rose-800 text-[10px] font-bold uppercase tracking-wider break-words max-w-full">
                                 <LogOut size={11} className="shrink-0" />
-                                <span>Left Course ({std.permanentCode || "No ID"})</span>
+                                <span className="break-all sm:break-normal">Left Course ({std.permanentCode || "No ID"})</span>
                               </span>
                             ) : (
-                              <span className="shrink-0 whitespace-nowrap px-2.5 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-800 text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
+                              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-800 text-[10px] font-bold uppercase tracking-wider break-words max-w-full">
                                 <CheckCircle2 size={11} className="shrink-0" />
-                                <span>ID: <strong className="font-mono">{std.permanentCode}</strong></span>
+                                <span>ID: <strong className="font-mono break-all sm:break-normal">{std.permanentCode}</strong></span>
                               </span>
                             )}
 
-                            <span className="shrink-0 whitespace-nowrap text-[10px] sm:text-[11px] text-coffee-dark/60 font-mono bg-coffee-dark/[0.04] border border-coffee-dark/10 px-2 py-0.5 rounded-md">
+                            <span className="shrink-0 text-[10px] sm:text-[11px] text-coffee-dark/60 font-mono bg-coffee-dark/[0.04] border border-coffee-dark/10 px-2 py-0.5 rounded-md break-all">
                               Temp: {std.tempCode}
                             </span>
                           </div>
 
-                          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 text-xs pt-1">
+                          {/* Student Details Grid */}
+                          <div className="grid grid-cols-1 min-[340px]:grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 text-xs pt-1 min-w-0">
                             <div className="min-w-0">
                               <span className="block text-[9px] uppercase tracking-wider text-coffee-dark/50 font-semibold truncate">
                                 Discipline
@@ -1435,17 +1438,17 @@ export default function AdminPortalPage() {
                               </span>
                               <a
                                 href={`tel:${std.phone}`}
-                                className="text-coffee-dark hover:text-cappuccino font-mono font-medium block text-[11px] sm:text-xs truncate"
+                                className="text-coffee-dark hover:text-cappuccino font-mono font-medium block text-[11px] sm:text-xs break-all sm:truncate"
                               >
                                 +91 {std.phone}
                               </a>
                             </div>
                             <div className="min-w-0">
                               <span className="block text-[9px] uppercase tracking-wider text-coffee-dark/50 font-semibold truncate">
-                                Location / Age
+                                Location / Details
                               </span>
                               <span className="text-coffee-dark/80 block text-[11px] sm:text-xs leading-snug break-words">
-                                {std.city || "Ariyalur"} • {std.age || "N/A"} yrs
+                                {std.city || "Ariyalur"}{std.gender ? ` • ${std.gender}` : ""} • {std.age || "N/A"} yrs
                               </span>
                             </div>
                           </div>
@@ -1458,36 +1461,37 @@ export default function AdminPortalPage() {
                         </div>
 
                         {/* Action Buttons */}
-                        <div className="flex items-center gap-2 sm:gap-2.5 w-full sm:w-auto shrink-0 pt-2 lg:pt-0 flex-wrap sm:flex-nowrap">
+                        <div className="flex items-center gap-2 sm:gap-2.5 w-full lg:w-auto shrink-0 pt-2 lg:pt-0 flex-wrap sm:flex-nowrap">
                           {isPending ? (
                             <>
                               <button
                                 type="button"
                                 onClick={() => handleApproveStudent(std.id)}
-                                className="flex-1 sm:flex-initial min-h-[42px] px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-extrabold text-xs uppercase tracking-wider rounded-full shadow-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
+                                className="w-full sm:w-auto flex-1 sm:flex-initial min-h-[42px] px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-extrabold text-xs uppercase tracking-wider rounded-full shadow-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
                               >
                                 <CheckCircle2 size={14} className="shrink-0" />
-                                <span>Approve &amp; Assign ID</span>
+                                <span>Approve &amp; Assign Permanent ID</span>
                               </button>
 
                               <button
                                 type="button"
                                 onClick={() => handleOpenEditStudent(std)}
-                                className="min-h-[42px] px-3.5 py-2 rounded-full border border-coffee-dark/20 hover:border-cappuccino hover:bg-coffee-dark/5 text-coffee-dark text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer shrink-0"
+                                className="flex-1 sm:flex-initial min-h-[42px] px-3.5 py-2 rounded-full border border-coffee-dark/20 hover:border-cappuccino hover:bg-coffee-dark/5 text-coffee-dark text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer shrink-0"
                                 title="Edit Application Details"
                               >
-                                <Edit3 size={13} className="text-cappuccino" />
-                                <span className="hidden sm:inline">Edit</span>
+                                <Edit3 size={13} className="text-cappuccino shrink-0" />
+                                <span>Edit</span>
                               </button>
 
                               <button
                                 type="button"
                                 onClick={() => handleRejectStudent(std.id)}
-                                className="h-[42px] w-[42px] min-h-[42px] min-w-[42px] flex items-center justify-center text-red-500 hover:text-red-600 hover:bg-red-500/10 active:bg-red-500/20 rounded-full border border-red-500/20 transition-colors cursor-pointer shrink-0"
+                                className="min-h-[42px] px-3 sm:px-3.5 py-2 rounded-full border border-red-500/20 text-red-600 hover:text-red-700 hover:bg-red-500/10 active:bg-red-500/20 text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer shrink-0"
                                 title="Reject enrollment"
                                 aria-label="Reject enrollment"
                               >
-                                <XCircle size={17} />
+                                <XCircle size={15} className="shrink-0" />
+                                <span>Reject</span>
                               </button>
                             </>
                           ) : (
@@ -1510,10 +1514,10 @@ export default function AdminPortalPage() {
                               <button
                                 type="button"
                                 onClick={() => handleOpenEditStudent(std)}
-                                className="min-h-[42px] px-3.5 py-2 rounded-full border border-coffee-dark/20 hover:border-cappuccino hover:bg-coffee-dark/5 text-coffee-dark text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer shrink-0"
+                                className="flex-1 sm:flex-initial min-h-[42px] px-3.5 py-2 rounded-full border border-coffee-dark/20 hover:border-cappuccino hover:bg-coffee-dark/5 text-coffee-dark text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer shrink-0"
                                 title="Edit Student ID & Profile"
                               >
-                                <Edit3 size={13} className="text-cappuccino" />
+                                <Edit3 size={13} className="text-cappuccino shrink-0" />
                                 <span>Edit ID</span>
                               </button>
 
@@ -1551,10 +1555,10 @@ export default function AdminPortalPage() {
               {/* Seamless Form - Integrates with page background */}
               <div className="space-y-4 pb-8 border-b border-coffee-dark/10">
                 <div className="space-y-1">
-                  <h3 className="text-xl font-serif font-bold text-coffee-dark">
+                  <h3 className="text-lg sm:text-xl font-serif font-bold text-coffee-dark leading-tight">
                     Publish Live Google Meet Link
                   </h3>
-                  <p className="text-xs text-coffee-dark/65 font-light">
+                  <p className="text-xs text-coffee-dark/65 font-light leading-relaxed">
                     Targeted course &amp; batch students will see this room link in their personal classroom dashboard.
                   </p>
                 </div>
@@ -1562,7 +1566,7 @@ export default function AdminPortalPage() {
                 <form onSubmit={handleAddMeet} className="space-y-4 pt-2">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
+                      <label className="text-[11px] sm:text-[10px] uppercase tracking-wider text-coffee-dark/75 font-bold block mb-1.5">
                         Discipline Course
                       </label>
                       <select
@@ -1580,7 +1584,7 @@ export default function AdminPortalPage() {
                     </div>
 
                     <div>
-                      <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
+                      <label className="text-[11px] sm:text-[10px] uppercase tracking-wider text-coffee-dark/75 font-bold block mb-1.5">
                         Target Batch Slot
                       </label>
                       <select
@@ -1600,7 +1604,7 @@ export default function AdminPortalPage() {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
+                      <label className="text-[11px] sm:text-[10px] uppercase tracking-wider text-coffee-dark/75 font-bold block mb-1.5">
                         Class Topic / Title
                       </label>
                       <input
@@ -1613,7 +1617,7 @@ export default function AdminPortalPage() {
                     </div>
 
                     <div>
-                      <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
+                      <label className="text-[11px] sm:text-[10px] uppercase tracking-wider text-coffee-dark/75 font-bold block mb-1.5">
                         Google Meet URL (https://meet.google.com/...)
                       </label>
                       <input
@@ -1661,14 +1665,14 @@ export default function AdminPortalPage() {
                     {meetings.map((meet) => (
                       <div
                         key={meet.id}
-                        className="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 hover:bg-coffee-dark/[0.02] -mx-2 px-2 sm:px-3 rounded-xl transition-colors"
+                        className="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 hover:bg-coffee-dark/[0.02] -mx-2 px-2 sm:px-3 rounded-xl transition-colors min-w-0"
                       >
                         <div className="space-y-1.5 min-w-0 flex-1">
                           <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-                            <span className="px-2 py-0.5 rounded-full bg-cappuccino/15 text-coffee-dark text-[9px] font-bold uppercase tracking-wider shrink-0">
+                            <span className="px-2 py-0.5 rounded-full bg-cappuccino/15 text-coffee-dark text-[9px] font-bold uppercase tracking-wider shrink-0 max-w-full truncate">
                               {meet.course}
                             </span>
-                            <span className="px-2 py-0.5 rounded-full bg-coffee-dark/5 text-coffee-dark/70 text-[9px] font-semibold tracking-wide shrink-0">
+                            <span className="px-2 py-0.5 rounded-full bg-coffee-dark/5 text-coffee-dark/70 text-[9px] font-semibold tracking-wide shrink-0 max-w-full truncate">
                               {meet.batch}
                             </span>
                             <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-700 text-[9px] font-bold uppercase tracking-wider shrink-0">
@@ -1686,7 +1690,7 @@ export default function AdminPortalPage() {
                             href={meet.meetUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-xs text-emerald-700 hover:underline font-mono break-all sm:truncate block max-w-full"
+                            className="text-xs text-emerald-700 hover:underline font-mono break-all sm:truncate block max-w-full min-w-0"
                             title={meet.meetUrl}
                           >
                             {meet.meetUrl}
@@ -1784,7 +1788,7 @@ export default function AdminPortalPage() {
                               fetchVideoTitle(newVideo.youtubeUrl, true);
                             }
                           }}
-                          className="w-full bg-white/60 focus:bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2.5 sm:py-2 text-sm sm:text-xs min-h-[42px] sm:min-h-0 focus:outline-none transition-colors shadow-sm pr-9"
+                          className="w-full bg-white/60 focus:bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2.5 sm:py-2 text-base sm:text-xs min-h-[44px] focus:outline-none transition-colors shadow-sm pr-10"
                           required
                         />
                         {newVideo.youtubeUrl && (
@@ -1793,7 +1797,7 @@ export default function AdminPortalPage() {
                             onClick={() => fetchVideoTitle(newVideo.youtubeUrl, true)}
                             title="Re-fetch title from YouTube"
                             aria-label="Re-fetch title from YouTube"
-                            className="absolute right-2.5 top-1/2 -translate-y-1/2 text-coffee-dark/40 hover:text-cappuccino transition-colors p-1 cursor-pointer active:scale-90"
+                            className="absolute right-1.5 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center text-coffee-dark/40 hover:text-cappuccino transition-colors rounded-lg cursor-pointer active:scale-90"
                           >
                             <RefreshCw size={13} className={cn(isFetchingTitle && "animate-spin text-cappuccino")} />
                           </button>
@@ -1818,7 +1822,7 @@ export default function AdminPortalPage() {
                           value={newVideo.title}
                           onChange={(e) => setNewVideo({ ...newVideo, title: e.target.value })}
                           className={cn(
-                            "w-full bg-white/60 focus:bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2.5 sm:py-2 text-sm sm:text-xs min-h-[42px] sm:min-h-0 focus:outline-none transition-colors shadow-sm",
+                            "w-full bg-white/60 focus:bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2.5 sm:py-2 text-base sm:text-xs min-h-[44px] focus:outline-none transition-colors shadow-sm",
                             isFetchingTitle && "animate-pulse bg-cappuccino/5 border-cappuccino/40"
                           )}
                           required
@@ -1835,7 +1839,7 @@ export default function AdminPortalPage() {
                       <select
                         value={newVideo.course}
                         onChange={(e) => setNewVideo({ ...newVideo, course: e.target.value })}
-                        className="w-full bg-white/60 focus:bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2.5 sm:py-2 text-sm sm:text-xs min-h-[42px] sm:min-h-0 focus:outline-none cursor-pointer transition-colors shadow-sm"
+                        className="w-full bg-white/60 focus:bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2.5 sm:py-2 text-base sm:text-xs min-h-[44px] focus:outline-none cursor-pointer transition-colors shadow-sm"
                       >
                         <option value="All Courses">All Courses (All Students)</option>
                         {courseOptions.filter((c) => c !== "All Courses").map((c) => (
@@ -1854,7 +1858,7 @@ export default function AdminPortalPage() {
                         type="text"
                         value={newVideo.category}
                         onChange={(e) => setNewVideo({ ...newVideo, category: e.target.value })}
-                        className="w-full bg-white/60 focus:bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2.5 sm:py-2 text-sm sm:text-xs min-h-[42px] sm:min-h-0 focus:outline-none transition-colors shadow-sm"
+                        className="w-full bg-white/60 focus:bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2.5 sm:py-2 text-base sm:text-xs min-h-[44px] focus:outline-none transition-colors shadow-sm"
                       />
                     </div>
                   </div>
@@ -1867,7 +1871,7 @@ export default function AdminPortalPage() {
                       rows={3}
                       value={newVideo.description}
                       onChange={(e) => setNewVideo({ ...newVideo, description: e.target.value })}
-                      className="w-full max-w-full bg-white/60 focus:bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2.5 sm:py-2 text-sm sm:text-xs focus:outline-none transition-colors shadow-sm resize-none leading-relaxed"
+                      className="w-full max-w-full bg-white/60 focus:bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2.5 sm:py-2 text-base sm:text-xs focus:outline-none transition-colors shadow-sm resize-none leading-relaxed"
                     />
                   </div>
 
@@ -1875,10 +1879,10 @@ export default function AdminPortalPage() {
                     <button
                       type="submit"
                       disabled={videoSubmitting}
-                      className="w-full sm:w-auto min-h-[44px] px-6 py-2.5 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-bold text-xs uppercase tracking-wider rounded-full transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50"
+                      className="w-full sm:w-auto min-h-[44px] px-6 py-3 sm:py-2.5 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-bold text-xs uppercase tracking-wider rounded-full transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50"
                     >
                       <Plus size={15} className="shrink-0" />
-                      <span>{videoSubmitting ? "Uploading Video..." : "Upload Video Lesson"}</span>
+                      <span>{videoSubmitting ? "Adding Video Lesson..." : "Add Video Lesson"}</span>
                     </button>
                   </div>
                 </form>
@@ -1886,7 +1890,7 @@ export default function AdminPortalPage() {
 
               {/* Videos Grid */}
               <div className="space-y-4">
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-4">
                   <h4 className="font-serif text-lg font-bold text-coffee-dark">
                     Uploaded Video Library ({videos.length})
                   </h4>
@@ -1896,7 +1900,7 @@ export default function AdminPortalPage() {
                 </div>
 
                 {videos.length === 0 ? (
-                  <div className="py-12 sm:py-16 px-4 text-center text-coffee-dark/50 space-y-3 rounded-2xl border border-dashed border-coffee-dark/15 bg-coffee-dark/[0.02]">
+                  <div className="py-10 sm:py-16 px-4 text-center text-coffee-dark/50 space-y-3 rounded-2xl border border-dashed border-coffee-dark/15 bg-coffee-dark/[0.02]">
                     <div className="w-12 h-12 rounded-full bg-coffee-dark/5 mx-auto flex items-center justify-center text-coffee-dark/40">
                       <Video size={22} />
                     </div>
@@ -1912,7 +1916,7 @@ export default function AdminPortalPage() {
                     {videos.map((vid) => (
                       <div
                         key={vid.id}
-                        className="group flex flex-col justify-between space-y-3 transition-all"
+                        className="group flex flex-col justify-between space-y-3 transition-all min-w-0"
                       >
                         <div className="relative aspect-video rounded-2xl overflow-hidden bg-coffee-dark shadow-sm">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -1935,7 +1939,7 @@ export default function AdminPortalPage() {
                           <span className="text-[9px] uppercase tracking-wider text-cappuccino font-bold block truncate">
                             {vid.category}
                           </span>
-                          <h5 className="font-serif font-bold text-sm sm:text-base text-coffee-dark line-clamp-2 leading-snug">
+                          <h5 className="font-serif font-bold text-sm sm:text-base text-coffee-dark line-clamp-2 leading-snug break-words">
                             {vid.title}
                           </h5>
                           {vid.description && (
@@ -1945,12 +1949,12 @@ export default function AdminPortalPage() {
                           )}
                         </div>
 
-                        <div className="pt-2 flex items-center justify-between gap-3 text-xs border-t border-coffee-dark/5">
+                        <div className="pt-2 flex items-center justify-between gap-2 sm:gap-3 text-xs border-t border-coffee-dark/5">
                           <a
                             href={`https://www.youtube.com/watch?v=${vid.youtubeId}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="min-h-[38px] px-3 py-1.5 -ml-1.5 rounded-xl font-bold text-coffee-dark hover:text-cappuccino hover:bg-coffee-dark/5 active:bg-coffee-dark/10 flex items-center gap-1.5 transition-all text-xs"
+                            className="min-h-[40px] px-3.5 py-2 -ml-1 rounded-xl font-bold text-coffee-dark hover:text-cappuccino hover:bg-coffee-dark/5 active:bg-coffee-dark/10 flex items-center gap-1.5 transition-all text-xs cursor-pointer"
                           >
                             <Play size={12} fill="currentColor" className="shrink-0" />
                             <span>Watch on YouTube</span>
@@ -1959,7 +1963,7 @@ export default function AdminPortalPage() {
                           <button
                             type="button"
                             onClick={() => handleDeleteVideo(vid.id)}
-                            className="min-w-[38px] min-h-[38px] w-[38px] h-[38px] flex items-center justify-center text-red-500 hover:text-red-600 hover:bg-red-500/10 active:bg-red-500/20 rounded-full border border-red-500/20 transition-all cursor-pointer shrink-0"
+                            className="min-w-[40px] min-h-[40px] w-10 h-10 flex items-center justify-center text-red-500 hover:text-red-600 hover:bg-red-500/10 active:bg-red-500/20 rounded-full border border-red-500/20 transition-all cursor-pointer shrink-0"
                             title="Delete Video"
                             aria-label={`Delete video lesson: ${vid.title}`}
                           >
@@ -1987,17 +1991,17 @@ export default function AdminPortalPage() {
               {/* Header Info Banner - Sits directly on background */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-coffee-dark/10">
                 <div>
-                  <h3 className="text-xl sm:text-2xl font-serif font-bold text-coffee-dark flex items-center gap-2.5">
-                    <MessageSquare size={20} className="text-cappuccino" />
+                  <h3 className="text-lg sm:text-2xl font-serif font-bold text-coffee-dark flex items-start sm:items-center gap-2 sm:gap-2.5 leading-tight">
+                    <MessageSquare size={20} className="text-cappuccino shrink-0 mt-0.5 sm:mt-0" />
                     <span>Direct Classroom Communication Desk</span>
                   </h3>
-                  <p className="text-xs text-coffee-dark/65 font-light pt-1">
+                  <p className="text-xs text-coffee-dark/65 font-light pt-1 leading-relaxed break-words">
                     Direct real-time 1-on-1 private messaging channel between Head Coach and enrolled academy students.
                   </p>
                 </div>
-                <div className="flex items-center gap-2 self-start sm:self-auto">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-800 text-[10px] font-bold uppercase tracking-wider">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                <div className="flex flex-wrap items-center gap-2 self-start sm:self-auto">
+                  <span className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-800 text-[9.5px] sm:text-[10px] font-bold uppercase tracking-wider whitespace-nowrap">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
                     <span>Internal Academy Desk</span>
                   </span>
                 </div>
@@ -2011,7 +2015,7 @@ export default function AdminPortalPage() {
                   <div className="flex items-center justify-between pb-2 border-b border-coffee-dark/10">
                     <span className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold flex items-center gap-1.5">
                       <span>Enrolled Students</span>
-                      <span className="px-1.5 py-0.2 rounded-full bg-coffee-dark/5 text-[9px] font-mono text-coffee-dark/80">
+                      <span className="px-1.5 py-0.5 rounded-full bg-coffee-dark/5 text-[9px] font-mono text-coffee-dark/80">
                         {approvedStudents.length}
                       </span>
                     </span>
@@ -2041,7 +2045,7 @@ export default function AdminPortalPage() {
                             key={std.id}
                             onClick={() => setSelectedStudentId(std.id)}
                             className={cn(
-                              "p-2.5 sm:p-3 rounded-xl sm:rounded-2xl transition-all cursor-pointer flex items-start gap-2.5 sm:gap-3 border select-none active:scale-[0.99]",
+                              "p-2.5 sm:p-3 rounded-xl sm:rounded-2xl transition-all cursor-pointer flex items-start gap-2.5 sm:gap-3 border select-none active:scale-[0.99] min-h-[44px]",
                               isSelected
                                 ? "bg-white/85 border-cappuccino/60 shadow-xs ring-1 ring-cappuccino/30"
                                 : "bg-white/30 hover:bg-white/60 border-coffee-dark/10"
@@ -2056,7 +2060,7 @@ export default function AdminPortalPage() {
                               )}
                             </div>
                             <div className="min-w-0 flex-1">
-                              <div className="flex items-baseline justify-between gap-1">
+                              <div className="flex items-baseline justify-between gap-1.5">
                                 <h5 className="font-serif font-bold text-xs sm:text-sm text-coffee-dark truncate">
                                   {std.name}
                                 </h5>
@@ -2093,7 +2097,7 @@ export default function AdminPortalPage() {
                           </div>
                           <div className="min-w-0 flex-1">
                             <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
-                              <h4 className="font-serif font-bold text-xs sm:text-base text-coffee-dark leading-snug truncate">
+                              <h4 className="font-serif font-bold text-xs sm:text-base text-coffee-dark leading-snug truncate max-w-full">
                                 {activeChatStudent.name}
                               </h4>
                               <span className="px-1.5 sm:px-2 py-0.5 rounded-full bg-cappuccino/20 border border-cappuccino/40 text-coffee-dark font-mono text-[8.5px] sm:text-[9px] font-bold shrink-0">
@@ -2112,7 +2116,7 @@ export default function AdminPortalPage() {
                       </div>
 
                       {/* Chat Messages Stream */}
-                      <div className="min-h-[280px] sm:min-h-[320px] max-h-[380px] sm:max-h-[440px] overflow-y-auto p-3 sm:p-5 space-y-3 rounded-2xl bg-white/40 border border-coffee-dark/10">
+                      <div className="min-h-[280px] sm:min-h-[320px] max-h-[360px] sm:max-h-[440px] overflow-y-auto p-3 sm:p-5 space-y-3 rounded-2xl bg-white/40 border border-coffee-dark/10">
                         {activeChatMessages.length === 0 ? (
                           <div className="text-center py-12 sm:py-20 text-coffee-dark/40 space-y-1.5">
                             <MessageSquare size={28} className="mx-auto text-cappuccino/60" />
@@ -2136,7 +2140,7 @@ export default function AdminPortalPage() {
                                   )}
                                 >
                                   {!isAdmin && (
-                                    <span className="text-[10px] font-bold text-cappuccino block mb-0.5">
+                                    <span className="text-[10px] font-bold text-cappuccino block mb-0.5 truncate">
                                       {activeChatStudent.name}
                                     </span>
                                   )}
@@ -2178,7 +2182,7 @@ export default function AdminPortalPage() {
                             key={quick}
                             type="button"
                             onClick={(e) => handleSendReply(e, quick)}
-                            className="px-3 sm:px-3.5 py-1.5 rounded-full bg-white hover:bg-cappuccino hover:text-coffee-dark text-coffee-dark/80 border border-coffee-dark/15 text-[10.5px] sm:text-[11px] font-medium whitespace-nowrap transition-all cursor-pointer shadow-2xs active:scale-95 shrink-0 min-h-[30px] flex items-center"
+                            className="px-3 sm:px-3.5 py-1.5 rounded-full bg-white hover:bg-cappuccino hover:text-coffee-dark text-coffee-dark/80 border border-coffee-dark/15 text-[10.5px] sm:text-[11px] font-medium whitespace-nowrap transition-all cursor-pointer shadow-2xs active:scale-95 shrink-0 min-h-[32px] flex items-center"
                           >
                             {quick}
                           </button>
@@ -2196,7 +2200,7 @@ export default function AdminPortalPage() {
                           onChange={(e) => setReplyText(e.target.value)}
                           placeholder="Type guidance or instructions..."
                           aria-label="Message to student"
-                          className="flex-1 bg-white/70 focus:bg-white border border-coffee-dark/20 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 sm:px-4 py-2.5 text-base sm:text-sm focus:outline-none transition-colors shadow-xs"
+                          className="flex-1 bg-white/70 focus:bg-white border border-coffee-dark/20 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 sm:px-4 py-2.5 text-base sm:text-xs focus:outline-none transition-colors shadow-xs"
                         />
                         <button
                           type="submit"
@@ -2217,7 +2221,7 @@ export default function AdminPortalPage() {
                       </form>
                     </div>
                   ) : (
-                    <div className="py-20 text-center text-coffee-dark/40 text-xs">
+                    <div className="py-12 sm:py-20 text-center text-coffee-dark/40 text-xs px-4">
                       Select an enrolled student from the left panel to begin private classroom communication.
                     </div>
                   )}
@@ -2259,7 +2263,7 @@ export default function AdminPortalPage() {
                       type="button"
                       onClick={() => setCmsSubTab("courses")}
                       className={cn(
-                        "px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer min-h-[38px] select-none",
+                        "px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer min-h-[38px] select-none touch-manipulation",
                         cmsSubTab === "courses"
                           ? "bg-coffee-dark text-white shadow-xs"
                           : "text-coffee-dark/70 hover:text-coffee-dark hover:bg-black/5"
@@ -2272,7 +2276,7 @@ export default function AdminPortalPage() {
                       type="button"
                       onClick={() => setCmsSubTab("gallery")}
                       className={cn(
-                        "px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer min-h-[38px] select-none",
+                        "px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer min-h-[38px] select-none touch-manipulation",
                         cmsSubTab === "gallery"
                           ? "bg-coffee-dark text-white shadow-xs"
                           : "text-coffee-dark/70 hover:text-coffee-dark hover:bg-black/5"
@@ -2285,7 +2289,7 @@ export default function AdminPortalPage() {
                       type="button"
                       onClick={() => setCmsSubTab("reviews")}
                       className={cn(
-                        "px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer min-h-[38px] select-none",
+                        "px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer min-h-[38px] select-none touch-manipulation",
                         cmsSubTab === "reviews"
                           ? "bg-coffee-dark text-white shadow-xs"
                           : "text-coffee-dark/70 hover:text-coffee-dark hover:bg-black/5"
@@ -2298,7 +2302,7 @@ export default function AdminPortalPage() {
                       type="button"
                       onClick={() => setCmsSubTab("about")}
                       className={cn(
-                        "px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer min-h-[38px] select-none",
+                        "px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer min-h-[38px] select-none touch-manipulation",
                         cmsSubTab === "about"
                           ? "bg-coffee-dark text-white shadow-xs"
                           : "text-coffee-dark/70 hover:text-coffee-dark hover:bg-black/5"
@@ -2311,7 +2315,7 @@ export default function AdminPortalPage() {
                       type="button"
                       onClick={() => setCmsSubTab("settings")}
                       className={cn(
-                        "px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer min-h-[38px] select-none",
+                        "px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer min-h-[38px] select-none touch-manipulation",
                         cmsSubTab === "settings"
                           ? "bg-coffee-dark text-white shadow-xs"
                           : "text-coffee-dark/70 hover:text-coffee-dark hover:bg-black/5"
@@ -2328,9 +2332,9 @@ export default function AdminPortalPage() {
               {/* SUB-TAB 1: COURSES & SYLLABUS MANAGER                             */}
               {/* ----------------------------------------------------------------- */}
               {cmsSubTab === "courses" && (
-                <div className="space-y-10">
+                <div className="space-y-8 sm:space-y-10">
                   {/* Course Form */}
-                  <div className="p-5 sm:p-7 rounded-2xl sm:rounded-3xl bg-white/70 border border-coffee-dark/15 space-y-6 shadow-sm">
+                  <div className="p-4 xs:p-5 sm:p-7 rounded-2xl sm:rounded-3xl bg-white/70 border border-coffee-dark/15 space-y-5 sm:space-y-6 shadow-sm">
                     <div className="flex items-center justify-between gap-3 border-b border-coffee-dark/10 pb-4">
                       <div>
                         <h4 className="font-serif text-lg font-bold text-coffee-dark">
@@ -2349,15 +2353,15 @@ export default function AdminPortalPage() {
                             setIsEditingCourse(false);
                             setCourseForm(initialCourseForm);
                           }}
-                          className="px-3 py-1.5 rounded-full text-xs font-bold bg-coffee-dark/10 hover:bg-coffee-dark/20 text-coffee-dark transition-colors cursor-pointer"
+                          className="px-3.5 py-1.5 rounded-full text-xs font-bold bg-coffee-dark/10 hover:bg-coffee-dark/20 text-coffee-dark transition-colors cursor-pointer min-h-[36px] touch-manipulation"
                         >
                           Cancel Editing
                         </button>
                       )}
                     </div>
 
-                    <form onSubmit={handleSaveCourse} className="space-y-5">
-                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    <form onSubmit={handleSaveCourse} className="space-y-4 sm:space-y-5">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5 sm:gap-4">
                         <div>
                           <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
                             Course Name *
@@ -2368,7 +2372,7 @@ export default function AdminPortalPage() {
                             onChange={(e) => setCourseForm({ ...courseForm, name: e.target.value })}
                             placeholder="e.g. Silambam Advanced"
                             required
-                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none transition-colors shadow-2xs"
+                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs focus:outline-none transition-colors shadow-2xs"
                           />
                         </div>
 
@@ -2381,7 +2385,7 @@ export default function AdminPortalPage() {
                             value={courseForm.subtitle}
                             onChange={(e) => setCourseForm({ ...courseForm, subtitle: e.target.value })}
                             placeholder="e.g. Traditional Tamil Staff Heritage"
-                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none transition-colors shadow-2xs"
+                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs focus:outline-none transition-colors shadow-2xs"
                           />
                         </div>
 
@@ -2392,7 +2396,7 @@ export default function AdminPortalPage() {
                           <select
                             value={courseForm.category}
                             onChange={(e) => setCourseForm({ ...courseForm, category: e.target.value })}
-                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none cursor-pointer transition-colors shadow-2xs"
+                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs focus:outline-none cursor-pointer transition-colors shadow-2xs"
                           >
                             <option value="Fitness">Fitness</option>
                             <option value="Silambam">Silambam</option>
@@ -2402,7 +2406,7 @@ export default function AdminPortalPage() {
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5 sm:gap-4">
                         <div>
                           <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
                             Batch Schedule Timings
@@ -2412,7 +2416,7 @@ export default function AdminPortalPage() {
                             value={courseForm.schedule}
                             onChange={(e) => setCourseForm({ ...courseForm, schedule: e.target.value })}
                             placeholder="e.g. Morning: 4:30 AM - 5:15 AM | Evening: 5:00 PM"
-                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none transition-colors shadow-2xs"
+                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs focus:outline-none transition-colors shadow-2xs"
                           />
                         </div>
 
@@ -2425,7 +2429,7 @@ export default function AdminPortalPage() {
                             value={courseForm.age}
                             onChange={(e) => setCourseForm({ ...courseForm, age: e.target.value })}
                             placeholder="e.g. Kids (6+) & Adults"
-                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none transition-colors shadow-2xs"
+                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs focus:outline-none transition-colors shadow-2xs"
                           />
                         </div>
 
@@ -2438,13 +2442,13 @@ export default function AdminPortalPage() {
                             value={courseForm.level}
                             onChange={(e) => setCourseForm({ ...courseForm, level: e.target.value })}
                             placeholder="e.g. Beginner to Advanced"
-                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none transition-colors shadow-2xs"
+                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs focus:outline-none transition-colors shadow-2xs"
                           />
                         </div>
                       </div>
 
                       {/* Course Thumbnail Image & YouTube Video */}
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-2">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 pt-1 sm:pt-2">
                         {/* Thumbnail Image Picker / Uploader */}
                         <div className="space-y-2">
                           <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block">
@@ -2457,9 +2461,9 @@ export default function AdminPortalPage() {
                               onChange={(e) => setCourseForm({ ...courseForm, image: e.target.value })}
                               placeholder="Paste Image URL or upload below..."
                               required
-                              className="flex-1 min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none transition-colors shadow-2xs"
+                              className="flex-1 min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs focus:outline-none transition-colors shadow-2xs"
                             />
-                            <label className="min-h-[42px] px-4 rounded-xl bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer shrink-0 shadow-2xs">
+                            <label className="min-h-[42px] px-4 rounded-xl bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer shrink-0 shadow-2xs touch-manipulation">
                               {courseUploading ? (
                                 <RefreshCw size={14} className="animate-spin" />
                               ) : (
@@ -2477,7 +2481,7 @@ export default function AdminPortalPage() {
 
                           {/* Live Thumbnail Preview with Crop Option */}
                           {courseForm.image && (
-                            <div className="space-y-1.5 mt-2">
+                            <div className="space-y-2 mt-2">
                               <div className="relative aspect-video max-w-xs rounded-xl overflow-hidden border border-coffee-dark/20 bg-coffee-dark/5 shadow-inner">
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img
@@ -2495,9 +2499,9 @@ export default function AdminPortalPage() {
                               <button
                                 type="button"
                                 onClick={() => handleOpenCropForExisting("course")}
-                                className="text-[11px] font-bold text-coffee-dark/75 hover:text-cappuccino flex items-center gap-1.5 py-1 px-2.5 rounded-lg bg-coffee-dark/5 hover:bg-coffee-dark/10 transition-colors cursor-pointer w-fit"
+                                className="min-h-[38px] px-3.5 py-1.5 rounded-xl bg-coffee-dark/5 hover:bg-coffee-dark/15 text-coffee-dark font-bold text-xs transition-colors flex items-center gap-1.5 cursor-pointer touch-manipulation w-fit"
                               >
-                                <CropToolIcon size={12} className="text-cappuccino" />
+                                <CropToolIcon size={13} className="text-cappuccino" />
                                 <span>Crop &amp; Frame Thumbnail</span>
                               </button>
                             </div>
@@ -2514,7 +2518,7 @@ export default function AdminPortalPage() {
                             value={courseForm.videoId}
                             onChange={(e) => setCourseForm({ ...courseForm, videoId: e.target.value })}
                             placeholder="e.g. https://youtu.be/... or video ID"
-                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs font-mono focus:outline-none transition-colors shadow-2xs"
+                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs font-mono focus:outline-none transition-colors shadow-2xs"
                           />
                           <p className="text-[10.5px] text-coffee-dark/50">
                             Plays in the HD syllabus video modal when students click &ldquo;Watch Demo&rdquo;.
@@ -2532,7 +2536,7 @@ export default function AdminPortalPage() {
                           value={courseForm.description}
                           onChange={(e) => setCourseForm({ ...courseForm, description: e.target.value })}
                           placeholder="Brief overview of course benefits and training focus..."
-                          className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl p-3 text-xs focus:outline-none transition-colors shadow-2xs leading-relaxed"
+                          className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl p-3 text-base sm:text-xs focus:outline-none transition-colors shadow-2xs leading-relaxed"
                         />
                       </div>
 
@@ -2555,15 +2559,16 @@ export default function AdminPortalPage() {
                                   updated[index] = e.target.value;
                                   setCourseForm({ ...courseForm, syllabus: updated });
                                 }}
-                                className="flex-1 bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3 py-1.5 text-xs focus:outline-none transition-colors"
+                                className="flex-1 min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs focus:outline-none transition-colors shadow-2xs"
                               />
                               <button
                                 type="button"
                                 onClick={() => handleRemoveSyllabusItem(index)}
-                                className="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+                                className="w-10 h-10 min-w-[40px] min-h-[40px] flex items-center justify-center p-2 text-red-500 hover:bg-red-50 rounded-xl transition-colors cursor-pointer shrink-0 touch-manipulation"
                                 title="Remove topic"
+                                aria-label="Remove syllabus topic"
                               >
-                                <Trash2 size={14} />
+                                <Trash2 size={15} />
                               </button>
                             </div>
                           ))}
@@ -2582,14 +2587,14 @@ export default function AdminPortalPage() {
                                 handleAddSyllabusItem();
                               }
                             }}
-                            className="flex-1 bg-white/60 focus:bg-white border border-dashed border-coffee-dark/25 focus:border-cappuccino text-coffee-dark rounded-xl px-3 py-2 text-xs focus:outline-none"
+                            className="flex-1 min-h-[42px] bg-white/60 focus:bg-white border border-dashed border-coffee-dark/25 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs focus:outline-none transition-colors shadow-2xs"
                           />
                           <button
                             type="button"
                             onClick={handleAddSyllabusItem}
-                            className="px-3.5 py-2 rounded-xl bg-coffee-dark/10 hover:bg-coffee-dark hover:text-white text-coffee-dark text-xs font-bold transition-all flex items-center gap-1 cursor-pointer"
+                            className="min-h-[42px] px-4 py-2 rounded-xl bg-coffee-dark/10 hover:bg-coffee-dark hover:text-white text-coffee-dark text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer touch-manipulation shrink-0"
                           >
-                            <Plus size={13} />
+                            <Plus size={14} />
                             <span>Add Topic</span>
                           </button>
                         </div>
@@ -2600,7 +2605,7 @@ export default function AdminPortalPage() {
                         <button
                           type="submit"
                           disabled={courseSubmitting}
-                          className="min-h-[44px] px-7 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-bold text-xs uppercase tracking-wider rounded-full transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50 w-full sm:w-auto"
+                          className="min-h-[44px] px-7 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-bold text-xs uppercase tracking-wider rounded-full transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50 w-full sm:w-auto touch-manipulation"
                         >
                           {courseSubmitting ? (
                             <RefreshCw size={14} className="animate-spin" />
@@ -2633,17 +2638,17 @@ export default function AdminPortalPage() {
                       <button
                         type="button"
                         onClick={() => handleResetCms("courses")}
-                        className="text-[11px] text-coffee-dark/50 hover:text-coffee-dark underline font-mono cursor-pointer"
+                        className="text-[11px] text-coffee-dark/50 hover:text-coffee-dark underline font-mono cursor-pointer touch-manipulation"
                       >
                         Reset to Defaults
                       </button>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
                       {courses.map((course) => (
                         <div
                           key={course.id}
-                          className="p-4 rounded-2xl bg-white/70 border border-coffee-dark/15 hover:border-cappuccino/50 transition-all flex flex-col justify-between gap-4 shadow-2xs"
+                          className="p-3.5 xs:p-4 rounded-2xl bg-white/70 border border-coffee-dark/15 hover:border-cappuccino/50 transition-all flex flex-col justify-between gap-3.5 shadow-2xs overflow-hidden"
                         >
                           <div className="flex flex-col xs:flex-row gap-3 sm:gap-3.5">
                             <div className="relative w-full xs:w-28 aspect-video rounded-xl overflow-hidden bg-coffee-dark shrink-0 border border-coffee-dark/15">
@@ -2674,15 +2679,34 @@ export default function AdminPortalPage() {
                             {course.description}
                           </div>
 
+                          {/* Syllabus Topic Badges */}
+                          {course.syllabus && course.syllabus.length > 0 && (
+                            <div className="flex flex-wrap gap-1 pt-0.5">
+                              {course.syllabus.slice(0, 3).map((topic, sIdx) => (
+                                <span
+                                  key={sIdx}
+                                  className="px-2 py-0.5 rounded-md bg-coffee-dark/5 text-coffee-dark/75 text-[10px] font-medium border border-coffee-dark/10 truncate max-w-full"
+                                >
+                                  {topic}
+                                </span>
+                              ))}
+                              {course.syllabus.length > 3 && (
+                                <span className="px-1.5 py-0.5 text-[10px] text-cappuccino font-bold font-mono">
+                                  +{course.syllabus.length - 3} more
+                                </span>
+                              )}
+                            </div>
+                          )}
+
                           <div className="pt-2 border-t border-coffee-dark/10 flex items-center justify-between gap-2">
-                            <span className="text-[10px] text-coffee-dark/50 font-mono">
+                            <span className="text-[10px] text-coffee-dark/50 font-mono truncate">
                               {course.syllabus?.length || 0} Syllabus Topics
                             </span>
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-1.5 shrink-0">
                               <button
                                 type="button"
                                 onClick={() => handleEditCourse(course)}
-                                className="px-3 py-1.5 rounded-lg bg-coffee-dark/5 hover:bg-coffee-dark hover:text-white text-coffee-dark text-xs font-bold transition-colors flex items-center gap-1 cursor-pointer"
+                                className="min-h-[36px] px-3 py-1.5 rounded-xl bg-coffee-dark/5 hover:bg-coffee-dark hover:text-white text-coffee-dark text-xs font-bold transition-colors flex items-center gap-1 cursor-pointer touch-manipulation"
                               >
                                 <Edit3 size={12} />
                                 <span>Edit</span>
@@ -2690,8 +2714,9 @@ export default function AdminPortalPage() {
                               <button
                                 type="button"
                                 onClick={() => handleDeleteCourse(course.id)}
-                                className="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+                                className="w-9 h-9 min-w-[36px] min-h-[36px] flex items-center justify-center p-1.5 text-red-500 hover:bg-red-50 active:bg-red-100 rounded-xl transition-colors cursor-pointer touch-manipulation"
                                 title="Delete course"
+                                aria-label="Delete course"
                               >
                                 <Trash2 size={14} />
                               </button>
@@ -2708,9 +2733,9 @@ export default function AdminPortalPage() {
               {/* SUB-TAB 2: GALLERY PHOTOS MANAGER                                 */}
               {/* ----------------------------------------------------------------- */}
               {cmsSubTab === "gallery" && (
-                <div className="space-y-10">
+                <div className="space-y-8 sm:space-y-10">
                   {/* Add Gallery Photo Form */}
-                  <div className="p-5 sm:p-7 rounded-2xl sm:rounded-3xl bg-white/70 border border-coffee-dark/15 space-y-5 shadow-sm">
+                  <div className="p-4 xs:p-5 sm:p-7 rounded-2xl sm:rounded-3xl bg-white/70 border border-coffee-dark/15 space-y-5 shadow-sm">
                     <div className="border-b border-coffee-dark/10 pb-4">
                       <h4 className="font-serif text-lg font-bold text-coffee-dark">
                         Add New Photo to Academy Gallery
@@ -2721,7 +2746,7 @@ export default function AdminPortalPage() {
                     </div>
 
                     <form onSubmit={handleSaveGallery} className="space-y-4">
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
                         <div>
                           <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
                             Photo Title *
@@ -2732,7 +2757,7 @@ export default function AdminPortalPage() {
                             onChange={(e) => setGalleryForm({ ...galleryForm, title: e.target.value })}
                             placeholder="e.g. Silambam Fast Rotations"
                             required
-                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none transition-colors shadow-2xs"
+                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs focus:outline-none transition-colors shadow-2xs"
                           />
                         </div>
 
@@ -2743,7 +2768,7 @@ export default function AdminPortalPage() {
                           <select
                             value={galleryForm.category}
                             onChange={(e) => setGalleryForm({ ...galleryForm, category: e.target.value })}
-                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none cursor-pointer transition-colors shadow-2xs"
+                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs focus:outline-none cursor-pointer transition-colors shadow-2xs"
                           >
                             <option value="Silambam">Silambam</option>
                             <option value="Martial Arts">Martial Arts</option>
@@ -2765,9 +2790,9 @@ export default function AdminPortalPage() {
                             onChange={(e) => setGalleryForm({ ...galleryForm, image: e.target.value })}
                             placeholder="Paste Image URL or click Upload File..."
                             required
-                            className="flex-1 min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none transition-colors shadow-2xs"
+                            className="flex-1 min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs focus:outline-none transition-colors shadow-2xs"
                           />
-                          <label className="min-h-[42px] px-4 rounded-xl bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer shrink-0 shadow-2xs">
+                          <label className="min-h-[42px] px-4 rounded-xl bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer shrink-0 shadow-2xs touch-manipulation">
                             {galleryUploading ? (
                               <RefreshCw size={14} className="animate-spin" />
                             ) : (
@@ -2785,7 +2810,7 @@ export default function AdminPortalPage() {
 
                         {/* Live Photo Preview with Crop Option */}
                         {galleryForm.image && (
-                          <div className="space-y-1.5 mt-2">
+                          <div className="space-y-2 mt-2">
                             <div className="relative aspect-[4/3] max-w-xs rounded-xl overflow-hidden border border-coffee-dark/20 bg-coffee-dark/5 shadow-inner">
                               {/* eslint-disable-next-line @next/next/no-img-element */}
                               <img
@@ -2803,9 +2828,9 @@ export default function AdminPortalPage() {
                             <button
                               type="button"
                               onClick={() => handleOpenCropForExisting("gallery")}
-                              className="text-[11px] font-bold text-coffee-dark/75 hover:text-cappuccino flex items-center gap-1.5 py-1 px-2.5 rounded-lg bg-coffee-dark/5 hover:bg-coffee-dark/10 transition-colors cursor-pointer w-fit"
+                              className="min-h-[38px] px-3.5 py-1.5 rounded-xl bg-coffee-dark/5 hover:bg-coffee-dark/15 text-coffee-dark font-bold text-xs transition-colors flex items-center gap-1.5 cursor-pointer touch-manipulation w-fit"
                             >
-                              <CropToolIcon size={12} className="text-cappuccino" />
+                              <CropToolIcon size={13} className="text-cappuccino" />
                               <span>Crop &amp; Frame Photo</span>
                             </button>
                           </div>
@@ -2822,7 +2847,7 @@ export default function AdminPortalPage() {
                           value={galleryForm.description}
                           onChange={(e) => setGalleryForm({ ...galleryForm, description: e.target.value })}
                           placeholder="Describe the drill, form, or context of this photo..."
-                          className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl p-3 text-xs focus:outline-none transition-colors shadow-2xs leading-relaxed"
+                          className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl p-3 text-base sm:text-xs focus:outline-none transition-colors shadow-2xs leading-relaxed"
                         />
                       </div>
 
@@ -2830,7 +2855,7 @@ export default function AdminPortalPage() {
                         <button
                           type="submit"
                           disabled={gallerySubmitting}
-                          className="min-h-[44px] px-6 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-bold text-xs uppercase tracking-wider rounded-full transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50 w-full sm:w-auto"
+                          className="min-h-[44px] px-6 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-bold text-xs uppercase tracking-wider rounded-full transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50 w-full sm:w-auto touch-manipulation"
                         >
                           {gallerySubmitting ? (
                             <RefreshCw size={14} className="animate-spin" />
@@ -2863,7 +2888,7 @@ export default function AdminPortalPage() {
                             type="button"
                             onClick={() => setGalleryCategoryFilter(cat)}
                             className={cn(
-                              "px-3 py-1 rounded-full text-[11px] font-bold transition-all cursor-pointer",
+                              "min-h-[34px] sm:min-h-[30px] px-3 py-1 rounded-full text-[11px] font-bold transition-all cursor-pointer touch-manipulation",
                               galleryCategoryFilter === cat
                                 ? "bg-coffee-dark text-cappuccino shadow-2xs"
                                 : "bg-white/80 text-coffee-dark/60 hover:text-coffee-dark border border-coffee-dark/10"
@@ -2875,7 +2900,7 @@ export default function AdminPortalPage() {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
                       {gallery
                         .filter(
                           (g) =>
@@ -2900,10 +2925,11 @@ export default function AdminPortalPage() {
                               <button
                                 type="button"
                                 onClick={() => handleDeleteGallery(item.id)}
-                                className="absolute top-2 right-2 p-1.5 bg-red-600/90 hover:bg-red-600 text-white rounded-full transition-colors cursor-pointer shadow-md opacity-90 sm:opacity-0 sm:group-hover:opacity-100"
+                                className="absolute top-2 right-2 w-9 h-9 min-w-[36px] min-h-[36px] flex items-center justify-center bg-red-600/90 hover:bg-red-600 active:scale-95 text-white rounded-full transition-all cursor-pointer shadow-md opacity-90 sm:opacity-0 sm:group-hover:opacity-100 touch-manipulation"
                                 title="Delete photo"
+                                aria-label="Delete gallery photo"
                               >
-                                <Trash2 size={13} />
+                                <Trash2 size={14} />
                               </button>
                             </div>
                             <div className="p-3 space-y-1 flex-1 flex flex-col justify-between">
@@ -2923,13 +2949,13 @@ export default function AdminPortalPage() {
               {/* SUB-TAB 3: REVIEWS & TESTIMONIALS MANAGER                         */}
               {/* ----------------------------------------------------------------- */}
               {cmsSubTab === "reviews" && (
-                <div className="space-y-10">
+                <div className="space-y-8 sm:space-y-10">
                   {/* Review Form */}
-                  <div className="p-5 sm:p-7 rounded-2xl sm:rounded-3xl bg-white/70 border border-coffee-dark/15 space-y-6 shadow-sm">
+                  <div className="p-4 xs:p-5 sm:p-7 rounded-2xl sm:rounded-3xl bg-white/70 border border-coffee-dark/15 space-y-5 sm:space-y-6 shadow-sm">
                     <div className="flex items-center justify-between gap-3 border-b border-coffee-dark/10 pb-4">
                       <div>
                         <div className="flex items-center gap-2 mb-1">
-                          <MessageSquareQuote size={18} className="text-cappuccino" />
+                          <MessageSquareQuote size={18} className="text-cappuccino shrink-0" />
                           <h4 className="font-serif text-lg font-bold text-coffee-dark">
                             {isEditingReview ? "Edit Website Review / Testimonial" : "Add New Student / Client Review"}
                           </h4>
@@ -2947,15 +2973,15 @@ export default function AdminPortalPage() {
                             setIsEditingReview(false);
                             setReviewForm(initialReviewForm);
                           }}
-                          className="px-3 py-1.5 rounded-full text-xs font-bold bg-coffee-dark/10 hover:bg-coffee-dark/20 text-coffee-dark transition-colors cursor-pointer"
+                          className="px-3.5 py-1.5 rounded-full text-xs font-bold bg-coffee-dark/10 hover:bg-coffee-dark/20 text-coffee-dark transition-colors cursor-pointer min-h-[36px] touch-manipulation shrink-0"
                         >
                           Cancel Editing
                         </button>
                       )}
                     </div>
 
-                    <form onSubmit={handleSaveReview} className="space-y-5">
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <form onSubmit={handleSaveReview} className="space-y-4 sm:space-y-5">
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
                         <div>
                           <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
                             Student / Reviewer Name *
@@ -2966,7 +2992,7 @@ export default function AdminPortalPage() {
                             onChange={(e) => setReviewForm({ ...reviewForm, name: e.target.value })}
                             placeholder="e.g. S. Karthikeyan"
                             required
-                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none transition-colors shadow-2xs"
+                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs focus:outline-none transition-colors shadow-2xs"
                           />
                         </div>
 
@@ -2980,7 +3006,7 @@ export default function AdminPortalPage() {
                             onChange={(e) => setReviewForm({ ...reviewForm, role: e.target.value })}
                             placeholder="e.g. Silambam Student or Physician"
                             required
-                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none transition-colors shadow-2xs"
+                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs focus:outline-none transition-colors shadow-2xs"
                           />
                         </div>
 
@@ -2991,7 +3017,7 @@ export default function AdminPortalPage() {
                           <select
                             value={reviewForm.discipline}
                             onChange={(e) => setReviewForm({ ...reviewForm, discipline: e.target.value })}
-                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none cursor-pointer transition-colors shadow-2xs"
+                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs focus:outline-none cursor-pointer transition-colors shadow-2xs"
                           >
                             <option value="Silambam">Silambam</option>
                             <option value="Yoga">Yoga</option>
@@ -3002,19 +3028,20 @@ export default function AdminPortalPage() {
                         </div>
                       </div>
 
-                      {/* Star Rating Selector */}
+                      {/* Star Rating Selector - Touch Friendly */}
                       <div className="space-y-1.5">
                         <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block">
                           Rating Score ({reviewForm.rating} Stars)
                         </label>
-                        <div className="flex items-center gap-1.5">
+                        <div className="flex items-center gap-1">
                           {[1, 2, 3, 4, 5].map((star) => (
                             <button
                               key={star}
                               type="button"
                               onClick={() => setReviewForm({ ...reviewForm, rating: star })}
-                              className="p-1 text-cappuccino hover:scale-110 transition-transform cursor-pointer"
+                              className="w-10 h-10 min-w-[40px] min-h-[40px] flex items-center justify-center p-2 text-cappuccino hover:scale-110 active:scale-125 transition-transform cursor-pointer touch-manipulation"
                               title={`${star} Star${star > 1 ? "s" : ""}`}
+                              aria-label={`Rate ${star} star${star > 1 ? "s" : ""}`}
                             >
                               <Star
                                 size={22}
@@ -3040,7 +3067,7 @@ export default function AdminPortalPage() {
                           onChange={(e) => setReviewForm({ ...reviewForm, quote: e.target.value })}
                           placeholder="Share the transformation story, training feedback, or experience..."
                           required
-                          className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl p-3 text-xs focus:outline-none transition-colors shadow-2xs leading-relaxed"
+                          className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl p-3 text-base sm:text-xs focus:outline-none transition-colors shadow-2xs leading-relaxed"
                         />
                       </div>
 
@@ -3049,7 +3076,7 @@ export default function AdminPortalPage() {
                         <button
                           type="submit"
                           disabled={reviewSubmitting}
-                          className="min-h-[44px] px-7 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-bold text-xs uppercase tracking-wider rounded-full transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50 w-full sm:w-auto"
+                          className="min-h-[44px] px-7 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-bold text-xs uppercase tracking-wider rounded-full transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50 w-full sm:w-auto touch-manipulation"
                         >
                           {reviewSubmitting ? (
                             <RefreshCw size={14} className="animate-spin" />
@@ -3082,17 +3109,17 @@ export default function AdminPortalPage() {
                       <button
                         type="button"
                         onClick={() => handleResetCms("reviews")}
-                        className="text-[11px] text-coffee-dark/50 hover:text-coffee-dark underline font-mono cursor-pointer"
+                        className="text-[11px] text-coffee-dark/50 hover:text-coffee-dark underline font-mono cursor-pointer touch-manipulation"
                       >
                         Reset to Defaults
                       </button>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
                       {reviews.map((rev) => (
                         <div
                           key={rev.id}
-                          className="p-5 rounded-2xl bg-white/70 border border-coffee-dark/15 hover:border-cappuccino/50 transition-all flex flex-col justify-between gap-3.5 shadow-2xs"
+                          className="p-4 xs:p-5 rounded-2xl bg-white/70 border border-coffee-dark/15 hover:border-cappuccino/50 transition-all flex flex-col justify-between gap-3.5 shadow-2xs overflow-hidden"
                         >
                           <div className="space-y-2">
                             <div className="flex items-center justify-between gap-2">
@@ -3102,7 +3129,7 @@ export default function AdminPortalPage() {
                                 ))}
                               </div>
                               {rev.discipline && (
-                                <span className="px-2 py-0.5 rounded-full bg-cappuccino/15 border border-cappuccino/30 text-coffee-dark text-[9px] font-bold uppercase tracking-wider">
+                                <span className="px-2 py-0.5 rounded-full bg-cappuccino/15 border border-cappuccino/30 text-coffee-dark text-[9px] font-bold uppercase tracking-wider truncate">
                                   {rev.discipline}
                                 </span>
                               )}
@@ -3114,16 +3141,16 @@ export default function AdminPortalPage() {
                           </div>
 
                           <div className="pt-2 border-t border-coffee-dark/10 flex items-center justify-between gap-3">
-                            <div>
-                              <h5 className="font-bold text-xs sm:text-sm text-coffee-dark">{rev.name}</h5>
-                              <p className="text-[10px] text-cappuccino font-bold uppercase tracking-wider">{rev.role}</p>
+                            <div className="min-w-0 flex-1">
+                              <h5 className="font-bold text-xs sm:text-sm text-coffee-dark truncate">{rev.name}</h5>
+                              <p className="text-[10px] text-cappuccino font-bold uppercase tracking-wider truncate">{rev.role}</p>
                             </div>
 
-                            <div className="flex items-center gap-1.5">
+                            <div className="flex items-center gap-1.5 shrink-0">
                               <button
                                 type="button"
                                 onClick={() => handleEditReview(rev)}
-                                className="px-3 py-1.5 rounded-lg bg-coffee-dark/5 hover:bg-coffee-dark hover:text-white text-coffee-dark text-xs font-bold transition-colors flex items-center gap-1 cursor-pointer"
+                                className="min-h-[36px] px-3 py-1.5 rounded-xl bg-coffee-dark/5 hover:bg-coffee-dark hover:text-white text-coffee-dark text-xs font-bold transition-colors flex items-center gap-1 cursor-pointer touch-manipulation"
                               >
                                 <Edit3 size={12} />
                                 <span>Edit</span>
@@ -3131,8 +3158,9 @@ export default function AdminPortalPage() {
                               <button
                                 type="button"
                                 onClick={() => handleDeleteReview(rev.id)}
-                                className="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+                                className="w-9 h-9 min-w-[36px] min-h-[36px] flex items-center justify-center p-1.5 text-red-500 hover:bg-red-50 active:bg-red-100 rounded-xl transition-colors cursor-pointer touch-manipulation"
                                 title="Delete review"
+                                aria-label="Delete review"
                               >
                                 <Trash2 size={14} />
                               </button>
@@ -3149,13 +3177,13 @@ export default function AdminPortalPage() {
               {/* SUB-TAB 4: ACADEMY NOTICE & IMPORTANT SETTINGS                     */}
               {/* ----------------------------------------------------------------- */}
               {cmsSubTab === "settings" && (
-                <form onSubmit={handleSaveSettings} className="space-y-8">
+                <form onSubmit={handleSaveSettings} className="space-y-6 sm:space-y-8">
                   {/* Notice / Announcement Banner Card */}
-                  <div className="p-5 sm:p-7 rounded-2xl sm:rounded-3xl bg-white/70 border border-coffee-dark/15 space-y-5 shadow-sm">
+                  <div className="p-4 xs:p-5 sm:p-7 rounded-2xl sm:rounded-3xl bg-white/70 border border-coffee-dark/15 space-y-4 sm:space-y-5 shadow-sm">
                     <div className="flex items-center justify-between gap-3 border-b border-coffee-dark/10 pb-4">
                       <div>
                         <div className="flex items-center gap-2 mb-1">
-                          <Bell size={16} className="text-cappuccino" />
+                          <Bell size={16} className="text-cappuccino shrink-0" />
                           <h4 className="font-serif text-lg font-bold text-coffee-dark">
                             Live Website Announcement Banner
                           </h4>
@@ -3166,8 +3194,8 @@ export default function AdminPortalPage() {
                       </div>
 
                       {/* Active Toggle */}
-                      <label className="flex items-center gap-2 cursor-pointer select-none">
-                        <span className="text-xs font-bold text-coffee-dark">
+                      <label className="flex items-center gap-2 cursor-pointer select-none shrink-0 touch-manipulation">
+                        <span className="text-xs font-bold text-coffee-dark hidden xs:inline">
                           {siteSettings.announcementActive ? "Active on Site" : "Hidden"}
                         </span>
                         <input
@@ -3182,7 +3210,7 @@ export default function AdminPortalPage() {
                       </label>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
                       <div>
                         <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
                           Badge Label
@@ -3194,7 +3222,7 @@ export default function AdminPortalPage() {
                             setSiteSettings({ ...siteSettings, announcementBadge: e.target.value })
                           }
                           placeholder="e.g. Admissions Open"
-                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none shadow-2xs"
+                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs focus:outline-none shadow-2xs"
                         />
                       </div>
 
@@ -3209,7 +3237,7 @@ export default function AdminPortalPage() {
                             setSiteSettings({ ...siteSettings, announcementText: e.target.value })
                           }
                           placeholder="e.g. Admissions open for new morning & evening batches..."
-                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none shadow-2xs"
+                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs focus:outline-none shadow-2xs"
                         />
                       </div>
                     </div>
@@ -3225,7 +3253,7 @@ export default function AdminPortalPage() {
                           setSiteSettings({ ...siteSettings, announcementLink: e.target.value })
                         }
                         placeholder="e.g. /portal?tab=enroll or /contact"
-                        className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs font-mono focus:outline-none shadow-2xs"
+                        className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs font-mono focus:outline-none shadow-2xs"
                       />
                     </div>
 
@@ -3246,7 +3274,7 @@ export default function AdminPortalPage() {
                   </div>
 
                   {/* Academy Contact & Studio Information Card */}
-                  <div className="p-5 sm:p-7 rounded-2xl sm:rounded-3xl bg-white/70 border border-coffee-dark/15 space-y-5 shadow-sm">
+                  <div className="p-4 xs:p-5 sm:p-7 rounded-2xl sm:rounded-3xl bg-white/70 border border-coffee-dark/15 space-y-4 sm:space-y-5 shadow-sm">
                     <div className="border-b border-coffee-dark/10 pb-4">
                       <h4 className="font-serif text-lg font-bold text-coffee-dark">
                         Official Academy Contact &amp; Studio Details
@@ -3256,18 +3284,18 @@ export default function AdminPortalPage() {
                       </p>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
                       <div>
                         <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
                           Admissions Telephone Line
                         </label>
                         <div className="relative">
-                          <Phone size={14} className="absolute left-3.5 top-3 text-coffee-dark/40" />
+                          <Phone size={14} className="absolute left-3.5 top-3.5 text-coffee-dark/40" />
                           <input
                             type="text"
                             value={siteSettings.phone}
                             onChange={(e) => setSiteSettings({ ...siteSettings, phone: e.target.value })}
-                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl pl-9 pr-3.5 py-2 text-xs font-mono focus:outline-none shadow-2xs"
+                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl pl-9 pr-3.5 py-2 text-base sm:text-xs font-mono focus:outline-none shadow-2xs"
                           />
                         </div>
                       </div>
@@ -3277,31 +3305,31 @@ export default function AdminPortalPage() {
                           Direct WhatsApp Number
                         </label>
                         <div className="relative">
-                          <Phone size={14} className="absolute left-3.5 top-3 text-emerald-600" />
+                          <Phone size={14} className="absolute left-3.5 top-3.5 text-emerald-600" />
                           <input
                             type="text"
                             value={siteSettings.whatsapp}
                             onChange={(e) =>
                               setSiteSettings({ ...siteSettings, whatsapp: e.target.value })
                             }
-                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl pl-9 pr-3.5 py-2 text-xs font-mono focus:outline-none shadow-2xs"
+                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl pl-9 pr-3.5 py-2 text-base sm:text-xs font-mono focus:outline-none shadow-2xs"
                           />
                         </div>
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
                       <div>
                         <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
                           Official Email Address
                         </label>
                         <div className="relative">
-                          <Mail size={14} className="absolute left-3.5 top-3 text-coffee-dark/40" />
+                          <Mail size={14} className="absolute left-3.5 top-3.5 text-coffee-dark/40" />
                           <input
                             type="email"
                             value={siteSettings.email}
                             onChange={(e) => setSiteSettings({ ...siteSettings, email: e.target.value })}
-                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl pl-9 pr-3.5 py-2 text-xs font-mono focus:outline-none shadow-2xs"
+                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl pl-9 pr-3.5 py-2 text-base sm:text-xs font-mono focus:outline-none shadow-2xs"
                           />
                         </div>
                       </div>
@@ -3316,7 +3344,7 @@ export default function AdminPortalPage() {
                           onChange={(e) =>
                             setSiteSettings({ ...siteSettings, trainingHours: e.target.value })
                           }
-                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none shadow-2xs"
+                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs focus:outline-none shadow-2xs"
                         />
                       </div>
                     </div>
@@ -3326,12 +3354,12 @@ export default function AdminPortalPage() {
                         Studio Physical Address
                       </label>
                       <div className="relative">
-                        <MapPin size={14} className="absolute left-3.5 top-3 text-coffee-dark/40" />
+                        <MapPin size={14} className="absolute left-3.5 top-3.5 text-coffee-dark/40" />
                         <input
                           type="text"
                           value={siteSettings.address}
                           onChange={(e) => setSiteSettings({ ...siteSettings, address: e.target.value })}
-                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl pl-9 pr-3.5 py-2 text-xs focus:outline-none shadow-2xs"
+                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl pl-9 pr-3.5 py-2 text-base sm:text-xs focus:outline-none shadow-2xs"
                         />
                       </div>
                     </div>
@@ -3344,7 +3372,7 @@ export default function AdminPortalPage() {
                         type="url"
                         value={siteSettings.mapsUrl}
                         onChange={(e) => setSiteSettings({ ...siteSettings, mapsUrl: e.target.value })}
-                        className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs font-mono focus:outline-none shadow-2xs"
+                        className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs font-mono focus:outline-none shadow-2xs"
                       />
                     </div>
                   </div>
@@ -3354,7 +3382,7 @@ export default function AdminPortalPage() {
                     <button
                       type="submit"
                       disabled={settingsSubmitting}
-                      className="min-h-[44px] px-8 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-bold text-xs uppercase tracking-wider rounded-full transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50 w-full sm:w-auto"
+                      className="min-h-[44px] px-8 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-bold text-xs uppercase tracking-wider rounded-full transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50 w-full sm:w-auto touch-manipulation"
                     >
                       {settingsSubmitting ? (
                         <RefreshCw size={14} className="animate-spin" />
@@ -3367,7 +3395,7 @@ export default function AdminPortalPage() {
                     <button
                       type="button"
                       onClick={() => handleResetCms("settings")}
-                      className="text-xs text-coffee-dark/50 hover:text-coffee-dark underline font-mono cursor-pointer self-center sm:self-auto"
+                      className="text-xs text-coffee-dark/50 hover:text-coffee-dark underline font-mono cursor-pointer self-center sm:self-auto touch-manipulation min-h-[36px] flex items-center"
                     >
                       Reset Details to Defaults
                     </button>
@@ -3379,14 +3407,14 @@ export default function AdminPortalPage() {
               {/* SUB-TAB 5: ABOUT PAGE CONTENT & FOUNDER STORY                      */}
               {/* ----------------------------------------------------------------- */}
               {cmsSubTab === "about" && (
-                <form onSubmit={handleSaveAbout} className="space-y-8">
+                <form onSubmit={handleSaveAbout} className="space-y-6 sm:space-y-8">
                   {/* Founder & Head Coach Profile Card */}
-                  <div className="p-5 sm:p-7 rounded-2xl sm:rounded-3xl bg-white/70 border border-coffee-dark/15 space-y-6 shadow-sm">
+                  <div className="p-4 xs:p-5 sm:p-7 rounded-2xl sm:rounded-3xl bg-white/70 border border-coffee-dark/15 space-y-6 shadow-sm">
                     <div className="border-b border-coffee-dark/10 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                       <div>
                         <div className="flex items-center gap-2 mb-1">
                           <UserCheck size={18} className="text-cappuccino" />
-                          <h4 className="font-serif text-lg font-bold text-coffee-dark">
+                          <h4 className="font-serif text-base sm:text-lg font-bold text-coffee-dark">
                             Founder &amp; Head Coach Profile
                           </h4>
                         </div>
@@ -3413,9 +3441,9 @@ export default function AdminPortalPage() {
                             setAboutSettings({ ...aboutSettings, founderPhoto: e.target.value })
                           }
                           placeholder="e.g. /images/owner.jpg or image URL..."
-                          className="flex-1 min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs font-mono focus:outline-none transition-colors shadow-2xs"
+                          className="flex-1 min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs font-mono focus:outline-none transition-colors shadow-2xs"
                         />
-                        <label className="min-h-[42px] px-4 rounded-xl bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer shrink-0 shadow-2xs">
+                        <label className="min-h-[42px] px-4 rounded-xl bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer shrink-0 shadow-2xs touch-manipulation">
                           <UploadCloud size={14} />
                           <span>Upload File &amp; Crop</span>
                           <input
@@ -3447,7 +3475,7 @@ export default function AdminPortalPage() {
                           <button
                             type="button"
                             onClick={() => handleOpenCropForExisting("founder")}
-                            className="min-h-[36px] px-3.5 py-1.5 rounded-xl bg-coffee-dark/5 hover:bg-coffee-dark/15 text-coffee-dark font-bold text-xs transition-colors flex items-center gap-1.5 cursor-pointer"
+                            className="min-h-[38px] px-3.5 py-2 rounded-xl bg-coffee-dark/5 hover:bg-coffee-dark/15 text-coffee-dark font-bold text-xs transition-colors flex items-center gap-1.5 cursor-pointer touch-manipulation"
                           >
                             <CropToolIcon size={13} className="text-cappuccino" />
                             <span>Crop &amp; Frame Founder Photo</span>
@@ -3468,7 +3496,7 @@ export default function AdminPortalPage() {
                           onChange={(e) =>
                             setAboutSettings({ ...aboutSettings, founderName: e.target.value })
                           }
-                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none shadow-2xs"
+                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs focus:outline-none shadow-2xs"
                         />
                       </div>
 
@@ -3482,7 +3510,7 @@ export default function AdminPortalPage() {
                           onChange={(e) =>
                             setAboutSettings({ ...aboutSettings, founderRole: e.target.value })
                           }
-                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none shadow-2xs"
+                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs focus:outline-none shadow-2xs"
                         />
                       </div>
                     </div>
@@ -3498,7 +3526,7 @@ export default function AdminPortalPage() {
                           onChange={(e) =>
                             setAboutSettings({ ...aboutSettings, founderTagline: e.target.value })
                           }
-                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none shadow-2xs"
+                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs focus:outline-none shadow-2xs"
                         />
                       </div>
 
@@ -3512,7 +3540,7 @@ export default function AdminPortalPage() {
                           onChange={(e) =>
                             setAboutSettings({ ...aboutSettings, founderHeading: e.target.value })
                           }
-                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none shadow-2xs"
+                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs focus:outline-none shadow-2xs"
                         />
                       </div>
                     </div>
@@ -3528,17 +3556,17 @@ export default function AdminPortalPage() {
                         onChange={(e) =>
                           setAboutSettings({ ...aboutSettings, founderBio: e.target.value })
                         }
-                        className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl p-3 text-xs focus:outline-none transition-colors shadow-2xs leading-relaxed"
+                        className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl p-3 text-base sm:text-xs focus:outline-none transition-colors shadow-2xs leading-relaxed"
                       />
                     </div>
                   </div>
 
                   {/* Philosophy, Story & Quote Card */}
-                  <div className="p-5 sm:p-7 rounded-2xl sm:rounded-3xl bg-white/70 border border-coffee-dark/15 space-y-6 shadow-sm">
+                  <div className="p-4 xs:p-5 sm:p-7 rounded-2xl sm:rounded-3xl bg-white/70 border border-coffee-dark/15 space-y-6 shadow-sm">
                     <div className="border-b border-coffee-dark/10 pb-4">
                       <div className="flex items-center gap-2 mb-1">
                         <BookOpen size={18} className="text-cappuccino" />
-                        <h4 className="font-serif text-lg font-bold text-coffee-dark">
+                        <h4 className="font-serif text-base sm:text-lg font-bold text-coffee-dark">
                           Philosophy, Background Story &amp; Quote
                         </h4>
                       </div>
@@ -3561,9 +3589,9 @@ export default function AdminPortalPage() {
                             setAboutSettings({ ...aboutSettings, storyImage: e.target.value })
                           }
                           placeholder="e.g. /images/owner.jpg or image URL..."
-                          className="flex-1 min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs font-mono focus:outline-none transition-colors shadow-2xs"
+                          className="flex-1 min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs font-mono focus:outline-none transition-colors shadow-2xs"
                         />
-                        <label className="min-h-[42px] px-4 rounded-xl bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer shrink-0 shadow-2xs">
+                        <label className="min-h-[42px] px-4 rounded-xl bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer shrink-0 shadow-2xs touch-manipulation">
                           <UploadCloud size={14} />
                           <span>Upload File &amp; Crop</span>
                           <input
@@ -3595,7 +3623,7 @@ export default function AdminPortalPage() {
                           <button
                             type="button"
                             onClick={() => handleOpenCropForExisting("story")}
-                            className="min-h-[36px] px-3.5 py-1.5 rounded-xl bg-coffee-dark/5 hover:bg-coffee-dark/15 text-coffee-dark font-bold text-xs transition-colors flex items-center gap-1.5 cursor-pointer"
+                            className="min-h-[38px] px-3.5 py-2 rounded-xl bg-coffee-dark/5 hover:bg-coffee-dark/15 text-coffee-dark font-bold text-xs transition-colors flex items-center gap-1.5 cursor-pointer touch-manipulation"
                           >
                             <CropToolIcon size={13} className="text-cappuccino" />
                             <span>Crop &amp; Frame Story Photo</span>
@@ -3615,7 +3643,7 @@ export default function AdminPortalPage() {
                           onChange={(e) =>
                             setAboutSettings({ ...aboutSettings, storySubtitle: e.target.value })
                           }
-                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none shadow-2xs"
+                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs focus:outline-none shadow-2xs"
                         />
                       </div>
 
@@ -3629,7 +3657,7 @@ export default function AdminPortalPage() {
                           onChange={(e) =>
                             setAboutSettings({ ...aboutSettings, storyTitle: e.target.value })
                           }
-                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none shadow-2xs"
+                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs focus:outline-none shadow-2xs"
                         />
                       </div>
                     </div>
@@ -3645,7 +3673,7 @@ export default function AdminPortalPage() {
                           onChange={(e) =>
                             setAboutSettings({ ...aboutSettings, storyP1: e.target.value })
                           }
-                          className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl p-3 text-xs focus:outline-none transition-colors shadow-2xs leading-relaxed"
+                          className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl p-3 text-base sm:text-xs focus:outline-none transition-colors shadow-2xs leading-relaxed"
                         />
                       </div>
 
@@ -3659,7 +3687,7 @@ export default function AdminPortalPage() {
                           onChange={(e) =>
                             setAboutSettings({ ...aboutSettings, storyP2: e.target.value })
                           }
-                          className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl p-3 text-xs focus:outline-none transition-colors shadow-2xs leading-relaxed"
+                          className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl p-3 text-base sm:text-xs focus:outline-none transition-colors shadow-2xs leading-relaxed"
                         />
                       </div>
                     </div>
@@ -3675,7 +3703,7 @@ export default function AdminPortalPage() {
                           onChange={(e) =>
                             setAboutSettings({ ...aboutSettings, storyQuote: e.target.value })
                           }
-                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none shadow-2xs"
+                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs focus:outline-none shadow-2xs"
                         />
                       </div>
 
@@ -3689,16 +3717,16 @@ export default function AdminPortalPage() {
                           onChange={(e) =>
                             setAboutSettings({ ...aboutSettings, storyQuoteAuthor: e.target.value })
                           }
-                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none shadow-2xs"
+                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs focus:outline-none shadow-2xs"
                         />
                       </div>
                     </div>
                   </div>
 
                   {/* Academy Key Stats Grid */}
-                  <div className="p-5 sm:p-7 rounded-2xl sm:rounded-3xl bg-white/70 border border-coffee-dark/15 space-y-4 shadow-sm">
+                  <div className="p-4 xs:p-5 sm:p-7 rounded-2xl sm:rounded-3xl bg-white/70 border border-coffee-dark/15 space-y-4 shadow-sm">
                     <div className="border-b border-coffee-dark/10 pb-4">
-                      <h4 className="font-serif text-lg font-bold text-coffee-dark">
+                      <h4 className="font-serif text-base sm:text-lg font-bold text-coffee-dark">
                         Academy Impact &amp; Experience Metrics
                       </h4>
                       <p className="text-xs text-coffee-dark/60 font-light">
@@ -3718,7 +3746,7 @@ export default function AdminPortalPage() {
                             setAboutSettings({ ...aboutSettings, statStudents: e.target.value })
                           }
                           placeholder="e.g. 2,500+"
-                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs font-mono focus:outline-none shadow-2xs"
+                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs font-mono focus:outline-none shadow-2xs"
                         />
                       </div>
 
@@ -3733,7 +3761,7 @@ export default function AdminPortalPage() {
                             setAboutSettings({ ...aboutSettings, statCoaching: e.target.value })
                           }
                           placeholder="e.g. 100%"
-                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs font-mono focus:outline-none shadow-2xs"
+                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs font-mono focus:outline-none shadow-2xs"
                         />
                       </div>
 
@@ -3748,16 +3776,16 @@ export default function AdminPortalPage() {
                             setAboutSettings({ ...aboutSettings, statDisciplines: e.target.value })
                           }
                           placeholder="e.g. 4"
-                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs font-mono focus:outline-none shadow-2xs"
+                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs font-mono focus:outline-none shadow-2xs"
                         />
                       </div>
                     </div>
                   </div>
 
                   {/* 4 Core Disciplines Taught Directly by Founder */}
-                  <div className="p-5 sm:p-7 rounded-2xl sm:rounded-3xl bg-white/70 border border-coffee-dark/15 space-y-4 shadow-sm">
+                  <div className="p-4 xs:p-5 sm:p-7 rounded-2xl sm:rounded-3xl bg-white/70 border border-coffee-dark/15 space-y-4 shadow-sm">
                     <div className="border-b border-coffee-dark/10 pb-4">
-                      <h4 className="font-serif text-lg font-bold text-coffee-dark">
+                      <h4 className="font-serif text-base sm:text-lg font-bold text-coffee-dark">
                         4 Founder Direct Coaching Disciplines
                       </h4>
                       <p className="text-xs text-coffee-dark/60 font-light">
@@ -3765,11 +3793,11 @@ export default function AdminPortalPage() {
                       </p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                       {(aboutSettings.founderDisciplines || []).map((disc, idx) => (
                         <div
                           key={idx}
-                          className="p-4 rounded-xl bg-white border border-coffee-dark/15 space-y-2.5 shadow-2xs"
+                          className="p-3.5 xs:p-4 rounded-xl bg-white border border-coffee-dark/15 space-y-2.5 shadow-2xs"
                         >
                           <div className="flex items-center justify-between">
                             <span className="text-[10px] uppercase tracking-wider text-cappuccino font-bold">
@@ -3788,7 +3816,7 @@ export default function AdminPortalPage() {
                                 updated[idx] = { ...updated[idx], title: e.target.value };
                                 setAboutSettings({ ...aboutSettings, founderDisciplines: updated });
                               }}
-                              className="w-full min-h-[38px] bg-coffee-dark/5 border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-lg px-3 py-1.5 text-xs font-semibold focus:outline-none"
+                              className="w-full min-h-[40px] bg-coffee-dark/5 border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-lg px-3 py-1.5 text-base sm:text-xs font-semibold focus:outline-none"
                             />
                           </div>
                           <div>
@@ -3803,7 +3831,7 @@ export default function AdminPortalPage() {
                                 updated[idx] = { ...updated[idx], desc: e.target.value };
                                 setAboutSettings({ ...aboutSettings, founderDisciplines: updated });
                               }}
-                              className="w-full bg-coffee-dark/5 border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-lg p-2.5 text-xs focus:outline-none leading-relaxed"
+                              className="w-full bg-coffee-dark/5 border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-lg p-2.5 text-base sm:text-xs focus:outline-none leading-relaxed"
                             />
                           </div>
                         </div>
@@ -3812,9 +3840,9 @@ export default function AdminPortalPage() {
                   </div>
 
                   {/* Hero Header Customization */}
-                  <div className="p-5 sm:p-7 rounded-2xl sm:rounded-3xl bg-white/70 border border-coffee-dark/15 space-y-4 shadow-sm">
+                  <div className="p-4 xs:p-5 sm:p-7 rounded-2xl sm:rounded-3xl bg-white/70 border border-coffee-dark/15 space-y-4 shadow-sm">
                     <div className="border-b border-coffee-dark/10 pb-4">
-                      <h4 className="font-serif text-lg font-bold text-coffee-dark">
+                      <h4 className="font-serif text-base sm:text-lg font-bold text-coffee-dark">
                         About Page Hero Header
                       </h4>
                       <p className="text-xs text-coffee-dark/60 font-light">
@@ -3833,7 +3861,7 @@ export default function AdminPortalPage() {
                           onChange={(e) =>
                             setAboutSettings({ ...aboutSettings, heroTitle: e.target.value })
                           }
-                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none shadow-2xs"
+                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs focus:outline-none shadow-2xs"
                         />
                       </div>
 
@@ -3847,7 +3875,7 @@ export default function AdminPortalPage() {
                           onChange={(e) =>
                             setAboutSettings({ ...aboutSettings, heroSubtitle: e.target.value })
                           }
-                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none shadow-2xs"
+                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs focus:outline-none shadow-2xs"
                         />
                       </div>
                     </div>
@@ -3863,7 +3891,7 @@ export default function AdminPortalPage() {
                           setAboutSettings({ ...aboutSettings, heroImage: e.target.value })
                         }
                         placeholder="e.g. /images/vajra_hero.jpg"
-                        className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs font-mono focus:outline-none shadow-2xs"
+                        className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs font-mono focus:outline-none shadow-2xs"
                       />
                     </div>
                   </div>
@@ -3873,7 +3901,7 @@ export default function AdminPortalPage() {
                     <button
                       type="submit"
                       disabled={aboutSubmitting}
-                      className="min-h-[44px] px-8 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-bold text-xs uppercase tracking-wider rounded-full transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50 w-full sm:w-auto"
+                      className="min-h-[44px] px-8 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-bold text-xs uppercase tracking-wider rounded-full transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50 w-full sm:w-auto touch-manipulation"
                     >
                       {aboutSubmitting ? (
                         <RefreshCw size={14} className="animate-spin" />
@@ -3886,7 +3914,7 @@ export default function AdminPortalPage() {
                     <button
                       type="button"
                       onClick={() => handleResetCms("about")}
-                      className="text-xs text-coffee-dark/50 hover:text-coffee-dark underline font-mono cursor-pointer self-center sm:self-auto"
+                      className="min-h-[38px] px-3 py-2 text-xs text-coffee-dark/50 hover:text-coffee-dark underline font-mono cursor-pointer self-center sm:self-auto touch-manipulation flex items-center justify-center"
                     >
                       Reset About Page to Defaults
                     </button>

@@ -68,7 +68,7 @@ function PortalAuthContent() {
   const [loginError, setLoginError] = useState("");
 
   // Admin Login State
-  const [adminUsername, setAdminUsername] = useState("admin");
+  const [adminUsername, setAdminUsername] = useState("");
   const [adminPassword, setAdminPassword] = useState("");
   const [showAdminPass, setShowAdminPass] = useState(false);
   const [adminLoading, setAdminLoading] = useState(false);
@@ -1098,23 +1098,6 @@ function PortalAuthContent() {
                       </button>
                     </div>
                   </form>
-
-                  {/* Admin Auto-Fill helper */}
-                  <div className="mt-3 pt-3 border-t border-coffee-dark/10 text-xs text-coffee-dark/60">
-                    <div className="bg-white/70 p-2.5 rounded-xl border border-coffee-dark/10 flex flex-col xs:flex-row xs:items-center justify-between gap-2 text-[11px]">
-                      <span className="truncate">ID: <strong className="text-coffee-dark">admin</strong> | Key: <code className="text-cappuccino font-mono font-bold">vajra@2026</code></span>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setAdminUsername("admin");
-                          setAdminPassword("vajra@2026");
-                        }}
-                        className="w-full xs:w-auto px-3 py-1.5 bg-coffee-dark/10 hover:bg-coffee-dark hover:text-white text-coffee-dark rounded-lg text-[10px] font-bold uppercase transition-all cursor-pointer active:scale-95 text-center shrink-0"
-                      >
-                        Fill
-                      </button>
-                    </div>
-                  </div>
                 </motion.div>
               )}
             </AnimatePresence>

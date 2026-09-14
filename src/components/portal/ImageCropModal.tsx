@@ -296,7 +296,7 @@ export default function ImageCropModal({
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-[120] flex items-center justify-center p-3 sm:p-5">
+      <div className="fixed inset-0 z-[120] flex items-center justify-center p-2 xs:p-3 sm:p-5">
         {/* Backdrop */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -311,20 +311,20 @@ export default function ImageCropModal({
           initial={{ opacity: 0, scale: 0.95, y: 15 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 15 }}
-          className="relative w-full max-w-2xl bg-[#241A1A] border border-cappuccino/40 rounded-2xl sm:rounded-3xl shadow-[0_25px_60px_rgba(0,0,0,0.6)] text-white overflow-hidden flex flex-col max-h-[92vh]"
+          className="relative w-full max-w-2xl bg-[#241A1A] border border-cappuccino/40 rounded-2xl sm:rounded-3xl shadow-[0_25px_60px_rgba(0,0,0,0.6)] text-white overflow-hidden flex flex-col max-h-[92dvh] sm:max-h-[90vh]"
         >
           {/* Top Header */}
-          <div className="px-5 py-4 border-b border-cappuccino/20 flex items-center justify-between gap-3 bg-white/[0.02]">
-            <div className="flex items-center gap-2.5">
-              <span className="p-1.5 rounded-lg bg-cappuccino/20 text-cappuccino">
+          <div className="px-3.5 py-3 sm:px-5 sm:py-4 border-b border-cappuccino/20 flex items-center justify-between gap-2.5 sm:gap-3 bg-white/[0.02]">
+            <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
+              <span className="p-1.5 rounded-lg bg-cappuccino/20 text-cappuccino shrink-0">
                 <CropIcon size={16} />
               </span>
-              <div>
-                <h3 className="font-serif font-bold text-sm sm:text-base text-white leading-tight">
+              <div className="min-w-0">
+                <h3 className="font-serif font-bold text-sm sm:text-base text-white leading-tight truncate">
                   {title}
                 </h3>
-                <p className="text-[10px] sm:text-[11px] text-white/60 font-light">
-                  Drag to reposition, zoom or rotate to frame your photo perfectly.
+                <p className="text-[10px] sm:text-[11px] text-white/60 font-light truncate">
+                  Reposition, zoom or rotate to frame photo.
                 </p>
               </div>
             </div>
@@ -332,8 +332,9 @@ export default function ImageCropModal({
             <button
               type="button"
               onClick={onClose}
-              className="p-1.5 rounded-full text-white/60 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+              className="w-10 h-10 min-w-[40px] min-h-[40px] flex items-center justify-center rounded-full text-white/60 hover:text-white hover:bg-white/10 transition-colors cursor-pointer shrink-0 touch-manipulation"
               title="Close"
+              aria-label="Close modal"
             >
               <X size={18} />
             </button>
@@ -341,7 +342,7 @@ export default function ImageCropModal({
 
           {/* Upload Error Banner */}
           {uploadError && (
-            <div className="mx-4 sm:mx-5 mt-3 p-3 rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs flex items-center justify-between gap-2">
+            <div className="mx-3.5 sm:mx-5 mt-3 p-3 rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs flex items-center justify-between gap-2">
               <span>{uploadError}</span>
               <button
                 type="button"
@@ -354,26 +355,26 @@ export default function ImageCropModal({
           )}
 
           {/* Modal Body: Viewport + Live Preview */}
-          <div className="p-4 sm:p-5 overflow-y-auto space-y-4">
+          <div className="p-3 sm:p-5 overflow-y-auto space-y-3.5 sm:space-y-4">
             
-            {/* Aspect Ratio Selector Pills */}
+            {/* Aspect Ratio Selector Pills - Responsive wrap with zero clipping on 320px */}
             <div className="flex items-center justify-between gap-2 flex-wrap">
-              <div className="flex items-center gap-1.5 bg-black/30 p-1 rounded-xl border border-white/10">
+              <div className="flex items-center flex-wrap gap-1 bg-black/30 p-1 rounded-xl border border-white/10">
                 {(["16:9", "4:3", "4:5", "1:1", "free"] as AspectRatioType[]).map((ratio) => (
                   <button
                     key={ratio}
                     type="button"
                     onClick={() => setAspectRatio(ratio)}
-                    className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                    className={`px-2.5 sm:px-3 py-1.5 sm:py-1 rounded-lg text-xs font-bold transition-all cursor-pointer min-h-[34px] sm:min-h-[30px] flex items-center touch-manipulation ${
                       aspectRatio === ratio
                         ? "bg-cappuccino text-coffee-dark shadow-sm"
                         : "text-white/70 hover:text-white hover:bg-white/5"
                     }`}
                   >
-                    {ratio === "16:9" && "16:9 (Courses)"}
-                    {ratio === "4:3" && "4:3 (Gallery/Story)"}
-                    {ratio === "4:5" && "4:5 (Portrait)"}
-                    {ratio === "1:1" && "1:1 (Square)"}
+                    {ratio === "16:9" && <>16:9<span className="hidden xs:inline"> (Courses)</span></>}
+                    {ratio === "4:3" && <>4:3<span className="hidden xs:inline"> (Gallery)</span></>}
+                    {ratio === "4:5" && <>4:5<span className="hidden xs:inline"> (Portrait)</span></>}
+                    {ratio === "1:1" && <>1:1<span className="hidden xs:inline"> (Square)</span></>}
                     {ratio === "free" && "Original"}
                   </button>
                 ))}
@@ -387,7 +388,7 @@ export default function ImageCropModal({
                   setRotation(0);
                   setOffset({ x: 0, y: 0 });
                 }}
-                className="px-2.5 py-1 text-[11px] text-white/60 hover:text-cappuccino flex items-center gap-1.5 transition-colors cursor-pointer"
+                className="px-2.5 py-1 min-h-[34px] sm:min-h-[30px] text-[11px] text-white/60 hover:text-cappuccino flex items-center gap-1.5 transition-colors cursor-pointer touch-manipulation"
                 title="Reset Position"
               >
                 <RefreshCcw size={12} />
@@ -396,7 +397,7 @@ export default function ImageCropModal({
             </div>
 
             {/* Canvas Interactive Viewport */}
-            <div className="relative w-full aspect-[4/3] sm:aspect-[16/10] bg-black/60 rounded-xl sm:rounded-2xl overflow-hidden border border-white/15 cursor-grab active:cursor-grabbing select-none">
+            <div className="relative w-full aspect-[4/3] sm:aspect-[16/10] bg-black/60 rounded-xl sm:rounded-2xl overflow-hidden border border-white/15 cursor-grab active:cursor-grabbing select-none touch-none">
               <canvas
                 ref={canvasRef}
                 width={640}
@@ -416,23 +417,23 @@ export default function ImageCropModal({
                   }
                 }}
                 onTouchEnd={handlePointerUp}
-                className="w-full h-full object-contain"
+                className="w-full h-full object-contain touch-none"
               />
 
               {/* Live Preview Floating Picture-in-Picture Box */}
-              <div className="absolute bottom-3 right-3 p-2 bg-[#1C1414]/90 backdrop-blur-md rounded-xl border border-cappuccino/40 shadow-xl flex flex-col items-center gap-1 pointer-events-none">
-                <span className="text-[8.5px] uppercase tracking-wider text-cappuccino font-bold font-mono">
+              <div className="absolute bottom-2 right-2 xs:bottom-3 xs:right-3 p-1.5 xs:p-2 bg-[#1C1414]/90 backdrop-blur-md rounded-xl border border-cappuccino/40 shadow-xl flex flex-col items-center gap-1 pointer-events-none scale-90 xs:scale-100 origin-bottom-right">
+                <span className="text-[8px] xs:text-[8.5px] uppercase tracking-wider text-cappuccino font-bold font-mono">
                   Live Preview
                 </span>
                 <div
                   className={`overflow-hidden rounded-lg bg-black/50 border border-white/20 ${
                     aspectRatio === "16:9"
-                      ? "w-28 h-[63px]"
+                      ? "w-24 xs:w-28 h-[54px] xs:h-[63px]"
                       : aspectRatio === "4:3"
-                      ? "w-24 h-[72px]"
+                      ? "w-20 xs:w-24 h-[60px] xs:h-[72px]"
                       : aspectRatio === "1:1"
-                      ? "w-20 h-20"
-                      : "w-24 h-16"
+                      ? "w-16 xs:w-20 h-16 xs:h-20"
+                      : "w-20 xs:w-24 h-14 xs:h-16"
                   }`}
                 >
                   <canvas
@@ -454,16 +455,16 @@ export default function ImageCropModal({
             </div>
 
             {/* Viewport Controls: Zoom Slider + Rotation */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3 pt-1">
               {/* Zoom Slider */}
-              <div className="flex items-center gap-3 bg-white/[0.04] px-3.5 py-2 rounded-xl border border-white/10">
+              <div className="flex items-center gap-2.5 sm:gap-3 bg-white/[0.04] px-3 sm:px-3.5 py-2 rounded-xl border border-white/10">
                 <button
                   type="button"
                   onClick={() => setZoom((z) => Math.max(0.5, Number((z - 0.2).toFixed(1))))}
-                  className="text-white/70 hover:text-white p-1 rounded cursor-pointer"
+                  className="w-9 h-9 min-w-[36px] min-h-[36px] text-white/70 hover:text-white flex items-center justify-center rounded-lg cursor-pointer touch-manipulation active:bg-white/10"
                   title="Zoom Out"
                 >
-                  <ZoomOut size={15} />
+                  <ZoomOut size={16} />
                 </button>
                 <input
                   type="range"
@@ -477,23 +478,23 @@ export default function ImageCropModal({
                 <button
                   type="button"
                   onClick={() => setZoom((z) => Math.min(3, Number((z + 0.2).toFixed(1))))}
-                  className="text-white/70 hover:text-white p-1 rounded cursor-pointer"
+                  className="w-9 h-9 min-w-[36px] min-h-[36px] text-white/70 hover:text-white flex items-center justify-center rounded-lg cursor-pointer touch-manipulation active:bg-white/10"
                   title="Zoom In"
                 >
-                  <ZoomIn size={15} />
+                  <ZoomIn size={16} />
                 </button>
-                <span className="text-[10px] font-mono text-cappuccino min-w-[32px] text-right">
+                <span className="text-[10px] font-mono text-cappuccino min-w-[30px] text-right">
                   {zoom.toFixed(1)}x
                 </span>
               </div>
 
               {/* Rotation Button */}
-              <div className="flex items-center justify-between bg-white/[0.04] px-3.5 py-2 rounded-xl border border-white/10">
-                <span className="text-xs text-white/70">Orientation</span>
+              <div className="flex items-center justify-between bg-white/[0.04] px-3 sm:px-3.5 py-2 rounded-xl border border-white/10">
+                <span className="text-xs text-white/70 font-medium">Orientation</span>
                 <button
                   type="button"
                   onClick={() => setRotation((r) => (r + 90) % 360)}
-                  className="px-3 py-1 bg-white/10 hover:bg-white/20 rounded-lg text-xs font-bold text-white flex items-center gap-1.5 transition-colors cursor-pointer"
+                  className="min-h-[36px] px-3 py-1 bg-white/10 hover:bg-white/20 active:scale-95 rounded-lg text-xs font-bold text-white flex items-center gap-1.5 transition-colors cursor-pointer touch-manipulation"
                 >
                   <RotateCw size={13} />
                   <span>Rotate 90° ({rotation}°)</span>
@@ -503,12 +504,12 @@ export default function ImageCropModal({
           </div>
 
           {/* Modal Footer Actions */}
-          <div className="px-5 py-4 border-t border-cappuccino/20 flex items-center justify-between gap-3 bg-white/[0.02]">
+          <div className="px-3.5 py-3 sm:px-5 sm:py-4 border-t border-cappuccino/20 flex items-center justify-between gap-2.5 sm:gap-3 bg-white/[0.02]">
             <button
               type="button"
               onClick={onClose}
               disabled={uploading}
-              className="px-4 py-2 text-xs font-bold text-white/70 hover:text-white hover:bg-white/5 rounded-full transition-colors cursor-pointer disabled:opacity-50"
+              className="min-h-[44px] px-4 py-2 text-xs font-bold text-white/70 hover:text-white hover:bg-white/5 rounded-full transition-colors cursor-pointer disabled:opacity-50 touch-manipulation"
             >
               Cancel
             </button>
@@ -517,17 +518,17 @@ export default function ImageCropModal({
               type="button"
               onClick={handleCropAndUpload}
               disabled={uploading}
-              className="min-h-[42px] px-6 bg-cappuccino hover:bg-[#b5834f] text-coffee-dark font-extrabold text-xs uppercase tracking-wider rounded-full shadow-lg transition-all flex items-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50"
+              className="min-h-[44px] px-5 sm:px-6 bg-cappuccino hover:bg-[#b5834f] text-coffee-dark font-extrabold text-xs uppercase tracking-wider rounded-full shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50 touch-manipulation flex-1 xs:flex-initial"
             >
               {uploading ? (
                 <>
                   <RefreshCcw size={14} className="animate-spin" />
-                  <span>Processing &amp; Uploading...</span>
+                  <span>Processing...</span>
                 </>
               ) : (
                 <>
                   <Check size={14} />
-                  <span>Crop &amp; Apply to Website</span>
+                  <span>Crop &amp; Apply</span>
                 </>
               )}
             </button>

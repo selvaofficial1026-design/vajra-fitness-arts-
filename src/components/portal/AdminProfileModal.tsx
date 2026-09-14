@@ -206,7 +206,7 @@ export default function AdminProfileModal({
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[110] flex items-center justify-center p-2.5 xs:p-4 overflow-y-auto">
+        <div className="fixed inset-0 z-[110] flex items-center justify-center p-2 xs:p-4 overflow-y-auto">
           {/* Backdrop Blur */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -223,7 +223,7 @@ export default function AdminProfileModal({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 15 }}
             transition={{ type: "spring", damping: 26, stiffness: 320 }}
-            className="relative w-full max-w-lg max-h-[90dvh] sm:max-h-[88vh] flex flex-col bg-[#FAF7F2] text-coffee-dark rounded-2xl xs:rounded-3xl border border-cappuccino/40 shadow-2xl p-4 xs:p-5 sm:p-7 z-10 my-auto overflow-hidden"
+            className="relative w-full max-w-lg max-h-[92dvh] sm:max-h-[88vh] flex flex-col bg-[#FAF7F2] text-coffee-dark rounded-2xl xs:rounded-3xl border border-cappuccino/40 shadow-2xl p-3.5 xs:p-5 sm:p-7 z-10 my-auto overflow-hidden"
           >
             {/* Ambient Radial Golden Aura */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-cappuccino/15 rounded-full blur-3xl pointer-events-none -translate-y-1/2 translate-x-1/2" />
@@ -268,7 +268,7 @@ export default function AdminProfileModal({
               <button
                 type="button"
                 onClick={() => setActiveSubTab("security")}
-                className={`flex-1 py-2 sm:py-1.5 px-1.5 sm:px-2 rounded-full text-[9.5px] xs:text-[10px] sm:text-[10.5px] font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1 sm:gap-1.5 cursor-pointer min-h-[36px] sm:min-h-0 ${
+                className={`flex-1 py-2 sm:py-1.5 px-1.5 sm:px-2 rounded-full text-[9.5px] xs:text-[10px] sm:text-[10.5px] font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1 sm:gap-1.5 cursor-pointer min-h-[38px] sm:min-h-0 touch-manipulation ${
                   activeSubTab === "security"
                     ? "bg-coffee-dark text-cappuccino shadow-sm"
                     : "text-coffee-dark/60 hover:text-coffee-dark hover:bg-black/5"
@@ -281,7 +281,7 @@ export default function AdminProfileModal({
               <button
                 type="button"
                 onClick={() => setActiveSubTab("details")}
-                className={`flex-1 py-2 sm:py-1.5 px-1.5 sm:px-2 rounded-full text-[9.5px] xs:text-[10px] sm:text-[10.5px] font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1 sm:gap-1.5 cursor-pointer min-h-[36px] sm:min-h-0 ${
+                className={`flex-1 py-2 sm:py-1.5 px-1.5 sm:px-2 rounded-full text-[9.5px] xs:text-[10px] sm:text-[10.5px] font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1 sm:gap-1.5 cursor-pointer min-h-[38px] sm:min-h-0 touch-manipulation ${
                   activeSubTab === "details"
                     ? "bg-coffee-dark text-cappuccino shadow-sm"
                     : "text-coffee-dark/60 hover:text-coffee-dark hover:bg-black/5"
@@ -294,7 +294,7 @@ export default function AdminProfileModal({
               <button
                 type="button"
                 onClick={() => setActiveSubTab("session")}
-                className={`flex-1 py-2 sm:py-1.5 px-1.5 sm:px-2 rounded-full text-[9.5px] xs:text-[10px] sm:text-[10.5px] font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1 sm:gap-1.5 cursor-pointer min-h-[36px] sm:min-h-0 ${
+                className={`flex-1 py-2 sm:py-1.5 px-1.5 sm:px-2 rounded-full text-[9.5px] xs:text-[10px] sm:text-[10.5px] font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1 sm:gap-1.5 cursor-pointer min-h-[38px] sm:min-h-0 touch-manipulation ${
                   activeSubTab === "session"
                     ? "bg-coffee-dark text-cappuccino shadow-sm"
                     : "text-coffee-dark/60 hover:text-coffee-dark hover:bg-black/5"
@@ -364,13 +364,13 @@ export default function AdminProfileModal({
                         autoComplete="new-password"
                         data-lpignore="true"
                         data-form-type="other"
-                        className="w-full bg-white/80 border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-10 py-2.5 sm:py-2 text-sm sm:text-xs focus:outline-none transition-all shadow-xs"
+                        className="w-full bg-white/80 border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-11 py-2.5 sm:py-2 text-base sm:text-xs focus:outline-none transition-all shadow-xs min-h-[42px]"
                         required
                       />
                       <button
                         type="button"
                         onClick={() => setShowCurrentPass(!showCurrentPass)}
-                        className="absolute right-0 inset-y-0 w-10 flex items-center justify-center text-coffee-dark/40 hover:text-coffee-dark active:text-coffee-dark transition-colors cursor-pointer touch-manipulation"
+                        className="absolute right-0 inset-y-0 w-11 flex items-center justify-center text-coffee-dark/40 hover:text-coffee-dark active:text-coffee-dark transition-colors cursor-pointer touch-manipulation"
                         aria-label={showCurrentPass ? "Hide current password" : "Show current password"}
                       >
                         {showCurrentPass ? <EyeOff size={15} /> : <Eye size={15} />}
@@ -393,14 +393,14 @@ export default function AdminProfileModal({
                         autoComplete="new-password"
                         data-lpignore="true"
                         data-form-type="other"
-                        className="w-full bg-white/80 border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-10 py-2.5 sm:py-2 text-sm sm:text-xs focus:outline-none transition-all shadow-xs"
+                        className="w-full bg-white/80 border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-11 py-2.5 sm:py-2 text-base sm:text-xs focus:outline-none transition-all shadow-xs min-h-[42px]"
                         required
                         minLength={4}
                       />
                       <button
                         type="button"
                         onClick={() => setShowNewPass(!showNewPass)}
-                        className="absolute right-0 inset-y-0 w-10 flex items-center justify-center text-coffee-dark/40 hover:text-coffee-dark active:text-coffee-dark transition-colors cursor-pointer touch-manipulation"
+                        className="absolute right-0 inset-y-0 w-11 flex items-center justify-center text-coffee-dark/40 hover:text-coffee-dark active:text-coffee-dark transition-colors cursor-pointer touch-manipulation"
                         aria-label={showNewPass ? "Hide new password" : "Show new password"}
                       >
                         {showNewPass ? <EyeOff size={15} /> : <Eye size={15} />}
@@ -426,13 +426,13 @@ export default function AdminProfileModal({
                         autoComplete="new-password"
                         data-lpignore="true"
                         data-form-type="other"
-                        className="w-full bg-white/80 border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-10 py-2.5 sm:py-2 text-sm sm:text-xs focus:outline-none transition-all shadow-xs"
+                        className="w-full bg-white/80 border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-11 py-2.5 sm:py-2 text-base sm:text-xs focus:outline-none transition-all shadow-xs min-h-[42px]"
                         required
                       />
                       <button
                         type="button"
                         onClick={() => setShowConfirmPass(!showConfirmPass)}
-                        className="absolute right-0 inset-y-0 w-10 flex items-center justify-center text-coffee-dark/40 hover:text-coffee-dark active:text-coffee-dark transition-colors cursor-pointer touch-manipulation"
+                        className="absolute right-0 inset-y-0 w-11 flex items-center justify-center text-coffee-dark/40 hover:text-coffee-dark active:text-coffee-dark transition-colors cursor-pointer touch-manipulation"
                         aria-label={showConfirmPass ? "Hide confirm password" : "Show confirm password"}
                       >
                         {showConfirmPass ? <EyeOff size={15} /> : <Eye size={15} />}
@@ -512,7 +512,7 @@ export default function AdminProfileModal({
                         value={`@${adminProfile.username}`}
                         readOnly
                         disabled
-                        className="w-full bg-black/5 border border-coffee-dark/10 text-coffee-dark/60 font-mono rounded-xl pl-9 pr-3 py-2.5 sm:py-2 text-sm sm:text-xs cursor-not-allowed select-all"
+                        className="w-full bg-black/5 border border-coffee-dark/10 text-coffee-dark/60 font-mono rounded-xl pl-9 pr-3 py-2.5 sm:py-2 text-base sm:text-xs cursor-not-allowed select-all min-h-[42px]"
                       />
                     </div>
                   </div>
@@ -531,7 +531,7 @@ export default function AdminProfileModal({
                         onChange={(e) => setName(e.target.value)}
                         autoComplete="off"
                         data-lpignore="true"
-                        className="w-full bg-white/80 border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-3 py-2.5 sm:py-2 text-sm sm:text-xs focus:outline-none transition-all shadow-xs"
+                        className="w-full bg-white/80 border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-3 py-2.5 sm:py-2 text-base sm:text-xs focus:outline-none transition-all shadow-xs min-h-[42px]"
                         required
                       />
                     </div>
@@ -548,7 +548,7 @@ export default function AdminProfileModal({
                         type="text"
                         value={roleTitle}
                         onChange={(e) => setRoleTitle(e.target.value)}
-                        className="w-full bg-white/80 border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-3 py-2.5 sm:py-2 text-sm sm:text-xs focus:outline-none transition-all shadow-xs"
+                        className="w-full bg-white/80 border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-3 py-2.5 sm:py-2 text-base sm:text-xs focus:outline-none transition-all shadow-xs min-h-[42px]"
                       />
                     </div>
                   </div>
@@ -566,7 +566,7 @@ export default function AdminProfileModal({
                         autoComplete="tel"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
-                        className="w-full bg-white/80 border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-3 py-2.5 sm:py-2 text-sm sm:text-xs focus:outline-none transition-all shadow-xs"
+                        className="w-full bg-white/80 border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-3 py-2.5 sm:py-2 text-base sm:text-xs focus:outline-none transition-all shadow-xs min-h-[42px]"
                       />
                     </div>
                   </div>
@@ -584,7 +584,7 @@ export default function AdminProfileModal({
                         autoComplete="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="w-full bg-white/80 border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-3 py-2.5 sm:py-2 text-sm sm:text-xs focus:outline-none transition-all shadow-xs"
+                        className="w-full bg-white/80 border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-3 py-2.5 sm:py-2 text-base sm:text-xs focus:outline-none transition-all shadow-xs min-h-[42px]"
                       />
                     </div>
                   </div>
@@ -600,7 +600,7 @@ export default function AdminProfileModal({
                         type="text"
                         value={academyBranch}
                         onChange={(e) => setAcademyBranch(e.target.value)}
-                        className="w-full bg-white/80 border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-3 py-2.5 sm:py-2 text-sm sm:text-xs focus:outline-none transition-all shadow-xs"
+                        className="w-full bg-white/80 border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-3 py-2.5 sm:py-2 text-base sm:text-xs focus:outline-none transition-all shadow-xs min-h-[42px]"
                       />
                     </div>
                   </div>
@@ -700,7 +700,7 @@ export default function AdminProfileModal({
                       onClose();
                       onLogout();
                     }}
-                    className="w-full xs:w-auto px-4 py-2.5 rounded-full bg-red-500/10 text-red-600 hover:bg-red-500 hover:text-white border border-red-500/20 font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer min-h-[40px] touch-manipulation active:scale-95"
+                    className="w-full xs:w-auto px-4 py-2.5 rounded-full bg-red-500/10 text-red-600 hover:bg-red-500 hover:text-white border border-red-500/20 font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer min-h-[44px] touch-manipulation active:scale-95"
                   >
                     <LogOut size={13} />
                     <span>Terminate Session</span>
