@@ -331,6 +331,7 @@ export default function StudentPortalPage() {
         onClose={() => setIsProfileModalOpen(false)}
         student={student}
         onLogout={handleLogout}
+        onStudentUpdated={(updated) => setStudent(updated)}
       />
 
       {/* YouTube Video Player Modal (Triggered by clicking any compact video card) */}

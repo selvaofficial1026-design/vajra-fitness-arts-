@@ -14,6 +14,7 @@ export interface Student {
   createdAt: string;
   approvedAt: string | null;
   leftAt?: string | null;
+  password?: string;
 }
 
 export interface ClassMeeting {
@@ -105,6 +106,34 @@ export interface ReviewItem {
   createdAt?: string;
 }
 
+export interface FounderDiscipline {
+  title: string;
+  desc: string;
+}
+
+export interface AboutSettings {
+  heroTitle: string;
+  heroSubtitle: string;
+  heroImage: string;
+  storyTitle: string;
+  storySubtitle: string;
+  storyP1: string;
+  storyP2: string;
+  storyQuote: string;
+  storyQuoteAuthor: string;
+  storyImage: string;
+  statStudents: string;
+  statCoaching: string;
+  statDisciplines: string;
+  founderName: string;
+  founderRole: string;
+  founderTagline: string;
+  founderHeading: string;
+  founderBio: string;
+  founderPhoto: string;
+  founderDisciplines: FounderDiscipline[];
+}
+
 export interface PortalData {
   students: Student[];
   meetings: ClassMeeting[];
@@ -115,6 +144,7 @@ export interface PortalData {
   gallery?: GalleryItem[];
   siteSettings?: SiteSettings;
   reviews?: ReviewItem[];
+  aboutSettings?: AboutSettings;
 }
 
 export const DEFAULT_ADMIN_CONFIG: AdminConfig = {
@@ -316,3 +346,43 @@ export const DEFAULT_REVIEWS: ReviewItem[] = [
     discipline: "Martial Arts"
   }
 ];
+
+export const DEFAULT_ABOUT_SETTINGS: AboutSettings = {
+  heroTitle: "The Vajra Journey",
+  heroSubtitle: "Promoting health, discipline, and traditional martial arts for modern everyday life.",
+  heroImage: "/images/vajra_hero.jpg",
+  storyTitle: "Building Strength and Character Through Movement Arts",
+  storySubtitle: "Our Background",
+  storyP1: "Vajra Fitness Arts was founded to provide quality training in traditional Tamil martial arts alongside modern physical conditioning and yoga.",
+  storyP2: "We believe fitness is about more than just appearance. Through Silambam, Yoga, Martial Arts, and Functional Fitness, our students develop agility, practical strength, self-confidence, and a focused mind.",
+  storyQuote: "Consistent practice builds both physical strength and a peaceful mind.",
+  storyQuoteAuthor: "Founder & Head Coach, Vajra Fitness Arts",
+  storyImage: "/images/owner.jpg",
+  statStudents: "2,500+",
+  statCoaching: "100%",
+  statDisciplines: "4",
+  founderName: "Vajra Fitness Arts",
+  founderRole: "Founder & Head Coach",
+  founderTagline: "Sole Master Trainer for All Disciplines",
+  founderHeading: "Learn Directly from the Founder",
+  founderBio: "At Vajra Fitness Arts, you receive direct, personalized instruction from our founder across all four disciplines—Fitness, Yoga, Martial Arts, and Silambam. Every student gets dedicated one-on-one attention, step-by-step progress tracking, and disciplined training tailored to their goals.",
+  founderPhoto: "/images/owner.jpg",
+  founderDisciplines: [
+    {
+      title: "Fitness",
+      desc: "Full-body functional workouts, calisthenics, core stability, and cardio endurance tailored to each student."
+    },
+    {
+      title: "Yoga",
+      desc: "Guided flexibility training, posture alignment, joint mobility, and mindful breathing techniques."
+    },
+    {
+      title: "Martial Arts",
+      desc: "Practical striking techniques, boxing footwork, kick combinations, and real-world personal self-defense."
+    },
+    {
+      title: "Silambam",
+      desc: "Classical Tamil staff martial art, Kaalvari footwork, rapid double-hand stick spins, and combat drills."
+    }
+  ]
+};

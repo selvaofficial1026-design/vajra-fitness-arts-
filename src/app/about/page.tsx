@@ -1,12 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import SectionHeading from "@/components/SectionHeading";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Shield, Sparkles, Flame, Target, CheckCircle2, ArrowRight, MessageCircle } from "lucide-react";
+import { DEFAULT_ABOUT_SETTINGS, AboutSettings } from "@/lib/cmsDefaults";
 
-const founderDisciplines = [
+const defaultDisciplines = [
   {
     title: "Fitness",
     desc: "Full-body functional workouts, calisthenics, core stability, and cardio endurance tailored to each student."
@@ -53,13 +54,31 @@ const pillars = [
 ];
 
 export default function AboutPage() {
+  const [aboutData, setAboutData] = useState<AboutSettings>(DEFAULT_ABOUT_SETTINGS);
+
+  useEffect(() => {
+    fetch("/api/portal/cms?type=about")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.aboutSettings) {
+          setAboutData(data.aboutSettings);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const disciplines =
+    aboutData.founderDisciplines && aboutData.founderDisciplines.length > 0
+      ? aboutData.founderDisciplines
+      : defaultDisciplines;
+
   return (
     <main className="min-h-screen flex flex-col pt-0 bg-background relative overflow-hidden">
       {/* Hero Section with Warm Cinematic Grade */}
       <section className="relative h-[48vh] sm:h-[55vh] md:h-[65vh] min-h-[360px] sm:min-h-[420px] w-full flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image
-            src="/images/vajra_hero.jpg"
+            src={aboutData.heroImage || "/images/vajra_hero.jpg"}
             alt="Vajra Fitness Arts Story"
             fill
             priority
@@ -74,10 +93,10 @@ export default function AboutPage() {
             About Our Academy
           </span>
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-serif text-white mb-3 sm:mb-4 italic leading-tight">
-            The Vajra Journey
+            {aboutData.heroTitle || "The Vajra Journey"}
           </h1>
           <p className="text-white/70 max-w-xl mx-auto text-xs sm:text-sm md:text-base font-light px-2">
-            Promoting health, discipline, and traditional martial arts for modern everyday life.
+            {aboutData.heroSubtitle || "Promoting health, discipline, and traditional martial arts for modern everyday life."}
           </p>
         </div>
       </section>
@@ -93,30 +112,36 @@ export default function AboutPage() {
               transition={{ duration: 0.9 }}
             >
               <SectionHeading
-                subtitle="Our Background"
-                title="Building Strength and Character Through Movement Arts"
+                subtitle={aboutData.storySubtitle || "Our Background"}
+                title={aboutData.storyTitle || "Building Strength and Character Through Movement Arts"}
                 centered={false}
                 className="mb-8 sm:mb-12 md:mb-16"
               />
               <p className="text-coffee-dark/80 text-base sm:text-lg md:text-xl font-light leading-relaxed mb-4 sm:mb-6">
-                Vajra Fitness Arts was founded to provide quality training in traditional Tamil martial arts alongside modern physical conditioning and yoga.
+                {aboutData.storyP1}
               </p>
               <p className="text-coffee-dark/65 leading-relaxed mb-6 sm:mb-8 text-xs sm:text-sm md:text-base font-light">
-                We believe fitness is about more than just appearance. Through Silambam, Yoga, Martial Arts, and Functional Fitness, our students develop agility, practical strength, self-confidence, and a focused mind.
+                {aboutData.storyP2}
               </p>
 
               {/* Stat Counters - Perfectly aligned across all viewports with elegant dividers */}
               <div className="grid grid-cols-3 gap-2 sm:gap-6 pt-6 sm:pt-8 border-t border-cream">
                 <div className="text-left">
-                  <h4 className="text-xl sm:text-3xl md:text-4xl font-serif text-coffee-dark italic mb-1 font-bold">2,500+</h4>
+                  <h4 className="text-xl sm:text-3xl md:text-4xl font-serif text-coffee-dark italic mb-1 font-bold">
+                    {aboutData.statStudents || "2,500+"}
+                  </h4>
                   <p className="text-[8px] sm:text-[9px] md:text-[10px] uppercase tracking-wider sm:tracking-widest text-coffee-dark/60 font-bold">Students Trained</p>
                 </div>
                 <div className="text-left border-l border-cream pl-3 sm:pl-6">
-                  <h4 className="text-xl sm:text-3xl md:text-4xl font-serif text-coffee-dark italic mb-1 font-bold">100%</h4>
+                  <h4 className="text-xl sm:text-3xl md:text-4xl font-serif text-coffee-dark italic mb-1 font-bold">
+                    {aboutData.statCoaching || "100%"}
+                  </h4>
                   <p className="text-[8px] sm:text-[9px] md:text-[10px] uppercase tracking-wider sm:tracking-widest text-coffee-dark/60 font-bold">Direct Coaching</p>
                 </div>
                 <div className="text-left border-l border-cream pl-3 sm:pl-6">
-                  <h4 className="text-xl sm:text-3xl md:text-4xl font-serif text-coffee-dark italic mb-1 font-bold">4</h4>
+                  <h4 className="text-xl sm:text-3xl md:text-4xl font-serif text-coffee-dark italic mb-1 font-bold">
+                    {aboutData.statDisciplines || "4"}
+                  </h4>
                   <p className="text-[8px] sm:text-[9px] md:text-[10px] uppercase tracking-wider sm:tracking-widest text-coffee-dark/60 font-bold">Disciplines</p>
                 </div>
               </div>
@@ -124,12 +149,12 @@ export default function AboutPage() {
               {/* Story Section Quote Block with Warm Cappuccino Accent Border */}
               <div className="mt-8 sm:mt-12 p-5 sm:p-7 bg-gradient-to-r from-cream/40 via-cream/15 to-transparent border-l-4 border-cappuccino rounded-r-2xl sm:rounded-r-3xl">
                 <p className="text-base sm:text-lg md:text-xl font-serif text-coffee-dark italic leading-relaxed">
-                  &ldquo;Consistent practice builds both physical strength and a peaceful mind.&rdquo;
+                  &ldquo;{aboutData.storyQuote}&rdquo;
                 </p>
                 <div className="mt-3 sm:mt-4 flex items-center gap-3 sm:gap-4">
                   <div className="w-8 sm:w-12 h-[1px] bg-cappuccino shrink-0" />
                   <span className="text-[9px] sm:text-[10px] uppercase tracking-[0.2em] sm:tracking-[0.3em] font-bold text-coffee-dark/70">
-                    Founder &amp; Head Coach, Vajra Fitness Arts
+                    {aboutData.storyQuoteAuthor}
                   </span>
                 </div>
               </div>
@@ -137,7 +162,7 @@ export default function AboutPage() {
 
             <div className="relative aspect-[4/3] sm:aspect-square w-full max-w-md mx-auto lg:max-w-none rounded-2xl sm:rounded-[3rem] overflow-hidden shadow-premium hover:shadow-[0_20px_50px_rgba(200,149,95,0.25)] group transition-all duration-500 bg-coffee-dark border border-cream hover:border-cappuccino/50">
               <Image
-                src="/images/owner.jpg"
+                src={aboutData.storyImage || "/images/owner.jpg"}
                 alt="Vajra Fitness Arts Founder &amp; Head Coach"
                 fill
                 quality={100}
@@ -152,7 +177,7 @@ export default function AboutPage() {
       <section className="py-16 sm:py-24 md:py-32 px-4 sm:px-6 md:px-12 bg-background relative z-10">
         <div className="max-w-6xl mx-auto">
           <SectionHeading
-            subtitle="Founder &amp; Head Coach"
+            subtitle={aboutData.founderRole || "Founder & Head Coach"}
             title="One Dedicated Trainer for All Disciplines"
             className="mb-8 sm:mb-12 md:mb-16"
           />
@@ -169,8 +194,8 @@ export default function AboutPage() {
               <div className="lg:col-span-5 flex flex-col items-center">
                 <div className="relative w-full max-w-[240px] sm:max-w-[280px] md:max-w-[300px] aspect-[4/5] rounded-2xl sm:rounded-[2.5rem] overflow-hidden shadow-2xl border-2 border-cappuccino/50 group bg-coffee-dark">
                   <Image
-                    src="/images/owner.jpg"
-                    alt="Vajra Fitness Arts Founder &amp; Head Coach"
+                    src={aboutData.founderPhoto || "/images/owner.jpg"}
+                    alt={aboutData.founderName || "Vajra Fitness Arts Founder"}
                     fill
                     priority
                     className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
@@ -179,23 +204,23 @@ export default function AboutPage() {
                   <div className="absolute inset-0 bg-gradient-to-t from-[#241A1A]/90 via-[#241A1A]/25 to-transparent" />
                   <div className="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 right-4 sm:right-6">
                     <span className="text-cappuccino text-[9px] uppercase tracking-[0.25em] sm:tracking-[0.3em] font-bold block mb-1">
-                      Founder &amp; Head Coach
+                      {aboutData.founderRole || "Founder & Head Coach"}
                     </span>
                     <h3 className="text-xl sm:text-2xl font-serif text-white italic font-bold">
-                      Vajra Fitness Arts
+                      {aboutData.founderName || "Vajra Fitness Arts"}
                     </h3>
                     <p className="text-white/80 text-[11px] sm:text-xs mt-1">
-                      Sole Master Trainer for All Disciplines
+                      {aboutData.founderTagline || "Sole Master Trainer for All Disciplines"}
                     </p>
                   </div>
                 </div>
 
                 <div className="mt-4 sm:mt-6 flex flex-wrap justify-center gap-2 sm:gap-3 text-center">
                   <div className="px-2.5 py-1 rounded-full bg-cream/60 border border-cappuccino/30 text-[9px] font-bold uppercase tracking-wider text-coffee-dark">
-                    100% Direct Coaching
+                    {aboutData.statCoaching || "100%"} Direct Coaching
                   </div>
                   <div className="px-2.5 py-1 rounded-full bg-cream/60 border border-cappuccino/30 text-[9px] font-bold uppercase tracking-wider text-coffee-dark">
-                    All 4 Disciplines
+                    All {aboutData.statDisciplines || "4"} Disciplines
                   </div>
                 </div>
               </div>
@@ -207,16 +232,16 @@ export default function AboutPage() {
                     Personalized Training Approach
                   </span>
                   <h3 className="text-xl sm:text-3xl md:text-4xl font-serif text-coffee-dark italic font-bold leading-tight mb-3 sm:mb-4 text-center sm:text-left">
-                    Learn Directly from the Founder
+                    {aboutData.founderHeading || "Learn Directly from the Founder"}
                   </h3>
                   <p className="text-coffee-dark/75 leading-relaxed text-xs sm:text-sm md:text-base font-light text-center sm:text-left">
-                    At Vajra Fitness Arts, you receive direct, personalized instruction from our founder across all four disciplines—Fitness, Yoga, Martial Arts, and Silambam. Every student gets dedicated one-on-one attention, step-by-step progress tracking, and disciplined training tailored to their goals.
+                    {aboutData.founderBio}
                   </p>
                 </div>
 
                 {/* 4 Disciplines Grid - Balanced and aligned with equal height and hover highlights */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 pt-1 sm:pt-2">
-                  {founderDisciplines.map((disc, idx) => (
+                  {disciplines.map((disc, idx) => (
                     <div
                       key={idx}
                       className="p-4 sm:p-5 rounded-xl sm:rounded-2xl bg-background/80 hover:bg-background border border-cream hover:border-cappuccino/50 transition-all duration-300 flex flex-col justify-start h-full shadow-sm hover:shadow-md"

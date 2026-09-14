@@ -344,7 +344,11 @@ export default function AdminProfileModal({
                   </motion.div>
                 )}
 
-                <form onSubmit={handleChangePassword} className="space-y-3 pb-1">
+                <form onSubmit={handleChangePassword} autoComplete="off" data-lpignore="true" className="space-y-3 pb-1">
+                  {/* Anti-autofill trap fields for browser password managers */}
+                  <input type="text" name="anti_autofill_user_trap" style={{ display: "none" }} tabIndex={-1} autoComplete="off" />
+                  <input type="password" name="anti_autofill_pass_trap" style={{ display: "none" }} tabIndex={-1} autoComplete="off" />
+
                   {/* Current Password */}
                   <div>
                     <label className="text-[10px] uppercase tracking-[0.18em] text-coffee-dark/70 font-bold block mb-1">
@@ -354,9 +358,12 @@ export default function AdminProfileModal({
                       <Lock size={14} className="absolute left-3 text-cappuccino pointer-events-none" />
                       <input
                         type={showCurrentPass ? "text" : "password"}
+                        name="vajra_admin_cur_pwd"
                         value={currentPassword}
                         onChange={(e) => setCurrentPassword(e.target.value)}
-                        autoComplete="current-password"
+                        autoComplete="new-password"
+                        data-lpignore="true"
+                        data-form-type="other"
                         className="w-full bg-white/80 border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-10 py-2.5 sm:py-2 text-sm sm:text-xs focus:outline-none transition-all shadow-xs"
                         required
                       />
@@ -380,9 +387,12 @@ export default function AdminProfileModal({
                       <KeyRound size={14} className="absolute left-3 text-cappuccino pointer-events-none" />
                       <input
                         type={showNewPass ? "text" : "password"}
+                        name="vajra_admin_new_pwd"
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
                         autoComplete="new-password"
+                        data-lpignore="true"
+                        data-form-type="other"
                         className="w-full bg-white/80 border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-10 py-2.5 sm:py-2 text-sm sm:text-xs focus:outline-none transition-all shadow-xs"
                         required
                         minLength={4}
@@ -410,9 +420,12 @@ export default function AdminProfileModal({
                       <Lock size={14} className="absolute left-3 text-cappuccino pointer-events-none" />
                       <input
                         type={showConfirmPass ? "text" : "password"}
+                        name="vajra_admin_cnf_pwd"
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         autoComplete="new-password"
+                        data-lpignore="true"
+                        data-form-type="other"
                         className="w-full bg-white/80 border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-10 py-2.5 sm:py-2 text-sm sm:text-xs focus:outline-none transition-all shadow-xs"
                         required
                       />
@@ -486,7 +499,7 @@ export default function AdminProfileModal({
                   </motion.div>
                 )}
 
-                <form onSubmit={handleUpdateProfile} className="space-y-3 pb-1">
+                <form onSubmit={handleUpdateProfile} autoComplete="off" data-lpignore="true" className="space-y-3 pb-1">
                   {/* Master Username (Immutable) */}
                   <div>
                     <label className="text-[10px] uppercase tracking-[0.18em] text-coffee-dark/70 font-bold block mb-1">
@@ -513,9 +526,11 @@ export default function AdminProfileModal({
                       <User size={14} className="absolute left-3 text-cappuccino pointer-events-none" />
                       <input
                         type="text"
+                        name="vajra_admin_prof_name"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        autoComplete="name"
+                        autoComplete="off"
+                        data-lpignore="true"
                         className="w-full bg-white/80 border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-3 py-2.5 sm:py-2 text-sm sm:text-xs focus:outline-none transition-all shadow-xs"
                         required
                       />

@@ -15,7 +15,7 @@ import {
   Image as ImageIcon
 } from "lucide-react";
 
-export type AspectRatioType = "16:9" | "4:3" | "1:1" | "free";
+export type AspectRatioType = "16:9" | "4:3" | "4:5" | "1:1" | "free";
 
 interface ImageCropModalProps {
   isOpen: boolean;
@@ -73,6 +73,7 @@ export default function ImageCropModal({
   const getRatioNum = useCallback((): number => {
     if (aspectRatio === "16:9") return 16 / 9;
     if (aspectRatio === "4:3") return 4 / 3;
+    if (aspectRatio === "4:5") return 4 / 5;
     if (aspectRatio === "1:1") return 1;
     if (imageRef.current && imageRef.current.naturalWidth && imageRef.current.naturalHeight) {
       return imageRef.current.naturalWidth / imageRef.current.naturalHeight;
@@ -343,7 +344,7 @@ export default function ImageCropModal({
             {/* Aspect Ratio Selector Pills */}
             <div className="flex items-center justify-between gap-2 flex-wrap">
               <div className="flex items-center gap-1.5 bg-black/30 p-1 rounded-xl border border-white/10">
-                {(["16:9", "4:3", "1:1", "free"] as AspectRatioType[]).map((ratio) => (
+                {(["16:9", "4:3", "4:5", "1:1", "free"] as AspectRatioType[]).map((ratio) => (
                   <button
                     key={ratio}
                     type="button"
@@ -355,7 +356,8 @@ export default function ImageCropModal({
                     }`}
                   >
                     {ratio === "16:9" && "16:9 (Courses)"}
-                    {ratio === "4:3" && "4:3 (Gallery)"}
+                    {ratio === "4:3" && "4:3 (Gallery/Story)"}
+                    {ratio === "4:5" && "4:5 (Portrait)"}
                     {ratio === "1:1" && "1:1 (Square)"}
                     {ratio === "free" && "Original"}
                   </button>

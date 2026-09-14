@@ -14,7 +14,12 @@ import {
   Check,
   LogOut,
   Sparkles,
-  ShieldCheck
+  ShieldCheck,
+  KeyRound,
+  Lock,
+  Eye,
+  EyeOff,
+  AlertCircle
 } from "lucide-react";
 import { Student } from "@/lib/portalStore";
 
@@ -23,15 +28,29 @@ interface StudentProfileModalProps {
   onClose: () => void;
   student: Student;
   onLogout: () => void;
+  onStudentUpdated?: (updated: Student) => void;
 }
 
 export default function StudentProfileModal({
   isOpen,
   onClose,
   student,
-  onLogout
+  onLogout,
+  onStudentUpdated
 }: StudentProfileModalProps) {
+  const [activeSubTab, setActiveSubTab] = useState<"profile" | "password">("profile");
   const [copiedCode, setCopiedCode] = useState(false);
+
+  // Password change state
+  const [currentCode, setCurrentCode] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showCurrentCode, setShowCurrentCode] = useState(false);
+  const [showNewPass, setShowNewPass] = useState(false);
+  const [showConfirmPass, setShowConfirmPass] = useState(false);
+  const [passLoading, setPassLoading] = useState(false);
+  const [passSuccess, setPassSuccess] = useState<string | null>(null);
+  const [passError, setPassError] = useState<string | null>(null);
 
   const activeCode = student.permanentCode || student.tempCode;
 
@@ -43,6 +62,58 @@ export default function StudentProfileModal({
       setTimeout(() => setCopiedCode(false), 2000);
     } catch {
       // Fallback
+    }
+  };
+
+  const handleChangePassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setPassError(null);
+    setPassSuccess(null);
+
+    if (!currentCode.trim()) {
+      setPassError("Please enter your current Student ID / Code (e.g. vajra-xxxx).");
+      return;
+    }
+
+    if (!newPassword || newPassword.trim().length < 4) {
+      setPassError("New password must be at least 4 characters long.");
+      return;
+    }
+
+    if (newPassword.trim() !== confirmPassword.trim()) {
+      setPassError("New password and confirm password do not match.");
+      return;
+    }
+
+    setPassLoading(true);
+    try {
+      const res = await fetch("/api/portal/auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "change_student_password",
+          studentId: student.id,
+          currentCode: currentCode.trim(),
+          newPassword: newPassword.trim()
+        })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setPassSuccess(data.message || "Password updated successfully!");
+        setCurrentCode("");
+        setNewPassword("");
+        setConfirmPassword("");
+        if (data.student && onStudentUpdated) {
+          onStudentUpdated(data.student);
+        }
+        setTimeout(() => setPassSuccess(null), 5000);
+      } else {
+        setPassError(data.error || "Failed to update password. Please check your current code.");
+      }
+    } catch {
+      setPassError("Network error. Please try again.");
+    } finally {
+      setPassLoading(false);
     }
   };
 
@@ -105,107 +176,285 @@ export default function StudentProfileModal({
               </button>
             </div>
 
+            {/* Sub-Navigation Tabs */}
+            <div className="relative z-10 flex items-center gap-1 p-1 bg-white/70 backdrop-blur-md rounded-full border border-coffee-dark/10 shadow-xs mx-3 xs:mx-4 sm:mx-6 my-2 shrink-0">
+              <button
+                type="button"
+                onClick={() => setActiveSubTab("profile")}
+                className={`flex-1 py-1.5 px-2 rounded-full text-[10px] sm:text-[11px] font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer min-h-[34px] ${
+                  activeSubTab === "profile"
+                    ? "bg-coffee-dark text-cappuccino shadow-sm"
+                    : "text-coffee-dark/60 hover:text-coffee-dark hover:bg-black/5"
+                }`}
+              >
+                <User size={12} className="shrink-0" />
+                <span>Profile &amp; ID</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveSubTab("password")}
+                className={`flex-1 py-1.5 px-2 rounded-full text-[10px] sm:text-[11px] font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer min-h-[34px] ${
+                  activeSubTab === "password"
+                    ? "bg-coffee-dark text-cappuccino shadow-sm"
+                    : "text-coffee-dark/60 hover:text-coffee-dark hover:bg-black/5"
+                }`}
+              >
+                <KeyRound size={12} className="shrink-0" />
+                <span>Change Password</span>
+              </button>
+            </div>
+
             {/* Modal Scrollable Content */}
             <div className="p-3 xs:p-4 sm:p-6 space-y-3.5 xs:space-y-4 sm:space-y-5 overflow-y-auto flex-1 relative z-10 overscroll-contain">
-              {/* Permanent Code Spotlight Card */}
-              <div className="bg-white/80 p-3.5 xs:p-4 sm:p-4.5 rounded-2xl border border-cappuccino/30 flex flex-col xs:flex-row xs:items-center justify-between gap-3 shadow-xs min-w-0">
-                <div className="min-w-0 flex-1">
-                  <span className="text-[9px] uppercase tracking-[0.2em] text-cappuccino font-bold block mb-0.5">
-                    Official Student ID
-                  </span>
-                  <div className="text-lg xs:text-xl sm:text-2xl font-mono font-extrabold text-coffee-dark tracking-wider sm:tracking-widest break-all">
-                    {activeCode}
-                  </div>
-                  <p className="text-[10px] xs:text-[10.5px] text-coffee-dark/60 leading-snug">
-                    Use this ID to sign in to your student portal
-                  </p>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={handleCopyCode}
-                  className="w-full xs:w-auto min-h-[40px] px-3.5 py-2 rounded-xl bg-cappuccino/20 hover:bg-cappuccino hover:text-coffee-dark text-coffee-dark font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all cursor-pointer shrink-0 active:scale-95 touch-manipulation border border-cappuccino/40 shadow-xs"
-                  title="Copy Student ID"
-                >
-                  {copiedCode ? <Check size={14} className="text-emerald-700" /> : <Copy size={14} />}
-                  <span>{copiedCode ? "Copied" : "Copy"}</span>
-                </button>
-              </div>
-
-              {/* Student Details Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3 text-xs">
-                {/* Discipline */}
-                <div className="p-3 xs:p-3.5 rounded-xl bg-white/70 border border-coffee-dark/10 space-y-1 shadow-2xs min-w-0">
-                  <span className="text-[9.5px] uppercase tracking-wider text-coffee-dark/50 font-bold block">
-                    Enrolled Discipline
-                  </span>
-                  <p className="text-xs xs:text-sm font-bold text-coffee-dark flex items-center gap-2 min-w-0">
-                    <Award size={15} className="text-cappuccino shrink-0" />
-                    <span className="truncate min-w-0">{student.course} Academy</span>
-                  </p>
-                </div>
-
-                {/* Batch Timing */}
-                <div className="p-3 xs:p-3.5 rounded-xl bg-white/70 border border-coffee-dark/10 space-y-1 shadow-2xs min-w-0">
-                  <span className="text-[9.5px] uppercase tracking-wider text-coffee-dark/50 font-bold block">
-                    Daily Batch Slot
-                  </span>
-                  <p className="text-xs xs:text-sm font-bold text-coffee-dark flex items-center gap-2 font-mono min-w-0">
-                    <Clock size={15} className="text-cappuccino shrink-0" />
-                    <span className="truncate min-w-0">{student.batch}</span>
-                  </p>
-                </div>
-
-                {/* Phone */}
-                <div className="p-3 xs:p-3.5 rounded-xl bg-white/70 border border-coffee-dark/10 space-y-1 shadow-2xs min-w-0">
-                  <span className="text-[9.5px] uppercase tracking-wider text-coffee-dark/50 font-bold block">
-                    Phone Number
-                  </span>
-                  <p className="text-xs xs:text-sm font-semibold text-coffee-dark flex items-center gap-2 min-w-0">
-                    <Phone size={15} className="text-cappuccino shrink-0" />
-                    <span className="break-all min-w-0">+91 {student.phone}</span>
-                  </p>
-                </div>
-
-                {/* Location */}
-                <div className="p-3 xs:p-3.5 rounded-xl bg-white/70 border border-coffee-dark/10 space-y-1 shadow-2xs min-w-0">
-                  <span className="text-[9.5px] uppercase tracking-wider text-coffee-dark/50 font-bold block">
-                    Location / Studio
-                  </span>
-                  <p className="text-xs xs:text-sm font-semibold text-coffee-dark flex items-center gap-2 min-w-0">
-                    <MapPin size={15} className="text-cappuccino shrink-0" />
-                    <span className="truncate min-w-0">{student.city || "Ariyalur Main Studio"}</span>
-                  </p>
-                </div>
-
-                {/* Age & Gender (if provided) */}
-                {(student.age || student.gender) && (
-                  <div className="p-3 xs:p-3.5 rounded-xl bg-white/70 border border-coffee-dark/10 space-y-1 sm:col-span-2 shadow-2xs min-w-0">
-                    <span className="text-[9.5px] uppercase tracking-wider text-coffee-dark/50 font-bold block">
-                      Demographics
-                    </span>
-                    <p className="text-xs font-semibold text-coffee-dark flex items-center gap-2 min-w-0">
-                      <User size={14} className="text-cappuccino shrink-0" />
-                      <span className="break-words min-w-0">
-                        {[student.age ? `Age: ${student.age}` : null, student.gender ? `Gender: ${student.gender}` : null]
-                          .filter(Boolean)
-                          .join(" • ")}
+              {/* SUB-TAB 1: PROFILE & ID */}
+              {activeSubTab === "profile" && (
+                <div className="space-y-3.5 xs:space-y-4">
+                  {/* Permanent Code Spotlight Card */}
+                  <div className="bg-white/80 p-3.5 xs:p-4 sm:p-4.5 rounded-2xl border border-cappuccino/30 flex flex-col xs:flex-row xs:items-center justify-between gap-3 shadow-xs min-w-0">
+                    <div className="min-w-0 flex-1">
+                      <span className="text-[9px] uppercase tracking-[0.2em] text-cappuccino font-bold block mb-0.5">
+                        Official Student ID
                       </span>
+                      <div className="text-lg xs:text-xl sm:text-2xl font-mono font-extrabold text-coffee-dark tracking-wider sm:tracking-widest break-all">
+                        {activeCode}
+                      </div>
+                      <p className="text-[10px] xs:text-[10.5px] text-coffee-dark/60 leading-snug">
+                        Use this ID or your custom password to sign in
+                      </p>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={handleCopyCode}
+                      className="w-full xs:w-auto min-h-[40px] px-3.5 py-2 rounded-xl bg-cappuccino/20 hover:bg-cappuccino hover:text-coffee-dark text-coffee-dark font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all cursor-pointer shrink-0 active:scale-95 touch-manipulation border border-cappuccino/40 shadow-xs"
+                      title="Copy Student ID"
+                    >
+                      {copiedCode ? <Check size={14} className="text-emerald-700" /> : <Copy size={14} />}
+                      <span>{copiedCode ? "Copied" : "Copy"}</span>
+                    </button>
+                  </div>
+
+                  {/* Student Details Grid */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3 text-xs">
+                    {/* Discipline */}
+                    <div className="p-3 xs:p-3.5 rounded-xl bg-white/70 border border-coffee-dark/10 space-y-1 shadow-2xs min-w-0">
+                      <span className="text-[9.5px] uppercase tracking-wider text-coffee-dark/50 font-bold block">
+                        Enrolled Discipline
+                      </span>
+                      <p className="text-xs xs:text-sm font-bold text-coffee-dark flex items-center gap-2 min-w-0">
+                        <Award size={15} className="text-cappuccino shrink-0" />
+                        <span className="truncate min-w-0">{student.course} Academy</span>
+                      </p>
+                    </div>
+
+                    {/* Batch Timing */}
+                    <div className="p-3 xs:p-3.5 rounded-xl bg-white/70 border border-coffee-dark/10 space-y-1 shadow-2xs min-w-0">
+                      <span className="text-[9.5px] uppercase tracking-wider text-coffee-dark/50 font-bold block">
+                        Daily Batch Slot
+                      </span>
+                      <p className="text-xs xs:text-sm font-bold text-coffee-dark flex items-center gap-2 font-mono min-w-0">
+                        <Clock size={15} className="text-cappuccino shrink-0" />
+                        <span className="truncate min-w-0">{student.batch}</span>
+                      </p>
+                    </div>
+
+                    {/* Phone */}
+                    <div className="p-3 xs:p-3.5 rounded-xl bg-white/70 border border-coffee-dark/10 space-y-1 shadow-2xs min-w-0">
+                      <span className="text-[9.5px] uppercase tracking-wider text-coffee-dark/50 font-bold block">
+                        Phone Number
+                      </span>
+                      <p className="text-xs xs:text-sm font-semibold text-coffee-dark flex items-center gap-2 min-w-0">
+                        <Phone size={15} className="text-cappuccino shrink-0" />
+                        <span className="break-all min-w-0">+91 {student.phone}</span>
+                      </p>
+                    </div>
+
+                    {/* Location */}
+                    <div className="p-3 xs:p-3.5 rounded-xl bg-white/70 border border-coffee-dark/10 space-y-1 shadow-2xs min-w-0">
+                      <span className="text-[9.5px] uppercase tracking-wider text-coffee-dark/50 font-bold block">
+                        Location / Studio
+                      </span>
+                      <p className="text-xs xs:text-sm font-semibold text-coffee-dark flex items-center gap-2 min-w-0">
+                        <MapPin size={15} className="text-cappuccino shrink-0" />
+                        <span className="truncate min-w-0">{student.city || "Ariyalur Main Studio"}</span>
+                      </p>
+                    </div>
+
+                    {/* Age & Gender (if provided) */}
+                    {(student.age || student.gender) && (
+                      <div className="p-3 xs:p-3.5 rounded-xl bg-white/70 border border-coffee-dark/10 space-y-1 sm:col-span-2 shadow-2xs min-w-0">
+                        <span className="text-[9.5px] uppercase tracking-wider text-coffee-dark/50 font-bold block">
+                          Demographics
+                        </span>
+                        <p className="text-xs font-semibold text-coffee-dark flex items-center gap-2 min-w-0">
+                          <User size={14} className="text-cappuccino shrink-0" />
+                          <span className="break-words min-w-0">
+                            {[student.age ? `Age: ${student.age}` : null, student.gender ? `Gender: ${student.gender}` : null]
+                              .filter(Boolean)
+                              .join(" • ")}
+                          </span>
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Academy Creed */}
+                  <div className="p-3.5 xs:p-4 rounded-2xl bg-white/70 border border-coffee-dark/10 space-y-1.5 shadow-2xs min-w-0">
+                    <div className="flex items-center gap-2 text-coffee-dark font-serif font-bold text-xs">
+                      <Sparkles size={14} className="text-cappuccino shrink-0" />
+                      <span>Vajra Training Creed</span>
+                    </div>
+                    <p className="text-xs text-coffee-dark/70 leading-relaxed font-light italic break-words">
+                      &ldquo;Consistency over intensity. Discipline over emotion. Respect for the ancient arts and dedication to daily physical mastery.&rdquo;
                     </p>
                   </div>
-                )}
-              </div>
-
-              {/* Academy Creed */}
-              <div className="p-3.5 xs:p-4 rounded-2xl bg-white/70 border border-coffee-dark/10 space-y-1.5 shadow-2xs min-w-0">
-                <div className="flex items-center gap-2 text-coffee-dark font-serif font-bold text-xs">
-                  <Sparkles size={14} className="text-cappuccino shrink-0" />
-                  <span>Vajra Training Creed</span>
                 </div>
-                <p className="text-xs text-coffee-dark/70 leading-relaxed font-light italic break-words">
-                  &ldquo;Consistency over intensity. Discipline over emotion. Respect for the ancient arts and dedication to daily physical mastery.&rdquo;
-                </p>
-              </div>
+              )}
+
+              {/* SUB-TAB 2: PASSWORD CHANGE */}
+              {activeSubTab === "password" && (
+                <div className="space-y-4">
+                  <div className="bg-white/80 p-3.5 xs:p-4 rounded-2xl border border-coffee-dark/15 space-y-1">
+                    <div className="flex items-center gap-2">
+                      <KeyRound size={16} className="text-cappuccino" />
+                      <h4 className="font-serif font-bold text-sm text-coffee-dark">
+                        Set Personal Student Password
+                      </h4>
+                    </div>
+                    <p className="text-xs text-coffee-dark/65 font-light leading-relaxed">
+                      Enter your current Student ID code (<code>{activeCode}</code>) and choose a new password. After updating, you can use either this password or your Student ID to sign in.
+                    </p>
+                  </div>
+
+                  {passSuccess && (
+                    <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-800 text-xs flex items-start gap-2">
+                      <CheckCircle2 size={15} className="shrink-0 mt-0.5 text-emerald-600" />
+                      <span>{passSuccess}</span>
+                    </div>
+                  )}
+
+                  {passError && (
+                    <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-start gap-2">
+                      <AlertCircle size={15} className="shrink-0 mt-0.5 text-red-500" />
+                      <span>{passError}</span>
+                    </div>
+                  )}
+
+                  <form onSubmit={handleChangePassword} autoComplete="off" data-lpignore="true" className="space-y-3.5">
+                    {/* Anti-autofill trap */}
+                    <input type="text" name="student_trap_user" style={{ display: "none" }} tabIndex={-1} autoComplete="off" />
+                    <input type="password" name="student_trap_pass" style={{ display: "none" }} tabIndex={-1} autoComplete="off" />
+
+                    {/* Current Code / Student ID */}
+                    <div>
+                      <label className="text-[10px] uppercase tracking-wider text-coffee-dark/70 font-bold block mb-1">
+                        Current Student ID / Code *
+                      </label>
+                      <div className="relative flex items-center">
+                        <ShieldCheck size={14} className="absolute left-3 text-cappuccino pointer-events-none" />
+                        <input
+                          type={showCurrentCode ? "text" : "password"}
+                          name="vajra_stud_cur_code"
+                          value={currentCode}
+                          onChange={(e) => setCurrentCode(e.target.value)}
+                          placeholder={`e.g. ${activeCode || "vajra-xxxx"}`}
+                          autoComplete="new-password"
+                          data-lpignore="true"
+                          data-form-type="other"
+                          className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-10 py-2.5 text-xs focus:outline-none transition-all shadow-xs"
+                          required
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowCurrentCode(!showCurrentCode)}
+                          className="absolute right-0 inset-y-0 w-10 flex items-center justify-center text-coffee-dark/40 hover:text-coffee-dark active:text-coffee-dark transition-colors cursor-pointer touch-manipulation"
+                          aria-label={showCurrentCode ? "Hide current code" : "Show current code"}
+                        >
+                          {showCurrentCode ? <EyeOff size={15} /> : <Eye size={15} />}
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* New Password */}
+                    <div>
+                      <label className="text-[10px] uppercase tracking-wider text-coffee-dark/70 font-bold block mb-1">
+                        New Password *
+                      </label>
+                      <div className="relative flex items-center">
+                        <Lock size={14} className="absolute left-3 text-cappuccino pointer-events-none" />
+                        <input
+                          type={showNewPass ? "text" : "password"}
+                          name="vajra_stud_new_pwd"
+                          value={newPassword}
+                          onChange={(e) => setNewPassword(e.target.value)}
+                          placeholder="At least 4 characters"
+                          autoComplete="new-password"
+                          data-lpignore="true"
+                          data-form-type="other"
+                          className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-10 py-2.5 text-xs focus:outline-none transition-all shadow-xs"
+                          required
+                          minLength={4}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowNewPass(!showNewPass)}
+                          className="absolute right-0 inset-y-0 w-10 flex items-center justify-center text-coffee-dark/40 hover:text-coffee-dark active:text-coffee-dark transition-colors cursor-pointer touch-manipulation"
+                          aria-label={showNewPass ? "Hide new password" : "Show new password"}
+                        >
+                          {showNewPass ? <EyeOff size={15} /> : <Eye size={15} />}
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Confirm New Password */}
+                    <div>
+                      <label className="text-[10px] uppercase tracking-wider text-coffee-dark/70 font-bold block mb-1">
+                        Confirm New Password *
+                      </label>
+                      <div className="relative flex items-center">
+                        <Lock size={14} className="absolute left-3 text-cappuccino pointer-events-none" />
+                        <input
+                          type={showConfirmPass ? "text" : "password"}
+                          name="vajra_stud_cnf_pwd"
+                          value={confirmPassword}
+                          onChange={(e) => setConfirmPassword(e.target.value)}
+                          placeholder="Re-enter new password"
+                          autoComplete="new-password"
+                          data-lpignore="true"
+                          data-form-type="other"
+                          className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-10 py-2.5 text-xs focus:outline-none transition-all shadow-xs"
+                          required
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowConfirmPass(!showConfirmPass)}
+                          className="absolute right-0 inset-y-0 w-10 flex items-center justify-center text-coffee-dark/40 hover:text-coffee-dark active:text-coffee-dark transition-colors cursor-pointer touch-manipulation"
+                          aria-label={showConfirmPass ? "Hide confirm password" : "Show confirm password"}
+                        >
+                          {showConfirmPass ? <EyeOff size={15} /> : <Eye size={15} />}
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="pt-2">
+                      <button
+                        type="submit"
+                        disabled={passLoading}
+                        className="w-full py-3 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-extrabold text-xs uppercase tracking-[0.18em] rounded-full transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50 min-h-[44px] touch-manipulation"
+                      >
+                        {passLoading ? (
+                          <span>Updating Password...</span>
+                        ) : (
+                          <>
+                            <KeyRound size={13} />
+                            <span>Save Student Password</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              )}
             </div>
 
             {/* Modal Footer: Logout Action */}

@@ -43,7 +43,8 @@ import {
   Mail,
   Star,
   MessageSquareQuote,
-  Crop as CropToolIcon
+  Crop as CropToolIcon,
+  Info
 } from "lucide-react";
 import { cn, extractYoutubeId, formatTimeAgo } from "@/lib/utils";
 import {
@@ -55,10 +56,12 @@ import {
   GalleryItem,
   SiteSettings,
   ReviewItem,
+  AboutSettings,
   DEFAULT_COURSES,
   DEFAULT_GALLERY,
   DEFAULT_SITE_SETTINGS,
-  DEFAULT_REVIEWS
+  DEFAULT_REVIEWS,
+  DEFAULT_ABOUT_SETTINGS
 } from "@/lib/cmsDefaults";
 import PortalNavbar, { PortalNavItem } from "@/components/portal/PortalNavbar";
 import PortalLoadingScreen from "@/components/portal/PortalLoadingScreen";
@@ -85,11 +88,15 @@ export default function AdminPortalPage() {
   const [pageLoading, setPageLoading] = useState(true);
 
   // --- WEBSITE CMS & MAIN PORTAL MANAGER STATE ---
-  const [cmsSubTab, setCmsSubTab] = useState<"courses" | "gallery" | "reviews" | "settings">("courses");
+  const [cmsSubTab, setCmsSubTab] = useState<"courses" | "gallery" | "reviews" | "settings" | "about">("courses");
   const [courses, setCourses] = useState<CourseItem[]>(DEFAULT_COURSES);
   const [gallery, setGallery] = useState<GalleryItem[]>(DEFAULT_GALLERY);
   const [siteSettings, setSiteSettings] = useState<SiteSettings>(DEFAULT_SITE_SETTINGS);
   const [reviews, setReviews] = useState<ReviewItem[]>(DEFAULT_REVIEWS);
+  const [aboutSettings, setAboutSettings] = useState<AboutSettings>(DEFAULT_ABOUT_SETTINGS);
+  const [aboutSubmitting, setAboutSubmitting] = useState(false);
+  const [founderUploading, setFounderUploading] = useState(false);
+  const [storyUploading, setStoryUploading] = useState(false);
 
   // Review Form State
   const initialReviewForm = {
@@ -107,7 +114,7 @@ export default function AdminPortalPage() {
   // Image Cropper Modal State
   const [cropModalOpen, setCropModalOpen] = useState(false);
   const [cropImageSrc, setCropImageSrc] = useState<string | null>(null);
-  const [cropTarget, setCropTarget] = useState<"course" | "gallery">("course");
+  const [cropTarget, setCropTarget] = useState<"course" | "gallery" | "founder" | "story">("course");
   const [cropAspectRatio, setCropAspectRatio] = useState<AspectRatioType>("16:9");
   const [cropTitle, setCropTitle] = useState("Crop & Frame Image");
 
@@ -257,6 +264,9 @@ export default function AdminPortalPage() {
         }
         if (data.reviews && data.reviews.length > 0) {
           setReviews(data.reviews);
+        }
+        if (data.aboutSettings) {
+          setAboutSettings(data.aboutSettings);
         }
 
         if (data.adminConfig) {
@@ -496,7 +506,10 @@ export default function AdminPortalPage() {
   };
 
   // --- CMS & CROP HANDLERS ---
-  const handleInitiateCrop = (e: React.ChangeEvent<HTMLInputElement>, target: "course" | "gallery") => {
+  const handleInitiateCrop = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    target: "course" | "gallery" | "founder" | "story"
+  ) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -505,8 +518,18 @@ export default function AdminPortalPage() {
       if (reader.result && typeof reader.result === "string") {
         setCropImageSrc(reader.result);
         setCropTarget(target);
-        setCropAspectRatio(target === "course" ? "16:9" : "4:3");
-        setCropTitle(target === "course" ? "Crop Course Thumbnail (16:9)" : "Crop Gallery Photo (4:3)");
+        setCropAspectRatio(
+          target === "course" ? "16:9" : target === "founder" ? "4:5" : "4:3"
+        );
+        setCropTitle(
+          target === "course"
+            ? "Crop Course Thumbnail (16:9)"
+            : target === "founder"
+            ? "Crop Founder & Head Coach Photo (4:5)"
+            : target === "story"
+            ? "Crop Philosophy Story Photo (4:3)"
+            : "Crop Gallery Photo (4:3)"
+        );
         setCropModalOpen(true);
       }
     };
@@ -515,32 +538,82 @@ export default function AdminPortalPage() {
     e.target.value = "";
   };
 
-  const handleOpenCropForExisting = (target: "course" | "gallery") => {
-    const currentUrl = target === "course" ? courseForm.image : galleryForm.image;
+  const handleOpenCropForExisting = (target: "course" | "gallery" | "founder" | "story") => {
+    let currentUrl = "";
+    if (target === "course") currentUrl = courseForm.image;
+    else if (target === "gallery") currentUrl = galleryForm.image;
+    else if (target === "founder") currentUrl = aboutSettings.founderPhoto;
+    else if (target === "story") currentUrl = aboutSettings.storyImage;
+
     if (!currentUrl) {
       alert("Please enter or upload an image first to crop it.");
       return;
     }
     setCropImageSrc(currentUrl);
     setCropTarget(target);
-    setCropAspectRatio(target === "course" ? "16:9" : "4:3");
-    setCropTitle(target === "course" ? "Adjust & Frame Course Thumbnail" : "Adjust & Frame Gallery Photo");
+    setCropAspectRatio(
+      target === "course" ? "16:9" : target === "founder" ? "4:5" : "4:3"
+    );
+    setCropTitle(
+      target === "course"
+        ? "Adjust & Frame Course Thumbnail"
+        : target === "founder"
+        ? "Adjust & Frame Founder Photo"
+        : target === "story"
+        ? "Adjust & Frame Story Photo"
+        : "Adjust & Frame Gallery Photo"
+    );
     setCropModalOpen(true);
   };
 
   const handleCropComplete = (uploadedUrl: string) => {
     if (cropTarget === "course") {
       setCourseForm((prev) => ({ ...prev, image: uploadedUrl }));
-    } else {
+    } else if (cropTarget === "gallery") {
       setGalleryForm((prev) => ({ ...prev, image: uploadedUrl }));
+    } else if (cropTarget === "founder") {
+      setAboutSettings((prev) => ({ ...prev, founderPhoto: uploadedUrl }));
+    } else if (cropTarget === "story") {
+      setAboutSettings((prev) => ({ ...prev, storyImage: uploadedUrl }));
     }
     setActionMessage("Cropped photo applied successfully!");
     setTimeout(() => setActionMessage(null), 4000);
   };
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, target: "course" | "gallery") => {
+  const handleImageUpload = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+    target: "course" | "gallery" | "founder" | "story"
+  ) => {
     // Forward to interactive cropper for perfect framing & live preview
     handleInitiateCrop(e, target);
+  };
+
+  const handleSaveAbout = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setAboutSubmitting(true);
+    try {
+      const res = await fetch("/api/portal/cms", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "saveAbout",
+          aboutSettings
+        })
+      });
+      const data = await res.json();
+      if (data.success && data.aboutSettings) {
+        setAboutSettings(data.aboutSettings);
+        setActionMessage("About page details updated on website!");
+        setTimeout(() => setActionMessage(null), 4000);
+      } else {
+        alert(data.error || "Failed to update About page details.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Network error. Please try again.");
+    } finally {
+      setAboutSubmitting(false);
+    }
   };
 
   const handleSaveCourse = async (e: React.FormEvent) => {
@@ -705,7 +778,7 @@ export default function AdminPortalPage() {
     }
   };
 
-  const handleResetCms = async (target: "courses" | "gallery" | "settings" | "reviews" | "all") => {
+  const handleResetCms = async (target: "courses" | "gallery" | "settings" | "reviews" | "about" | "all") => {
     if (!confirm(`Are you sure you want to reset ${target} back to academy defaults?`)) return;
     try {
       const res = await fetch("/api/portal/cms", {
@@ -719,6 +792,7 @@ export default function AdminPortalPage() {
         if (data.gallery) setGallery(data.gallery);
         if (data.siteSettings) setSiteSettings(data.siteSettings);
         if (data.reviews) setReviews(data.reviews);
+        if (data.aboutSettings) setAboutSettings(data.aboutSettings);
         setActionMessage("Reset to academy defaults completed.");
         setTimeout(() => setActionMessage(null), 3000);
       }
@@ -2001,16 +2075,16 @@ export default function AdminPortalPage() {
                     </p>
                   </div>
 
-                  {/* Sub-Tabs Selector */}
-                  <div className="flex items-center gap-1.5 p-1 rounded-full bg-white/70 border border-coffee-dark/15 self-start sm:self-center">
+                  {/* Sub-Tabs Selector - Horizontally scrollable and finger-friendly on mobile */}
+                  <div className="w-full sm:w-auto flex items-center gap-1.5 p-1.5 rounded-2xl sm:rounded-full bg-white/70 border border-coffee-dark/15 overflow-x-auto no-scrollbar touch-pan-x">
                     <button
                       type="button"
                       onClick={() => setCmsSubTab("courses")}
                       className={cn(
-                        "px-3.5 py-1.5 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer",
+                        "shrink-0 px-3 sm:px-3.5 py-1.5 rounded-xl sm:rounded-full text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer min-h-[36px]",
                         cmsSubTab === "courses"
                           ? "bg-coffee-dark text-white shadow-xs"
-                          : "text-coffee-dark/70 hover:text-coffee-dark"
+                          : "text-coffee-dark/70 hover:text-coffee-dark hover:bg-black/5"
                       )}
                     >
                       <BookOpen size={13} />
@@ -2020,10 +2094,10 @@ export default function AdminPortalPage() {
                       type="button"
                       onClick={() => setCmsSubTab("gallery")}
                       className={cn(
-                        "px-3.5 py-1.5 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer",
+                        "shrink-0 px-3 sm:px-3.5 py-1.5 rounded-xl sm:rounded-full text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer min-h-[36px]",
                         cmsSubTab === "gallery"
                           ? "bg-coffee-dark text-white shadow-xs"
-                          : "text-coffee-dark/70 hover:text-coffee-dark"
+                          : "text-coffee-dark/70 hover:text-coffee-dark hover:bg-black/5"
                       )}
                     >
                       <ImageIcon size={13} />
@@ -2033,10 +2107,10 @@ export default function AdminPortalPage() {
                       type="button"
                       onClick={() => setCmsSubTab("reviews")}
                       className={cn(
-                        "px-3.5 py-1.5 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer",
+                        "shrink-0 px-3 sm:px-3.5 py-1.5 rounded-xl sm:rounded-full text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer min-h-[36px]",
                         cmsSubTab === "reviews"
                           ? "bg-coffee-dark text-white shadow-xs"
-                          : "text-coffee-dark/70 hover:text-coffee-dark"
+                          : "text-coffee-dark/70 hover:text-coffee-dark hover:bg-black/5"
                       )}
                     >
                       <Star size={13} />
@@ -2044,12 +2118,25 @@ export default function AdminPortalPage() {
                     </button>
                     <button
                       type="button"
+                      onClick={() => setCmsSubTab("about")}
+                      className={cn(
+                        "shrink-0 px-3 sm:px-3.5 py-1.5 rounded-xl sm:rounded-full text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer min-h-[36px]",
+                        cmsSubTab === "about"
+                          ? "bg-coffee-dark text-white shadow-xs"
+                          : "text-coffee-dark/70 hover:text-coffee-dark hover:bg-black/5"
+                      )}
+                    >
+                      <Info size={13} />
+                      <span>About Page</span>
+                    </button>
+                    <button
+                      type="button"
                       onClick={() => setCmsSubTab("settings")}
                       className={cn(
-                        "px-3.5 py-1.5 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer",
+                        "shrink-0 px-3 sm:px-3.5 py-1.5 rounded-xl sm:rounded-full text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer min-h-[36px]",
                         cmsSubTab === "settings"
                           ? "bg-coffee-dark text-white shadow-xs"
-                          : "text-coffee-dark/70 hover:text-coffee-dark"
+                          : "text-coffee-dark/70 hover:text-coffee-dark hover:bg-black/5"
                       )}
                     >
                       <Sliders size={13} />
@@ -2335,7 +2422,7 @@ export default function AdminPortalPage() {
                         <button
                           type="submit"
                           disabled={courseSubmitting}
-                          className="min-h-[44px] px-7 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-bold text-xs uppercase tracking-wider rounded-full transition-all shadow-sm flex items-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50"
+                          className="min-h-[44px] px-7 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-bold text-xs uppercase tracking-wider rounded-full transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50 w-full sm:w-auto"
                         >
                           {courseSubmitting ? (
                             <RefreshCw size={14} className="animate-spin" />
@@ -2380,8 +2467,8 @@ export default function AdminPortalPage() {
                           key={course.id}
                           className="p-4 rounded-2xl bg-white/70 border border-coffee-dark/15 hover:border-cappuccino/50 transition-all flex flex-col justify-between gap-4 shadow-2xs"
                         >
-                          <div className="flex gap-3.5">
-                            <div className="relative w-28 aspect-video rounded-xl overflow-hidden bg-coffee-dark shrink-0 border border-coffee-dark/15">
+                          <div className="flex flex-col xs:flex-row gap-3 sm:gap-3.5">
+                            <div className="relative w-full xs:w-28 aspect-video rounded-xl overflow-hidden bg-coffee-dark shrink-0 border border-coffee-dark/15">
                               {/* eslint-disable-next-line @next/next/no-img-element */}
                               <img
                                 src={course.image}
@@ -2565,7 +2652,7 @@ export default function AdminPortalPage() {
                         <button
                           type="submit"
                           disabled={gallerySubmitting}
-                          className="min-h-[44px] px-6 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-bold text-xs uppercase tracking-wider rounded-full transition-all shadow-sm flex items-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50"
+                          className="min-h-[44px] px-6 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-bold text-xs uppercase tracking-wider rounded-full transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50 w-full sm:w-auto"
                         >
                           {gallerySubmitting ? (
                             <RefreshCw size={14} className="animate-spin" />
@@ -2784,7 +2871,7 @@ export default function AdminPortalPage() {
                         <button
                           type="submit"
                           disabled={reviewSubmitting}
-                          className="min-h-[44px] px-7 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-bold text-xs uppercase tracking-wider rounded-full transition-all shadow-sm flex items-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50"
+                          className="min-h-[44px] px-7 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-bold text-xs uppercase tracking-wider rounded-full transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50 w-full sm:w-auto"
                         >
                           {reviewSubmitting ? (
                             <RefreshCw size={14} className="animate-spin" />
@@ -3085,11 +3172,11 @@ export default function AdminPortalPage() {
                   </div>
 
                   {/* Save Settings Action Button */}
-                  <div className="flex items-center justify-between gap-4 pt-2">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
                     <button
                       type="submit"
                       disabled={settingsSubmitting}
-                      className="min-h-[44px] px-8 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-bold text-xs uppercase tracking-wider rounded-full transition-all shadow-sm flex items-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50"
+                      className="min-h-[44px] px-8 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-bold text-xs uppercase tracking-wider rounded-full transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50 w-full sm:w-auto"
                     >
                       {settingsSubmitting ? (
                         <RefreshCw size={14} className="animate-spin" />
@@ -3102,9 +3189,528 @@ export default function AdminPortalPage() {
                     <button
                       type="button"
                       onClick={() => handleResetCms("settings")}
-                      className="text-xs text-coffee-dark/50 hover:text-coffee-dark underline font-mono cursor-pointer"
+                      className="text-xs text-coffee-dark/50 hover:text-coffee-dark underline font-mono cursor-pointer self-center sm:self-auto"
                     >
                       Reset Details to Defaults
+                    </button>
+                  </div>
+                </form>
+              )}
+
+              {/* ----------------------------------------------------------------- */}
+              {/* SUB-TAB 5: ABOUT PAGE CONTENT & FOUNDER STORY                      */}
+              {/* ----------------------------------------------------------------- */}
+              {cmsSubTab === "about" && (
+                <form onSubmit={handleSaveAbout} className="space-y-8">
+                  {/* Founder & Head Coach Profile Card */}
+                  <div className="p-5 sm:p-7 rounded-2xl sm:rounded-3xl bg-white/70 border border-coffee-dark/15 space-y-6 shadow-sm">
+                    <div className="border-b border-coffee-dark/10 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                      <div>
+                        <div className="flex items-center gap-2 mb-1">
+                          <UserCheck size={18} className="text-cappuccino" />
+                          <h4 className="font-serif text-lg font-bold text-coffee-dark">
+                            Founder &amp; Head Coach Profile
+                          </h4>
+                        </div>
+                        <p className="text-xs text-coffee-dark/60 font-light">
+                          Manage the founder photo, name, credentials, and coaching philosophy on the About page.
+                        </p>
+                      </div>
+                      <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-cappuccino bg-cappuccino/10 px-2.5 py-1 rounded-full w-fit">
+                        Direct Coaching
+                      </span>
+                    </div>
+
+                    {/* Founder Photo & Upload with Interactive Crop */}
+                    <div className="space-y-3">
+                      <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block">
+                        Founder &amp; Master Trainer Photo (4:5 Portrait)
+                      </label>
+
+                      <div className="flex flex-col sm:flex-row gap-3">
+                        <input
+                          type="text"
+                          value={aboutSettings.founderPhoto}
+                          onChange={(e) =>
+                            setAboutSettings({ ...aboutSettings, founderPhoto: e.target.value })
+                          }
+                          placeholder="e.g. /images/owner.jpg or image URL..."
+                          className="flex-1 min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs font-mono focus:outline-none transition-colors shadow-2xs"
+                        />
+                        <label className="min-h-[42px] px-4 rounded-xl bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer shrink-0 shadow-2xs">
+                          <UploadCloud size={14} />
+                          <span>Upload File &amp; Crop</span>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => handleImageUpload(e, "founder")}
+                            className="hidden"
+                          />
+                        </label>
+                      </div>
+
+                      {/* Founder Photo Live Preview & Crop Trigger */}
+                      {aboutSettings.founderPhoto && (
+                        <div className="flex flex-col xs:flex-row items-start xs:items-end gap-3 pt-1">
+                          <div className="relative aspect-[4/5] w-28 sm:w-36 rounded-xl overflow-hidden border-2 border-cappuccino/40 bg-coffee-dark shadow-sm">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={aboutSettings.founderPhoto}
+                              alt="Founder preview"
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                (e.target as HTMLElement).style.display = "none";
+                              }}
+                            />
+                            <span className="absolute bottom-1 right-1 bg-black/70 text-white text-[8px] px-1.5 py-0.5 rounded font-mono">
+                              4:5 Portrait
+                            </span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => handleOpenCropForExisting("founder")}
+                            className="min-h-[36px] px-3.5 py-1.5 rounded-xl bg-coffee-dark/5 hover:bg-coffee-dark/15 text-coffee-dark font-bold text-xs transition-colors flex items-center gap-1.5 cursor-pointer"
+                          >
+                            <CropToolIcon size={13} className="text-cappuccino" />
+                            <span>Crop &amp; Frame Founder Photo</span>
+                          </button>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Founder Name & Role Inputs */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
+                          Founder / Trainer Full Name
+                        </label>
+                        <input
+                          type="text"
+                          value={aboutSettings.founderName}
+                          onChange={(e) =>
+                            setAboutSettings({ ...aboutSettings, founderName: e.target.value })
+                          }
+                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none shadow-2xs"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
+                          Official Role &amp; Title
+                        </label>
+                        <input
+                          type="text"
+                          value={aboutSettings.founderRole}
+                          onChange={(e) =>
+                            setAboutSettings({ ...aboutSettings, founderRole: e.target.value })
+                          }
+                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none shadow-2xs"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
+                          Card Tagline
+                        </label>
+                        <input
+                          type="text"
+                          value={aboutSettings.founderTagline}
+                          onChange={(e) =>
+                            setAboutSettings({ ...aboutSettings, founderTagline: e.target.value })
+                          }
+                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none shadow-2xs"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
+                          Section Subheading
+                        </label>
+                        <input
+                          type="text"
+                          value={aboutSettings.founderHeading}
+                          onChange={(e) =>
+                            setAboutSettings({ ...aboutSettings, founderHeading: e.target.value })
+                          }
+                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none shadow-2xs"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Founder Bio */}
+                    <div>
+                      <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
+                        Founder Direct Coaching Bio
+                      </label>
+                      <textarea
+                        rows={3}
+                        value={aboutSettings.founderBio}
+                        onChange={(e) =>
+                          setAboutSettings({ ...aboutSettings, founderBio: e.target.value })
+                        }
+                        className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl p-3 text-xs focus:outline-none transition-colors shadow-2xs leading-relaxed"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Philosophy, Story & Quote Card */}
+                  <div className="p-5 sm:p-7 rounded-2xl sm:rounded-3xl bg-white/70 border border-coffee-dark/15 space-y-6 shadow-sm">
+                    <div className="border-b border-coffee-dark/10 pb-4">
+                      <div className="flex items-center gap-2 mb-1">
+                        <BookOpen size={18} className="text-cappuccino" />
+                        <h4 className="font-serif text-lg font-bold text-coffee-dark">
+                          Philosophy, Background Story &amp; Quote
+                        </h4>
+                      </div>
+                      <p className="text-xs text-coffee-dark/60 font-light">
+                        Edit the story section, philosophy image, quote, and academy journey details.
+                      </p>
+                    </div>
+
+                    {/* Story Photo & Upload with Interactive Crop */}
+                    <div className="space-y-3">
+                      <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block">
+                        Story &amp; Philosophy Image (4:3 Landscape)
+                      </label>
+
+                      <div className="flex flex-col sm:flex-row gap-3">
+                        <input
+                          type="text"
+                          value={aboutSettings.storyImage}
+                          onChange={(e) =>
+                            setAboutSettings({ ...aboutSettings, storyImage: e.target.value })
+                          }
+                          placeholder="e.g. /images/owner.jpg or image URL..."
+                          className="flex-1 min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs font-mono focus:outline-none transition-colors shadow-2xs"
+                        />
+                        <label className="min-h-[42px] px-4 rounded-xl bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer shrink-0 shadow-2xs">
+                          <UploadCloud size={14} />
+                          <span>Upload File &amp; Crop</span>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => handleImageUpload(e, "story")}
+                            className="hidden"
+                          />
+                        </label>
+                      </div>
+
+                      {/* Story Photo Live Preview & Crop Trigger */}
+                      {aboutSettings.storyImage && (
+                        <div className="flex flex-col xs:flex-row items-start xs:items-end gap-3 pt-1">
+                          <div className="relative aspect-[4/3] w-36 sm:w-48 rounded-xl overflow-hidden border border-coffee-dark/20 bg-coffee-dark shadow-sm">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={aboutSettings.storyImage}
+                              alt="Story preview"
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                (e.target as HTMLElement).style.display = "none";
+                              }}
+                            />
+                            <span className="absolute bottom-1 right-1 bg-black/70 text-white text-[8px] px-1.5 py-0.5 rounded font-mono">
+                              4:3 Frame
+                            </span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => handleOpenCropForExisting("story")}
+                            className="min-h-[36px] px-3.5 py-1.5 rounded-xl bg-coffee-dark/5 hover:bg-coffee-dark/15 text-coffee-dark font-bold text-xs transition-colors flex items-center gap-1.5 cursor-pointer"
+                          >
+                            <CropToolIcon size={13} className="text-cappuccino" />
+                            <span>Crop &amp; Frame Story Photo</span>
+                          </button>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
+                          Story Badge / Subtitle
+                        </label>
+                        <input
+                          type="text"
+                          value={aboutSettings.storySubtitle}
+                          onChange={(e) =>
+                            setAboutSettings({ ...aboutSettings, storySubtitle: e.target.value })
+                          }
+                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none shadow-2xs"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
+                          Story Heading Title
+                        </label>
+                        <input
+                          type="text"
+                          value={aboutSettings.storyTitle}
+                          onChange={(e) =>
+                            setAboutSettings({ ...aboutSettings, storyTitle: e.target.value })
+                          }
+                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none shadow-2xs"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
+                          Story Paragraph 1
+                        </label>
+                        <textarea
+                          rows={3}
+                          value={aboutSettings.storyP1}
+                          onChange={(e) =>
+                            setAboutSettings({ ...aboutSettings, storyP1: e.target.value })
+                          }
+                          className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl p-3 text-xs focus:outline-none transition-colors shadow-2xs leading-relaxed"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
+                          Story Paragraph 2
+                        </label>
+                        <textarea
+                          rows={3}
+                          value={aboutSettings.storyP2}
+                          onChange={(e) =>
+                            setAboutSettings({ ...aboutSettings, storyP2: e.target.value })
+                          }
+                          className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl p-3 text-xs focus:outline-none transition-colors shadow-2xs leading-relaxed"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
+                          Inspirational Quote Text
+                        </label>
+                        <input
+                          type="text"
+                          value={aboutSettings.storyQuote}
+                          onChange={(e) =>
+                            setAboutSettings({ ...aboutSettings, storyQuote: e.target.value })
+                          }
+                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none shadow-2xs"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
+                          Quote Author Attribution
+                        </label>
+                        <input
+                          type="text"
+                          value={aboutSettings.storyQuoteAuthor}
+                          onChange={(e) =>
+                            setAboutSettings({ ...aboutSettings, storyQuoteAuthor: e.target.value })
+                          }
+                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none shadow-2xs"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Academy Key Stats Grid */}
+                  <div className="p-5 sm:p-7 rounded-2xl sm:rounded-3xl bg-white/70 border border-coffee-dark/15 space-y-4 shadow-sm">
+                    <div className="border-b border-coffee-dark/10 pb-4">
+                      <h4 className="font-serif text-lg font-bold text-coffee-dark">
+                        Academy Impact &amp; Experience Metrics
+                      </h4>
+                      <p className="text-xs text-coffee-dark/60 font-light">
+                        These numerical stats are displayed in the philosophy section on the About page.
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      <div>
+                        <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
+                          Students Trained Metric
+                        </label>
+                        <input
+                          type="text"
+                          value={aboutSettings.statStudents}
+                          onChange={(e) =>
+                            setAboutSettings({ ...aboutSettings, statStudents: e.target.value })
+                          }
+                          placeholder="e.g. 2,500+"
+                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs font-mono focus:outline-none shadow-2xs"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
+                          Direct Coaching Metric
+                        </label>
+                        <input
+                          type="text"
+                          value={aboutSettings.statCoaching}
+                          onChange={(e) =>
+                            setAboutSettings({ ...aboutSettings, statCoaching: e.target.value })
+                          }
+                          placeholder="e.g. 100%"
+                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs font-mono focus:outline-none shadow-2xs"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
+                          Disciplines Offered Metric
+                        </label>
+                        <input
+                          type="text"
+                          value={aboutSettings.statDisciplines}
+                          onChange={(e) =>
+                            setAboutSettings({ ...aboutSettings, statDisciplines: e.target.value })
+                          }
+                          placeholder="e.g. 4"
+                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs font-mono focus:outline-none shadow-2xs"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 4 Core Disciplines Taught Directly by Founder */}
+                  <div className="p-5 sm:p-7 rounded-2xl sm:rounded-3xl bg-white/70 border border-coffee-dark/15 space-y-4 shadow-sm">
+                    <div className="border-b border-coffee-dark/10 pb-4">
+                      <h4 className="font-serif text-lg font-bold text-coffee-dark">
+                        4 Founder Direct Coaching Disciplines
+                      </h4>
+                      <p className="text-xs text-coffee-dark/60 font-light">
+                        Customize each of the 4 disciplines displayed under the Founder card on the About page.
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {(aboutSettings.founderDisciplines || []).map((disc, idx) => (
+                        <div
+                          key={idx}
+                          className="p-4 rounded-xl bg-white border border-coffee-dark/15 space-y-2.5 shadow-2xs"
+                        >
+                          <div className="flex items-center justify-between">
+                            <span className="text-[10px] uppercase tracking-wider text-cappuccino font-bold">
+                              Discipline #{idx + 1}
+                            </span>
+                          </div>
+                          <div>
+                            <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1">
+                              Title
+                            </label>
+                            <input
+                              type="text"
+                              value={disc.title}
+                              onChange={(e) => {
+                                const updated = [...(aboutSettings.founderDisciplines || [])];
+                                updated[idx] = { ...updated[idx], title: e.target.value };
+                                setAboutSettings({ ...aboutSettings, founderDisciplines: updated });
+                              }}
+                              className="w-full min-h-[38px] bg-coffee-dark/5 border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-lg px-3 py-1.5 text-xs font-semibold focus:outline-none"
+                            />
+                          </div>
+                          <div>
+                            <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1">
+                              Description
+                            </label>
+                            <textarea
+                              rows={2}
+                              value={disc.desc}
+                              onChange={(e) => {
+                                const updated = [...(aboutSettings.founderDisciplines || [])];
+                                updated[idx] = { ...updated[idx], desc: e.target.value };
+                                setAboutSettings({ ...aboutSettings, founderDisciplines: updated });
+                              }}
+                              className="w-full bg-coffee-dark/5 border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-lg p-2.5 text-xs focus:outline-none leading-relaxed"
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Hero Header Customization */}
+                  <div className="p-5 sm:p-7 rounded-2xl sm:rounded-3xl bg-white/70 border border-coffee-dark/15 space-y-4 shadow-sm">
+                    <div className="border-b border-coffee-dark/10 pb-4">
+                      <h4 className="font-serif text-lg font-bold text-coffee-dark">
+                        About Page Hero Header
+                      </h4>
+                      <p className="text-xs text-coffee-dark/60 font-light">
+                        Customize the top hero banner title, subtitle, and optional hero background image.
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
+                          Hero Title
+                        </label>
+                        <input
+                          type="text"
+                          value={aboutSettings.heroTitle}
+                          onChange={(e) =>
+                            setAboutSettings({ ...aboutSettings, heroTitle: e.target.value })
+                          }
+                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none shadow-2xs"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
+                          Hero Subtitle
+                        </label>
+                        <input
+                          type="text"
+                          value={aboutSettings.heroSubtitle}
+                          onChange={(e) =>
+                            setAboutSettings({ ...aboutSettings, heroSubtitle: e.target.value })
+                          }
+                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none shadow-2xs"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
+                        Hero Background Image URL
+                      </label>
+                      <input
+                        type="text"
+                        value={aboutSettings.heroImage}
+                        onChange={(e) =>
+                          setAboutSettings({ ...aboutSettings, heroImage: e.target.value })
+                        }
+                        placeholder="e.g. /images/vajra_hero.jpg"
+                        className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs font-mono focus:outline-none shadow-2xs"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Save About Action Buttons */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
+                    <button
+                      type="submit"
+                      disabled={aboutSubmitting}
+                      className="min-h-[44px] px-8 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-bold text-xs uppercase tracking-wider rounded-full transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50 w-full sm:w-auto"
+                    >
+                      {aboutSubmitting ? (
+                        <RefreshCw size={14} className="animate-spin" />
+                      ) : (
+                        <Check size={14} />
+                      )}
+                      <span>{aboutSubmitting ? "Saving Details..." : "Save About Page Details"}</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => handleResetCms("about")}
+                      className="text-xs text-coffee-dark/50 hover:text-coffee-dark underline font-mono cursor-pointer self-center sm:self-auto"
+                    >
+                      Reset About Page to Defaults
                     </button>
                   </div>
                 </form>

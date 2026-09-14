@@ -36,6 +36,7 @@ export async function GET() {
       gallery: data.gallery,
       siteSettings: data.siteSettings,
       reviews: data.reviews,
+      aboutSettings: data.aboutSettings,
       adminConfig: safeAdminConfig
     });
   } catch (error) {

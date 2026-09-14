@@ -9,7 +9,9 @@ import {
   DEFAULT_COURSES,
   DEFAULT_GALLERY,
   DEFAULT_SITE_SETTINGS,
-  DEFAULT_REVIEWS
+  DEFAULT_REVIEWS,
+  DEFAULT_ABOUT_SETTINGS,
+  AboutSettings
 } from "@/lib/portalStore";
 
 export async function GET(req: Request) {
@@ -22,6 +24,7 @@ export async function GET(req: Request) {
     const gallery = data.gallery && data.gallery.length > 0 ? data.gallery : DEFAULT_GALLERY;
     const siteSettings = data.siteSettings || DEFAULT_SITE_SETTINGS;
     const reviews = data.reviews && data.reviews.length > 0 ? data.reviews : DEFAULT_REVIEWS;
+    const aboutSettings = data.aboutSettings || DEFAULT_ABOUT_SETTINGS;
 
     if (type === "courses") {
       return NextResponse.json({ success: true, courses });
@@ -35,13 +38,17 @@ export async function GET(req: Request) {
     if (type === "reviews") {
       return NextResponse.json({ success: true, reviews });
     }
+    if (type === "about") {
+      return NextResponse.json({ success: true, aboutSettings });
+    }
 
     return NextResponse.json({
       success: true,
       courses,
       gallery,
       siteSettings,
-      reviews
+      reviews,
+      aboutSettings
     });
   } catch (error) {
     console.error("CMS GET error:", error);
@@ -69,6 +76,9 @@ export async function POST(req: Request) {
     }
     if (!data.reviews || data.reviews.length === 0) {
       data.reviews = [...DEFAULT_REVIEWS];
+    }
+    if (!data.aboutSettings) {
+      data.aboutSettings = { ...DEFAULT_ABOUT_SETTINGS };
     }
 
     // --- 1. COURSE OPERATIONS ---
@@ -220,18 +230,36 @@ export async function POST(req: Request) {
       });
     }
 
-    // --- 5. RESET TO DEFAULTS ---
+    // --- 5. ABOUT PAGE OPERATIONS ---
+    if (action === "saveAbout") {
+      const aboutData: Partial<AboutSettings> = body.aboutSettings || {};
+      data.aboutSettings = {
+        ...DEFAULT_ABOUT_SETTINGS,
+        ...(data.aboutSettings || {}),
+        ...aboutData
+      };
+      await savePortalData(data);
+      return NextResponse.json({
+        success: true,
+        message: "About page details updated successfully.",
+        aboutSettings: data.aboutSettings
+      });
+    }
+
+    // --- 6. RESET TO DEFAULTS ---
     if (action === "resetDefaults") {
       const { target } = body;
       if (target === "courses") data.courses = [...DEFAULT_COURSES];
       if (target === "gallery") data.gallery = [...DEFAULT_GALLERY];
       if (target === "settings") data.siteSettings = { ...DEFAULT_SITE_SETTINGS };
       if (target === "reviews") data.reviews = [...DEFAULT_REVIEWS];
+      if (target === "about") data.aboutSettings = { ...DEFAULT_ABOUT_SETTINGS };
       if (target === "all") {
         data.courses = [...DEFAULT_COURSES];
         data.gallery = [...DEFAULT_GALLERY];
         data.siteSettings = { ...DEFAULT_SITE_SETTINGS };
         data.reviews = [...DEFAULT_REVIEWS];
+        data.aboutSettings = { ...DEFAULT_ABOUT_SETTINGS };
       }
       await savePortalData(data);
       return NextResponse.json({
@@ -240,7 +268,8 @@ export async function POST(req: Request) {
         courses: data.courses,
         gallery: data.gallery,
         siteSettings: data.siteSettings,
-        reviews: data.reviews
+        reviews: data.reviews,
+        aboutSettings: data.aboutSettings
       });
     }
 
