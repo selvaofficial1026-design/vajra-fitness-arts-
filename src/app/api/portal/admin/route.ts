@@ -8,6 +8,7 @@ export async function GET() {
       totalStudents: data.students.length,
       approvedStudents: data.students.filter((s) => s.status === "APPROVED").length,
       pendingApprovals: data.students.filter((s) => s.status === "PENDING").length,
+      leftStudents: data.students.filter((s) => s.status === "LEFT").length,
       totalMeetings: data.meetings.length,
       totalVideos: data.videos.length,
       totalMessages: data.messages.length
@@ -34,6 +35,7 @@ export async function GET() {
       courses: data.courses,
       gallery: data.gallery,
       siteSettings: data.siteSettings,
+      reviews: data.reviews,
       adminConfig: safeAdminConfig
     });
   } catch (error) {
@@ -102,6 +104,87 @@ export async function POST(req: Request) {
         success: true,
         message: "Student enrollment request rejected.",
         student: data.students[studentIndex]
+      });
+    }
+
+    if (action === "edit_student") {
+      const { studentId, permanentCode, name, phone, course, batch, age, city, status, notes } = body;
+      const studentIndex = data.students.findIndex((s) => s.id === studentId);
+      if (studentIndex === -1) {
+        return NextResponse.json({ success: false, error: "Student not found." }, { status: 404 });
+      }
+
+      // If permanentCode is changed and non-empty, ensure it doesn't collide with another student
+      if (permanentCode && typeof permanentCode === "string" && permanentCode.trim()) {
+        const codeTrimmed = permanentCode.trim();
+        const isDuplicate = data.students.some(
+          (s) => s.id !== studentId && s.permanentCode?.toLowerCase() === codeTrimmed.toLowerCase()
+        );
+        if (isDuplicate) {
+          return NextResponse.json(
+            { success: false, error: `Student ID "${codeTrimmed}" is already assigned to another student.` },
+            { status: 400 }
+          );
+        }
+        data.students[studentIndex].permanentCode = codeTrimmed;
+      }
+
+      if (name && typeof name === "string") data.students[studentIndex].name = name.trim();
+      if (phone && typeof phone === "string") data.students[studentIndex].phone = phone.trim();
+      if (course && typeof course === "string") data.students[studentIndex].course = course.trim();
+      if (batch && typeof batch === "string") data.students[studentIndex].batch = batch.trim();
+      if (age !== undefined) data.students[studentIndex].age = String(age).trim();
+      if (city !== undefined) data.students[studentIndex].city = String(city).trim();
+      if (notes !== undefined) data.students[studentIndex].notes = String(notes).trim();
+
+      if (status && ["PENDING", "APPROVED", "REJECTED", "LEFT"].includes(status)) {
+        data.students[studentIndex].status = status as "PENDING" | "APPROVED" | "REJECTED" | "LEFT";
+        if (status === "LEFT") {
+          data.students[studentIndex].leftAt = new Date().toISOString();
+        } else if (status === "APPROVED" && !data.students[studentIndex].approvedAt) {
+          data.students[studentIndex].approvedAt = new Date().toISOString();
+        }
+      }
+
+      await savePortalData(data);
+      return NextResponse.json({
+        success: true,
+        message: "Student record updated successfully.",
+        student: data.students[studentIndex]
+      });
+    }
+
+    if (action === "delete_student") {
+      const { studentId } = body;
+      const studentIndex = data.students.findIndex((s) => s.id === studentId);
+      if (studentIndex === -1) {
+        return NextResponse.json({ success: false, error: "Student not found." }, { status: 404 });
+      }
+
+      // Remove student and clean up their classroom messages
+      data.students.splice(studentIndex, 1);
+      data.messages = data.messages.filter((m) => m.studentId !== studentId);
+
+      await savePortalData(data);
+      return NextResponse.json({
+        success: true,
+        message: "Student record and classroom chat permanently deleted."
+      });
+    }
+
+    if (action === "mark_left") {
+      const { studentId } = body;
+      const student = data.students.find((s) => s.id === studentId);
+      if (!student) {
+        return NextResponse.json({ success: false, error: "Student not found." }, { status: 404 });
+      }
+      student.status = "LEFT";
+      student.leftAt = new Date().toISOString();
+      await savePortalData(data);
+      return NextResponse.json({
+        success: true,
+        message: `Student ${student.name} marked as Left / Inactive.`,
+        student
       });
     }
 

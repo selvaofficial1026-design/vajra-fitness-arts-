@@ -7,7 +7,8 @@ import {
   DEFAULT_ADMIN_CONFIG,
   DEFAULT_COURSES,
   DEFAULT_GALLERY,
-  DEFAULT_SITE_SETTINGS
+  DEFAULT_SITE_SETTINGS,
+  DEFAULT_REVIEWS
 } from "./cmsDefaults";
 
 const DATA_FILE_PATH = path.join(process.cwd(), "src", "data", "portal-data.json");
@@ -33,6 +34,9 @@ export async function getPortalData(): Promise<PortalData> {
     if (!data.siteSettings) {
       data.siteSettings = { ...DEFAULT_SITE_SETTINGS };
     }
+    if (!data.reviews || data.reviews.length === 0) {
+      data.reviews = [...DEFAULT_REVIEWS];
+    }
     memoryStore = data;
     return data;
   } catch {
@@ -49,9 +53,12 @@ export async function getPortalData(): Promise<PortalData> {
       if (!memoryStore.siteSettings) {
         memoryStore.siteSettings = { ...DEFAULT_SITE_SETTINGS };
       }
+      if (!memoryStore.reviews || memoryStore.reviews.length === 0) {
+        memoryStore.reviews = [...DEFAULT_REVIEWS];
+      }
       return memoryStore;
     }
-    // Default structure with pre-seeded courses, gallery, and settings
+    // Default structure with pre-seeded courses, gallery, settings, and reviews
     const defaultData: PortalData = {
       students: [],
       meetings: [],
@@ -60,7 +67,8 @@ export async function getPortalData(): Promise<PortalData> {
       adminConfig: { ...DEFAULT_ADMIN_CONFIG },
       courses: [...DEFAULT_COURSES],
       gallery: [...DEFAULT_GALLERY],
-      siteSettings: { ...DEFAULT_SITE_SETTINGS }
+      siteSettings: { ...DEFAULT_SITE_SETTINGS },
+      reviews: [...DEFAULT_REVIEWS]
     };
     return defaultData;
   }

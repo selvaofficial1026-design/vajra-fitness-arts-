@@ -10,9 +10,10 @@ export interface Student {
   gender: string;
   city: string;
   notes?: string;
-  status: "PENDING" | "APPROVED" | "REJECTED";
+  status: "PENDING" | "APPROVED" | "REJECTED" | "LEFT";
   createdAt: string;
   approvedAt: string | null;
+  leftAt?: string | null;
 }
 
 export interface ClassMeeting {
@@ -94,6 +95,16 @@ export interface SiteSettings {
   trainingHours: string;
 }
 
+export interface ReviewItem {
+  id: string;
+  name: string;
+  role: string;
+  quote: string;
+  rating: number;
+  discipline?: string;
+  createdAt?: string;
+}
+
 export interface PortalData {
   students: Student[];
   meetings: ClassMeeting[];
@@ -103,6 +114,7 @@ export interface PortalData {
   courses?: CourseItem[];
   gallery?: GalleryItem[];
   siteSettings?: SiteSettings;
+  reviews?: ReviewItem[];
 }
 
 export const DEFAULT_ADMIN_CONFIG: AdminConfig = {
@@ -277,3 +289,30 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   mapsUrl: "https://maps.google.com/?q=18+Usman+Street+Opp+Dmart+Ariyalur+Tamil+Nadu",
   trainingHours: "Morning: 4:30 AM - 9:15 AM | Evening: 3:45 PM - 6:45 PM"
 };
+
+export const DEFAULT_REVIEWS: ReviewItem[] = [
+  {
+    id: "rev_1",
+    name: "S. Karthikeyan",
+    role: "Silambam Practitioner",
+    quote: "Vajra Fitness Arts helped me build great endurance, fast reflexes, and daily discipline. The instructors are patient, knowledgeable, and always encouraging.",
+    rating: 5,
+    discipline: "Silambam"
+  },
+  {
+    id: "rev_2",
+    name: "Dr. Priyadarshini",
+    role: "Yoga Student & Physician",
+    quote: "The yoga classes at Vajra Fitness Arts improved my flexibility and gave me peace of mind after long work days. I highly recommend it for all ages.",
+    rating: 5,
+    discipline: "Yoga"
+  },
+  {
+    id: "rev_3",
+    name: "R. Vignesh",
+    role: "Martial Arts & Fitness Trainee",
+    quote: "The striking techniques, agility drills, and personal attention from coach helped me transform my physical fitness and mental focus completely.",
+    rating: 5,
+    discipline: "Martial Arts"
+  }
+];

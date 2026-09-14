@@ -40,7 +40,10 @@ import {
   Layout,
   Bell,
   MapPin,
-  Mail
+  Mail,
+  Star,
+  MessageSquareQuote,
+  Crop as CropToolIcon
 } from "lucide-react";
 import { cn, extractYoutubeId, formatTimeAgo } from "@/lib/utils";
 import {
@@ -51,13 +54,17 @@ import {
   CourseItem,
   GalleryItem,
   SiteSettings,
+  ReviewItem,
   DEFAULT_COURSES,
   DEFAULT_GALLERY,
-  DEFAULT_SITE_SETTINGS
+  DEFAULT_SITE_SETTINGS,
+  DEFAULT_REVIEWS
 } from "@/lib/cmsDefaults";
 import PortalNavbar, { PortalNavItem } from "@/components/portal/PortalNavbar";
 import PortalLoadingScreen from "@/components/portal/PortalLoadingScreen";
 import AdminProfileModal, { AdminProfileData } from "@/components/portal/AdminProfileModal";
+import ImageCropModal, { AspectRatioType } from "@/components/portal/ImageCropModal";
+import EditStudentModal from "@/components/portal/EditStudentModal";
 
 const officialBatches = [
   "4:30 AM - 5:15 AM (Morning)",
@@ -78,10 +85,35 @@ export default function AdminPortalPage() {
   const [pageLoading, setPageLoading] = useState(true);
 
   // --- WEBSITE CMS & MAIN PORTAL MANAGER STATE ---
-  const [cmsSubTab, setCmsSubTab] = useState<"courses" | "gallery" | "settings">("courses");
+  const [cmsSubTab, setCmsSubTab] = useState<"courses" | "gallery" | "reviews" | "settings">("courses");
   const [courses, setCourses] = useState<CourseItem[]>(DEFAULT_COURSES);
   const [gallery, setGallery] = useState<GalleryItem[]>(DEFAULT_GALLERY);
   const [siteSettings, setSiteSettings] = useState<SiteSettings>(DEFAULT_SITE_SETTINGS);
+  const [reviews, setReviews] = useState<ReviewItem[]>(DEFAULT_REVIEWS);
+
+  // Review Form State
+  const initialReviewForm = {
+    id: "",
+    name: "",
+    role: "Silambam Student",
+    discipline: "Silambam",
+    rating: 5,
+    quote: ""
+  };
+  const [reviewForm, setReviewForm] = useState(initialReviewForm);
+  const [isEditingReview, setIsEditingReview] = useState(false);
+  const [reviewSubmitting, setReviewSubmitting] = useState(false);
+
+  // Image Cropper Modal State
+  const [cropModalOpen, setCropModalOpen] = useState(false);
+  const [cropImageSrc, setCropImageSrc] = useState<string | null>(null);
+  const [cropTarget, setCropTarget] = useState<"course" | "gallery">("course");
+  const [cropAspectRatio, setCropAspectRatio] = useState<AspectRatioType>("16:9");
+  const [cropTitle, setCropTitle] = useState("Crop & Frame Image");
+
+  // Student Edit / Delete Modal State
+  const [editingStudent, setEditingStudent] = useState<Student | null>(null);
+  const [isEditStudentModalOpen, setIsEditStudentModalOpen] = useState(false);
 
   // Course Form State
   const initialCourseForm = {
@@ -142,8 +174,8 @@ export default function AdminPortalPage() {
     avatarLetter: "A"
   });
 
-  // Student Sub-Tab: Pending vs Enrolled
-  const [studentFilter, setStudentFilter] = useState<"pending" | "approved" | "all">("pending");
+  // Student Sub-Tab: Pending vs Enrolled vs Left
+  const [studentFilter, setStudentFilter] = useState<"pending" | "approved" | "left" | "all">("pending");
   const [searchStudent, setSearchStudent] = useState("");
 
   // Google Meet Upload Form State
@@ -222,6 +254,9 @@ export default function AdminPortalPage() {
         }
         if (data.siteSettings) {
           setSiteSettings(data.siteSettings);
+        }
+        if (data.reviews && data.reviews.length > 0) {
+          setReviews(data.reviews);
         }
 
         if (data.adminConfig) {
@@ -460,41 +495,52 @@ export default function AdminPortalPage() {
     }
   };
 
-  // --- CMS HANDLERS ---
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, target: "course" | "gallery") => {
+  // --- CMS & CROP HANDLERS ---
+  const handleInitiateCrop = (e: React.ChangeEvent<HTMLInputElement>, target: "course" | "gallery") => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (target === "course") setCourseUploading(true);
-    if (target === "gallery") setGalleryUploading(true);
-
-    try {
-      const formData = new FormData();
-      formData.append("file", file);
-
-      const res = await fetch("/api/portal/upload", {
-        method: "POST",
-        body: formData
-      });
-      const data = await res.json();
-      if (data.success && data.url) {
-        if (target === "course") {
-          setCourseForm((prev) => ({ ...prev, image: data.url }));
-        } else {
-          setGalleryForm((prev) => ({ ...prev, image: data.url }));
-        }
-        setActionMessage("Image uploaded successfully!");
-        setTimeout(() => setActionMessage(null), 3000);
-      } else {
-        alert(data.error || "Failed to upload image.");
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (reader.result && typeof reader.result === "string") {
+        setCropImageSrc(reader.result);
+        setCropTarget(target);
+        setCropAspectRatio(target === "course" ? "16:9" : "4:3");
+        setCropTitle(target === "course" ? "Crop Course Thumbnail (16:9)" : "Crop Gallery Photo (4:3)");
+        setCropModalOpen(true);
       }
-    } catch (err) {
-      console.error("Upload error:", err);
-      alert("Failed to upload image. You can also paste an image URL directly.");
-    } finally {
-      if (target === "course") setCourseUploading(false);
-      if (target === "gallery") setGalleryUploading(false);
+    };
+    reader.readAsDataURL(file);
+    // Reset file input value so same file can be re-selected if desired
+    e.target.value = "";
+  };
+
+  const handleOpenCropForExisting = (target: "course" | "gallery") => {
+    const currentUrl = target === "course" ? courseForm.image : galleryForm.image;
+    if (!currentUrl) {
+      alert("Please enter or upload an image first to crop it.");
+      return;
     }
+    setCropImageSrc(currentUrl);
+    setCropTarget(target);
+    setCropAspectRatio(target === "course" ? "16:9" : "4:3");
+    setCropTitle(target === "course" ? "Adjust & Frame Course Thumbnail" : "Adjust & Frame Gallery Photo");
+    setCropModalOpen(true);
+  };
+
+  const handleCropComplete = (uploadedUrl: string) => {
+    if (cropTarget === "course") {
+      setCourseForm((prev) => ({ ...prev, image: uploadedUrl }));
+    } else {
+      setGalleryForm((prev) => ({ ...prev, image: uploadedUrl }));
+    }
+    setActionMessage("Cropped photo applied successfully!");
+    setTimeout(() => setActionMessage(null), 4000);
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, target: "course" | "gallery") => {
+    // Forward to interactive cropper for perfect framing & live preview
+    handleInitiateCrop(e, target);
   };
 
   const handleSaveCourse = async (e: React.FormEvent) => {
@@ -659,7 +705,7 @@ export default function AdminPortalPage() {
     }
   };
 
-  const handleResetCms = async (target: "courses" | "gallery" | "settings" | "all") => {
+  const handleResetCms = async (target: "courses" | "gallery" | "settings" | "reviews" | "all") => {
     if (!confirm(`Are you sure you want to reset ${target} back to academy defaults?`)) return;
     try {
       const res = await fetch("/api/portal/cms", {
@@ -672,11 +718,118 @@ export default function AdminPortalPage() {
         if (data.courses) setCourses(data.courses);
         if (data.gallery) setGallery(data.gallery);
         if (data.siteSettings) setSiteSettings(data.siteSettings);
+        if (data.reviews) setReviews(data.reviews);
         setActionMessage("Reset to academy defaults completed.");
         setTimeout(() => setActionMessage(null), 3000);
       }
     } catch (err) {
       console.error("Reset CMS error:", err);
+    }
+  };
+
+  // --- REVIEWS CMS HANDLERS ---
+  const handleSaveReview = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!reviewForm.name.trim() || !reviewForm.quote.trim()) return;
+
+    setReviewSubmitting(true);
+    try {
+      const res = await fetch("/api/portal/cms", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "saveReview",
+          review: reviewForm
+        })
+      });
+      const data = await res.json();
+      if (data.success && data.reviews) {
+        setReviews(data.reviews);
+        setActionMessage(isEditingReview ? "Review updated!" : "New review published on website!");
+        setTimeout(() => setActionMessage(null), 4000);
+        setReviewForm(initialReviewForm);
+        setIsEditingReview(false);
+      } else {
+        alert(data.error || "Failed to save review.");
+      }
+    } catch (err) {
+      console.error("Save review error:", err);
+    } finally {
+      setReviewSubmitting(false);
+    }
+  };
+
+  const handleDeleteReview = async (id: string) => {
+    if (!confirm("Are you sure you want to remove this review from the website?")) return;
+    try {
+      const res = await fetch("/api/portal/cms", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "deleteReview", id })
+      });
+      const data = await res.json();
+      if (data.success && data.reviews) {
+        setReviews(data.reviews);
+        setActionMessage("Review removed from website.");
+        setTimeout(() => setActionMessage(null), 3000);
+      }
+    } catch (err) {
+      console.error("Delete review error:", err);
+    }
+  };
+
+  const handleEditReview = (rev: ReviewItem) => {
+    setReviewForm({
+      id: rev.id,
+      name: rev.name,
+      role: rev.role,
+      discipline: rev.discipline || "Silambam",
+      rating: rev.rating || 5,
+      quote: rev.quote
+    });
+    setIsEditingReview(true);
+    setCmsSubTab("reviews");
+    window.scrollTo({ top: 300, behavior: "smooth" });
+  };
+
+  // --- STUDENT EDIT & DELETE HANDLERS ---
+  const handleOpenEditStudent = (std: Student) => {
+    setEditingStudent(std);
+    setIsEditStudentModalOpen(true);
+  };
+
+  const handleStudentUpdated = (updated: Student) => {
+    setStudents((prev) => prev.map((s) => (s.id === updated.id ? updated : s)));
+    setActionMessage(`Student ${updated.name} updated successfully!`);
+    setTimeout(() => setActionMessage(null), 4000);
+  };
+
+  const handleDeleteStudent = async (studentId: string, studentName?: string) => {
+    if (
+      !confirm(
+        `Are you sure you want to permanently delete student ${studentName || ""}? This will wipe their login and chat history.`
+      )
+    ) {
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/portal/admin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "delete_student", studentId })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setStudents((prev) => prev.filter((s) => s.id !== studentId));
+        setMessages((prev) => prev.filter((m) => m.studentId !== studentId));
+        setActionMessage("Student permanently removed.");
+        setTimeout(() => setActionMessage(null), 4000);
+      } else {
+        alert(data.error || "Failed to delete student.");
+      }
+    } catch (err) {
+      console.error("Delete student error:", err);
     }
   };
 
@@ -687,11 +840,13 @@ export default function AdminPortalPage() {
 
   const pendingStudents = students.filter((s) => s.status === "PENDING");
   const approvedStudents = students.filter((s) => s.status === "APPROVED");
+  const leftStudents = students.filter((s) => s.status === "LEFT");
 
   const displayedStudents = students
     .filter((s) => {
       if (studentFilter === "pending") return s.status === "PENDING";
       if (studentFilter === "approved") return s.status === "APPROVED";
+      if (studentFilter === "left") return s.status === "LEFT";
       return true;
     })
     .filter((s) => {
@@ -909,6 +1064,20 @@ export default function AdminPortalPage() {
 
                   <button
                     type="button"
+                    onClick={() => setStudentFilter("left")}
+                    className={cn(
+                      "min-h-[40px] px-3.5 sm:px-4 py-2 sm:py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer shrink-0 select-none active:scale-95",
+                      studentFilter === "left"
+                        ? "bg-coffee-dark text-cappuccino shadow-sm"
+                        : "text-coffee-dark/70 hover:text-coffee-dark hover:bg-coffee-dark/5"
+                    )}
+                  >
+                    <LogOut size={13} className="shrink-0" />
+                    <span>Left / Inactive ({leftStudents.length})</span>
+                  </button>
+
+                  <button
+                    type="button"
                     onClick={() => setStudentFilter("all")}
                     className={cn(
                       "min-h-[40px] px-3.5 sm:px-4 py-2 sm:py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all cursor-pointer shrink-0 select-none active:scale-95",
@@ -974,6 +1143,11 @@ export default function AdminPortalPage() {
                                 <Clock size={11} className="shrink-0" />
                                 <span>Pending Approval</span>
                               </span>
+                            ) : std.status === "LEFT" ? (
+                              <span className="shrink-0 whitespace-nowrap px-2.5 py-0.5 rounded-full bg-rose-500/15 border border-rose-500/30 text-rose-800 text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
+                                <LogOut size={11} className="shrink-0" />
+                                <span>Left Course ({std.permanentCode || "No ID"})</span>
+                              </span>
                             ) : (
                               <span className="shrink-0 whitespace-nowrap px-2.5 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-800 text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
                                 <CheckCircle2 size={11} className="shrink-0" />
@@ -1032,7 +1206,7 @@ export default function AdminPortalPage() {
                         </div>
 
                         {/* Action Buttons */}
-                        <div className="flex items-center gap-2 sm:gap-2.5 w-full sm:w-auto shrink-0 pt-2 lg:pt-0">
+                        <div className="flex items-center gap-2 sm:gap-2.5 w-full sm:w-auto shrink-0 pt-2 lg:pt-0 flex-wrap sm:flex-nowrap">
                           {isPending ? (
                             <>
                               <button
@@ -1046,6 +1220,16 @@ export default function AdminPortalPage() {
 
                               <button
                                 type="button"
+                                onClick={() => handleOpenEditStudent(std)}
+                                className="min-h-[42px] px-3.5 py-2 rounded-full border border-coffee-dark/20 hover:border-cappuccino hover:bg-coffee-dark/5 text-coffee-dark text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer shrink-0"
+                                title="Edit Application Details"
+                              >
+                                <Edit3 size={13} className="text-cappuccino" />
+                                <span className="hidden sm:inline">Edit</span>
+                              </button>
+
+                              <button
+                                type="button"
                                 onClick={() => handleRejectStudent(std.id)}
                                 className="h-[42px] w-[42px] min-h-[42px] min-w-[42px] flex items-center justify-center text-red-500 hover:text-red-600 hover:bg-red-500/10 active:bg-red-500/20 rounded-full border border-red-500/20 transition-colors cursor-pointer shrink-0"
                                 title="Reject enrollment"
@@ -1055,17 +1239,43 @@ export default function AdminPortalPage() {
                               </button>
                             </>
                           ) : (
-                            <button
-                              type="button"
-                              onClick={() => {
-                                setSelectedStudentId(std.id);
-                                setActiveTab("messages");
-                              }}
-                              className="w-full sm:w-auto min-h-[42px] px-4 py-2.5 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-bold text-xs uppercase tracking-wider rounded-full transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
-                            >
-                              <MessageSquare size={13} className="shrink-0" />
-                              <span>Open Doubt Chat</span>
-                            </button>
+                            <>
+                              {std.status === "APPROVED" && (
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setSelectedStudentId(std.id);
+                                    setActiveTab("messages");
+                                  }}
+                                  className="w-full sm:w-auto min-h-[42px] px-4 py-2.5 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-bold text-xs uppercase tracking-wider rounded-full transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
+                                >
+                                  <MessageSquare size={13} className="shrink-0" />
+                                  <span>Open Doubt Chat</span>
+                                </button>
+                              )}
+
+                              {/* Edit Student ID & Profile Button */}
+                              <button
+                                type="button"
+                                onClick={() => handleOpenEditStudent(std)}
+                                className="min-h-[42px] px-3.5 py-2 rounded-full border border-coffee-dark/20 hover:border-cappuccino hover:bg-coffee-dark/5 text-coffee-dark text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer shrink-0"
+                                title="Edit Student ID & Profile"
+                              >
+                                <Edit3 size={13} className="text-cappuccino" />
+                                <span>Edit ID</span>
+                              </button>
+
+                              {/* Delete Student Button */}
+                              <button
+                                type="button"
+                                onClick={() => handleDeleteStudent(std.id, std.name)}
+                                className="h-[42px] w-[42px] min-h-[42px] min-w-[42px] flex items-center justify-center text-red-500 hover:text-red-600 hover:bg-red-500/10 active:bg-red-500/20 rounded-full border border-red-500/20 transition-colors cursor-pointer shrink-0"
+                                title="Delete Student from Academy"
+                                aria-label={`Delete student ${std.name}`}
+                              >
+                                <Trash2 size={15} />
+                              </button>
+                            </>
                           )}
                         </div>
                       </div>
@@ -1821,6 +2031,19 @@ export default function AdminPortalPage() {
                     </button>
                     <button
                       type="button"
+                      onClick={() => setCmsSubTab("reviews")}
+                      className={cn(
+                        "px-3.5 py-1.5 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer",
+                        cmsSubTab === "reviews"
+                          ? "bg-coffee-dark text-white shadow-xs"
+                          : "text-coffee-dark/70 hover:text-coffee-dark"
+                      )}
+                    >
+                      <Star size={13} />
+                      <span>Reviews ({reviews.length})</span>
+                    </button>
+                    <button
+                      type="button"
                       onClick={() => setCmsSubTab("settings")}
                       className={cn(
                         "px-3.5 py-1.5 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer",
@@ -1987,21 +2210,31 @@ export default function AdminPortalPage() {
                             </label>
                           </div>
 
-                          {/* Live Thumbnail Preview */}
+                          {/* Live Thumbnail Preview with Crop Option */}
                           {courseForm.image && (
-                            <div className="relative aspect-video max-w-xs rounded-xl overflow-hidden border border-coffee-dark/20 bg-coffee-dark/5 shadow-inner mt-2">
-                              {/* eslint-disable-next-line @next/next/no-img-element */}
-                              <img
-                                src={courseForm.image}
-                                alt="Course thumbnail preview"
-                                className="w-full h-full object-cover"
-                                onError={(e) => {
-                                  (e.target as HTMLElement).style.display = "none";
-                                }}
-                              />
-                              <span className="absolute bottom-1.5 right-1.5 bg-black/70 text-white text-[9px] px-2 py-0.5 rounded font-mono">
-                                Live Preview
-                              </span>
+                            <div className="space-y-1.5 mt-2">
+                              <div className="relative aspect-video max-w-xs rounded-xl overflow-hidden border border-coffee-dark/20 bg-coffee-dark/5 shadow-inner">
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img
+                                  src={courseForm.image}
+                                  alt="Course thumbnail preview"
+                                  className="w-full h-full object-cover"
+                                  onError={(e) => {
+                                    (e.target as HTMLElement).style.display = "none";
+                                  }}
+                                />
+                                <span className="absolute bottom-1.5 right-1.5 bg-black/70 text-white text-[9px] px-2 py-0.5 rounded font-mono">
+                                  Live Preview (16:9)
+                                </span>
+                              </div>
+                              <button
+                                type="button"
+                                onClick={() => handleOpenCropForExisting("course")}
+                                className="text-[11px] font-bold text-coffee-dark/75 hover:text-cappuccino flex items-center gap-1.5 py-1 px-2.5 rounded-lg bg-coffee-dark/5 hover:bg-coffee-dark/10 transition-colors cursor-pointer w-fit"
+                              >
+                                <CropToolIcon size={12} className="text-cappuccino" />
+                                <span>Crop &amp; Frame Thumbnail</span>
+                              </button>
                             </div>
                           )}
                         </div>
@@ -2285,21 +2518,31 @@ export default function AdminPortalPage() {
                           </label>
                         </div>
 
-                        {/* Live Photo Preview */}
+                        {/* Live Photo Preview with Crop Option */}
                         {galleryForm.image && (
-                          <div className="relative aspect-[4/3] max-w-xs rounded-xl overflow-hidden border border-coffee-dark/20 bg-coffee-dark/5 shadow-inner mt-2">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img
-                              src={galleryForm.image}
-                              alt="Gallery preview"
-                              className="w-full h-full object-cover"
-                              onError={(e) => {
-                                (e.target as HTMLElement).style.display = "none";
-                              }}
-                            />
-                            <span className="absolute bottom-1.5 right-1.5 bg-black/70 text-white text-[9px] px-2 py-0.5 rounded font-mono">
-                              Preview
-                            </span>
+                          <div className="space-y-1.5 mt-2">
+                            <div className="relative aspect-[4/3] max-w-xs rounded-xl overflow-hidden border border-coffee-dark/20 bg-coffee-dark/5 shadow-inner">
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img
+                                src={galleryForm.image}
+                                alt="Gallery preview"
+                                className="w-full h-full object-cover"
+                                onError={(e) => {
+                                  (e.target as HTMLElement).style.display = "none";
+                                }}
+                              />
+                              <span className="absolute bottom-1.5 right-1.5 bg-black/70 text-white text-[9px] px-2 py-0.5 rounded font-mono">
+                                Live Preview (4:3)
+                              </span>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => handleOpenCropForExisting("gallery")}
+                              className="text-[11px] font-bold text-coffee-dark/75 hover:text-cappuccino flex items-center gap-1.5 py-1 px-2.5 rounded-lg bg-coffee-dark/5 hover:bg-coffee-dark/10 transition-colors cursor-pointer w-fit"
+                            >
+                              <CropToolIcon size={12} className="text-cappuccino" />
+                              <span>Crop &amp; Frame Photo</span>
+                            </button>
                           </div>
                         )}
                       </div>
@@ -2412,7 +2655,233 @@ export default function AdminPortalPage() {
               )}
 
               {/* ----------------------------------------------------------------- */}
-              {/* SUB-TAB 3: ACADEMY NOTICE & IMPORTANT SETTINGS                     */}
+              {/* SUB-TAB 3: REVIEWS & TESTIMONIALS MANAGER                         */}
+              {/* ----------------------------------------------------------------- */}
+              {cmsSubTab === "reviews" && (
+                <div className="space-y-10">
+                  {/* Review Form */}
+                  <div className="p-5 sm:p-7 rounded-2xl sm:rounded-3xl bg-white/70 border border-coffee-dark/15 space-y-6 shadow-sm">
+                    <div className="flex items-center justify-between gap-3 border-b border-coffee-dark/10 pb-4">
+                      <div>
+                        <div className="flex items-center gap-2 mb-1">
+                          <MessageSquareQuote size={18} className="text-cappuccino" />
+                          <h4 className="font-serif text-lg font-bold text-coffee-dark">
+                            {isEditingReview ? "Edit Website Review / Testimonial" : "Add New Student / Client Review"}
+                          </h4>
+                        </div>
+                        <p className="text-xs text-coffee-dark/60 font-light">
+                          {isEditingReview
+                            ? "Modify review quote, author name, discipline, or star rating."
+                            : "Published testimonials appear dynamically on the homepage under Transformations & Experiences."}
+                        </p>
+                      </div>
+                      {isEditingReview && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setIsEditingReview(false);
+                            setReviewForm(initialReviewForm);
+                          }}
+                          className="px-3 py-1.5 rounded-full text-xs font-bold bg-coffee-dark/10 hover:bg-coffee-dark/20 text-coffee-dark transition-colors cursor-pointer"
+                        >
+                          Cancel Editing
+                        </button>
+                      )}
+                    </div>
+
+                    <form onSubmit={handleSaveReview} className="space-y-5">
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                          <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
+                            Student / Reviewer Name *
+                          </label>
+                          <input
+                            type="text"
+                            value={reviewForm.name}
+                            onChange={(e) => setReviewForm({ ...reviewForm, name: e.target.value })}
+                            placeholder="e.g. S. Karthikeyan"
+                            required
+                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none transition-colors shadow-2xs"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
+                            Role / Title / Designation *
+                          </label>
+                          <input
+                            type="text"
+                            value={reviewForm.role}
+                            onChange={(e) => setReviewForm({ ...reviewForm, role: e.target.value })}
+                            placeholder="e.g. Silambam Student or Physician"
+                            required
+                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none transition-colors shadow-2xs"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
+                            Discipline Category
+                          </label>
+                          <select
+                            value={reviewForm.discipline}
+                            onChange={(e) => setReviewForm({ ...reviewForm, discipline: e.target.value })}
+                            className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs focus:outline-none cursor-pointer transition-colors shadow-2xs"
+                          >
+                            <option value="Silambam">Silambam</option>
+                            <option value="Yoga">Yoga</option>
+                            <option value="Martial Arts">Martial Arts</option>
+                            <option value="Fitness">Fitness</option>
+                            <option value="General">General / All Arts</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      {/* Star Rating Selector */}
+                      <div className="space-y-1.5">
+                        <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block">
+                          Rating Score ({reviewForm.rating} Stars)
+                        </label>
+                        <div className="flex items-center gap-1.5">
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <button
+                              key={star}
+                              type="button"
+                              onClick={() => setReviewForm({ ...reviewForm, rating: star })}
+                              className="p-1 text-cappuccino hover:scale-110 transition-transform cursor-pointer"
+                              title={`${star} Star${star > 1 ? "s" : ""}`}
+                            >
+                              <Star
+                                size={22}
+                                fill={star <= reviewForm.rating ? "currentColor" : "none"}
+                                className={star <= reviewForm.rating ? "text-[#C8955F]" : "text-coffee-dark/20"}
+                              />
+                            </button>
+                          ))}
+                          <span className="text-xs font-mono font-bold text-coffee-dark/70 ml-2">
+                            {reviewForm.rating}.0 / 5.0
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Review Quote */}
+                      <div>
+                        <label className="text-[10px] uppercase tracking-wider text-coffee-dark/60 font-bold block mb-1.5">
+                          Review / Testimonial Quote *
+                        </label>
+                        <textarea
+                          rows={3}
+                          value={reviewForm.quote}
+                          onChange={(e) => setReviewForm({ ...reviewForm, quote: e.target.value })}
+                          placeholder="Share the transformation story, training feedback, or experience..."
+                          required
+                          className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl p-3 text-xs focus:outline-none transition-colors shadow-2xs leading-relaxed"
+                        />
+                      </div>
+
+                      {/* Submit Button */}
+                      <div className="pt-2 border-t border-coffee-dark/10 flex items-center gap-3">
+                        <button
+                          type="submit"
+                          disabled={reviewSubmitting}
+                          className="min-h-[44px] px-7 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-bold text-xs uppercase tracking-wider rounded-full transition-all shadow-sm flex items-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50"
+                        >
+                          {reviewSubmitting ? (
+                            <RefreshCw size={14} className="animate-spin" />
+                          ) : (
+                            <Check size={14} />
+                          )}
+                          <span>
+                            {reviewSubmitting
+                              ? "Saving Review..."
+                              : isEditingReview
+                              ? "Update Review on Website"
+                              : "Publish Review to Homepage"}
+                          </span>
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+
+                  {/* Active Reviews List */}
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between gap-3">
+                      <div>
+                        <h4 className="font-serif text-lg font-bold text-coffee-dark">
+                          Active Website Reviews ({reviews.length})
+                        </h4>
+                        <p className="text-xs text-coffee-dark/60 font-light">
+                          These reviews display in the testimonials section of the homepage.
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => handleResetCms("reviews")}
+                        className="text-[11px] text-coffee-dark/50 hover:text-coffee-dark underline font-mono cursor-pointer"
+                      >
+                        Reset to Defaults
+                      </button>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                      {reviews.map((rev) => (
+                        <div
+                          key={rev.id}
+                          className="p-5 rounded-2xl bg-white/70 border border-coffee-dark/15 hover:border-cappuccino/50 transition-all flex flex-col justify-between gap-3.5 shadow-2xs"
+                        >
+                          <div className="space-y-2">
+                            <div className="flex items-center justify-between gap-2">
+                              <div className="flex items-center gap-1 text-cappuccino">
+                                {Array.from({ length: rev.rating || 5 }).map((_, i) => (
+                                  <Star key={i} size={14} fill="currentColor" />
+                                ))}
+                              </div>
+                              {rev.discipline && (
+                                <span className="px-2 py-0.5 rounded-full bg-cappuccino/15 border border-cappuccino/30 text-coffee-dark text-[9px] font-bold uppercase tracking-wider">
+                                  {rev.discipline}
+                                </span>
+                              )}
+                            </div>
+
+                            <p className="text-xs font-serif italic text-coffee-dark/80 leading-relaxed">
+                              &ldquo;{rev.quote}&rdquo;
+                            </p>
+                          </div>
+
+                          <div className="pt-2 border-t border-coffee-dark/10 flex items-center justify-between gap-3">
+                            <div>
+                              <h5 className="font-bold text-xs sm:text-sm text-coffee-dark">{rev.name}</h5>
+                              <p className="text-[10px] text-cappuccino font-bold uppercase tracking-wider">{rev.role}</p>
+                            </div>
+
+                            <div className="flex items-center gap-1.5">
+                              <button
+                                type="button"
+                                onClick={() => handleEditReview(rev)}
+                                className="px-3 py-1.5 rounded-lg bg-coffee-dark/5 hover:bg-coffee-dark hover:text-white text-coffee-dark text-xs font-bold transition-colors flex items-center gap-1 cursor-pointer"
+                              >
+                                <Edit3 size={12} />
+                                <span>Edit</span>
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => handleDeleteReview(rev.id)}
+                                className="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+                                title="Delete review"
+                              >
+                                <Trash2 size={14} />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* ----------------------------------------------------------------- */}
+              {/* SUB-TAB 4: ACADEMY NOTICE & IMPORTANT SETTINGS                     */}
               {/* ----------------------------------------------------------------- */}
               {cmsSubTab === "settings" && (
                 <form onSubmit={handleSaveSettings} className="space-y-8">
@@ -2644,6 +3113,36 @@ export default function AdminPortalPage() {
           )}
         </div>
       </main>
+
+      {/* Student ID & Profile Edit Modal */}
+      <EditStudentModal
+        isOpen={isEditStudentModalOpen}
+        student={editingStudent}
+        onClose={() => {
+          setIsEditStudentModalOpen(false);
+          setEditingStudent(null);
+        }}
+        onStudentUpdated={handleStudentUpdated}
+        onStudentDeleted={(deletedId) => {
+          setStudents((prev) => prev.filter((s) => s.id !== deletedId));
+          setMessages((prev) => prev.filter((m) => m.studentId !== deletedId));
+          setActionMessage("Student permanently removed.");
+          setTimeout(() => setActionMessage(null), 4000);
+        }}
+      />
+
+      {/* Image Crop & Framing Modal with Live Preview */}
+      <ImageCropModal
+        isOpen={cropModalOpen}
+        imageSrc={cropImageSrc}
+        title={cropTitle}
+        defaultAspectRatio={cropAspectRatio}
+        onClose={() => {
+          setCropModalOpen(false);
+          setCropImageSrc(null);
+        }}
+        onCropComplete={handleCropComplete}
+      />
     </>
   );
 }

@@ -5,9 +5,11 @@ import {
   CourseItem,
   GalleryItem,
   SiteSettings,
+  ReviewItem,
   DEFAULT_COURSES,
   DEFAULT_GALLERY,
-  DEFAULT_SITE_SETTINGS
+  DEFAULT_SITE_SETTINGS,
+  DEFAULT_REVIEWS
 } from "@/lib/portalStore";
 
 export async function GET(req: Request) {
@@ -19,6 +21,7 @@ export async function GET(req: Request) {
     const courses = data.courses && data.courses.length > 0 ? data.courses : DEFAULT_COURSES;
     const gallery = data.gallery && data.gallery.length > 0 ? data.gallery : DEFAULT_GALLERY;
     const siteSettings = data.siteSettings || DEFAULT_SITE_SETTINGS;
+    const reviews = data.reviews && data.reviews.length > 0 ? data.reviews : DEFAULT_REVIEWS;
 
     if (type === "courses") {
       return NextResponse.json({ success: true, courses });
@@ -29,12 +32,16 @@ export async function GET(req: Request) {
     if (type === "settings") {
       return NextResponse.json({ success: true, siteSettings });
     }
+    if (type === "reviews") {
+      return NextResponse.json({ success: true, reviews });
+    }
 
     return NextResponse.json({
       success: true,
       courses,
       gallery,
-      siteSettings
+      siteSettings,
+      reviews
     });
   } catch (error) {
     console.error("CMS GET error:", error);
@@ -59,6 +66,9 @@ export async function POST(req: Request) {
     }
     if (!data.siteSettings) {
       data.siteSettings = { ...DEFAULT_SITE_SETTINGS };
+    }
+    if (!data.reviews || data.reviews.length === 0) {
+      data.reviews = [...DEFAULT_REVIEWS];
     }
 
     // --- 1. COURSE OPERATIONS ---
@@ -164,16 +174,64 @@ export async function POST(req: Request) {
       });
     }
 
-    // --- 4. RESET TO DEFAULTS ---
+    // --- 4. REVIEWS & TESTIMONIALS OPERATIONS ---
+    if (action === "saveReview") {
+      const reviewData: ReviewItem = body.review;
+      if (!reviewData || !reviewData.name?.trim() || !reviewData.quote?.trim()) {
+        return NextResponse.json(
+          { success: false, error: "Reviewer name and quote are required." },
+          { status: 400 }
+        );
+      }
+
+      const existingIndex = data.reviews.findIndex((r) => r.id === reviewData.id);
+      if (existingIndex > -1) {
+        data.reviews[existingIndex] = {
+          ...data.reviews[existingIndex],
+          ...reviewData,
+          rating: Number(reviewData.rating) || 5
+        };
+      } else {
+        const newId = reviewData.id || `rev_${Date.now()}`;
+        data.reviews.unshift({
+          ...reviewData,
+          id: newId,
+          rating: Number(reviewData.rating) || 5,
+          createdAt: new Date().toISOString()
+        });
+      }
+
+      await savePortalData(data);
+      return NextResponse.json({
+        success: true,
+        message: "Review testimonial saved successfully.",
+        reviews: data.reviews
+      });
+    }
+
+    if (action === "deleteReview") {
+      const { id } = body;
+      data.reviews = data.reviews.filter((r) => r.id !== id);
+      await savePortalData(data);
+      return NextResponse.json({
+        success: true,
+        message: "Review testimonial deleted successfully.",
+        reviews: data.reviews
+      });
+    }
+
+    // --- 5. RESET TO DEFAULTS ---
     if (action === "resetDefaults") {
       const { target } = body;
       if (target === "courses") data.courses = [...DEFAULT_COURSES];
       if (target === "gallery") data.gallery = [...DEFAULT_GALLERY];
       if (target === "settings") data.siteSettings = { ...DEFAULT_SITE_SETTINGS };
+      if (target === "reviews") data.reviews = [...DEFAULT_REVIEWS];
       if (target === "all") {
         data.courses = [...DEFAULT_COURSES];
         data.gallery = [...DEFAULT_GALLERY];
         data.siteSettings = { ...DEFAULT_SITE_SETTINGS };
+        data.reviews = [...DEFAULT_REVIEWS];
       }
       await savePortalData(data);
       return NextResponse.json({
@@ -181,7 +239,8 @@ export async function POST(req: Request) {
         message: "Reset to default academy content successfully.",
         courses: data.courses,
         gallery: data.gallery,
-        siteSettings: data.siteSettings
+        siteSettings: data.siteSettings,
+        reviews: data.reviews
       });
     }
 

@@ -116,6 +116,7 @@ const disciplines = [
 export default function Home() {
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
   const [dynamicCourses, setDynamicCourses] = useState(featuredCourses);
+  const [dynamicReviews, setDynamicReviews] = useState(testimonials);
 
   useEffect(() => {
     fetch("/api/portal/cms?type=courses")
@@ -133,6 +134,15 @@ export default function Home() {
             youtubeId: c.videoId || "dQw4w9WgXcQ"
           }));
           setDynamicCourses(mapped);
+        }
+      })
+      .catch(console.error);
+
+    fetch("/api/portal/cms?type=reviews")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.reviews && data.reviews.length > 0) {
+          setDynamicReviews(data.reviews);
         }
       })
       .catch(console.error);
@@ -278,7 +288,7 @@ export default function Home() {
             title="Transformations &amp; Experiences"
           />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 lg:gap-12">
-            {testimonials.map((test, i) => (
+            {dynamicReviews.map((test, i) => (
               <motion.div 
                 key={i}
                 initial={{ opacity: 0, x: i % 2 === 0 ? -50 : 50 }}
@@ -289,7 +299,11 @@ export default function Home() {
                 className="bg-gradient-to-br from-[#281C1C] to-[#1A1212] p-5 sm:p-6 rounded-2xl sm:rounded-[2rem] text-white flex flex-col justify-between shadow-premium hover:shadow-[0_20px_50px_rgba(200,160,120,0.25)] transition-all relative overflow-hidden group border border-cappuccino/25"
               >
                 <div className="absolute top-0 right-0 w-48 h-48 bg-cappuccino/10 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:bg-cappuccino/20 transition-colors duration-500 blur-[40px] pointer-events-none" />
-                <Star className="text-cappuccino absolute top-6 right-6 sm:top-8 sm:right-8 opacity-80 group-hover:opacity-100 transition-all duration-500 group-hover:scale-110 drop-shadow-[0_0_15px_rgba(200,149,95,0.7)]" size={20} fill="currentColor" />
+                <div className="absolute top-6 right-6 sm:top-8 sm:right-8 flex items-center gap-1 text-cappuccino opacity-85 group-hover:opacity-100 transition-all duration-500 group-hover:scale-105 drop-shadow-[0_0_15px_rgba(200,149,95,0.7)]">
+                  {Array.from({ length: ("rating" in test && typeof (test as { rating?: number }).rating === "number") ? (test as { rating?: number }).rating! : 5 }).map((_, sIdx) => (
+                    <Star key={sIdx} size={15} fill="currentColor" />
+                  ))}
+                </div>
                 
                 <p className="text-xs sm:text-sm font-serif leading-relaxed mb-6 sm:mb-8 italic relative z-10 text-white drop-shadow-md pr-6 sm:pr-0">
                   &ldquo;{test.quote}&rdquo;
