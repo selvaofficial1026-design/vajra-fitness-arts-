@@ -166,6 +166,7 @@ export default function AboutPage() {
                 alt="Vajra Fitness Arts Founder &amp; Head Coach"
                 fill
                 quality={100}
+                unoptimized={Boolean(typeof aboutData.storyImage === "string" && aboutData.storyImage.startsWith("data:"))}
                 className="object-cover group-hover:scale-105 transition-transform duration-1000 ease-out"
               />
             </div>
@@ -198,6 +199,7 @@ export default function AboutPage() {
                     alt={aboutData.founderName || "Vajra Fitness Arts Founder"}
                     fill
                     priority
+                    unoptimized={Boolean(typeof aboutData.founderPhoto === "string" && aboutData.founderPhoto.startsWith("data:"))}
                     className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                   />
                   {/* Espresso gradient overlay */}

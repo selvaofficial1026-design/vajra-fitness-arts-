@@ -252,6 +252,7 @@ export default function CoursesPage() {
                         alt={course.name}
                         fill
                         quality={90}
+                        unoptimized={Boolean(typeof course.image === "string" && course.image.startsWith("data:"))}
                         sizes="(max-width: 768px) 100vw, 50vw"
                         className="object-cover group-hover:scale-110 transition-transform duration-1000 ease-in-out"
                       />

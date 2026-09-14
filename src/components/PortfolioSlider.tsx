@@ -123,6 +123,7 @@ export default function PortfolioSlider({ items, onPlay, isPaused = false }: Por
                     alt={item.name}
                     fill
                     quality={100}
+                    unoptimized={Boolean(typeof item.image === "string" && item.image.startsWith("data:"))}
                     sizes="(max-width: 768px) 80vw, 33vw"
                     className="object-cover transition-transform duration-[2000ms] ease-out pointer-events-none group-hover/card:scale-110"
                   />

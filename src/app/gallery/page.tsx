@@ -316,6 +316,7 @@ export default function GalleryPage() {
                       alt={item.title}
                       fill
                       quality={90}
+                      unoptimized={Boolean(typeof item.image === "string" && item.image.startsWith("data:"))}
                       sizes="(max-width: 640px) 85vw, (max-width: 1024px) 45vw, 350px"
                       className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
                     />
@@ -415,6 +416,7 @@ export default function GalleryPage() {
                   src={activeItem.image}
                   alt=""
                   fill
+                  unoptimized={Boolean(typeof activeItem.image === "string" && activeItem.image.startsWith("data:"))}
                   className="object-cover blur-2xl opacity-40 scale-125 pointer-events-none saturate-150"
                 />
                 {/* High resolution authentic photo */}
@@ -423,6 +425,7 @@ export default function GalleryPage() {
                   alt={activeItem.title}
                   fill
                   quality={98}
+                  unoptimized={Boolean(typeof activeItem.image === "string" && activeItem.image.startsWith("data:"))}
                   sizes="(max-width: 640px) 92vw, 448px"
                   className="object-contain relative z-10 p-1 sm:p-1.5 drop-shadow-[0_10px_25px_rgba(0,0,0,0.5)]"
                 />
