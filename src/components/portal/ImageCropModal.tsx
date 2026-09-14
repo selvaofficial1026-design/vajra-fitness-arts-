@@ -41,6 +41,7 @@ export default function ImageCropModal({
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
   const [previewDataUrl, setPreviewDataUrl] = useState<string | null>(null);
 
   const imageRef = useRef<HTMLImageElement | null>(null);
@@ -281,11 +282,11 @@ export default function ImageCropModal({
         onCropComplete(data.url);
         onClose();
       } else {
-        alert(data.error || "Failed to upload cropped image.");
+        setUploadError(data.error || "Failed to upload cropped image.");
       }
     } catch (err) {
       console.error("Cropping error:", err);
-      alert("Failed to crop and upload image.");
+      setUploadError("Failed to crop and upload image. Please try again.");
     } finally {
       setUploading(false);
     }
@@ -337,6 +338,20 @@ export default function ImageCropModal({
               <X size={18} />
             </button>
           </div>
+
+          {/* Upload Error Banner */}
+          {uploadError && (
+            <div className="mx-4 sm:mx-5 mt-3 p-3 rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs flex items-center justify-between gap-2">
+              <span>{uploadError}</span>
+              <button
+                type="button"
+                onClick={() => setUploadError(null)}
+                className="text-white/60 hover:text-white text-xs font-bold underline cursor-pointer"
+              >
+                Dismiss
+              </button>
+            </div>
+          )}
 
           {/* Modal Body: Viewport + Live Preview */}
           <div className="p-4 sm:p-5 overflow-y-auto space-y-4">

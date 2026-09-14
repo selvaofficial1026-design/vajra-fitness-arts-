@@ -19,6 +19,7 @@ import {
   LogOut
 } from "lucide-react";
 import { Student } from "@/lib/cmsDefaults";
+import ConfirmDialogModal from "@/components/portal/ConfirmDialogModal";
 
 interface EditStudentModalProps {
   isOpen: boolean;
@@ -61,6 +62,7 @@ export default function EditStudentModal({
 
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
@@ -82,17 +84,17 @@ export default function EditStudentModal({
 
   if (!isOpen || !student) return null;
 
-  const handleGenerateNewCode = () => {
-    const rand = Math.floor(1000 + Math.random() * 9000);
-    setFormData((prev) => ({ ...prev, permanentCode: `vajra-${rand}` }));
+  const handleGenerateCode = () => {
+    const randomDigits = Math.floor(1000 + Math.random() * 9000);
+    setFormData((prev) => ({
+      ...prev,
+      permanentCode: `vajra-${randomDigits}`
+    }));
   };
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name.trim()) {
-      setErrorMessage("Student name is required.");
-      return;
-    }
+    if (!student) return;
 
     setSaving(true);
     setErrorMessage(null);
@@ -123,9 +125,8 @@ export default function EditStudentModal({
     }
   };
 
-  const handleDelete = async () => {
-    const confirmMsg = `Are you sure you want to permanently delete ${student.name} (${student.permanentCode || student.tempCode})?\n\nThis will remove their profile and all classroom communication records. This action cannot be undone.`;
-    if (!window.confirm(confirmMsg)) return;
+  const handleExecuteDelete = async () => {
+    if (!student) return;
 
     setDeleting(true);
     try {
@@ -137,17 +138,16 @@ export default function EditStudentModal({
           studentId: student.id
         })
       });
-
       const data = await res.json();
       if (data.success) {
         onStudentDeleted(student.id);
         onClose();
       } else {
-        alert(data.error || "Failed to delete student.");
+        setErrorMessage(data.error || "Failed to delete student.");
       }
     } catch (err) {
       console.error("Delete error:", err);
-      alert("Failed to delete student.");
+      setErrorMessage("Failed to delete student. Please try again.");
     } finally {
       setDeleting(false);
     }
@@ -220,7 +220,7 @@ export default function EditStudentModal({
                 </label>
                 <button
                   type="button"
-                  onClick={handleGenerateNewCode}
+                  onClick={handleGenerateCode}
                   className="text-[10.5px] text-white/70 hover:text-cappuccino flex items-center gap-1 transition-colors cursor-pointer"
                 >
                   <Sparkles size={11} />
@@ -392,7 +392,7 @@ export default function EditStudentModal({
               {/* Delete Student Button */}
               <button
                 type="button"
-                onClick={handleDelete}
+                onClick={() => setShowConfirmDelete(true)}
                 disabled={deleting}
                 className="w-full sm:w-auto min-h-[40px] px-4 py-2 bg-red-500/15 hover:bg-red-500/25 border border-red-500/30 text-red-300 hover:text-red-200 rounded-full text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
               >
@@ -435,6 +435,18 @@ export default function EditStudentModal({
             </div>
           </form>
         </motion.div>
+
+        {/* Confirmation Dialog for Permanent Deletion */}
+        <ConfirmDialogModal
+          isOpen={showConfirmDelete}
+          title="Permanently Delete Student"
+          message={`Are you sure you want to permanently delete ${student.name} (${student.permanentCode || student.tempCode})?\n\nThis will permanently remove their enrollment record and classroom chat history. This action cannot be undone.`}
+          confirmText="Yes, Permanently Delete"
+          cancelText="Cancel"
+          isDestructive={true}
+          onConfirm={handleExecuteDelete}
+          onClose={() => setShowConfirmDelete(false)}
+        />
       </div>
     </AnimatePresence>
   );

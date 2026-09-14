@@ -27,7 +27,8 @@ import {
   CheckCheck,
   HelpCircle,
   ShieldCheck,
-  AlertCircle
+  AlertCircle,
+  RefreshCw
 } from "lucide-react";
 import { Student, ClassMeeting, VideoClass, ChatMessage } from "@/lib/portalStore";
 import { cn } from "@/lib/utils";
@@ -126,41 +127,101 @@ export default function StudentPortalPage() {
     }
   }, [router]);
 
-  // Load videos, meetings, messages for this student
-  const loadStudentData = async (std: Student) => {
-    // 1. Fetch Meet links
-    setMeetLoading(true);
+  // Fetch Meet links
+  const fetchMeetings = async (courseName?: string, batchName?: string) => {
+    const c = courseName || student?.course;
+    const b = batchName || student?.batch;
+    if (!c || !b) return;
     try {
       const res = await fetch(
-        `/api/portal/meet?course=${encodeURIComponent(std.course)}&batch=${encodeURIComponent(std.batch)}`
+        `/api/portal/meet?course=${encodeURIComponent(c)}&batch=${encodeURIComponent(b)}`
       );
       const data = await res.json();
       if (data.success) {
         setMeetings(data.meetings || []);
       }
     } catch (err) {
-      console.error(err);
-    } finally {
-      setMeetLoading(false);
+      console.error("Fetch meetings error:", err);
     }
+  };
 
-    // 2. Fetch YouTube Videos
+  // Fetch YouTube Videos
+  const fetchVideos = async (courseName?: string) => {
+    const c = courseName || student?.course;
+    if (!c) return;
     setVideosLoading(true);
     try {
-      const res = await fetch(`/api/portal/videos?course=${encodeURIComponent(std.course)}`);
+      const res = await fetch(`/api/portal/videos?course=${encodeURIComponent(c)}`);
       const data = await res.json();
       if (data.success) {
         setVideos(data.videos || []);
       }
     } catch (err) {
-      console.error(err);
+      console.error("Fetch videos error:", err);
     } finally {
       setVideosLoading(false);
     }
-
-    // 3. Fetch Messages
-    fetchMessages(std.id);
   };
+
+  // Fetch chat messages
+  const fetchMessages = async (studentId?: string) => {
+    const sid = studentId || student?.id;
+    if (!sid) return;
+    try {
+      const res = await fetch(`/api/portal/messages?studentId=${encodeURIComponent(sid)}`);
+      const data = await res.json();
+      if (data.success) {
+        setMessages(data.messages || []);
+      }
+    } catch (err) {
+      console.error("Fetch messages error:", err);
+    }
+  };
+
+  // Load videos, meetings, messages for this student
+  const loadStudentData = async (std: Student) => {
+    setMeetLoading(true);
+    await Promise.all([
+      fetchMeetings(std.course, std.batch),
+      fetchVideos(std.course),
+      fetchMessages(std.id)
+    ]);
+    setMeetLoading(false);
+  };
+
+  // Real-time background polling for new coach messages (every 3 seconds)
+  useEffect(() => {
+    if (!student?.id) return;
+    const interval = setInterval(() => {
+      fetchMessages(student.id);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [student?.id]);
+
+  // Sync data on active tab switch
+  useEffect(() => {
+    if (!student) return;
+    if (activeTab === "doubt") {
+      fetchMessages(student.id);
+    } else if (activeTab === "videos") {
+      fetchVideos(student.course);
+    } else if (activeTab === "meet") {
+      fetchMeetings(student.course, student.batch);
+    }
+  }, [activeTab, student]);
+
+  // Periodic video and meeting check while student is on those tabs (every 7 seconds)
+  useEffect(() => {
+    if (!student) return;
+    const interval = setInterval(() => {
+      if (activeTab === "videos") {
+        fetchVideos(student.course);
+      } else if (activeTab === "meet") {
+        fetchMeetings(student.course, student.batch);
+      }
+    }, 7000);
+    return () => clearInterval(interval);
+  }, [activeTab, student]);
 
   // Auto-scroll marquee for compact videos carousel (only runs when multiple lessons exist)
   useEffect(() => {
@@ -200,18 +261,6 @@ export default function StudentPortalPage() {
     }
   };
 
-  // Fetch chat messages
-  const fetchMessages = async (studentId: string) => {
-    try {
-      const res = await fetch(`/api/portal/messages?studentId=${encodeURIComponent(studentId)}`);
-      const data = await res.json();
-      if (data.success) {
-        setMessages(data.messages || []);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
 
   // Scroll to bottom of chat when messages update
   useEffect(() => {
@@ -601,51 +650,64 @@ export default function StudentPortalPage() {
                     </p>
                   </div>
 
-                  {videos.length > 2 && (
-                    <div className="flex items-center gap-2 shrink-0 self-start sm:self-center">
-                      <button
-                        type="button"
-                        onClick={() => setIsVideoPaused((prev) => !prev)}
-                        aria-label={isVideoPaused ? "Resume auto-scrolling" : "Pause auto-scrolling"}
-                        className="h-9 px-3.5 rounded-full bg-white/80 hover:bg-white border border-coffee-dark/15 text-coffee-dark text-xs font-semibold flex items-center gap-1.5 transition-all shadow-2xs cursor-pointer active:scale-95 select-none"
-                      >
-                        {isVideoPaused ? (
-                          <>
-                            <Play size={12} fill="currentColor" className="text-cappuccino shrink-0" />
-                            <span>Resume</span>
-                          </>
-                        ) : (
-                          <>
-                            <Pause size={12} className="text-coffee-dark shrink-0" />
-                            <span>Pause</span>
-                          </>
-                        )}
-                      </button>
+                  <div className="flex items-center gap-2 shrink-0 self-start sm:self-center flex-wrap">
+                    <button
+                      type="button"
+                      onClick={() => fetchVideos(student.course)}
+                      disabled={videosLoading}
+                      aria-label="Refresh video library"
+                      className="h-9 px-3.5 rounded-full bg-white/80 hover:bg-white border border-coffee-dark/15 text-coffee-dark text-xs font-semibold flex items-center gap-1.5 transition-all shadow-2xs cursor-pointer active:scale-95 select-none disabled:opacity-50"
+                    >
+                      <RefreshCw size={12} className={cn("text-cappuccino shrink-0", videosLoading && "animate-spin")} />
+                      <span>{videosLoading ? "Refreshing..." : "Refresh"}</span>
+                    </button>
 
-                      <div className="flex items-center gap-1">
+                    {videos.length > 2 && (
+                      <>
                         <button
                           type="button"
-                          onClick={() => handleScrollVideos("left")}
-                          aria-label="Scroll videos left"
-                          className="w-9 h-9 rounded-full bg-white/80 hover:bg-white border border-coffee-dark/15 text-coffee-dark flex items-center justify-center transition-all shadow-2xs cursor-pointer active:scale-90 select-none"
+                          onClick={() => setIsVideoPaused((prev) => !prev)}
+                          aria-label={isVideoPaused ? "Resume auto-scrolling" : "Pause auto-scrolling"}
+                          className="h-9 px-3.5 rounded-full bg-white/80 hover:bg-white border border-coffee-dark/15 text-coffee-dark text-xs font-semibold flex items-center gap-1.5 transition-all shadow-2xs cursor-pointer active:scale-95 select-none"
                         >
-                          <ChevronLeft size={16} />
+                          {isVideoPaused ? (
+                            <>
+                              <Play size={12} fill="currentColor" className="text-cappuccino shrink-0" />
+                              <span>Resume</span>
+                            </>
+                          ) : (
+                            <>
+                              <Pause size={12} className="text-coffee-dark shrink-0" />
+                              <span>Pause</span>
+                            </>
+                          )}
                         </button>
-                        <button
-                          type="button"
-                          onClick={() => handleScrollVideos("right")}
-                          aria-label="Scroll videos right"
-                          className="w-9 h-9 rounded-full bg-white/80 hover:bg-white border border-coffee-dark/15 text-coffee-dark flex items-center justify-center transition-all shadow-2xs cursor-pointer active:scale-90 select-none"
-                        >
-                          <ChevronRight size={16} />
-                        </button>
-                      </div>
-                    </div>
-                  )}
+
+                        <div className="flex items-center gap-1">
+                          <button
+                            type="button"
+                            onClick={() => handleScrollVideos("left")}
+                            aria-label="Scroll videos left"
+                            className="w-9 h-9 rounded-full bg-white/80 hover:bg-white border border-coffee-dark/15 text-coffee-dark flex items-center justify-center transition-all shadow-2xs cursor-pointer active:scale-90 select-none"
+                          >
+                            <ChevronLeft size={16} />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleScrollVideos("right")}
+                            aria-label="Scroll videos right"
+                            className="w-9 h-9 rounded-full bg-white/80 hover:bg-white border border-coffee-dark/15 text-coffee-dark flex items-center justify-center transition-all shadow-2xs cursor-pointer active:scale-90 select-none"
+                          >
+                            <ChevronRight size={16} />
+                          </button>
+                        </div>
+                      </>
+                    )}
+                  </div>
                 </div>
 
                 {videos.length === 0 ? (
-                  <div className="py-12 sm:py-16 px-4 text-center space-y-2.5 max-w-md mx-auto">
+                  <div className="py-12 sm:py-16 px-4 text-center space-y-3 max-w-md mx-auto">
                     <VideoOff size={36} className="mx-auto text-coffee-dark/40 shrink-0" />
                     <h3 className="text-base sm:text-lg font-serif font-bold text-coffee-dark break-words">
                       No Training Videos Yet
@@ -653,6 +715,15 @@ export default function StudentPortalPage() {
                     <p className="text-xs text-coffee-dark/60 max-w-xs sm:max-w-sm mx-auto leading-relaxed break-words">
                       Your coach has not uploaded recorded lessons for {student.course} yet. Check back soon!
                     </p>
+                    <button
+                      type="button"
+                      onClick={() => fetchVideos(student.course)}
+                      disabled={videosLoading}
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cappuccino text-coffee-dark font-bold text-xs hover:bg-[#d69f68] transition-all cursor-pointer shadow-xs active:scale-95"
+                    >
+                      <RefreshCw size={13} className={cn(videosLoading && "animate-spin")} />
+                      <span>Check for New Lessons</span>
+                    </button>
                   </div>
                 ) : (
                   <div

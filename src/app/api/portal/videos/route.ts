@@ -10,12 +10,17 @@ export async function GET(req: Request) {
     let videos = data.videos;
 
     if (course && course.toLowerCase() !== "all" && course.toLowerCase() !== "all courses") {
-      videos = videos.filter(
-        (v) =>
-          v.course.toLowerCase() === course.toLowerCase() ||
-          v.course.toLowerCase() === "all" ||
-          v.course.toLowerCase() === "all courses"
-      );
+      const cleanCourse = course.toLowerCase().trim();
+      videos = videos.filter((v) => {
+        const vCourse = (v.course || "").toLowerCase().trim();
+        return (
+          vCourse === cleanCourse ||
+          vCourse.includes(cleanCourse) ||
+          cleanCourse.includes(vCourse) ||
+          vCourse === "all" ||
+          vCourse.includes("all")
+        );
+      });
     }
 
     return NextResponse.json({

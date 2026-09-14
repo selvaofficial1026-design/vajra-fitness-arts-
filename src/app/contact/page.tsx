@@ -14,6 +14,7 @@ export default function ContactPage() {
     message: ""
   });
   const [phoneError, setPhoneError] = useState("");
+  const [nameError, setNameError] = useState("");
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -22,9 +23,10 @@ export default function ContactPage() {
     const trimmedMessage = formData.message.trim();
 
     if (!trimmedName) {
-      alert("Please enter your name.");
+      setNameError("Please enter your name.");
       return;
     }
+    setNameError("");
 
     const digitsOnly = trimmedPhone.replace(/\D/g, "");
     if (digitsOnly.length < 7 || digitsOnly.length > 15) {
@@ -230,10 +232,16 @@ I would like to inquire about admissions:
                         name="user_name"
                         required
                         value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        onChange={(e) => {
+                          setFormData({ ...formData, name: e.target.value });
+                          if (nameError) setNameError("");
+                        }}
                         className="w-full bg-[#191111] border border-white/20 focus:border-cappuccino text-white rounded-xl px-3.5 py-2 sm:py-2.5 text-xs sm:text-sm min-h-[40px] focus:outline-none transition-colors placeholder:text-white/30"
                         placeholder="Your full name"
                       />
+                      {nameError && (
+                        <p className="text-red-400 text-[10px] pl-1">{nameError}</p>
+                      )}
                     </div>
 
                     {/* Phone */}

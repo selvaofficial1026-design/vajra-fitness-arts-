@@ -68,6 +68,7 @@ import PortalLoadingScreen from "@/components/portal/PortalLoadingScreen";
 import AdminProfileModal, { AdminProfileData } from "@/components/portal/AdminProfileModal";
 import ImageCropModal, { AspectRatioType } from "@/components/portal/ImageCropModal";
 import EditStudentModal from "@/components/portal/EditStudentModal";
+import ConfirmDialogModal, { ConfirmDialogMode } from "@/components/portal/ConfirmDialogModal";
 
 const officialBatches = [
   "4:30 AM - 5:15 AM (Morning)",
@@ -215,6 +216,64 @@ export default function AdminPortalPage() {
   const [messageSending, setMessageSending] = useState(false);
   const chatScrollRef = useRef<HTMLDivElement>(null);
 
+  // Universal Professional Dialog Modal State (Replaces native browser alert & confirm)
+  const [confirmDialog, setConfirmDialog] = useState<{
+    isOpen: boolean;
+    title: string;
+    description: string;
+    mode: ConfirmDialogMode;
+    confirmText?: string;
+    cancelText?: string;
+    isDestructive?: boolean;
+    onConfirm: () => void;
+  }>({
+    isOpen: false,
+    title: "",
+    description: "",
+    mode: "confirm",
+    onConfirm: () => {}
+  });
+
+  const showConfirm = (opts: {
+    title: string;
+    description: string;
+    confirmText?: string;
+    cancelText?: string;
+    isDestructive?: boolean;
+    onConfirm: () => void;
+  }) => {
+    setConfirmDialog({
+      isOpen: true,
+      title: opts.title,
+      description: opts.description,
+      mode: "confirm",
+      confirmText: opts.confirmText,
+      cancelText: opts.cancelText,
+      isDestructive: opts.isDestructive !== undefined ? opts.isDestructive : true,
+      onConfirm: () => {
+        setConfirmDialog((prev) => ({ ...prev, isOpen: false }));
+        opts.onConfirm();
+      }
+    });
+  };
+
+  const showAlert = (opts: {
+    title?: string;
+    description: string;
+    buttonText?: string;
+  }) => {
+    setConfirmDialog({
+      isOpen: true,
+      title: opts.title || "Notice",
+      description: opts.description,
+      mode: "alert",
+      confirmText: opts.buttonText || "Got it",
+      onConfirm: () => {
+        setConfirmDialog((prev) => ({ ...prev, isOpen: false }));
+      }
+    });
+  };
+
   // Check admin session & show luxury entrance loading screen
   useEffect(() => {
     const startTime = Date.now();
@@ -285,12 +344,37 @@ export default function AdminPortalPage() {
     }
   };
 
+  // Lightweight real-time message polling
+  const refreshMessages = async () => {
+    try {
+      const res = await fetch("/api/portal/messages");
+      const data = await res.json();
+      if (data.success && Array.isArray(data.messages)) {
+        setMessages(data.messages);
+      }
+    } catch (err) {
+      console.error("Failed to refresh messages:", err);
+    }
+  };
+
+  // General admin sync interval (every 8 seconds)
   useEffect(() => {
     const interval = setInterval(() => {
       loadAdminData();
     }, 8000);
     return () => clearInterval(interval);
   }, []);
+
+  // Real-time messaging sync (polls every 2.5 seconds when admin is viewing messages)
+  useEffect(() => {
+    if (activeTab === "messages") {
+      refreshMessages();
+      const msgInterval = setInterval(() => {
+        refreshMessages();
+      }, 2500);
+      return () => clearInterval(msgInterval);
+    }
+  }, [activeTab, selectedStudentId]);
 
   useEffect(() => {
     if (activeTab === "messages") {
@@ -316,23 +400,31 @@ export default function AdminPortalPage() {
     }
   };
 
-  const handleRejectStudent = async (studentId: string) => {
-    if (!confirm("Are you sure you want to reject this student enrollment?")) return;
-    try {
-      const res = await fetch("/api/portal/admin", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "reject", studentId })
-      });
-      const data = await res.json();
-      if (data.success) {
-        setActionMessage("Student enrollment rejected.");
-        setTimeout(() => setActionMessage(null), 4000);
-        loadAdminData();
+  const handleRejectStudent = (studentId: string) => {
+    showConfirm({
+      title: "Reject Enrollment?",
+      description: "Are you sure you want to reject this student enrollment? This will remove their application from the pending admissions list.",
+      confirmText: "Reject Enrollment",
+      cancelText: "Cancel",
+      isDestructive: true,
+      onConfirm: async () => {
+        try {
+          const res = await fetch("/api/portal/admin", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ action: "reject", studentId })
+          });
+          const data = await res.json();
+          if (data.success) {
+            setActionMessage("Student enrollment rejected.");
+            setTimeout(() => setActionMessage(null), 4000);
+            loadAdminData();
+          }
+        } catch (err) {
+          console.error(err);
+        }
       }
-    } catch (err) {
-      console.error(err);
-    }
+    });
   };
 
   const handleAddMeet = async (e: React.FormEvent) => {
@@ -370,18 +462,26 @@ export default function AdminPortalPage() {
     }
   };
 
-  const handleDeleteMeet = async (meetingId: string) => {
-    if (!confirm("Delete this Google Meet link?")) return;
-    try {
-      await fetch("/api/portal/admin", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "delete_meeting", meetingId })
-      });
-      loadAdminData();
-    } catch (err) {
-      console.error(err);
-    }
+  const handleDeleteMeet = (meetingId: string) => {
+    showConfirm({
+      title: "Delete Google Meet Room?",
+      description: "Are you sure you want to delete this Google Meet classroom link? Enrolled students in this batch will no longer see it.",
+      confirmText: "Delete Link",
+      cancelText: "Keep",
+      isDestructive: true,
+      onConfirm: async () => {
+        try {
+          await fetch("/api/portal/admin", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ action: "delete_meeting", meetingId })
+          });
+          loadAdminData();
+        } catch (err) {
+          console.error(err);
+        }
+      }
+    });
   };
 
   // Automatically fetch YouTube video title when URL or ID is provided
@@ -462,18 +562,26 @@ export default function AdminPortalPage() {
     }
   };
 
-  const handleDeleteVideo = async (videoId: string) => {
-    if (!confirm("Delete this video lesson?")) return;
-    try {
-      await fetch("/api/portal/admin", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "delete_video", videoId })
-      });
-      loadAdminData();
-    } catch (err) {
-      console.error(err);
-    }
+  const handleDeleteVideo = (videoId: string) => {
+    showConfirm({
+      title: "Delete Video Lesson?",
+      description: "Are you sure you want to delete this video lesson? Students will no longer be able to watch it in their curriculum vault.",
+      confirmText: "Delete Lesson",
+      cancelText: "Cancel",
+      isDestructive: true,
+      onConfirm: async () => {
+        try {
+          await fetch("/api/portal/admin", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ action: "delete_video", videoId })
+          });
+          loadAdminData();
+        } catch (err) {
+          console.error(err);
+        }
+      }
+    });
   };
 
   const handleSendReply = async (e?: React.FormEvent, customQuickText?: string) => {
@@ -546,7 +654,10 @@ export default function AdminPortalPage() {
     else if (target === "story") currentUrl = aboutSettings.storyImage;
 
     if (!currentUrl) {
-      alert("Please enter or upload an image first to crop it.");
+      showAlert({
+        title: "No Image Selected",
+        description: "Please enter an image URL or upload an image file first to crop and frame it."
+      });
       return;
     }
     setCropImageSrc(currentUrl);
@@ -606,11 +717,17 @@ export default function AdminPortalPage() {
         setActionMessage("About page details updated on website!");
         setTimeout(() => setActionMessage(null), 4000);
       } else {
-        alert(data.error || "Failed to update About page details.");
+        showAlert({
+          title: "Save Failed",
+          description: data.error || "Failed to update About page details."
+        });
       }
     } catch (err) {
       console.error(err);
-      alert("Network error. Please try again.");
+      showAlert({
+        title: "Network Error",
+        description: "A network error occurred while updating About page details. Please try again."
+      });
     } finally {
       setAboutSubmitting(false);
     }
@@ -641,7 +758,10 @@ export default function AdminPortalPage() {
         setCourseForm(initialCourseForm);
         setIsEditingCourse(false);
       } else {
-        alert(data.error || "Failed to save course.");
+        showAlert({
+          title: "Save Failed",
+          description: data.error || "Failed to save course."
+        });
       }
     } catch (err) {
       console.error("Save course error:", err);
@@ -650,23 +770,31 @@ export default function AdminPortalPage() {
     }
   };
 
-  const handleDeleteCourse = async (courseId: string) => {
-    if (!confirm("Are you sure you want to remove this course from the main website?")) return;
-    try {
-      const res = await fetch("/api/portal/cms", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "deleteCourse", id: courseId })
-      });
-      const data = await res.json();
-      if (data.success && data.courses) {
-        setCourses(data.courses);
-        setActionMessage("Course removed from website.");
-        setTimeout(() => setActionMessage(null), 3000);
+  const handleDeleteCourse = (courseId: string) => {
+    showConfirm({
+      title: "Remove Course?",
+      description: "Are you sure you want to remove this course from the main website? Prospective students will no longer see it.",
+      confirmText: "Remove Course",
+      cancelText: "Keep",
+      isDestructive: true,
+      onConfirm: async () => {
+        try {
+          const res = await fetch("/api/portal/cms", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ action: "deleteCourse", id: courseId })
+          });
+          const data = await res.json();
+          if (data.success && data.courses) {
+            setCourses(data.courses);
+            setActionMessage("Course removed from website.");
+            setTimeout(() => setActionMessage(null), 3000);
+          }
+        } catch (err) {
+          console.error("Delete course error:", err);
+        }
       }
-    } catch (err) {
-      console.error("Delete course error:", err);
-    }
+    });
   };
 
   const handleEditCourse = (course: CourseItem) => {
@@ -725,7 +853,10 @@ export default function AdminPortalPage() {
         setTimeout(() => setActionMessage(null), 4000);
         setGalleryForm(initialGalleryForm);
       } else {
-        alert(data.error || "Failed to save gallery photo.");
+        showAlert({
+          title: "Save Failed",
+          description: data.error || "Failed to save gallery photo."
+        });
       }
     } catch (err) {
       console.error("Save gallery error:", err);
@@ -734,23 +865,31 @@ export default function AdminPortalPage() {
     }
   };
 
-  const handleDeleteGallery = async (id: string | number) => {
-    if (!confirm("Are you sure you want to remove this photo from the gallery?")) return;
-    try {
-      const res = await fetch("/api/portal/cms", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "deleteGalleryItem", id })
-      });
-      const data = await res.json();
-      if (data.success && data.gallery) {
-        setGallery(data.gallery);
-        setActionMessage("Photo removed from gallery.");
-        setTimeout(() => setActionMessage(null), 3000);
+  const handleDeleteGallery = (id: string | number) => {
+    showConfirm({
+      title: "Remove Gallery Photo?",
+      description: "Are you sure you want to remove this photo from the website gallery?",
+      confirmText: "Remove Photo",
+      cancelText: "Keep",
+      isDestructive: true,
+      onConfirm: async () => {
+        try {
+          const res = await fetch("/api/portal/cms", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ action: "deleteGalleryItem", id })
+          });
+          const data = await res.json();
+          if (data.success && data.gallery) {
+            setGallery(data.gallery);
+            setActionMessage("Photo removed from gallery.");
+            setTimeout(() => setActionMessage(null), 3000);
+          }
+        } catch (err) {
+          console.error("Delete gallery error:", err);
+        }
       }
-    } catch (err) {
-      console.error("Delete gallery error:", err);
-    }
+    });
   };
 
   const handleSaveSettings = async (e: React.FormEvent) => {
@@ -778,27 +917,35 @@ export default function AdminPortalPage() {
     }
   };
 
-  const handleResetCms = async (target: "courses" | "gallery" | "settings" | "reviews" | "about" | "all") => {
-    if (!confirm(`Are you sure you want to reset ${target} back to academy defaults?`)) return;
-    try {
-      const res = await fetch("/api/portal/cms", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "resetDefaults", target })
-      });
-      const data = await res.json();
-      if (data.success) {
-        if (data.courses) setCourses(data.courses);
-        if (data.gallery) setGallery(data.gallery);
-        if (data.siteSettings) setSiteSettings(data.siteSettings);
-        if (data.reviews) setReviews(data.reviews);
-        if (data.aboutSettings) setAboutSettings(data.aboutSettings);
-        setActionMessage("Reset to academy defaults completed.");
-        setTimeout(() => setActionMessage(null), 3000);
+  const handleResetCms = (target: "courses" | "gallery" | "settings" | "reviews" | "about" | "all") => {
+    showConfirm({
+      title: "Reset to Defaults?",
+      description: `Are you sure you want to reset ${target} back to academy defaults? Any customized modifications in this section will be overwritten with default content.`,
+      confirmText: "Reset Defaults",
+      cancelText: "Cancel",
+      isDestructive: true,
+      onConfirm: async () => {
+        try {
+          const res = await fetch("/api/portal/cms", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ action: "resetDefaults", target })
+          });
+          const data = await res.json();
+          if (data.success) {
+            if (data.courses) setCourses(data.courses);
+            if (data.gallery) setGallery(data.gallery);
+            if (data.siteSettings) setSiteSettings(data.siteSettings);
+            if (data.reviews) setReviews(data.reviews);
+            if (data.aboutSettings) setAboutSettings(data.aboutSettings);
+            setActionMessage("Reset to academy defaults completed.");
+            setTimeout(() => setActionMessage(null), 3000);
+          }
+        } catch (err) {
+          console.error("Reset CMS error:", err);
+        }
       }
-    } catch (err) {
-      console.error("Reset CMS error:", err);
-    }
+    });
   };
 
   // --- REVIEWS CMS HANDLERS ---
@@ -824,7 +971,10 @@ export default function AdminPortalPage() {
         setReviewForm(initialReviewForm);
         setIsEditingReview(false);
       } else {
-        alert(data.error || "Failed to save review.");
+        showAlert({
+          title: "Save Failed",
+          description: data.error || "Failed to save review."
+        });
       }
     } catch (err) {
       console.error("Save review error:", err);
@@ -833,23 +983,31 @@ export default function AdminPortalPage() {
     }
   };
 
-  const handleDeleteReview = async (id: string) => {
-    if (!confirm("Are you sure you want to remove this review from the website?")) return;
-    try {
-      const res = await fetch("/api/portal/cms", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "deleteReview", id })
-      });
-      const data = await res.json();
-      if (data.success && data.reviews) {
-        setReviews(data.reviews);
-        setActionMessage("Review removed from website.");
-        setTimeout(() => setActionMessage(null), 3000);
+  const handleDeleteReview = (id: string) => {
+    showConfirm({
+      title: "Remove Review?",
+      description: "Are you sure you want to remove this review from the website testimonials?",
+      confirmText: "Remove Review",
+      cancelText: "Keep",
+      isDestructive: true,
+      onConfirm: async () => {
+        try {
+          const res = await fetch("/api/portal/cms", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ action: "deleteReview", id })
+          });
+          const data = await res.json();
+          if (data.success && data.reviews) {
+            setReviews(data.reviews);
+            setActionMessage("Review removed from website.");
+            setTimeout(() => setActionMessage(null), 3000);
+          }
+        } catch (err) {
+          console.error("Delete review error:", err);
+        }
       }
-    } catch (err) {
-      console.error("Delete review error:", err);
-    }
+    });
   };
 
   const handleEditReview = (rev: ReviewItem) => {
@@ -878,33 +1036,37 @@ export default function AdminPortalPage() {
     setTimeout(() => setActionMessage(null), 4000);
   };
 
-  const handleDeleteStudent = async (studentId: string, studentName?: string) => {
-    if (
-      !confirm(
-        `Are you sure you want to permanently delete student ${studentName || ""}? This will wipe their login and chat history.`
-      )
-    ) {
-      return;
-    }
-
-    try {
-      const res = await fetch("/api/portal/admin", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "delete_student", studentId })
-      });
-      const data = await res.json();
-      if (data.success) {
-        setStudents((prev) => prev.filter((s) => s.id !== studentId));
-        setMessages((prev) => prev.filter((m) => m.studentId !== studentId));
-        setActionMessage("Student permanently removed.");
-        setTimeout(() => setActionMessage(null), 4000);
-      } else {
-        alert(data.error || "Failed to delete student.");
+  const handleDeleteStudent = (studentId: string, studentName?: string) => {
+    showConfirm({
+      title: "Permanently Delete Student?",
+      description: `Are you sure you want to permanently delete student ${studentName || ""}? This will wipe their enrollment credentials, attendance records, and chat history.`,
+      confirmText: "Delete Permanently",
+      cancelText: "Cancel",
+      isDestructive: true,
+      onConfirm: async () => {
+        try {
+          const res = await fetch("/api/portal/admin", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ action: "delete_student", studentId })
+          });
+          const data = await res.json();
+          if (data.success) {
+            setStudents((prev) => prev.filter((s) => s.id !== studentId));
+            setMessages((prev) => prev.filter((m) => m.studentId !== studentId));
+            setActionMessage("Student permanently removed.");
+            setTimeout(() => setActionMessage(null), 4000);
+          } else {
+            showAlert({
+              title: "Delete Failed",
+              description: data.error || "Failed to delete student."
+            });
+          }
+        } catch (err) {
+          console.error("Delete student error:", err);
+        }
       }
-    } catch (err) {
-      console.error("Delete student error:", err);
-    }
+    });
   };
 
   const handleLogout = () => {
@@ -915,6 +1077,21 @@ export default function AdminPortalPage() {
   const pendingStudents = students.filter((s) => s.status === "PENDING");
   const approvedStudents = students.filter((s) => s.status === "APPROVED");
   const leftStudents = students.filter((s) => s.status === "LEFT");
+
+  // Sort approved students for direct messaging desk:
+  // Unread messages first, then latest conversation timestamp descending
+  const sortedApprovedStudents = [...approvedStudents].sort((a, b) => {
+    const aUnread = messages.some((m) => m.studentId === a.id && m.sender === "student" && !m.isRead);
+    const bUnread = messages.some((m) => m.studentId === b.id && m.sender === "student" && !m.isRead);
+    if (aUnread && !bUnread) return -1;
+    if (!aUnread && bUnread) return 1;
+
+    const aMsgs = messages.filter((m) => m.studentId === a.id);
+    const bMsgs = messages.filter((m) => m.studentId === b.id);
+    const aLastTime = aMsgs.length > 0 ? new Date(aMsgs[aMsgs.length - 1].timestamp).getTime() : 0;
+    const bLastTime = bMsgs.length > 0 ? new Date(bMsgs[bMsgs.length - 1].timestamp).getTime() : 0;
+    return bLastTime - aLastTime;
+  });
 
   const displayedStudents = students
     .filter((s) => {
@@ -935,7 +1112,8 @@ export default function AdminPortalPage() {
       );
     });
 
-  const activeChatStudent = students.find((s) => s.id === selectedStudentId) || approvedStudents[0];
+  const activeChatStudent =
+    students.find((s) => s.id === selectedStudentId) || sortedApprovedStudents[0] || students[0];
   const activeChatMessages = activeChatStudent
     ? messages.filter((m) => m.studentId === activeChatStudent.id)
     : [];
@@ -1849,7 +2027,7 @@ export default function AdminPortalPage() {
                         <p className="text-[10px]">Approve admissions in the Admissions tab to message them here.</p>
                       </div>
                     ) : (
-                      approvedStudents.map((std) => {
+                      sortedApprovedStudents.map((std) => {
                         const isSelected = activeChatStudent?.id === std.id;
                         const lastMsg = messages
                           .filter((m) => m.studentId === std.id)
@@ -3748,6 +3926,19 @@ export default function AdminPortalPage() {
           setCropImageSrc(null);
         }}
         onCropComplete={handleCropComplete}
+      />
+
+      {/* Universal Luxury Dialog Modal (Eliminates all native browser alerts & confirms) */}
+      <ConfirmDialogModal
+        isOpen={confirmDialog.isOpen}
+        title={confirmDialog.title}
+        description={confirmDialog.description}
+        mode={confirmDialog.mode}
+        confirmText={confirmDialog.confirmText}
+        cancelText={confirmDialog.cancelText}
+        isDestructive={confirmDialog.isDestructive}
+        onConfirm={confirmDialog.onConfirm}
+        onCancel={() => setConfirmDialog((prev) => ({ ...prev, isOpen: false }))}
       />
     </>
   );
