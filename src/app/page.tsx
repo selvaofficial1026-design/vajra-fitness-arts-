@@ -112,6 +112,9 @@ export default function Home() {
     <main className="min-h-screen flex flex-col pt-0 bg-background relative">
       <Hero />
 
+      {/* Smart BMI Assessment & Course Matcher */}
+      <BmiCourseCalculator />
+
       {/* Featured Courses Section */}
       <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 md:px-12 bg-premium-gradient relative z-10">
         <div className="max-w-7xl mx-auto">
@@ -197,9 +200,6 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
-
-      {/* Smart BMI Assessment & Course Matcher */}
-      <BmiCourseCalculator />
 
       {/* Pro Level Parallax Divider */}
       <section className="relative h-[40vh] sm:h-[50vh] md:h-[60vh] overflow-hidden">
