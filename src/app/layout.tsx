@@ -51,9 +51,9 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/images/logo_gold.jpeg",
-        width: 800,
-        height: 800,
+        url: "/images/vajra_logo_square.png",
+        width: 512,
+        height: 512,
         alt: "Vajra Fitness Arts Official Academy Logo",
       },
     ],
@@ -62,7 +62,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Vajra Fitness Arts | Fitness, Yoga, Martial Arts & Silambam",
     description: "Professional training academy in Fitness, Yoga, Martial Arts, and Silambam in Ariyalur, Tamil Nadu.",
-    images: ["/images/logo_gold.jpeg"],
+    images: ["/images/vajra_logo_square.png"],
   },
   robots: {
     index: true,
@@ -76,8 +76,17 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: "/images/logo_gold.jpeg",
-    apple: "/images/logo_gold.jpeg",
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon-48.png", sizes: "48x48", type: "image/png" },
+      { url: "/icon-96.png", sizes: "96x96", type: "image/png" },
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: [
+      { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },
+    ],
   },
 };
 
@@ -97,7 +106,8 @@ const jsonLd = {
   "url": "https://www.vajrafitnessarts.com",
   "telephone": "+919047743533",
   "priceRange": "₹₹",
-  "image": "https://www.vajrafitnessarts.com/images/logo_gold.jpeg",
+  "logo": "https://www.vajrafitnessarts.com/images/vajra_logo_square.png",
+  "image": "https://www.vajrafitnessarts.com/images/vajra_logo_square.png",
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "8/73B B, Periyar Nagar 1st Cross",
@@ -143,6 +153,11 @@ export default function RootLayout({
       className={`${playfair.variable} ${inter.variable} h-full antialiased`}
     >
       <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/icon-48.png" type="image/png" sizes="48x48" />
+        <link rel="icon" href="/icon-96.png" type="image/png" sizes="96x96" />
+        <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192" />
+        <link rel="apple-touch-icon" href="/apple-icon.png" sizes="180x180" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
