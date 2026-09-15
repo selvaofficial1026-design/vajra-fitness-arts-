@@ -4,17 +4,13 @@ import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { 
-  Activity, 
-  Sparkles, 
   ArrowRight, 
   MessageCircle, 
   Dumbbell, 
   HeartPulse,
-  ArrowLeftRight,
   Check
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import SectionHeading from "@/components/SectionHeading";
 
 type GoalType = "fat_loss" | "muscle" | "flexibility" | "stamina";
 
@@ -22,7 +18,6 @@ export default function BmiCourseCalculator() {
   const [height, setHeight] = useState<number>(170); // cm
   const [weight, setWeight] = useState<number>(70);  // kg
   const [selectedGoal, setSelectedGoal] = useState<GoalType>("fat_loss");
-  const [manualSwap, setManualSwap] = useState<boolean>(false);
 
   // Height & Weight helpers
   const feetInches = useMemo(() => {
@@ -72,22 +67,18 @@ export default function BmiCourseCalculator() {
     };
   }, [height, weight]);
 
-  // Dynamic Course Recommender: Choices dynamically change based on BMI + Goal
-  // - When Overweight (or Fat Loss / Muscle Goal): Fitness is 1st, Yoga is 2nd.
-  // - When Normal / Flexibility Goal: Yoga is 1st, Fitness is 2nd.
-  // - manualSwap allows instant 1-click manual flipping of 1st & 2nd choice.
+  // Dynamic Course Recommender:
+  // - Overweight (or Fat Loss / Muscle Goal) -> 1st: Fitness, 2nd: Yoga
+  // - Normal Weight / Flexibility Goal -> 1st: Yoga, 2nd: Fitness
   const isFitnessFirst = useMemo(() => {
-    let fitnessPriority = true;
     if (selectedGoal === "flexibility") {
-      fitnessPriority = false;
-    } else if (selectedGoal === "fat_loss" || selectedGoal === "muscle") {
-      fitnessPriority = true;
-    } else {
-      // Based purely on BMI
-      fitnessPriority = bmi >= 25 || bmi < 18.5;
+      return false;
     }
-    return manualSwap ? !fitnessPriority : fitnessPriority;
-  }, [bmi, selectedGoal, manualSwap]);
+    if (selectedGoal === "fat_loss" || selectedGoal === "muscle") {
+      return true;
+    }
+    return bmi >= 25 || bmi < 18.5;
+  }, [bmi, selectedGoal]);
 
   // Course Definitions (Simple, professional English)
   const fitnessCourse = useMemo(() => ({
@@ -127,15 +118,15 @@ I would like to inquire about batch timings and admissions.`;
   }, [height, weight, feetInches, weightLbs, bmi, category, firstCourse, secondCourse]);
 
   return (
-    <section className="py-10 sm:py-14 px-4 sm:px-6 md:px-12 bg-gradient-to-b from-[#181111] via-[#201515] to-[#181111] relative z-10 text-white border-y border-cappuccino/20">
+    <section className="py-8 sm:py-12 md:py-14 px-3 sm:px-6 md:px-12 bg-gradient-to-b from-[#181111] via-[#201515] to-[#181111] relative z-10 text-white border-y border-cappuccino/20 overflow-hidden">
       <div className="max-w-6xl mx-auto">
         
         {/* Compact Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-8">
-          <span className="text-[10px] uppercase tracking-[0.3em] text-cappuccino font-extrabold block mb-1.5">
+        <div className="text-center max-w-2xl mx-auto mb-5 sm:mb-8 px-2">
+          <span className="text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-cappuccino font-extrabold block mb-1">
             Body Assessment &amp; Course Matcher
           </span>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif text-white font-bold mb-2">
+          <h2 className="text-xl sm:text-3xl md:text-4xl font-serif text-white font-bold mb-1.5 sm:mb-2">
             Calculate Your BMI &amp; Ideal Program
           </h2>
           <p className="text-xs sm:text-sm text-white/70">
@@ -144,16 +135,16 @@ I would like to inquire about batch timings and admissions.`;
         </div>
 
         {/* Compact 2-Column Dashboard */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-start">
           
-          {/* LEFT: Compact Calculator Card (5 Columns) */}
-          <div className="lg:col-span-5 bg-[#251A1A]/90 p-5 sm:p-6 rounded-2xl border border-cappuccino/30 shadow-xl backdrop-blur-sm">
+          {/* LEFT: Compact Calculator Card */}
+          <div className="lg:col-span-5 bg-[#251A1A]/90 p-4 sm:p-6 rounded-2xl border border-cappuccino/30 shadow-xl backdrop-blur-sm">
             
             {/* Height & Weight Inputs */}
-            <div className="space-y-4">
+            <div className="space-y-3.5 sm:space-y-4">
               {/* Height */}
               <div>
-                <div className="flex justify-between items-center text-xs font-semibold mb-1.5">
+                <div className="flex justify-between items-center text-xs font-semibold mb-1">
                   <span className="text-white/80">Height: <span className="text-cappuccino font-normal">{feetInches}</span></span>
                   <div className="flex items-center gap-1 bg-black/40 px-2.5 py-0.5 rounded-lg border border-white/10">
                     <input
@@ -173,13 +164,13 @@ I would like to inquire about batch timings and admissions.`;
                   max={215}
                   value={height}
                   onChange={(e) => setHeight(Number(e.target.value))}
-                  className="w-full h-1.5 bg-white/15 rounded-lg appearance-none cursor-pointer accent-[#DDA922]"
+                  className="w-full h-2 bg-white/15 rounded-lg appearance-none cursor-pointer accent-[#DDA922]"
                 />
               </div>
 
               {/* Weight */}
               <div>
-                <div className="flex justify-between items-center text-xs font-semibold mb-1.5">
+                <div className="flex justify-between items-center text-xs font-semibold mb-1">
                   <span className="text-white/80">Weight: <span className="text-cappuccino font-normal">{weightLbs} lbs</span></span>
                   <div className="flex items-center gap-1 bg-black/40 px-2.5 py-0.5 rounded-lg border border-white/10">
                     <input
@@ -199,14 +190,14 @@ I would like to inquire about batch timings and admissions.`;
                   max={150}
                   value={weight}
                   onChange={(e) => setWeight(Number(e.target.value))}
-                  className="w-full h-1.5 bg-white/15 rounded-lg appearance-none cursor-pointer accent-[#DDA922]"
+                  className="w-full h-2 bg-white/15 rounded-lg appearance-none cursor-pointer accent-[#DDA922]"
                 />
               </div>
             </div>
 
             {/* Quick Goals Pill Row */}
-            <div className="mt-4 pt-3 border-t border-white/10">
-              <span className="text-[11px] text-white/70 block mb-2 font-medium">Your Goal:</span>
+            <div className="mt-3.5 pt-3 border-t border-white/10">
+              <span className="text-[10px] sm:text-[11px] text-white/70 block mb-1.5 font-medium">Your Goal:</span>
               <div className="grid grid-cols-2 gap-1.5">
                 {(
                   [
@@ -219,10 +210,7 @@ I would like to inquire about batch timings and admissions.`;
                   <button
                     key={g.id}
                     type="button"
-                    onClick={() => {
-                      setSelectedGoal(g.id);
-                      setManualSwap(false);
-                    }}
+                    onClick={() => setSelectedGoal(g.id)}
                     className={cn(
                       "py-1.5 px-2 rounded-lg text-left text-xs transition-all border",
                       selectedGoal === g.id
@@ -237,33 +225,33 @@ I would like to inquire about batch timings and admissions.`;
             </div>
 
             {/* Compact BMI Output Result */}
-            <div className="mt-4 p-3.5 rounded-xl bg-black/40 border border-white/10">
+            <div className="mt-3.5 p-3 sm:p-3.5 rounded-xl bg-black/40 border border-white/10">
               <div className="flex items-center justify-between">
                 <div>
                   <span className="text-[10px] text-white/60 uppercase tracking-wider block">Your BMI</span>
                   <div className="flex items-baseline gap-1.5">
-                    <span className="text-3xl font-serif font-bold text-white">{bmi}</span>
+                    <span className="text-2xl sm:text-3xl font-serif font-bold text-white">{bmi}</span>
                     <span className="text-[11px] text-white/50">kg/m²</span>
                   </div>
                 </div>
                 <div className="text-right">
                   <span 
-                    className="text-[11px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider inline-block"
+                    className="text-[10px] sm:text-[11px] font-bold px-2.5 py-0.5 sm:py-1 rounded-full uppercase tracking-wider inline-block"
                     style={{ backgroundColor: `${color}25`, color: color, border: `1px solid ${color}50` }}
                   >
                     {category}
                   </span>
-                  <span className="text-[10px] text-white/50 block mt-1">
+                  <span className="text-[9px] sm:text-[10px] text-white/50 block mt-1">
                     Ideal: {idealMin}–{idealMax} kg
                   </span>
                 </div>
               </div>
 
               {/* Progress Needle Bar */}
-              <div className="relative mt-2.5 pt-1">
+              <div className="relative mt-2 pt-1">
                 <div className="h-2 w-full rounded-full bg-gradient-to-r from-[#38BDF8] via-[#34D399] via-50% via-[#FBBF24] to-[#F87171] relative">
                   <motion.div
-                    className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-3 h-4 bg-white rounded-sm shadow-md border border-black/50"
+                    className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-2.5 h-3.5 bg-white rounded-sm shadow-md border border-black/50"
                     animate={{ left: `${needlePosition}%` }}
                     transition={{ type: "spring", stiffness: 300, damping: 25 }}
                   />
@@ -278,27 +266,9 @@ I would like to inquire about batch timings and admissions.`;
 
           </div>
 
-          {/* RIGHT: Course Recommendations (7 Columns) */}
-          <div className="lg:col-span-7 space-y-3 sm:space-y-4">
+          {/* RIGHT: Course Recommendations */}
+          <div className="lg:col-span-7 space-y-3 sm:space-y-3.5">
             
-            {/* Top Control Bar with Swap Button */}
-            <div className="flex items-center justify-between bg-cappuccino/10 border border-cappuccino/20 px-4 py-2 rounded-xl text-xs">
-              <div className="flex items-center gap-1.5 text-white/90 font-medium">
-                <Sparkles className="w-4 h-4 text-cappuccino shrink-0" />
-                <span>Recommended Courses for You:</span>
-              </div>
-              
-              <button
-                type="button"
-                onClick={() => setManualSwap(!manualSwap)}
-                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white text-[11px] font-medium transition-all"
-                title="Switch 1st and 2nd choices"
-              >
-                <ArrowLeftRight className="w-3 h-3 text-cappuccino" />
-                <span>Swap 1st &amp; 2nd</span>
-              </button>
-            </div>
-
             {/* 1st Choice Card */}
             <motion.div 
               key={`1st-${firstCourse.name}`}
@@ -336,11 +306,11 @@ I would like to inquire about batch timings and admissions.`;
                 ))}
               </div>
 
-              <div className="pt-2.5 border-t border-white/10 flex items-center justify-between gap-2">
+              <div className="pt-2.5 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <span className="text-[10px] text-white/50">Daily Batches: Morning &amp; Evening</span>
                 <Link
                   href={`/portal?tab=enroll&course=${firstCourse.enrollParam}`}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-[#DDA922] to-[#B57C1E] text-black font-bold text-xs uppercase tracking-wider hover:brightness-110 transition-all"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-[#DDA922] to-[#B57C1E] text-black font-bold text-xs uppercase tracking-wider hover:brightness-110 transition-all text-center"
                 >
                   <span>Enroll 1st Choice</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -385,11 +355,11 @@ I would like to inquire about batch timings and admissions.`;
                 ))}
               </div>
 
-              <div className="pt-2.5 border-t border-white/10 flex items-center justify-between gap-2">
+              <div className="pt-2.5 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <span className="text-[10px] text-white/50">Daily Batches: Morning &amp; Evening</span>
                 <Link
                   href={`/portal?tab=enroll&course=${secondCourse.enrollParam}`}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-cappuccino/20 hover:bg-cappuccino/30 text-cappuccino border border-cappuccino/40 font-bold text-xs uppercase tracking-wider transition-all"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-cappuccino/20 hover:bg-cappuccino/30 text-cappuccino border border-cappuccino/40 font-bold text-xs uppercase tracking-wider transition-all text-center"
                 >
                   <span>Enroll 2nd Choice</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -399,7 +369,7 @@ I would like to inquire about batch timings and admissions.`;
 
             {/* Compact WhatsApp Consultation CTA */}
             <div className="p-3 sm:p-3.5 rounded-xl bg-black/30 border border-white/10 flex flex-col sm:flex-row items-center justify-between gap-2.5 text-center sm:text-left">
-              <span className="text-[11px] text-white/70">
+              <span className="text-[10px] sm:text-[11px] text-white/70">
                 Need guidance? You can also ask Master Murali directly for personal advice.
               </span>
               <a

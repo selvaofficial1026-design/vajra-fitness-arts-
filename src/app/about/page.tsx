@@ -128,7 +128,7 @@ export default function AboutPage() {
               <div className="grid grid-cols-3 gap-2 sm:gap-6 pt-6 sm:pt-8 border-t border-cream">
                 <div className="text-left">
                   <h4 className="text-xl sm:text-3xl md:text-4xl font-serif text-coffee-dark italic mb-1 font-bold">
-                    {aboutData.statStudents || "2,500+"}
+                    {aboutData.statStudents || "100+"}
                   </h4>
                   <p className="text-[8px] sm:text-[9px] md:text-[10px] uppercase tracking-wider sm:tracking-widest text-coffee-dark/60 font-bold">Students Trained</p>
                 </div>
@@ -162,8 +162,8 @@ export default function AboutPage() {
 
             <div className="relative aspect-[4/3] sm:aspect-square w-full max-w-md mx-auto lg:max-w-none rounded-2xl sm:rounded-[3rem] overflow-hidden shadow-premium hover:shadow-[0_20px_50px_rgba(200,149,95,0.25)] group transition-all duration-500 bg-coffee-dark border border-cream hover:border-cappuccino/50">
               <Image
-                src={aboutData.storyImage || "/images/owner.jpg"}
-                alt="Vajra Fitness Arts Founder &amp; Head Coach"
+                src={aboutData.storyImage || "/images/vajra_hero.jpg"}
+                alt="Vajra Fitness Arts Training Academy"
                 fill
                 quality={100}
                 unoptimized={Boolean(typeof aboutData.storyImage === "string" && aboutData.storyImage.startsWith("data:"))}
@@ -195,12 +195,12 @@ export default function AboutPage() {
               <div className="lg:col-span-5 flex flex-col items-center">
                 <div className="relative w-full max-w-[240px] sm:max-w-[280px] md:max-w-[300px] aspect-[4/5] rounded-2xl sm:rounded-[2.5rem] overflow-hidden shadow-2xl border-2 border-cappuccino/50 group bg-coffee-dark">
                   <Image
-                    src={aboutData.founderPhoto || "/images/owner.jpg"}
-                    alt={aboutData.founderName || "Vajra Fitness Arts Founder"}
+                    src={aboutData.founderPhoto || "/images/coach_murali_clean.jpg"}
+                    alt={aboutData.founderName || "Vajra Fitness Arts Founder & Master Coach Murali"}
                     fill
                     priority
                     unoptimized={Boolean(typeof aboutData.founderPhoto === "string" && aboutData.founderPhoto.startsWith("data:"))}
-                    className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                    className="object-cover object-top group-hover:scale-105 transition-transform duration-700 ease-out"
                   />
                   {/* Espresso gradient overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-[#241A1A]/90 via-[#241A1A]/25 to-transparent" />

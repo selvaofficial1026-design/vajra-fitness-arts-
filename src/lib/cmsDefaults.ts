@@ -357,8 +357,8 @@ export const DEFAULT_ABOUT_SETTINGS: AboutSettings = {
   storyP2: "We believe fitness is about more than just appearance. Through Silambam, Yoga, Martial Arts, and Functional Fitness, our students develop agility, practical strength, self-confidence, and a focused mind.",
   storyQuote: "Consistent practice builds both physical strength and a peaceful mind.",
   storyQuoteAuthor: "Founder & Head Coach, Vajra Fitness Arts",
-  storyImage: "/images/owner.jpg",
-  statStudents: "2,500+",
+  storyImage: "/images/vajra_hero.jpg",
+  statStudents: "100+",
   statCoaching: "100%",
   statDisciplines: "4",
   founderName: "Vajra Fitness Arts",
@@ -366,7 +366,7 @@ export const DEFAULT_ABOUT_SETTINGS: AboutSettings = {
   founderTagline: "Sole Master Trainer for All Disciplines",
   founderHeading: "Learn Directly from the Founder",
   founderBio: "At Vajra Fitness Arts, you receive direct, personalized instruction from our founder across all four disciplines—Fitness, Yoga, Martial Arts, and Silambam. Every student gets dedicated one-on-one attention, step-by-step progress tracking, and disciplined training tailored to their goals.",
-  founderPhoto: "/images/owner.jpg",
+  founderPhoto: "/images/coach_murali_clean.jpg",
   founderDisciplines: [
     {
       title: "Fitness",

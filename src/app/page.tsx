@@ -201,15 +201,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Pro Level Parallax Divider */}
-      <section className="relative h-[40vh] sm:h-[50vh] md:h-[60vh] overflow-hidden">
-        <motion.div
-          initial={{ y: -50 }}
-          whileInView={{ y: 50 }}
-          viewport={{ once: false }}
-          transition={{ ease: "linear", duration: 0.1 }}
-          className="absolute inset-0"
-        >
+      {/* Pro Level Divider */}
+      <section className="relative h-[32vh] sm:h-[42vh] md:h-[50vh] overflow-hidden">
+        <div className="absolute inset-0">
           <Image
             src="/images/martial_arts.jpg"
             alt="Vajra Fitness Arts Center"
@@ -217,54 +211,64 @@ export default function Home() {
             sizes="100vw"
             className="object-cover opacity-90 brightness-[0.3]"
           />
-        </motion.div>
+        </div>
         <div className="relative z-10 h-full flex items-center justify-center px-4 sm:px-6">
           <div className="text-center">
-            <span className="text-[9px] sm:text-[10px] uppercase tracking-[0.4em] sm:tracking-[0.5em] text-white/80 font-bold mb-4 sm:mb-6 block drop-shadow-sm">The Vajra Standard</span>
-            <h2 className="text-2xl sm:text-4xl md:text-7xl font-serif text-white italic drop-shadow-md">Discipline. Strength. Agility. Focus.</h2>
+            <span className="text-[9px] sm:text-[10px] uppercase tracking-[0.4em] sm:tracking-[0.5em] text-white/80 font-bold mb-3 sm:mb-4 block drop-shadow-sm">The Vajra Standard</span>
+            <h2 className="text-2xl sm:text-4xl md:text-6xl font-serif text-white italic drop-shadow-md">Discipline. Strength. Agility. Focus.</h2>
           </div>
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 md:px-12 bg-background relative z-10">
+      {/* Testimonials Section - Mobile-optimized, lightweight, crash-free */}
+      <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 md:px-12 bg-background relative z-10 overflow-hidden">
         <div className="max-w-7xl mx-auto">
           <SectionHeading
             subtitle="Voices of Discipline"
             title="Transformations &amp; Experiences"
           />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 lg:gap-12">
-            {dynamicReviews.map((test, i) => (
-              <motion.div 
-                key={i}
-                initial={{ opacity: 0, x: i % 2 === 0 ? -50 : 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                whileHover={{ y: -10, scale: 1.02 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
-                className="bg-gradient-to-br from-[#281C1C] to-[#1A1212] p-5 sm:p-6 rounded-2xl sm:rounded-[2rem] text-white flex flex-col justify-between shadow-premium hover:shadow-[0_20px_50px_rgba(200,160,120,0.25)] transition-all relative overflow-hidden group border border-cappuccino/25"
-              >
-                <div className="absolute top-0 right-0 w-48 h-48 bg-cappuccino/10 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:bg-cappuccino/20 transition-colors duration-500 blur-[40px] pointer-events-none" />
-                <div className="absolute top-6 right-6 sm:top-8 sm:right-8 flex items-center gap-1 text-cappuccino opacity-85 group-hover:opacity-100 transition-all duration-500 group-hover:scale-105 drop-shadow-[0_0_15px_rgba(200,149,95,0.7)]">
-                  {Array.from({ length: ("rating" in test && typeof (test as { rating?: number }).rating === "number") ? (test as { rating?: number }).rating! : 5 }).map((_, sIdx) => (
-                    <Star key={sIdx} size={15} fill="currentColor" />
-                  ))}
-                </div>
-                
-                <p className="text-xs sm:text-sm font-serif leading-relaxed mb-6 sm:mb-8 italic relative z-10 text-white drop-shadow-md pr-6 sm:pr-0">
-                  &ldquo;{test.quote}&rdquo;
-                </p>
-                <div className="relative z-10 flex items-center gap-3.5 sm:gap-4">
-                  <div className="w-10 h-10 rounded-full bg-cappuccino/20 flex items-center justify-center text-cappuccino shadow-lg group-hover:bg-cappuccino group-hover:text-coffee-dark transition-colors duration-500 shrink-0 border border-cappuccino/30">
-                    <User2 size={18} />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-8 lg:gap-12">
+            {dynamicReviews.map((test, i) => {
+              const safeStars = Math.min(Math.max(Number((test as { rating?: number }).rating) || 5, 1), 5);
+              const testKey = (test as { id?: string }).id || (test as { name?: string }).name || `rev-${i}`;
+              return (
+                <motion.div 
+                  key={testKey}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "0px" }}
+                  transition={{ duration: 0.5, ease: "easeOut", delay: i * 0.1 }}
+                  className="bg-gradient-to-br from-[#281C1C] to-[#1A1212] p-5 sm:p-6 rounded-2xl sm:rounded-[2rem] text-white flex flex-col justify-between shadow-premium transition-all relative overflow-hidden group border border-cappuccino/25"
+                >
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-1 text-cappuccino drop-shadow-[0_0_8px_rgba(200,149,95,0.6)]">
+                      {Array.from({ length: safeStars }).map((_, sIdx) => (
+                        <Star key={sIdx} size={14} fill="currentColor" />
+                      ))}
+                    </div>
+                    {"discipline" in test && test.discipline ? (
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-cappuccino/80 bg-cappuccino/15 px-2.5 py-0.5 rounded-full border border-cappuccino/25">
+                        {String(test.discipline)}
+                      </span>
+                    ) : null}
                   </div>
-                  <div>
-                    <h4 className="font-bold text-sm sm:text-base text-white">{test.name}</h4>
-                    <p className="text-cappuccino font-sans text-[9px] sm:text-[10px] font-bold uppercase tracking-widest">{test.role}</p>
+                  
+                  <p className="text-xs sm:text-sm font-serif leading-relaxed mb-5 sm:mb-6 italic relative z-10 text-white/95 drop-shadow-sm pr-2 sm:pr-0">
+                    &ldquo;{test.quote}&rdquo;
+                  </p>
+                  
+                  <div className="relative z-10 flex items-center gap-3 sm:gap-4 pt-3 border-t border-white/10">
+                    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-cappuccino/20 flex items-center justify-center text-cappuccino shadow-sm shrink-0 border border-cappuccino/30">
+                      <User2 size={16} />
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-sm sm:text-base text-white">{test.name}</h4>
+                      <p className="text-cappuccino font-sans text-[9px] sm:text-[10px] font-bold uppercase tracking-widest">{test.role}</p>
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
