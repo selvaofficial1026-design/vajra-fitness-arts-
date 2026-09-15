@@ -98,12 +98,12 @@ export default function Hero() {
                 className="object-cover scale-110"
               />
             </div>
-            <div className="inline-flex flex-col items-center justify-center px-4 xs:px-5 sm:px-6 py-1.5 sm:py-2 border border-cappuccino/50 rounded-2xl sm:rounded-full text-center backdrop-blur-md bg-[#1A1212]/85 shadow-lg max-w-full">
-              <span className="text-[9px] xs:text-[10px] sm:text-[11px] tracking-[0.25em] sm:tracking-[0.3em] uppercase font-serif font-bold text-white drop-shadow-sm">
+            <div className="flex flex-col items-center justify-center text-center max-w-full">
+              <span className="text-xs sm:text-sm tracking-[0.35em] uppercase font-serif font-black text-white drop-shadow-md">
                 Vajra Fitness Arts
               </span>
-              <span className="text-[7.5px] xs:text-[8px] sm:text-[9px] tracking-[0.14em] sm:tracking-[0.2em] uppercase font-mono font-semibold text-cappuccino mt-0.5">
-                Fitness | Yoga | Martial Arts | Silambam
+              <span className="text-[9px] xs:text-[10px] sm:text-[11px] tracking-[0.22em] uppercase font-bold text-cappuccino mt-1 drop-shadow-sm">
+                Fitness • Yoga • Martial Arts • Silambam
               </span>
             </div>
           </div>

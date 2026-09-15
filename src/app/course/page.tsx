@@ -172,7 +172,7 @@ export default function CoursesPage() {
         </div>
 
         <div className="relative z-10 text-center px-4 sm:px-6 pt-16 sm:pt-20">
-          <span className="inline-block px-4 sm:px-6 py-1.5 sm:py-2 mb-4 sm:mb-6 border border-cappuccino/40 rounded-full text-cappuccino text-[9px] sm:text-[10px] font-bold tracking-[0.25em] sm:tracking-[0.3em] uppercase backdrop-blur-md bg-white/5 shadow-lg">
+          <span className="text-[11px] sm:text-xs font-black uppercase tracking-[0.35em] text-cappuccino block mb-3 drop-shadow-sm">
             Curriculum &amp; Programs
           </span>
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-serif text-white mb-3 sm:mb-4 italic">

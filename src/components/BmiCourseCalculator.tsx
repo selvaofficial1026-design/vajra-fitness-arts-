@@ -236,12 +236,12 @@ I would like to inquire about batch timings and admissions.`;
                 </div>
                 <div className="text-right">
                   <span 
-                    className="text-[10px] sm:text-[11px] font-bold px-2.5 py-0.5 sm:py-1 rounded-full uppercase tracking-wider inline-block"
-                    style={{ backgroundColor: `${color}25`, color: color, border: `1px solid ${color}50` }}
+                    className="text-xs sm:text-sm font-black uppercase tracking-wider block"
+                    style={{ color: color }}
                   >
                     {category}
                   </span>
-                  <span className="text-[9px] sm:text-[10px] text-white/50 block mt-1">
+                  <span className="text-[9px] sm:text-[10px] text-white/50 block mt-0.5">
                     Ideal: {idealMin}–{idealMax} kg
                   </span>
                 </div>
@@ -278,10 +278,10 @@ I would like to inquire about batch timings and admissions.`;
               className="bg-gradient-to-br from-[#2D1F1F] to-[#1E1414] p-4 sm:p-5 rounded-2xl border-2 border-[#DDA922]/70 shadow-lg relative"
             >
               <div className="flex items-center justify-between mb-2">
-                <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#DDA922] text-black">
+                <span className="text-xs sm:text-sm font-black uppercase tracking-wider text-[#DDA922] flex items-center gap-1.5 drop-shadow-[0_0_8px_rgba(221,169,34,0.3)]">
                   🥇 1st Choice • Recommended
                 </span>
-                <span className="text-[11px] text-white/50 flex items-center gap-1">
+                <span className="text-xs font-bold text-white/60 flex items-center gap-1">
                   {isFitnessFirst ? <Dumbbell className="w-3.5 h-3.5 text-cappuccino" /> : <HeartPulse className="w-3.5 h-3.5 text-cappuccino" />}
                   {firstCourse.name}
                 </span>
@@ -290,7 +290,7 @@ I would like to inquire about batch timings and admissions.`;
               <h3 className="text-lg sm:text-xl font-serif font-bold text-white mb-0.5">
                 {firstCourse.name}
               </h3>
-              <p className="text-[11px] text-cappuccino font-medium uppercase tracking-wide mb-2">
+              <p className="text-[11px] text-cappuccino font-bold uppercase tracking-wide mb-2">
                 {firstCourse.tagline}
               </p>
               <p className="text-xs text-white/80 leading-relaxed mb-3">
@@ -299,7 +299,7 @@ I would like to inquire about batch timings and admissions.`;
 
               <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mb-3 text-[11px] text-white/70">
                 {firstCourse.benefits.map((b, i) => (
-                  <span key={i} className="flex items-center gap-1">
+                  <span key={i} className="flex items-center gap-1 font-medium">
                     <Check className="w-3 h-3 text-[#DDA922]" />
                     {b}
                   </span>
@@ -307,10 +307,10 @@ I would like to inquire about batch timings and admissions.`;
               </div>
 
               <div className="pt-2.5 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                <span className="text-[10px] text-white/50">Daily Batches: Morning &amp; Evening</span>
+                <span className="text-[10px] text-white/50 font-medium">Daily Batches: Morning &amp; Evening</span>
                 <Link
                   href={`/portal?tab=enroll&course=${firstCourse.enrollParam}`}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-[#DDA922] to-[#B57C1E] text-black font-bold text-xs uppercase tracking-wider hover:brightness-110 transition-all text-center"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#DDA922] hover:bg-[#c9971a] text-black font-black text-xs uppercase tracking-[0.12em] shadow-md hover:shadow-lg active:scale-95 transition-all text-center"
                 >
                   <span>Enroll 1st Choice</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -327,10 +327,10 @@ I would like to inquire about batch timings and admissions.`;
               className="bg-gradient-to-br from-[#241A1A] to-[#181111] p-4 sm:p-5 rounded-2xl border border-cappuccino/40 shadow-md relative"
             >
               <div className="flex items-center justify-between mb-2">
-                <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-cappuccino/25 text-cappuccino border border-cappuccino/40">
+                <span className="text-xs sm:text-sm font-black uppercase tracking-wider text-cappuccino flex items-center gap-1.5 drop-shadow-[0_0_8px_rgba(200,149,95,0.3)]">
                   🥈 2nd Choice • Perfect Synergy
                 </span>
-                <span className="text-[11px] text-white/50 flex items-center gap-1">
+                <span className="text-xs font-bold text-white/60 flex items-center gap-1">
                   {!isFitnessFirst ? <Dumbbell className="w-3.5 h-3.5 text-cappuccino" /> : <HeartPulse className="w-3.5 h-3.5 text-cappuccino" />}
                   {secondCourse.name}
                 </span>
@@ -339,7 +339,7 @@ I would like to inquire about batch timings and admissions.`;
               <h3 className="text-lg sm:text-xl font-serif font-bold text-white mb-0.5">
                 {secondCourse.name}
               </h3>
-              <p className="text-[11px] text-cappuccino font-medium uppercase tracking-wide mb-2">
+              <p className="text-[11px] text-cappuccino font-bold uppercase tracking-wide mb-2">
                 {secondCourse.tagline}
               </p>
               <p className="text-xs text-white/80 leading-relaxed mb-3">
@@ -348,7 +348,7 @@ I would like to inquire about batch timings and admissions.`;
 
               <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mb-3 text-[11px] text-white/70">
                 {secondCourse.benefits.map((b, i) => (
-                  <span key={i} className="flex items-center gap-1">
+                  <span key={i} className="flex items-center gap-1 font-medium">
                     <Check className="w-3 h-3 text-cappuccino" />
                     {b}
                   </span>
@@ -356,10 +356,10 @@ I would like to inquire about batch timings and admissions.`;
               </div>
 
               <div className="pt-2.5 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                <span className="text-[10px] text-white/50">Daily Batches: Morning &amp; Evening</span>
+                <span className="text-[10px] text-white/50 font-medium">Daily Batches: Morning &amp; Evening</span>
                 <Link
                   href={`/portal?tab=enroll&course=${secondCourse.enrollParam}`}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-cappuccino/20 hover:bg-cappuccino/30 text-cappuccino border border-cappuccino/40 font-bold text-xs uppercase tracking-wider transition-all text-center"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-cappuccino/20 hover:bg-cappuccino text-cappuccino hover:text-coffee-dark border border-cappuccino/50 font-black text-xs uppercase tracking-[0.12em] shadow-sm active:scale-95 transition-all text-center"
                 >
                   <span>Enroll 2nd Choice</span>
                   <ArrowRight className="w-3.5 h-3.5" />

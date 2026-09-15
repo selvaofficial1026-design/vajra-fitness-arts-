@@ -70,7 +70,7 @@ export default function ContactPage() {
         </div>
 
         <div className="relative z-10 text-center px-4 sm:px-6 pt-10 sm:pt-14 max-w-4xl mx-auto">
-          <span className="inline-block px-4 sm:px-6 py-1.5 sm:py-2 mb-3 sm:mb-4 border border-cappuccino/40 rounded-full text-cappuccino text-[9px] sm:text-[10px] font-bold tracking-[0.25em] sm:tracking-[0.3em] uppercase backdrop-blur-md bg-white/5 shadow-lg">
+          <span className="text-[11px] sm:text-xs font-black uppercase tracking-[0.35em] text-cappuccino block mb-3 drop-shadow-sm">
             Direct Admissions &amp; Inquiries
           </span>
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-serif text-white mb-2.5 sm:mb-3 italic tracking-tight font-bold">
@@ -87,7 +87,7 @@ export default function ContactPage() {
         <div className="max-w-5xl mx-auto">
           
           <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-14">
-            <span className="text-[10px] uppercase tracking-[0.3em] text-cappuccino font-extrabold block mb-2">
+            <span className="text-xs uppercase tracking-[0.35em] text-cappuccino font-black block mb-2">
               Fast &amp; Direct Communication
             </span>
             <h2 className="text-2xl sm:text-4xl font-serif text-coffee-dark italic leading-tight font-bold">
@@ -122,10 +122,10 @@ export default function ContactPage() {
                     }`}>
                       <card.icon className="w-5 h-5" />
                     </div>
-                    <span className={`text-[10px] uppercase tracking-wider font-bold px-2.5 py-1 rounded-full border ${
+                    <span className={`text-[11px] uppercase tracking-wider font-black ${
                       card.isHighlight
-                        ? "bg-[#25D366]/20 text-[#4ede80] border-[#25D366]/40"
-                        : "bg-cream/60 text-coffee-dark/70 border-cream"
+                        ? "text-[#4ede80] drop-shadow-[0_0_8px_rgba(78,222,128,0.3)]"
+                        : "text-cappuccino"
                     }`}>
                       {card.badge}
                     </span>

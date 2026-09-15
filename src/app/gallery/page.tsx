@@ -228,7 +228,7 @@ export default function GalleryPage() {
         </div>
 
         <div className="relative z-10 text-center px-4 sm:px-6 pt-10 sm:pt-14">
-          <span className="inline-block px-4 sm:px-6 py-1.5 sm:py-2 mb-3 sm:mb-4 border border-cappuccino/40 rounded-full text-cappuccino text-[9px] sm:text-[10px] font-bold tracking-[0.25em] sm:tracking-[0.3em] uppercase backdrop-blur-md bg-white/5 shadow-lg">
+          <span className="text-[11px] sm:text-xs font-black uppercase tracking-[0.35em] text-cappuccino block mb-3 drop-shadow-sm">
             Photo Gallery
           </span>
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-serif text-white mb-2.5 sm:mb-3 italic leading-tight">

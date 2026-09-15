@@ -89,7 +89,7 @@ export default function AboutPage() {
         </div>
 
         <div className="relative z-10 text-center px-4 sm:px-6 pt-12 sm:pt-16">
-          <span className="inline-block px-4 sm:px-6 py-1.5 sm:py-2 mb-4 sm:mb-6 border border-cappuccino/40 rounded-full text-cappuccino text-[9px] sm:text-[10px] font-bold tracking-[0.25em] sm:tracking-[0.3em] uppercase backdrop-blur-md bg-white/5 shadow-lg">
+          <span className="text-[11px] sm:text-xs font-black uppercase tracking-[0.35em] text-cappuccino block mb-3 drop-shadow-sm">
             About Our Academy
           </span>
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-serif text-white mb-3 sm:mb-4 italic leading-tight">
@@ -217,13 +217,14 @@ export default function AboutPage() {
                   </div>
                 </div>
 
-                <div className="mt-4 sm:mt-6 flex flex-wrap justify-center gap-2 sm:gap-3 text-center">
-                  <div className="px-2.5 py-1 rounded-full bg-cream/60 border border-cappuccino/30 text-[9px] font-bold uppercase tracking-wider text-coffee-dark">
-                    {aboutData.statCoaching || "100%"} Direct Coaching
-                  </div>
-                  <div className="px-2.5 py-1 rounded-full bg-cream/60 border border-cappuccino/30 text-[9px] font-bold uppercase tracking-wider text-coffee-dark">
+                <div className="mt-4 sm:mt-5 flex items-center justify-center gap-2.5 text-center">
+                  <span className="text-xs sm:text-sm font-black uppercase tracking-wider text-coffee-dark">
+                    <span className="text-cappuccino">{aboutData.statCoaching || "100%"}</span> Direct Coaching
+                  </span>
+                  <span className="text-cappuccino/40 font-bold">•</span>
+                  <span className="text-xs sm:text-sm font-black uppercase tracking-wider text-coffee-dark">
                     All {aboutData.statDisciplines || "4"} Disciplines
-                  </div>
+                  </span>
                 </div>
               </div>
 
@@ -261,17 +262,21 @@ export default function AboutPage() {
                   ))}
                 </div>
 
-                {/* Direct WhatsApp Coaching Button Link - Authentic WhatsApp green #25D366 and high contrast black text */}
+                {/* Direct WhatsApp Coaching Action - Dedicated WhatsApp icon + bold font */}
                 <div className="pt-3 sm:pt-4 flex flex-col sm:flex-row items-center gap-3 sm:gap-4 w-full">
                   <a
                     href={`https://wa.me/919047743533?text=${encodeURIComponent("Hello Vajra Fitness Arts, I would like to inquire about direct coaching with the Founder & Head Coach.")}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full sm:w-auto px-6 sm:px-8 py-3.5 sm:py-4 bg-[#25D366] text-black font-extrabold text-[11px] sm:text-xs uppercase tracking-[0.15em] sm:tracking-[0.2em] rounded-full hover:bg-[#20bd5a] transition-all shadow-premium hover:shadow-[0_0_25px_rgba(37,211,102,0.4)] flex items-center justify-center gap-2 text-center active:scale-[0.98] cursor-pointer"
+                    className="w-full sm:w-auto px-5 sm:px-7 py-3.5 sm:py-4 bg-[#25D366] hover:bg-[#20bd5a] text-black rounded-2xl transition-all shadow-premium hover:shadow-[0_0_25px_rgba(37,211,102,0.4)] flex items-center justify-center gap-3 text-center active:scale-[0.98] cursor-pointer group"
                   >
-                    <MessageCircle size={16} className="text-black shrink-0" />
-                    <span>Chat with Head Coach on WhatsApp</span>
-                    <ArrowRight size={14} className="text-black shrink-0 ml-0.5" />
+                    <div className="w-8 h-8 rounded-xl bg-black/15 flex items-center justify-center shrink-0">
+                      <MessageCircle size={18} className="text-black fill-black" />
+                    </div>
+                    <span className="font-black text-xs sm:text-sm uppercase tracking-wider text-black">
+                      Chat with Head Coach on WhatsApp
+                    </span>
+                    <ArrowRight size={16} className="text-black shrink-0 ml-1 group-hover:translate-x-1 transition-transform" />
                   </a>
                   <span className="text-xs text-coffee-dark/60 italic text-center sm:text-left">
                     Open for kids, teens, and adults.
