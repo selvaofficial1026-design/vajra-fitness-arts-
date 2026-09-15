@@ -6,7 +6,7 @@ import Image from "next/image";
 import Hero from "@/components/Hero";
 import MenuItemCard from "@/components/MenuItemCard";
 import SectionHeading from "@/components/SectionHeading";
-import PortfolioSlider, { PortfolioItem } from "@/components/PortfolioSlider";
+import BmiCourseCalculator from "@/components/BmiCourseCalculator";
 import VideoModal from "@/components/VideoModal";
 import { Star, User2, ArrowRight, ShieldCheck, Flame, Compass } from "lucide-react";
 import { motion } from "framer-motion";
@@ -50,48 +50,7 @@ const featuredCourses = [
   }
 ];
 
-const trainingShowcase: PortfolioItem[] = [
-  {
-    name: "Silambam Staff Drills",
-    description: "Traditional staff rotation, wrist strength, and agile footwork practice.",
-    image: "/images/vajra_hero.jpg",
-    category: "Silambam",
-    is4K: true,
-    videoId: "dQw4w9WgXcQ"
-  },
-  {
-    name: "Yoga Balance & Flexibility",
-    description: "Core balance postures and guided stretching for full-body wellness.",
-    image: "/images/yoga.jpg",
-    category: "Yoga",
-    is4K: true,
-    videoId: "dQw4w9WgXcQ"
-  },
-  {
-    name: "Martial Arts Sparring",
-    description: "Punch and kick combinations, defense blocks, and agility drills.",
-    image: "/images/martial_arts.jpg",
-    category: "Martial Arts",
-    is4K: true,
-    videoId: "dQw4w9WgXcQ"
-  },
-  {
-    name: "Functional Fitness Training",
-    description: "Bodyweight movements, cardio endurance, and overall muscle tone.",
-    image: "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=1200&auto=format&fit=crop",
-    category: "Fitness",
-    is4K: true,
-    videoId: "dQw4w9WgXcQ"
-  },
-  {
-    name: "Youth Fitness & Discipline",
-    description: "Active training helping children and teens build focus, fitness, and confidence.",
-    image: "https://images.unsplash.com/photo-1555597673-b21d5c935865?q=80&w=1200&auto=format&fit=crop",
-    category: "Fitness",
-    is4K: true,
-    videoId: "dQw4w9WgXcQ"
-  }
-];
+
 
 const testimonials = [
   {
@@ -239,22 +198,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Action Slider Showcase */}
-      <section className="py-14 sm:py-20 md:py-28 px-0 sm:px-4 md:px-12 bg-background relative z-10 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 mb-8 sm:mb-12">
-          <SectionHeading
-            subtitle="Training in Action"
-            title="Inside Our Training Center"
-          />
-        </div>
-        <div className="w-full relative px-2 sm:px-4">
-          <PortfolioSlider 
-            items={trainingShowcase} 
-            onPlay={(videoId) => setActiveVideo(videoId)} 
-            isPaused={!!activeVideo}
-          />
-        </div>
-      </section>
+      {/* Smart BMI Assessment & Course Matcher */}
+      <BmiCourseCalculator />
 
       {/* Pro Level Parallax Divider */}
       <section className="relative h-[40vh] sm:h-[50vh] md:h-[60vh] overflow-hidden">
