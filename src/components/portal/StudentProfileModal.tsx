@@ -19,7 +19,13 @@ import {
   Lock,
   Eye,
   EyeOff,
-  AlertCircle
+  AlertCircle,
+  Target,
+  Dumbbell,
+  Activity,
+  HeartPulse,
+  Briefcase,
+  Mail
 } from "lucide-react";
 import { Student } from "@/lib/portalStore";
 
@@ -290,24 +296,72 @@ export default function StudentProfileModal({
                       </span>
                       <p className="text-xs xs:text-sm font-semibold text-coffee-dark flex items-center gap-2 min-w-0">
                         <MapPin size={15} className="text-cappuccino shrink-0" />
-                        <span className="truncate min-w-0">{student.city || "Ariyalur Main Studio"}</span>
+                        <span className="truncate min-w-0">
+                          {student.city || "Ariyalur"}
+                          {student.country && student.country !== "India" ? `, ${student.country}` : ""}
+                        </span>
                       </p>
                     </div>
 
-                    {/* Age & Gender (if provided) */}
-                    {(student.age || student.gender) && (
+                    {/* Email (if provided) */}
+                    {student.email && (
                       <div className="p-3 xs:p-3.5 rounded-xl bg-white/70 border border-coffee-dark/10 space-y-1 sm:col-span-2 shadow-2xs min-w-0">
                         <span className="text-[9.5px] uppercase tracking-wider text-coffee-dark/50 font-bold block">
-                          Demographics
+                          Email Address
                         </span>
-                        <p className="text-xs font-semibold text-coffee-dark flex items-center gap-2 min-w-0">
-                          <User size={14} className="text-cappuccino shrink-0" />
+                        <p className="text-xs xs:text-sm font-semibold text-coffee-dark flex items-center gap-2 min-w-0">
+                          <Mail size={15} className="text-cappuccino shrink-0" />
+                          <span className="break-all min-w-0">{student.email}</span>
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Physical Demographics (Age, Gender, Height, Weight) */}
+                    {(student.age || student.gender || student.height || student.weight) && (
+                      <div className="p-3 xs:p-3.5 rounded-xl bg-white/70 border border-coffee-dark/10 space-y-1 sm:col-span-2 shadow-2xs min-w-0">
+                        <span className="text-[9.5px] uppercase tracking-wider text-coffee-dark/50 font-bold block">
+                          Physical Profile &amp; Demographics
+                        </span>
+                        <p className="text-xs font-semibold text-coffee-dark flex items-center gap-2 min-w-0 flex-wrap">
+                          <Activity size={14} className="text-cappuccino shrink-0" />
                           <span className="break-words min-w-0">
-                            {[student.age ? `Age: ${student.age}` : null, student.gender ? `Gender: ${student.gender}` : null]
+                            {[
+                              student.gender ? `Gender: ${student.gender}` : null,
+                              student.age ? `Age: ${student.age} yrs` : null,
+                              student.height ? `Height: ${student.height}` : null,
+                              student.weight ? `Weight: ${student.weight}` : null
+                            ]
                               .filter(Boolean)
                               .join(" • ")}
                           </span>
                         </p>
+                      </div>
+                    )}
+
+                    {/* Fitness Goals & Equipment */}
+                    {(student.primaryGoal || student.equipment || student.workoutExperience) && (
+                      <div className="p-3 xs:p-3.5 rounded-xl bg-cream/40 border border-cappuccino/20 space-y-2 sm:col-span-2 shadow-2xs min-w-0">
+                        <span className="text-[9.5px] uppercase tracking-wider text-coffee-dark/70 font-bold block">
+                          Training Assessment
+                        </span>
+                        {student.primaryGoal && (
+                          <div className="flex items-start gap-2 text-xs text-coffee-dark">
+                            <Target size={14} className="text-cappuccino shrink-0 mt-0.5" />
+                            <span><strong>Goal:</strong> {student.primaryGoal}</span>
+                          </div>
+                        )}
+                        {student.workoutExperience && (
+                          <div className="flex items-start gap-2 text-xs text-coffee-dark">
+                            <Activity size={14} className="text-cappuccino shrink-0 mt-0.5" />
+                            <span><strong>Experience:</strong> {student.workoutExperience}</span>
+                          </div>
+                        )}
+                        {student.equipment && (
+                          <div className="flex items-start gap-2 text-xs text-coffee-dark">
+                            <Dumbbell size={14} className="text-cappuccino shrink-0 mt-0.5" />
+                            <span><strong>Equipment:</strong> {student.equipment}</span>
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>

@@ -111,7 +111,29 @@ export async function POST(req: Request) {
     }
 
     if (action === "edit_student") {
-      const { studentId, permanentCode, name, phone, course, batch, age, city, status, notes } = body;
+      const {
+        studentId,
+        permanentCode,
+        name,
+        phone,
+        email,
+        course,
+        batch,
+        age,
+        gender,
+        height,
+        weight,
+        city,
+        country,
+        address,
+        occupation,
+        medicalHistory,
+        primaryGoal,
+        workoutExperience,
+        equipment,
+        status,
+        notes
+      } = body;
       const studentIndex = data.students.findIndex((s) => s.id === studentId);
       if (studentIndex === -1) {
         return NextResponse.json({ success: false, error: "Student not found." }, { status: 404 });
@@ -134,10 +156,21 @@ export async function POST(req: Request) {
 
       if (name && typeof name === "string") data.students[studentIndex].name = name.trim();
       if (phone && typeof phone === "string") data.students[studentIndex].phone = phone.trim();
+      if (email !== undefined) data.students[studentIndex].email = String(email).trim();
       if (course && typeof course === "string") data.students[studentIndex].course = course.trim();
       if (batch && typeof batch === "string") data.students[studentIndex].batch = batch.trim();
       if (age !== undefined) data.students[studentIndex].age = String(age).trim();
+      if (gender !== undefined) data.students[studentIndex].gender = String(gender).trim();
+      if (height !== undefined) data.students[studentIndex].height = String(height).trim();
+      if (weight !== undefined) data.students[studentIndex].weight = String(weight).trim();
       if (city !== undefined) data.students[studentIndex].city = String(city).trim();
+      if (country !== undefined) data.students[studentIndex].country = String(country).trim();
+      if (address !== undefined) data.students[studentIndex].address = String(address).trim();
+      if (occupation !== undefined) data.students[studentIndex].occupation = String(occupation).trim();
+      if (medicalHistory !== undefined) data.students[studentIndex].medicalHistory = String(medicalHistory).trim();
+      if (primaryGoal !== undefined) data.students[studentIndex].primaryGoal = String(primaryGoal).trim();
+      if (workoutExperience !== undefined) data.students[studentIndex].workoutExperience = String(workoutExperience).trim();
+      if (equipment !== undefined) data.students[studentIndex].equipment = String(equipment).trim();
       if (notes !== undefined) data.students[studentIndex].notes = String(notes).trim();
 
       if (status && ["PENDING", "APPROVED", "REJECTED", "LEFT"].includes(status)) {

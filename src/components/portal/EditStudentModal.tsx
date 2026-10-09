@@ -52,11 +52,22 @@ export default function EditStudentModal({
     permanentCode: "",
     name: "",
     phone: "",
+    email: "",
     course: "Fitness",
     batch: "4:30 AM - 5:15 AM (Morning)",
     status: "APPROVED" as "PENDING" | "APPROVED" | "REJECTED" | "LEFT",
     age: "",
+    gender: "Male",
+    height: "",
+    weight: "",
     city: "",
+    country: "India",
+    address: "",
+    occupation: "",
+    medicalHistory: "",
+    primaryGoal: "",
+    workoutExperience: "",
+    equipment: "",
     notes: ""
   });
 
@@ -71,11 +82,22 @@ export default function EditStudentModal({
         permanentCode: student.permanentCode || student.tempCode || "",
         name: student.name || "",
         phone: student.phone || "",
+        email: student.email || "",
         course: student.course || "Fitness",
         batch: student.batch || batchOptions[0],
         status: student.status || "APPROVED",
         age: student.age || "",
+        gender: student.gender || "Male",
+        height: student.height || "",
+        weight: student.weight || "",
         city: student.city || "",
+        country: student.country || "India",
+        address: student.address || "",
+        occupation: student.occupation || "",
+        medicalHistory: student.medicalHistory || "",
+        primaryGoal: student.primaryGoal || "",
+        workoutExperience: student.workoutExperience || "",
+        equipment: student.equipment || "",
         notes: student.notes || ""
       });
       setErrorMessage(null);
@@ -349,8 +371,68 @@ export default function EditStudentModal({
               </div>
             </div>
 
-            {/* City & Age */}
+            {/* Email & Gender */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-3.5">
+              <div>
+                <label className="text-[10px] uppercase tracking-wider text-coffee-dark/70 font-bold block mb-1">
+                  Email ID
+                </label>
+                <input
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  placeholder="name@example.com"
+                  className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs focus:outline-none transition-all shadow-2xs"
+                />
+              </div>
+
+              <div>
+                <label className="text-[10px] uppercase tracking-wider text-coffee-dark/70 font-bold block mb-1">
+                  Gender
+                </label>
+                <select
+                  value={formData.gender}
+                  onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
+                  className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs focus:outline-none cursor-pointer shadow-2xs"
+                >
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Height & Weight */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-3.5">
+              <div>
+                <label className="text-[10px] uppercase tracking-wider text-coffee-dark/70 font-bold block mb-1">
+                  Height
+                </label>
+                <input
+                  type="text"
+                  value={formData.height}
+                  onChange={(e) => setFormData({ ...formData, height: e.target.value })}
+                  placeholder="e.g. 175 cm or 5'9&quot;"
+                  className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs focus:outline-none transition-all shadow-2xs"
+                />
+              </div>
+
+              <div>
+                <label className="text-[10px] uppercase tracking-wider text-coffee-dark/70 font-bold block mb-1">
+                  Weight
+                </label>
+                <input
+                  type="text"
+                  value={formData.weight}
+                  onChange={(e) => setFormData({ ...formData, weight: e.target.value })}
+                  placeholder="e.g. 70 kg"
+                  className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs focus:outline-none transition-all shadow-2xs"
+                />
+              </div>
+            </div>
+
+            {/* City, Country & Age */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-3.5">
               <div>
                 <label className="text-[10px] uppercase tracking-wider text-coffee-dark/70 font-bold block mb-1">
                   Location / City
@@ -366,6 +448,19 @@ export default function EditStudentModal({
 
               <div>
                 <label className="text-[10px] uppercase tracking-wider text-coffee-dark/70 font-bold block mb-1">
+                  Country
+                </label>
+                <input
+                  type="text"
+                  value={formData.country}
+                  onChange={(e) => setFormData({ ...formData, country: e.target.value })}
+                  placeholder="e.g. India"
+                  className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs focus:outline-none transition-all shadow-2xs"
+                />
+              </div>
+
+              <div>
+                <label className="text-[10px] uppercase tracking-wider text-coffee-dark/70 font-bold block mb-1">
                   Age (Years)
                 </label>
                 <input
@@ -373,6 +468,94 @@ export default function EditStudentModal({
                   value={formData.age}
                   onChange={(e) => setFormData({ ...formData, age: e.target.value })}
                   placeholder="e.g. 21"
+                  className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs focus:outline-none transition-all shadow-2xs"
+                />
+              </div>
+            </div>
+
+            {/* Residential Address */}
+            <div>
+              <label className="text-[10px] uppercase tracking-wider text-coffee-dark/70 font-bold block mb-1">
+                Residential Address
+              </label>
+              <input
+                type="text"
+                value={formData.address}
+                onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                placeholder="Street, Area, Landmark / Postal Code"
+                className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs focus:outline-none transition-all shadow-2xs"
+              />
+            </div>
+
+            {/* Profession / Daily Routine & Medical History */}
+            <div className="space-y-3 sm:space-y-3.5 p-3 sm:p-3.5 rounded-2xl bg-cream/40 border border-cappuccino/20">
+              <span className="text-[10px] uppercase tracking-[0.16em] text-coffee-dark/80 font-extrabold block">
+                Health &amp; Lifestyle Assessment
+              </span>
+
+              <div>
+                <label className="text-[10px] uppercase tracking-wider text-coffee-dark/70 font-bold block mb-1">
+                  Profession / Occupation &amp; Daily Routine
+                </label>
+                <input
+                  type="text"
+                  value={formData.occupation}
+                  onChange={(e) => setFormData({ ...formData, occupation: e.target.value })}
+                  placeholder="e.g. Desk Job 9 to 6, sedentary / active"
+                  className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs focus:outline-none transition-all shadow-2xs"
+                />
+              </div>
+
+              <div>
+                <label className="text-[10px] uppercase tracking-wider text-coffee-dark/70 font-bold block mb-1">
+                  History of Injury / Medical Conditions
+                </label>
+                <input
+                  type="text"
+                  value={formData.medicalHistory}
+                  onChange={(e) => setFormData({ ...formData, medicalHistory: e.target.value })}
+                  placeholder="e.g. None, or Lower back stiffness, knee sprain, asthma"
+                  className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs focus:outline-none transition-all shadow-2xs"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="text-[10px] uppercase tracking-wider text-coffee-dark/70 font-bold block mb-1">
+                    Primary Goal
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.primaryGoal}
+                    onChange={(e) => setFormData({ ...formData, primaryGoal: e.target.value })}
+                    placeholder="e.g. Weight Loss, Silambam Mastery"
+                    className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs focus:outline-none transition-all shadow-2xs"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-[10px] uppercase tracking-wider text-coffee-dark/70 font-bold block mb-1">
+                    Workout Experience
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.workoutExperience}
+                    onChange={(e) => setFormData({ ...formData, workoutExperience: e.target.value })}
+                    placeholder="e.g. Beginner, 1-2 years gym"
+                    className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs focus:outline-none transition-all shadow-2xs"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="text-[10px] uppercase tracking-wider text-coffee-dark/70 font-bold block mb-1">
+                  Available Equipment
+                </label>
+                <input
+                  type="text"
+                  value={formData.equipment}
+                  onChange={(e) => setFormData({ ...formData, equipment: e.target.value })}
+                  placeholder="e.g. Plates, Rods, Kettlebells, Dumbbells, or Bodyweight"
                   className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-base sm:text-xs focus:outline-none transition-all shadow-2xs"
                 />
               </div>

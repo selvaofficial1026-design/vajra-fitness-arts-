@@ -6,11 +6,30 @@ export const dynamic = "force-dynamic";
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { name, phone, course, batch, age, gender, city, notes } = body;
+    const {
+      name,
+      phone,
+      email,
+      course,
+      batch,
+      age,
+      gender,
+      height,
+      weight,
+      city,
+      country,
+      address,
+      occupation,
+      medicalHistory,
+      primaryGoal,
+      workoutExperience,
+      equipment,
+      notes
+    } = body;
 
     if (!name?.trim() || !phone?.trim() || !course?.trim() || !batch?.trim()) {
       return NextResponse.json(
-        { success: false, error: "Name, Phone, Course, and Batch are required." },
+        { success: false, error: "Name, Phone/WhatsApp, Course Discipline, and Preferred Batch Slot are required." },
         { status: 400 }
       );
     }
@@ -42,11 +61,21 @@ export async function POST(req: Request) {
       permanentCode: null,
       name: name.trim(),
       phone: phone.trim(),
+      email: email ? String(email).trim() : "",
       course: course.trim(),
       batch: batch.trim(),
       age: age ? String(age).trim() : "",
       gender: gender ? String(gender).trim() : "",
+      height: height ? String(height).trim() : "",
+      weight: weight ? String(weight).trim() : "",
       city: city ? String(city).trim() : "Ariyalur",
+      country: country ? String(country).trim() : "India",
+      address: address ? String(address).trim() : "",
+      occupation: occupation ? String(occupation).trim() : "",
+      medicalHistory: medicalHistory ? String(medicalHistory).trim() : "",
+      primaryGoal: primaryGoal ? String(primaryGoal).trim() : "",
+      workoutExperience: workoutExperience ? String(workoutExperience).trim() : "",
+      equipment: equipment ? String(equipment).trim() : "",
       notes: notes ? String(notes).trim() : "",
       status: "PENDING",
       createdAt: new Date().toISOString(),

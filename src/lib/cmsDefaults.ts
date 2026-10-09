@@ -4,11 +4,21 @@ export interface Student {
   permanentCode: string | null;
   name: string;
   phone: string;
+  email?: string;
   course: string;
   batch: string;
   age: string;
   gender: string;
+  height?: string;
+  weight?: string;
   city: string;
+  country?: string;
+  address?: string;
+  occupation?: string; // Profession / Occupation & Daily Routine
+  medicalHistory?: string; // History of Injury / Any kind of medical condition
+  primaryGoal?: string; // Primary Goal
+  workoutExperience?: string; // Previous Workout Experience
+  equipment?: string; // Available Equipment (e.g. Plates, Rods, kettlebell, etc.)
   notes?: string;
   status: "PENDING" | "APPROVED" | "REJECTED" | "LEFT";
   createdAt: string;

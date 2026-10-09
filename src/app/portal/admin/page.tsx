@@ -44,7 +44,13 @@ import {
   Star,
   MessageSquareQuote,
   Crop as CropToolIcon,
-  Info
+  Info,
+  Target,
+  Dumbbell,
+  Activity,
+  HeartPulse,
+  Briefcase,
+  Home
 } from "lucide-react";
 import { cn, extractYoutubeId, formatTimeAgo } from "@/lib/utils";
 import {
@@ -1439,24 +1445,104 @@ export default function AdminPortalPage() {
                             </div>
                             <div className="min-w-0">
                               <span className="block text-[9px] uppercase tracking-wider text-coffee-dark/50 font-semibold truncate">
-                                Phone Number
+                                Contact (Phone / WhatsApp)
                               </span>
-                              <a
-                                href={`tel:${std.phone}`}
-                                className="text-coffee-dark hover:text-cappuccino font-mono font-medium block text-[11px] sm:text-xs break-all sm:truncate"
-                              >
-                                +91 {std.phone}
-                              </a>
+                              <div className="flex items-center gap-1.5 flex-wrap">
+                                <a
+                                  href={`tel:${std.phone}`}
+                                  className="text-coffee-dark hover:text-cappuccino font-mono font-medium text-[11px] sm:text-xs"
+                                >
+                                  +91 {std.phone}
+                                </a>
+                                <a
+                                  href={`https://wa.me/91${std.phone.replace(/\D/g, "")}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-[10px] text-emerald-700 hover:text-emerald-800 font-bold bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-300"
+                                  title="Chat on WhatsApp"
+                                >
+                                  WA
+                                </a>
+                              </div>
+                              {std.email && (
+                                <a
+                                  href={`mailto:${std.email}`}
+                                  className="text-[10px] text-coffee-dark/60 hover:text-cappuccino block truncate mt-0.5"
+                                  title={std.email}
+                                >
+                                  {std.email}
+                                </a>
+                              )}
                             </div>
                             <div className="min-w-0">
                               <span className="block text-[9px] uppercase tracking-wider text-coffee-dark/50 font-semibold truncate">
-                                Location / Details
+                                Location &amp; Physical
                               </span>
                               <span className="text-coffee-dark/80 block text-[11px] sm:text-xs leading-snug break-words">
-                                {std.city || "Ariyalur"}{std.gender ? ` • ${std.gender}` : ""} • {std.age || "N/A"} yrs
+                                {std.city || "Ariyalur"}{std.country && std.country !== "India" ? `, ${std.country}` : ""}
+                                {std.gender ? ` • ${std.gender}` : ""}
+                                {std.age ? ` • ${std.age} yrs` : ""}
                               </span>
+                              {(std.height || std.weight) && (
+                                <span className="text-[10px] text-cappuccino font-semibold block mt-0.5">
+                                  {[std.height ? `Ht: ${std.height}` : null, std.weight ? `Wt: ${std.weight}` : null]
+                                    .filter(Boolean)
+                                    .join(" • ")}
+                                </span>
+                              )}
                             </div>
                           </div>
+
+                          {/* Comprehensive Intake & Health Assessment Banner for Coach Murali */}
+                          {(std.primaryGoal || std.medicalHistory || std.equipment || std.occupation || std.workoutExperience || std.address) && (
+                            <div className="mt-2.5 p-3 rounded-xl bg-cream/45 border border-cappuccino/25 space-y-1.5 text-xs">
+                              <div className="flex items-center justify-between gap-2 flex-wrap">
+                                <span className="text-[9.5px] uppercase tracking-[0.16em] text-coffee-dark/80 font-extrabold flex items-center gap-1.5">
+                                  <Activity size={12} className="text-cappuccino" />
+                                  <span>Intake Assessment &amp; Lifestyle Profile</span>
+                                </span>
+                                {std.workoutExperience && (
+                                  <span className="text-[9.5px] text-coffee-dark/70 font-semibold bg-white/70 px-2 py-0.5 rounded-md border border-coffee-dark/10">
+                                    Exp: {std.workoutExperience}
+                                  </span>
+                                )}
+                              </div>
+
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1 pt-1 text-[11px] text-coffee-dark/85">
+                                {std.primaryGoal && (
+                                  <div className="flex items-start gap-1.5">
+                                    <Target size={13} className="text-cappuccino shrink-0 mt-0.5" />
+                                    <span><strong>Goal:</strong> {std.primaryGoal}</span>
+                                  </div>
+                                )}
+                                {std.occupation && (
+                                  <div className="flex items-start gap-1.5">
+                                    <Briefcase size={13} className="text-cappuccino shrink-0 mt-0.5" />
+                                    <span><strong>Routine:</strong> {std.occupation}</span>
+                                  </div>
+                                )}
+                                {std.equipment && (
+                                  <div className="flex items-start gap-1.5">
+                                    <Dumbbell size={13} className="text-cappuccino shrink-0 mt-0.5" />
+                                    <span><strong>Equipment:</strong> {std.equipment}</span>
+                                  </div>
+                                )}
+                                {std.address && (
+                                  <div className="flex items-start gap-1.5">
+                                    <Home size={13} className="text-cappuccino shrink-0 mt-0.5" />
+                                    <span><strong>Address:</strong> {std.address}</span>
+                                  </div>
+                                )}
+                              </div>
+
+                              {std.medicalHistory && std.medicalHistory.toLowerCase() !== "none" && (
+                                <div className="mt-1 p-2 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-900 text-[11px] flex items-start gap-1.5">
+                                  <HeartPulse size={14} className="text-amber-700 shrink-0 mt-0.5" />
+                                  <span><strong>Medical / Injury Alert:</strong> {std.medicalHistory}</span>
+                                </div>
+                              )}
+                            </div>
+                          )}
 
                           {std.notes && (
                             <p className="text-[11px] sm:text-xs italic text-coffee-dark/65 pt-0.5 break-words">

@@ -32,7 +32,15 @@ import {
   Flame,
   ChevronRight,
   HelpCircle,
-  MapPin
+  MapPin,
+  Mail,
+  Target,
+  Activity,
+  Dumbbell,
+  Briefcase,
+  HeartPulse,
+  Globe,
+  Home
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -74,15 +82,25 @@ function PortalAuthContent() {
   const [adminLoading, setAdminLoading] = useState(false);
   const [adminError, setAdminError] = useState("");
 
-  // Enrollment Form State (Strictly NO Placeholders, essential fields only)
+  // Enrollment Form State (Comprehensive 13-Field Intake Assessment)
   const [enrollForm, setEnrollForm] = useState({
     name: "",
     phone: "",
+    email: "",
     course: "Fitness",
     batch: officialBatches[0],
     age: "",
     gender: "Male",
+    height: "",
+    weight: "",
     city: "Ariyalur",
+    country: "India",
+    address: "",
+    occupation: "",
+    medicalHistory: "",
+    primaryGoal: "General Fitness & Weight Loss",
+    workoutExperience: "Beginner (No Prior Experience)",
+    equipment: "",
     notes: ""
   });
   const [enrollLoading, setEnrollLoading] = useState(false);
@@ -688,11 +706,21 @@ function PortalAuthContent() {
                             setEnrollForm({
                               name: "",
                               phone: "",
+                              email: "",
                               course: "Fitness",
                               batch: officialBatches[0],
                               age: "",
                               gender: "Male",
+                              height: "",
+                              weight: "",
                               city: "Ariyalur",
+                              country: "India",
+                              address: "",
+                              occupation: "",
+                              medicalHistory: "",
+                              primaryGoal: "General Fitness & Weight Loss",
+                              workoutExperience: "Beginner (No Prior Experience)",
+                              equipment: "",
                               notes: ""
                             });
                           }}
@@ -706,32 +734,45 @@ function PortalAuthContent() {
                     /* Minimalist Registration Form - STRICTLY NO PLACEHOLDERS */
                     <div className="space-y-3">
                       <div className="border-b border-coffee-dark/10 pb-2.5">
-                        <div className="flex items-center justify-between">
-                          <h3 className="text-base sm:text-lg font-serif font-bold text-coffee-dark">Online Admission Form</h3>
-                          <span className="text-[9px] text-cappuccino font-semibold uppercase tracking-wider">
-                            Essential Details
+                        <div className="flex items-center justify-between flex-wrap gap-2">
+                          <div>
+                            <span className="text-[10px] uppercase tracking-[0.2em] font-extrabold text-cappuccino block">
+                              Student Admission Form
+                            </span>
+                            <h3 className="text-base sm:text-lg font-serif font-bold text-coffee-dark">
+                              Physical Assessment &amp; Intake
+                            </h3>
+                          </div>
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-coffee-dark/70 bg-cream/70 px-2.5 py-1 rounded-full border border-cappuccino/30">
+                            13 Key Assessment Fields
                           </span>
                         </div>
-                        <p className="text-[11px] text-coffee-dark/60 mt-0.5">
-                          Instant temporary code generation upon submission. No email required.
+                        <p className="text-[11px] text-coffee-dark/65 mt-0.5">
+                          Please provide accurate details so Master Coach Murali can customize your training schedule, batch pacing, and progression.
                         </p>
                       </div>
 
-                      {enrollError && (
-                        <motion.div
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: "auto" }}
-                          className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-start gap-2.5"
-                        >
-                          <AlertCircle size={15} className="shrink-0 mt-0.5 text-red-500" />
-                          <span>{enrollError}</span>
-                        </motion.div>
-                      )}
+                    {enrollError && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-start gap-2.5"
+                      >
+                        <AlertCircle size={15} className="shrink-0 mt-0.5 text-red-500" />
+                        <span>{enrollError}</span>
+                      </motion.div>
+                    )}
 
-                      <form onSubmit={handleEnrollSubmit} className="space-y-2.5">
-                        {/* Interactive Course Selection Pill Cards */}
+                    <form onSubmit={handleEnrollSubmit} className="space-y-4">
+                      {/* SECTION 1: DISCIPLINE & PREFERRED BATCH TIME / SLOT */}
+                      <div className="p-3.5 rounded-2xl bg-white/70 border border-coffee-dark/10 space-y-3">
+                        <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-coffee-dark">
+                          <Award size={14} className="text-cappuccino" />
+                          <span>1. Discipline &amp; Preferred Batch Slot</span>
+                        </div>
+
                         <div>
-                          <label className="text-[10px] uppercase tracking-[0.18em] text-coffee-dark/70 font-bold block mb-1.5">
+                          <label className="text-[10px] uppercase tracking-[0.16em] text-coffee-dark/70 font-bold block mb-1.5">
                             Select Training Discipline <span className="text-cappuccino">*</span>
                           </label>
                           <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 sm:gap-2">
@@ -745,7 +786,7 @@ function PortalAuthContent() {
                                   className={`py-2 px-1.5 min-h-[46px] rounded-xl border text-center transition-all cursor-pointer flex flex-col items-center justify-center gap-0.5 active:scale-95 ${
                                     isSelected
                                       ? "bg-coffee-dark text-cappuccino border-coffee-dark shadow-sm font-bold"
-                                      : "bg-white/70 text-coffee-dark/80 border-coffee-dark/15 hover:border-cappuccino/60 hover:bg-white"
+                                      : "bg-white text-coffee-dark/80 border-coffee-dark/15 hover:border-cappuccino/60 hover:bg-white"
                                   }`}
                                 >
                                   <span className="text-sm leading-none">{c.icon}</span>
@@ -756,10 +797,37 @@ function PortalAuthContent() {
                           </div>
                         </div>
 
-                        {/* Full Name & Phone Number (Row 1 - Symmetrical 2 Columns) */}
+                        <div>
+                          <label className="text-[10px] uppercase tracking-[0.16em] text-coffee-dark/70 font-bold block mb-1">
+                            Preferred Batch Time / Slot <span className="text-cappuccino">*</span>
+                          </label>
+                          <div className="relative flex items-center">
+                            <Clock size={15} className="absolute left-3 text-cappuccino pointer-events-none" />
+                            <select
+                              value={enrollForm.batch}
+                              onChange={(e) => setEnrollForm({ ...enrollForm, batch: e.target.value })}
+                              className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-3 py-2.5 sm:py-2 text-sm sm:text-xs min-h-[42px] sm:min-h-0 focus:outline-none transition-all cursor-pointer shadow-xs"
+                            >
+                              {officialBatches.map((b) => (
+                                <option key={b} value={b} className="bg-background text-coffee-dark">
+                                  {b}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* SECTION 2: PERSONAL & CONTACT INFORMATION */}
+                      <div className="p-3.5 rounded-2xl bg-white/70 border border-coffee-dark/10 space-y-3">
+                        <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-coffee-dark">
+                          <User size={14} className="text-cappuccino" />
+                          <span>2. Personal &amp; Contact Details</span>
+                        </div>
+
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                           <div>
-                            <label className="text-[10px] uppercase tracking-[0.18em] text-coffee-dark/70 font-bold block mb-1">
+                            <label className="text-[10px] uppercase tracking-[0.16em] text-coffee-dark/70 font-bold block mb-1">
                               Full Name <span className="text-cappuccino">*</span>
                             </label>
                             <div className="relative flex items-center">
@@ -768,15 +836,16 @@ function PortalAuthContent() {
                                 type="text"
                                 value={enrollForm.name}
                                 onChange={(e) => setEnrollForm({ ...enrollForm, name: e.target.value })}
-                                className="w-full bg-white/80 border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-3 py-2.5 sm:py-2 text-sm sm:text-xs min-h-[42px] sm:min-h-0 focus:outline-none transition-all shadow-xs"
+                                placeholder="Student Full Name"
+                                className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-3 py-2.5 sm:py-2 text-sm sm:text-xs min-h-[42px] sm:min-h-0 focus:outline-none transition-all shadow-xs"
                                 required
                               />
                             </div>
                           </div>
 
                           <div>
-                            <label className="text-[10px] uppercase tracking-[0.18em] text-coffee-dark/70 font-bold block mb-1">
-                              Phone Number <span className="text-cappuccino">*</span>
+                            <label className="text-[10px] uppercase tracking-[0.16em] text-coffee-dark/70 font-bold block mb-1">
+                              Phone / WhatsApp No. <span className="text-cappuccino">*</span>
                             </label>
                             <div className="relative flex items-center">
                               <Phone size={15} className="absolute left-3 text-cappuccino pointer-events-none" />
@@ -785,77 +854,56 @@ function PortalAuthContent() {
                                 inputMode="tel"
                                 value={enrollForm.phone}
                                 onChange={(e) => setEnrollForm({ ...enrollForm, phone: e.target.value })}
-                                className="w-full bg-white/80 border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-3 py-2.5 sm:py-2 text-sm sm:text-xs min-h-[42px] sm:min-h-0 focus:outline-none transition-all shadow-xs"
+                                placeholder="+91 90477 43533"
+                                className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-3 py-2.5 sm:py-2 text-sm sm:text-xs min-h-[42px] sm:min-h-0 focus:outline-none transition-all shadow-xs"
                                 required
                               />
                             </div>
                           </div>
                         </div>
 
-                        {/* Preferred Batch & City (Row 2 - Symmetrical 2 Columns) */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                          <div>
-                            <label className="text-[10px] uppercase tracking-[0.18em] text-coffee-dark/70 font-bold block mb-1">
-                              Preferred Batch Slot <span className="text-cappuccino">*</span>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                          <div className="sm:col-span-1">
+                            <label className="text-[10px] uppercase tracking-[0.16em] text-coffee-dark/70 font-bold block mb-1">
+                              Email ID
                             </label>
                             <div className="relative flex items-center">
-                              <Clock size={15} className="absolute left-3 text-cappuccino pointer-events-none" />
-                              <select
-                                value={enrollForm.batch}
-                                onChange={(e) => setEnrollForm({ ...enrollForm, batch: e.target.value })}
-                                className="w-full bg-white/80 border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-3 py-2.5 sm:py-2 text-sm sm:text-xs min-h-[42px] sm:min-h-0 focus:outline-none transition-all cursor-pointer shadow-xs"
-                              >
-                                {officialBatches.map((b) => (
-                                  <option key={b} value={b} className="bg-background text-coffee-dark">
-                                    {b}
-                                  </option>
-                                ))}
-                              </select>
-                            </div>
-                          </div>
-
-                          <div>
-                            <label className="text-[10px] uppercase tracking-[0.18em] text-coffee-dark/70 font-bold block mb-1">
-                              City <span className="text-cappuccino">*</span>
-                            </label>
-                            <div className="relative flex items-center">
-                              <MapPin size={15} className="absolute left-3 text-cappuccino pointer-events-none" />
+                              <Mail size={15} className="absolute left-3 text-cappuccino pointer-events-none" />
                               <input
-                                type="text"
-                                value={enrollForm.city}
-                                onChange={(e) => setEnrollForm({ ...enrollForm, city: e.target.value })}
-                                className="w-full bg-white/80 border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-3 py-2.5 sm:py-2 text-sm sm:text-xs min-h-[42px] sm:min-h-0 focus:outline-none transition-all shadow-xs"
-                                required
+                                type="email"
+                                value={enrollForm.email}
+                                onChange={(e) => setEnrollForm({ ...enrollForm, email: e.target.value })}
+                                placeholder="name@example.com"
+                                className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-3 py-2.5 sm:py-2 text-sm sm:text-xs min-h-[42px] sm:min-h-0 focus:outline-none transition-all shadow-xs"
                               />
                             </div>
                           </div>
-                        </div>
 
-                        {/* Age & Gender (Row 3 - Symmetrical 2 Columns) */}
-                        <div className="grid grid-cols-2 gap-2.5">
-                          <div className="min-w-0">
-                            <label className="text-[10px] uppercase tracking-[0.18em] text-coffee-dark/70 font-bold block mb-1">
-                              Age
+                          <div>
+                            <label className="text-[10px] uppercase tracking-[0.16em] text-coffee-dark/70 font-bold block mb-1">
+                              Age <span className="text-cappuccino">*</span>
                             </label>
                             <input
                               type="number"
                               inputMode="numeric"
                               value={enrollForm.age}
                               onChange={(e) => setEnrollForm({ ...enrollForm, age: e.target.value })}
-                              className="w-full bg-white/80 border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl px-3 py-2.5 sm:py-2 text-sm sm:text-xs min-h-[42px] sm:min-h-0 focus:outline-none transition-all shadow-xs"
+                              placeholder="e.g. 24"
+                              className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl px-3 py-2.5 sm:py-2 text-sm sm:text-xs min-h-[42px] sm:min-h-0 focus:outline-none transition-all shadow-xs"
+                              required
                             />
                           </div>
 
-                          <div className="min-w-0">
-                            <label className="text-[10px] uppercase tracking-[0.18em] text-coffee-dark/70 font-bold block mb-1">
-                              Gender
+                          <div>
+                            <label className="text-[10px] uppercase tracking-[0.16em] text-coffee-dark/70 font-bold block mb-1">
+                              Gender <span className="text-cappuccino">*</span>
                             </label>
                             <div className="relative flex items-center">
                               <UserCheck size={15} className="absolute left-3 text-cappuccino pointer-events-none" />
                               <select
                                 value={enrollForm.gender}
                                 onChange={(e) => setEnrollForm({ ...enrollForm, gender: e.target.value })}
-                                className="w-full bg-white/80 border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-2 py-2.5 sm:py-2 text-sm sm:text-xs min-h-[42px] sm:min-h-0 focus:outline-none transition-all cursor-pointer shadow-xs"
+                                className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-2 py-2.5 sm:py-2 text-sm sm:text-xs min-h-[42px] sm:min-h-0 focus:outline-none transition-all cursor-pointer shadow-xs"
                               >
                                 <option value="Male" className="bg-background text-coffee-dark">Male</option>
                                 <option value="Female" className="bg-background text-coffee-dark">Female</option>
@@ -864,41 +912,228 @@ function PortalAuthContent() {
                             </div>
                           </div>
                         </div>
+                      </div>
 
-                        {/* Goals / Notes (Row 4) */}
+                      {/* SECTION 3: HEIGHT, WEIGHT & LOCATION */}
+                      <div className="p-3.5 rounded-2xl bg-white/70 border border-coffee-dark/10 space-y-3">
+                        <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-coffee-dark">
+                          <MapPin size={14} className="text-cappuccino" />
+                          <span>3. Height, Weight &amp; Location</span>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-2.5">
+                          <div>
+                            <label className="text-[10px] uppercase tracking-[0.16em] text-coffee-dark/70 font-bold block mb-1">
+                              Height
+                            </label>
+                            <input
+                              type="text"
+                              value={enrollForm.height}
+                              onChange={(e) => setEnrollForm({ ...enrollForm, height: e.target.value })}
+                              placeholder="e.g. 175 cm or 5'9&quot;"
+                              className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl px-3 py-2.5 sm:py-2 text-sm sm:text-xs min-h-[42px] sm:min-h-0 focus:outline-none transition-all shadow-xs"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="text-[10px] uppercase tracking-[0.16em] text-coffee-dark/70 font-bold block mb-1">
+                              Weight
+                            </label>
+                            <input
+                              type="text"
+                              value={enrollForm.weight}
+                              onChange={(e) => setEnrollForm({ ...enrollForm, weight: e.target.value })}
+                              placeholder="e.g. 70 kg"
+                              className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl px-3 py-2.5 sm:py-2 text-sm sm:text-xs min-h-[42px] sm:min-h-0 focus:outline-none transition-all shadow-xs"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                          <div>
+                            <label className="text-[10px] uppercase tracking-[0.16em] text-coffee-dark/70 font-bold block mb-1">
+                              City <span className="text-cappuccino">*</span>
+                            </label>
+                            <div className="relative flex items-center">
+                              <MapPin size={15} className="absolute left-3 text-cappuccino pointer-events-none" />
+                              <input
+                                type="text"
+                                value={enrollForm.city}
+                                onChange={(e) => setEnrollForm({ ...enrollForm, city: e.target.value })}
+                                placeholder="e.g. Ariyalur"
+                                className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-3 py-2.5 sm:py-2 text-sm sm:text-xs min-h-[42px] sm:min-h-0 focus:outline-none transition-all shadow-xs"
+                                required
+                              />
+                            </div>
+                          </div>
+
+                          <div>
+                            <label className="text-[10px] uppercase tracking-[0.16em] text-coffee-dark/70 font-bold block mb-1">
+                              Country
+                            </label>
+                            <div className="relative flex items-center">
+                              <Globe size={15} className="absolute left-3 text-cappuccino pointer-events-none" />
+                              <input
+                                type="text"
+                                value={enrollForm.country}
+                                onChange={(e) => setEnrollForm({ ...enrollForm, country: e.target.value })}
+                                placeholder="e.g. India"
+                                className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-3 py-2.5 sm:py-2 text-sm sm:text-xs min-h-[42px] sm:min-h-0 focus:outline-none transition-all shadow-xs"
+                              />
+                            </div>
+                          </div>
+                        </div>
+
                         <div>
-                          <label className="text-[10px] uppercase tracking-[0.18em] text-coffee-dark/70 font-bold block mb-1">
-                            Goals or Prior Experience (Optional)
+                          <label className="text-[10px] uppercase tracking-[0.16em] text-coffee-dark/70 font-bold block mb-1">
+                            Residential Address
+                          </label>
+                          <div className="relative flex items-center">
+                            <Home size={15} className="absolute left-3 text-cappuccino pointer-events-none" />
+                            <input
+                              type="text"
+                              value={enrollForm.address}
+                              onChange={(e) => setEnrollForm({ ...enrollForm, address: e.target.value })}
+                              placeholder="Street, Area, Landmark / Postal Code"
+                              className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-3 py-2.5 sm:py-2 text-sm sm:text-xs min-h-[42px] sm:min-h-0 focus:outline-none transition-all shadow-xs"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* SECTION 4: LIFESTYLE, HEALTH & FITNESS ASSESSMENT */}
+                      <div className="p-3.5 rounded-2xl bg-white/70 border border-coffee-dark/10 space-y-3">
+                        <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-coffee-dark">
+                          <Activity size={14} className="text-cappuccino" />
+                          <span>4. Lifestyle, Health &amp; Fitness Assessment</span>
+                        </div>
+
+                        <div>
+                          <label className="text-[10px] uppercase tracking-[0.16em] text-coffee-dark/70 font-bold block mb-1">
+                            Profession / Occupation &amp; Daily Routine
+                          </label>
+                          <div className="relative flex items-center">
+                            <Briefcase size={15} className="absolute left-3 text-cappuccino pointer-events-none" />
+                            <input
+                              type="text"
+                              value={enrollForm.occupation}
+                              onChange={(e) => setEnrollForm({ ...enrollForm, occupation: e.target.value })}
+                              placeholder="e.g. IT Professional, Desk Job 9 to 6, sedentary / active"
+                              className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-3 py-2.5 sm:py-2 text-sm sm:text-xs min-h-[42px] sm:min-h-0 focus:outline-none transition-all shadow-xs"
+                            />
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className="text-[10px] uppercase tracking-[0.16em] text-coffee-dark/70 font-bold block mb-1">
+                            History of Injury / Any Kind of Medical Condition
+                          </label>
+                          <div className="relative flex items-center">
+                            <HeartPulse size={15} className="absolute left-3 text-cappuccino pointer-events-none" />
+                            <input
+                              type="text"
+                              value={enrollForm.medicalHistory}
+                              onChange={(e) => setEnrollForm({ ...enrollForm, medicalHistory: e.target.value })}
+                              placeholder="e.g. None, or Past knee sprain, lower back stiffness, asthma, BP"
+                              className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-3 py-2.5 sm:py-2 text-sm sm:text-xs min-h-[42px] sm:min-h-0 focus:outline-none transition-all shadow-xs"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                          <div>
+                            <label className="text-[10px] uppercase tracking-[0.16em] text-coffee-dark/70 font-bold block mb-1">
+                              Primary Goal
+                            </label>
+                            <div className="relative flex items-center">
+                              <Target size={15} className="absolute left-3 text-cappuccino pointer-events-none" />
+                              <select
+                                value={enrollForm.primaryGoal}
+                                onChange={(e) => setEnrollForm({ ...enrollForm, primaryGoal: e.target.value })}
+                                className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-3 py-2.5 sm:py-2 text-sm sm:text-xs min-h-[42px] sm:min-h-0 focus:outline-none transition-all cursor-pointer shadow-xs"
+                              >
+                                <option value="General Fitness & Weight Loss">General Fitness &amp; Weight Loss</option>
+                                <option value="Functional Strength & Muscle Tone">Functional Strength &amp; Muscle Tone</option>
+                                <option value="Flexibility, Mobility & Breathwork">Flexibility, Mobility &amp; Breathwork</option>
+                                <option value="Traditional Silambam Mastery">Traditional Silambam Mastery</option>
+                                <option value="Martial Arts & Practical Self-Defense">Martial Arts &amp; Self-Defense</option>
+                                <option value="Endurance & Athletic Conditioning">Endurance &amp; Athletic Conditioning</option>
+                                <option value="Postural Correction & Stress Relief">Postural Correction &amp; Stress Relief</option>
+                              </select>
+                            </div>
+                          </div>
+
+                          <div>
+                            <label className="text-[10px] uppercase tracking-[0.16em] text-coffee-dark/70 font-bold block mb-1">
+                              Previous Workout Experience
+                            </label>
+                            <div className="relative flex items-center">
+                              <Activity size={15} className="absolute left-3 text-cappuccino pointer-events-none" />
+                              <select
+                                value={enrollForm.workoutExperience}
+                                onChange={(e) => setEnrollForm({ ...enrollForm, workoutExperience: e.target.value })}
+                                className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-3 py-2.5 sm:py-2 text-sm sm:text-xs min-h-[42px] sm:min-h-0 focus:outline-none transition-all cursor-pointer shadow-xs"
+                              >
+                                <option value="Beginner (No Prior Experience)">Beginner (No Prior Experience)</option>
+                                <option value="Moderate (Occasional Gym / Sports)">Moderate (Occasional Gym / Sports)</option>
+                                <option value="Experienced (1 to 2 Years Consistent)">Experienced (1 to 2 Years Consistent)</option>
+                                <option value="Advanced / Martial Arts Athlete">Advanced / Martial Arts Athlete</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className="text-[10px] uppercase tracking-[0.16em] text-coffee-dark/70 font-bold block mb-1">
+                            Available Equipment (e.g. Plates, Rods, Kettlebell, etc...)
+                          </label>
+                          <div className="relative flex items-center">
+                            <Dumbbell size={15} className="absolute left-3 text-cappuccino pointer-events-none" />
+                            <input
+                              type="text"
+                              value={enrollForm.equipment}
+                              onChange={(e) => setEnrollForm({ ...enrollForm, equipment: e.target.value })}
+                              placeholder="e.g. Dumbbells, Barbell &amp; Plates, Kettlebell, Resistance Bands, or Bodyweight only"
+                              className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-3 py-2.5 sm:py-2 text-sm sm:text-xs min-h-[42px] sm:min-h-0 focus:outline-none transition-all shadow-xs"
+                            />
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className="text-[10px] uppercase tracking-[0.16em] text-coffee-dark/70 font-bold block mb-1">
+                            Additional Notes / Message to Head Coach (Optional)
                           </label>
                           <textarea
                             rows={2}
                             value={enrollForm.notes}
                             onChange={(e) => setEnrollForm({ ...enrollForm, notes: e.target.value })}
-                            className="w-full bg-white/80 border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl px-3 py-2 text-sm sm:text-xs focus:outline-none transition-all resize-none shadow-xs"
+                            placeholder="Any specific expectations, questions, or medical notes for Coach Murali..."
+                            className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl px-3 py-2 text-sm sm:text-xs focus:outline-none transition-all resize-none shadow-xs"
                           />
                         </div>
+                      </div>
 
-                        <div className="pt-1">
-                          <button
-                            type="submit"
-                            disabled={enrollLoading}
-                            className="w-full min-h-[44px] py-2.5 sm:py-3 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-extrabold text-xs uppercase tracking-[0.18em] rounded-full transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50"
-                          >
-                            {enrollLoading ? (
-                              <span>Generating Temporary Code...</span>
-                            ) : (
-                              <>
-                                <span>Submit Admission &amp; Get Code</span>
-                                <Sparkles size={14} />
-                              </>
-                            )}
-                          </button>
-                        </div>
-                      </form>
-                    </div>
-                  )}
-                </motion.div>
-              )}
+                      <div className="pt-2">
+                        <button
+                          type="submit"
+                          disabled={enrollLoading}
+                          className="w-full min-h-[46px] py-3 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-black text-xs uppercase tracking-[0.18em] rounded-full transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50"
+                        >
+                          {enrollLoading ? (
+                            <span>Generating Temporary Code...</span>
+                          ) : (
+                            <>
+                              <span>Submit Admission &amp; Get Code</span>
+                              <Sparkles size={15} />
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                )}
+              </motion.div>
+            )}
 
               {/* TAB 3: TRACK APPROVAL STATUS */}
               {activeTab === "track" && (
