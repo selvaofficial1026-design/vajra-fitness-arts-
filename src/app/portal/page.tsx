@@ -836,7 +836,6 @@ function PortalAuthContent() {
                                 type="text"
                                 value={enrollForm.name}
                                 onChange={(e) => setEnrollForm({ ...enrollForm, name: e.target.value })}
-                                placeholder="Student Full Name"
                                 className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-3 py-2.5 sm:py-2 text-sm sm:text-xs min-h-[42px] sm:min-h-0 focus:outline-none transition-all shadow-xs"
                                 required
                               />
@@ -854,7 +853,6 @@ function PortalAuthContent() {
                                 inputMode="tel"
                                 value={enrollForm.phone}
                                 onChange={(e) => setEnrollForm({ ...enrollForm, phone: e.target.value })}
-                                placeholder="+91 90477 43533"
                                 className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-3 py-2.5 sm:py-2 text-sm sm:text-xs min-h-[42px] sm:min-h-0 focus:outline-none transition-all shadow-xs"
                                 required
                               />
@@ -873,7 +871,6 @@ function PortalAuthContent() {
                                 type="email"
                                 value={enrollForm.email}
                                 onChange={(e) => setEnrollForm({ ...enrollForm, email: e.target.value })}
-                                placeholder="name@example.com"
                                 className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-3 py-2.5 sm:py-2 text-sm sm:text-xs min-h-[42px] sm:min-h-0 focus:outline-none transition-all shadow-xs"
                               />
                             </div>
@@ -888,7 +885,6 @@ function PortalAuthContent() {
                               inputMode="numeric"
                               value={enrollForm.age}
                               onChange={(e) => setEnrollForm({ ...enrollForm, age: e.target.value })}
-                              placeholder="e.g. 24"
                               className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl px-3 py-2.5 sm:py-2 text-sm sm:text-xs min-h-[42px] sm:min-h-0 focus:outline-none transition-all shadow-xs"
                               required
                             />
@@ -930,7 +926,6 @@ function PortalAuthContent() {
                               type="text"
                               value={enrollForm.height}
                               onChange={(e) => setEnrollForm({ ...enrollForm, height: e.target.value })}
-                              placeholder="e.g. 175 cm or 5'9&quot;"
                               className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl px-3 py-2.5 sm:py-2 text-sm sm:text-xs min-h-[42px] sm:min-h-0 focus:outline-none transition-all shadow-xs"
                             />
                           </div>
@@ -943,7 +938,6 @@ function PortalAuthContent() {
                               type="text"
                               value={enrollForm.weight}
                               onChange={(e) => setEnrollForm({ ...enrollForm, weight: e.target.value })}
-                              placeholder="e.g. 70 kg"
                               className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl px-3 py-2.5 sm:py-2 text-sm sm:text-xs min-h-[42px] sm:min-h-0 focus:outline-none transition-all shadow-xs"
                             />
                           </div>
@@ -960,7 +954,6 @@ function PortalAuthContent() {
                                 type="text"
                                 value={enrollForm.city}
                                 onChange={(e) => setEnrollForm({ ...enrollForm, city: e.target.value })}
-                                placeholder="e.g. Ariyalur"
                                 className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-3 py-2.5 sm:py-2 text-sm sm:text-xs min-h-[42px] sm:min-h-0 focus:outline-none transition-all shadow-xs"
                                 required
                               />
@@ -977,7 +970,6 @@ function PortalAuthContent() {
                                 type="text"
                                 value={enrollForm.country}
                                 onChange={(e) => setEnrollForm({ ...enrollForm, country: e.target.value })}
-                                placeholder="e.g. India"
                                 className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-3 py-2.5 sm:py-2 text-sm sm:text-xs min-h-[42px] sm:min-h-0 focus:outline-none transition-all shadow-xs"
                               />
                             </div>
@@ -994,7 +986,6 @@ function PortalAuthContent() {
                               type="text"
                               value={enrollForm.address}
                               onChange={(e) => setEnrollForm({ ...enrollForm, address: e.target.value })}
-                              placeholder="Street, Area, Landmark / Postal Code"
                               className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-3 py-2.5 sm:py-2 text-sm sm:text-xs min-h-[42px] sm:min-h-0 focus:outline-none transition-all shadow-xs"
                             />
                           </div>
@@ -1018,7 +1009,6 @@ function PortalAuthContent() {
                               type="text"
                               value={enrollForm.occupation}
                               onChange={(e) => setEnrollForm({ ...enrollForm, occupation: e.target.value })}
-                              placeholder="e.g. IT Professional, Desk Job 9 to 6, sedentary / active"
                               className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-3 py-2.5 sm:py-2 text-sm sm:text-xs min-h-[42px] sm:min-h-0 focus:outline-none transition-all shadow-xs"
                             />
                           </div>
@@ -1034,7 +1024,6 @@ function PortalAuthContent() {
                               type="text"
                               value={enrollForm.medicalHistory}
                               onChange={(e) => setEnrollForm({ ...enrollForm, medicalHistory: e.target.value })}
-                              placeholder="e.g. None, or Past knee sprain, lower back stiffness, asthma, BP"
                               className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-3 py-2.5 sm:py-2 text-sm sm:text-xs min-h-[42px] sm:min-h-0 focus:outline-none transition-all shadow-xs"
                             />
                           </div>
@@ -1093,7 +1082,6 @@ function PortalAuthContent() {
                               type="text"
                               value={enrollForm.equipment}
                               onChange={(e) => setEnrollForm({ ...enrollForm, equipment: e.target.value })}
-                              placeholder="e.g. Dumbbells, Barbell &amp; Plates, Kettlebell, Resistance Bands, or Bodyweight only"
                               className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl pl-9 pr-3 py-2.5 sm:py-2 text-sm sm:text-xs min-h-[42px] sm:min-h-0 focus:outline-none transition-all shadow-xs"
                             />
                           </div>
@@ -1107,7 +1095,6 @@ function PortalAuthContent() {
                             rows={2}
                             value={enrollForm.notes}
                             onChange={(e) => setEnrollForm({ ...enrollForm, notes: e.target.value })}
-                            placeholder="Any specific expectations, questions, or medical notes for Coach Murali..."
                             className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino focus:ring-1 focus:ring-cappuccino/40 text-coffee-dark rounded-xl px-3 py-2 text-sm sm:text-xs focus:outline-none transition-all resize-none shadow-xs"
                           />
                         </div>
