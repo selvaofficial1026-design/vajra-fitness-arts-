@@ -50,7 +50,9 @@ import {
   Activity,
   HeartPulse,
   Briefcase,
-  Home
+  Home,
+  Newspaper,
+  FileText
 } from "lucide-react";
 import { cn, extractYoutubeId, formatTimeAgo } from "@/lib/utils";
 import {
@@ -63,11 +65,14 @@ import {
   SiteSettings,
   ReviewItem,
   AboutSettings,
+  ArticleItem,
+  ArticleImage,
   DEFAULT_COURSES,
   DEFAULT_GALLERY,
   DEFAULT_SITE_SETTINGS,
   DEFAULT_REVIEWS,
-  DEFAULT_ABOUT_SETTINGS
+  DEFAULT_ABOUT_SETTINGS,
+  DEFAULT_ARTICLES
 } from "@/lib/cmsDefaults";
 import PortalNavbar, { PortalNavItem } from "@/components/portal/PortalNavbar";
 import PortalLoadingScreen from "@/components/portal/PortalLoadingScreen";
@@ -95,15 +100,36 @@ export default function AdminPortalPage() {
   const [pageLoading, setPageLoading] = useState(true);
 
   // --- WEBSITE CMS & MAIN PORTAL MANAGER STATE ---
-  const [cmsSubTab, setCmsSubTab] = useState<"courses" | "gallery" | "reviews" | "settings" | "about">("courses");
+  const [cmsSubTab, setCmsSubTab] = useState<"courses" | "gallery" | "reviews" | "settings" | "about" | "articles">("courses");
   const [courses, setCourses] = useState<CourseItem[]>(DEFAULT_COURSES);
   const [gallery, setGallery] = useState<GalleryItem[]>(DEFAULT_GALLERY);
   const [siteSettings, setSiteSettings] = useState<SiteSettings>(DEFAULT_SITE_SETTINGS);
   const [reviews, setReviews] = useState<ReviewItem[]>(DEFAULT_REVIEWS);
   const [aboutSettings, setAboutSettings] = useState<AboutSettings>(DEFAULT_ABOUT_SETTINGS);
+  const [articles, setArticles] = useState<ArticleItem[]>(DEFAULT_ARTICLES);
   const [aboutSubmitting, setAboutSubmitting] = useState(false);
   const [founderUploading, setFounderUploading] = useState(false);
   const [storyUploading, setStoryUploading] = useState(false);
+
+  // Article Form State
+  const initialArticleForm: ArticleItem = {
+    id: "",
+    title: "",
+    category: "Silambam",
+    coverImage: "",
+    galleryImages: [],
+    excerpt: "",
+    content: "",
+    author: "Coach Murali (Founder & Head Coach)",
+    readTime: "4 min read",
+    publishedAt: new Date().toISOString().split("T")[0],
+    isFeatured: false
+  };
+  const [articleForm, setArticleForm] = useState<ArticleItem>(initialArticleForm);
+  const [isEditingArticle, setIsEditingArticle] = useState(false);
+  const [articleSubmitting, setArticleSubmitting] = useState(false);
+  const [newGalleryPhotoUrl, setNewGalleryPhotoUrl] = useState("");
+  const [newGalleryPhotoCaption, setNewGalleryPhotoCaption] = useState("");
 
   // Review Form State
   const initialReviewForm = {
@@ -121,7 +147,7 @@ export default function AdminPortalPage() {
   // Image Cropper Modal State
   const [cropModalOpen, setCropModalOpen] = useState(false);
   const [cropImageSrc, setCropImageSrc] = useState<string | null>(null);
-  const [cropTarget, setCropTarget] = useState<"course" | "gallery" | "founder" | "story">("course");
+  const [cropTarget, setCropTarget] = useState<"course" | "gallery" | "founder" | "story" | "articleCover" | "articleGallery">("course");
   const [cropAspectRatio, setCropAspectRatio] = useState<AspectRatioType>("16:9");
   const [cropTitle, setCropTitle] = useState("Crop & Frame Image");
 
@@ -332,6 +358,9 @@ export default function AdminPortalPage() {
         }
         if (data.aboutSettings) {
           setAboutSettings(data.aboutSettings);
+        }
+        if (data.articles && data.articles.length > 0) {
+          setArticles(data.articles);
         }
 
         if (data.adminConfig) {
@@ -626,7 +655,7 @@ export default function AdminPortalPage() {
   // --- CMS & CROP HANDLERS ---
   const handleInitiateCrop = (
     e: React.ChangeEvent<HTMLInputElement>,
-    target: "course" | "gallery" | "founder" | "story"
+    target: "course" | "gallery" | "founder" | "story" | "articleCover" | "articleGallery"
   ) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -637,7 +666,7 @@ export default function AdminPortalPage() {
         setCropImageSrc(reader.result);
         setCropTarget(target);
         setCropAspectRatio(
-          target === "course" ? "16:9" : target === "founder" ? "4:5" : "4:3"
+          target === "course" || target === "articleCover" ? "16:9" : target === "founder" ? "4:5" : "4:3"
         );
         setCropTitle(
           target === "course"
@@ -646,6 +675,10 @@ export default function AdminPortalPage() {
             ? "Crop Founder & Head Coach Photo (4:5)"
             : target === "story"
             ? "Crop Philosophy Story Photo (4:3)"
+            : target === "articleCover"
+            ? "Crop Article Cover Image (16:9)"
+            : target === "articleGallery"
+            ? "Crop In-Article Photo (4:3)"
             : "Crop Gallery Photo (4:3)"
         );
         setCropModalOpen(true);
@@ -656,12 +689,13 @@ export default function AdminPortalPage() {
     e.target.value = "";
   };
 
-  const handleOpenCropForExisting = (target: "course" | "gallery" | "founder" | "story") => {
+  const handleOpenCropForExisting = (target: "course" | "gallery" | "founder" | "story" | "articleCover" | "articleGallery") => {
     let currentUrl = "";
     if (target === "course") currentUrl = courseForm.image;
     else if (target === "gallery") currentUrl = galleryForm.image;
     else if (target === "founder") currentUrl = aboutSettings.founderPhoto;
     else if (target === "story") currentUrl = aboutSettings.storyImage;
+    else if (target === "articleCover") currentUrl = articleForm.coverImage;
 
     if (!currentUrl) {
       showAlert({
@@ -673,7 +707,7 @@ export default function AdminPortalPage() {
     setCropImageSrc(currentUrl);
     setCropTarget(target);
     setCropAspectRatio(
-      target === "course" ? "16:9" : target === "founder" ? "4:5" : "4:3"
+      target === "course" || target === "articleCover" ? "16:9" : target === "founder" ? "4:5" : "4:3"
     );
     setCropTitle(
       target === "course"
@@ -682,6 +716,10 @@ export default function AdminPortalPage() {
         ? "Adjust & Frame Founder Photo"
         : target === "story"
         ? "Adjust & Frame Story Photo"
+        : target === "articleCover"
+        ? "Adjust & Frame Article Cover Image"
+        : target === "articleGallery"
+        ? "Adjust & Frame In-Article Photo"
         : "Adjust & Frame Gallery Photo"
     );
     setCropModalOpen(true);
@@ -696,6 +734,14 @@ export default function AdminPortalPage() {
       setAboutSettings((prev) => ({ ...prev, founderPhoto: uploadedUrl }));
     } else if (cropTarget === "story") {
       setAboutSettings((prev) => ({ ...prev, storyImage: uploadedUrl }));
+    } else if (cropTarget === "articleCover") {
+      setArticleForm((prev) => ({ ...prev, coverImage: uploadedUrl }));
+    } else if (cropTarget === "articleGallery") {
+      setArticleForm((prev) => ({
+        ...prev,
+        galleryImages: [...(prev.galleryImages || []), { url: uploadedUrl, caption: newGalleryPhotoCaption || "" }]
+      }));
+      setNewGalleryPhotoCaption("");
     }
     setActionMessage("Cropped photo applied successfully!");
     setTimeout(() => setActionMessage(null), 4000);
@@ -703,7 +749,7 @@ export default function AdminPortalPage() {
 
   const handleImageUpload = async (
     e: React.ChangeEvent<HTMLInputElement>,
-    target: "course" | "gallery" | "founder" | "story"
+    target: "course" | "gallery" | "founder" | "story" | "articleCover" | "articleGallery"
   ) => {
     // Forward to interactive cropper for perfect framing & live preview
     handleInitiateCrop(e, target);
@@ -741,6 +787,121 @@ export default function AdminPortalPage() {
     } finally {
       setAboutSubmitting(false);
     }
+  };
+
+  // --- ARTICLES CMS HANDLERS ---
+  const handleSaveArticle = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!articleForm.title.trim() || !articleForm.content.trim()) {
+      showAlert({
+        title: "Missing Information",
+        description: "Please enter both an Article Title and Article Content."
+      });
+      return;
+    }
+
+    setArticleSubmitting(true);
+    try {
+      const res = await fetch("/api/portal/cms", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "saveArticle",
+          article: {
+            ...articleForm,
+            coverImage: articleForm.coverImage || "/images/vajra_hero.jpg",
+            publishedAt: articleForm.publishedAt || new Date().toISOString().split("T")[0]
+          }
+        })
+      });
+      const data = await res.json();
+      if (data.success && data.articles) {
+        setArticles(data.articles);
+        setActionMessage(isEditingArticle ? "Article updated on website!" : "New article published on About page!");
+        setTimeout(() => setActionMessage(null), 4000);
+        setArticleForm(initialArticleForm);
+        setIsEditingArticle(false);
+      } else {
+        showAlert({
+          title: "Save Failed",
+          description: data.error || "Failed to save article."
+        });
+      }
+    } catch (err) {
+      console.error("Save article error:", err);
+      showAlert({
+        title: "Network Error",
+        description: "An error occurred while saving the article. Please try again."
+      });
+    } finally {
+      setArticleSubmitting(false);
+    }
+  };
+
+  const handleDeleteArticle = (articleId: string) => {
+    showConfirm({
+      title: "Delete Article?",
+      description: "Are you sure you want to remove this article from the website? Readers will no longer see it.",
+      confirmText: "Delete Article",
+      cancelText: "Keep",
+      isDestructive: true,
+      onConfirm: async () => {
+        try {
+          const res = await fetch("/api/portal/cms", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ action: "deleteArticle", id: articleId })
+          });
+          const data = await res.json();
+          if (data.success && data.articles) {
+            setArticles(data.articles);
+            setActionMessage("Article removed from website.");
+            setTimeout(() => setActionMessage(null), 3000);
+            if (articleForm.id === articleId) {
+              setArticleForm(initialArticleForm);
+              setIsEditingArticle(false);
+            }
+          }
+        } catch (err) {
+          console.error("Delete article error:", err);
+        }
+      }
+    });
+  };
+
+  const handleEditArticle = (art: ArticleItem) => {
+    setArticleForm({
+      ...art,
+      galleryImages: art.galleryImages || []
+    });
+    setIsEditingArticle(true);
+    window.scrollTo({ top: 300, behavior: "smooth" });
+  };
+
+  const handleAddGalleryPhoto = () => {
+    if (!newGalleryPhotoUrl.trim()) {
+      showAlert({
+        title: "Photo URL Required",
+        description: "Please enter an image URL or use the Upload & Crop button to select a photo."
+      });
+      return;
+    }
+    setArticleForm((prev) => ({
+      ...prev,
+      galleryImages: [
+        ...(prev.galleryImages || []),
+        { url: newGalleryPhotoUrl.trim(), caption: newGalleryPhotoCaption.trim() }
+      ]
+    }));
+    setNewGalleryPhotoUrl("");
+    setNewGalleryPhotoCaption("");
+  };
+
+  const handleRemoveGalleryPhoto = (index: number) => {
+    setArticleForm((prev) => ({
+      ...prev,
+      galleryImages: (prev.galleryImages || []).filter((_, i) => i !== index)
+    }));
   };
 
   const handleSaveCourse = async (e: React.FormEvent) => {
@@ -927,7 +1088,7 @@ export default function AdminPortalPage() {
     }
   };
 
-  const handleResetCms = (target: "courses" | "gallery" | "settings" | "reviews" | "about" | "all") => {
+  const handleResetCms = (target: "courses" | "gallery" | "settings" | "reviews" | "about" | "articles" | "all") => {
     showConfirm({
       title: "Reset to Defaults?",
       description: `Are you sure you want to reset ${target} back to academy defaults? Any customized modifications in this section will be overwritten with default content.`,
@@ -948,6 +1109,7 @@ export default function AdminPortalPage() {
             if (data.siteSettings) setSiteSettings(data.siteSettings);
             if (data.reviews) setReviews(data.reviews);
             if (data.aboutSettings) setAboutSettings(data.aboutSettings);
+            if (data.articles) setArticles(data.articles);
             setActionMessage("Reset to academy defaults completed.");
             setTimeout(() => setActionMessage(null), 3000);
           }
@@ -2401,6 +2563,19 @@ export default function AdminPortalPage() {
                     >
                       <Info size={14} className={cmsSubTab === "about" ? "text-cappuccino" : "text-coffee-dark/60"} />
                       <span>About Page</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setCmsSubTab("articles")}
+                      className={cn(
+                        "px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer min-h-[38px] select-none touch-manipulation",
+                        cmsSubTab === "articles"
+                          ? "bg-coffee-dark text-white shadow-xs"
+                          : "text-coffee-dark/70 hover:text-coffee-dark hover:bg-black/5"
+                      )}
+                    >
+                      <Newspaper size={14} className={cmsSubTab === "articles" ? "text-cappuccino" : "text-coffee-dark/60"} />
+                      <span>Articles &amp; Blog ({articles.length})</span>
                     </button>
                     <button
                       type="button"
@@ -4011,6 +4186,402 @@ export default function AdminPortalPage() {
                     </button>
                   </div>
                 </form>
+              )}
+
+              {/* ----------------------------------------------------------------- */}
+              {/* SUB-TAB 6: ARTICLES & BLOG INSIGHTS MANAGER                       */}
+              {/* ----------------------------------------------------------------- */}
+              {cmsSubTab === "articles" && (
+                <div className="space-y-8 sm:space-y-10">
+                  {/* Article Editor Form */}
+                  <form onSubmit={handleSaveArticle} className="p-4 xs:p-5 sm:p-7 rounded-2xl sm:rounded-3xl bg-white/70 border border-coffee-dark/15 space-y-5 sm:space-y-6 shadow-sm">
+                    <div className="flex items-center justify-between gap-3 border-b border-coffee-dark/10 pb-4">
+                      <div>
+                        <h4 className="font-serif text-lg font-bold text-coffee-dark flex items-center gap-2">
+                          <Newspaper size={18} className="text-cappuccino" />
+                          <span>{isEditingArticle ? "Edit Article / Post" : "Write & Publish Master Article"}</span>
+                        </h4>
+                        <p className="text-xs text-coffee-dark/60 font-light">
+                          {isEditingArticle
+                            ? "Update article text, cover banner, or attached demonstration photos."
+                            : "Published articles will immediately appear in the Coach's Journal section on the About Page."}
+                        </p>
+                      </div>
+                      {isEditingArticle && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setIsEditingArticle(false);
+                            setArticleForm(initialArticleForm);
+                          }}
+                          className="px-3.5 py-1.5 rounded-full text-xs font-bold bg-coffee-dark/10 hover:bg-coffee-dark/20 text-coffee-dark transition-colors cursor-pointer min-h-[36px] touch-manipulation"
+                        >
+                          Cancel Editing
+                        </button>
+                      )}
+                    </div>
+
+                    {/* Metadata Grid */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                      <div className="sm:col-span-2 space-y-1.5">
+                        <label className="text-[11px] font-bold uppercase tracking-wider text-coffee-dark/70">
+                          Article Title *
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={articleForm.title}
+                          onChange={(e) => setArticleForm({ ...articleForm, title: e.target.value })}
+                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-sm focus:outline-none shadow-2xs"
+                        />
+                      </div>
+
+                      <div className="space-y-1.5">
+                        <label className="text-[11px] font-bold uppercase tracking-wider text-coffee-dark/70">
+                          Category / Discipline *
+                        </label>
+                        <select
+                          value={articleForm.category}
+                          onChange={(e) => setArticleForm({ ...articleForm, category: e.target.value })}
+                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3 py-2 text-sm focus:outline-none shadow-2xs cursor-pointer"
+                        >
+                          <option value="Silambam">Silambam</option>
+                          <option value="Fitness">Fitness</option>
+                          <option value="Yoga">Yoga</option>
+                          <option value="Martial Arts">Martial Arts</option>
+                          <option value="Diet & Lifestyle">Diet &amp; Lifestyle</option>
+                        </select>
+                      </div>
+
+                      <div className="space-y-1.5">
+                        <label className="text-[11px] font-bold uppercase tracking-wider text-coffee-dark/70">
+                          Estimated Read Time
+                        </label>
+                        <input
+                          type="text"
+                          value={articleForm.readTime || "4 min read"}
+                          onChange={(e) => setArticleForm({ ...articleForm, readTime: e.target.value })}
+                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-sm focus:outline-none shadow-2xs"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Author & Publish Date */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div className="space-y-1.5">
+                        <label className="text-[11px] font-bold uppercase tracking-wider text-coffee-dark/70">
+                          Author Name
+                        </label>
+                        <input
+                          type="text"
+                          value={articleForm.author || "Coach Murali (Founder & Head Coach)"}
+                          onChange={(e) => setArticleForm({ ...articleForm, author: e.target.value })}
+                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-sm focus:outline-none shadow-2xs"
+                        />
+                      </div>
+
+                      <div className="space-y-1.5">
+                        <label className="text-[11px] font-bold uppercase tracking-wider text-coffee-dark/70">
+                          Publish Date
+                        </label>
+                        <input
+                          type="date"
+                          value={articleForm.publishedAt}
+                          onChange={(e) => setArticleForm({ ...articleForm, publishedAt: e.target.value })}
+                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-sm focus:outline-none shadow-2xs"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Cover Image Upload & Frame Section */}
+                    <div className="p-4 rounded-2xl bg-amber-50/40 border border-cappuccino/20 space-y-3">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <div>
+                          <label className="text-xs font-bold uppercase tracking-wider text-coffee-dark block">
+                            Main Cover Photo (Article Banner)
+                          </label>
+                          <p className="text-[11px] text-coffee-dark/60 font-light">
+                            Featured horizontal photo displayed on the About Page article card and at the top of the reader.
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <label className="px-3.5 py-2 rounded-xl bg-cappuccino hover:bg-cappuccino/90 text-white text-xs font-bold cursor-pointer transition-colors flex items-center gap-2 shadow-xs min-h-[38px] touch-manipulation">
+                            <UploadCloud size={14} />
+                            <span>Upload &amp; Frame (16:9)</span>
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={(e) => handleImageUpload(e, "articleCover")}
+                              className="hidden"
+                            />
+                          </label>
+                          {articleForm.coverImage && (
+                            <button
+                              type="button"
+                              onClick={() => handleOpenCropForExisting("articleCover")}
+                              className="px-3 py-2 rounded-xl bg-white border border-coffee-dark/15 text-coffee-dark hover:border-cappuccino text-xs font-bold transition-colors flex items-center gap-1.5 shadow-2xs min-h-[38px] cursor-pointer"
+                            >
+                              <CropToolIcon size={13} className="text-cappuccino" />
+                              <span>Adjust</span>
+                            </button>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="flex flex-col sm:flex-row items-center gap-3">
+                        <input
+                          type="text"
+                          value={articleForm.coverImage}
+                          onChange={(e) => setArticleForm({ ...articleForm, coverImage: e.target.value })}
+                          placeholder="e.g. /images/vajra_hero.jpg or uploaded image URL"
+                          className="w-full min-h-[42px] bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2 text-xs font-mono focus:outline-none shadow-2xs"
+                        />
+                        {articleForm.coverImage && (
+                          <div className="relative w-20 h-12 rounded-xl overflow-hidden border border-coffee-dark/20 shrink-0 bg-black/5 shadow-2xs">
+                            <Image
+                              src={articleForm.coverImage}
+                              alt="Cover preview"
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* In-Article Demonstration / Technique Photos (Gallery) */}
+                    <div className="p-4 rounded-2xl bg-cream/40 border border-coffee-dark/15 space-y-4">
+                      <div>
+                        <h5 className="font-serif text-sm font-bold text-coffee-dark flex items-center gap-2">
+                          <ImageIcon size={16} className="text-cappuccino" />
+                          <span>In-Article Related Photos (Step-by-Step Stances &amp; Training Drills)</span>
+                        </h5>
+                        <p className="text-[11px] text-coffee-dark/60 font-light mt-0.5">
+                          Upload multiple demonstration photos to illustrate postures, footwork, or training methods directly inside the article.
+                        </p>
+                      </div>
+
+                      {/* Add photo sub-box */}
+                      <div className="grid grid-cols-1 sm:grid-cols-12 gap-2.5 items-center bg-white p-3 rounded-xl border border-coffee-dark/10 shadow-2xs">
+                        <div className="sm:col-span-5">
+                          <input
+                            type="text"
+                            value={newGalleryPhotoUrl}
+                            onChange={(e) => setNewGalleryPhotoUrl(e.target.value)}
+                            placeholder="Photo URL or use Upload button"
+                            className="w-full min-h-[38px] bg-background/50 border border-coffee-dark/15 text-coffee-dark rounded-lg px-3 py-1.5 text-xs font-mono focus:outline-none"
+                          />
+                        </div>
+                        <div className="sm:col-span-4">
+                          <input
+                            type="text"
+                            value={newGalleryPhotoCaption}
+                            onChange={(e) => setNewGalleryPhotoCaption(e.target.value)}
+                            placeholder="Caption (e.g. Kaalvari footwork stance)"
+                            className="w-full min-h-[38px] bg-background/50 border border-coffee-dark/15 text-coffee-dark rounded-lg px-3 py-1.5 text-xs focus:outline-none"
+                          />
+                        </div>
+                        <div className="sm:col-span-3 flex items-center gap-2">
+                          <label className="flex-1 px-2.5 py-1.5 rounded-lg bg-coffee-dark/5 hover:bg-coffee-dark/10 text-coffee-dark text-[11px] font-bold cursor-pointer transition-colors flex items-center justify-center gap-1.5 min-h-[38px] border border-coffee-dark/15">
+                            <UploadCloud size={13} className="text-cappuccino" />
+                            <span>Upload</span>
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={(e) => handleImageUpload(e, "articleGallery")}
+                              className="hidden"
+                            />
+                          </label>
+                          <button
+                            type="button"
+                            onClick={handleAddGalleryPhoto}
+                            className="px-3 py-1.5 rounded-lg bg-coffee-dark text-white hover:bg-cappuccino hover:text-coffee-dark text-xs font-bold transition-all min-h-[38px] cursor-pointer flex items-center gap-1"
+                          >
+                            <Plus size={14} />
+                            <span>Add</span>
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Display added gallery photos */}
+                      {articleForm.galleryImages && articleForm.galleryImages.length > 0 ? (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 pt-1">
+                          {articleForm.galleryImages.map((img, idx) => (
+                            <div
+                              key={idx}
+                              className="relative group p-2.5 rounded-xl bg-white border border-coffee-dark/15 flex items-center gap-3 shadow-2xs"
+                            >
+                              <div className="relative w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-coffee-dark/10 bg-black/5">
+                                <Image
+                                  src={img.url}
+                                  alt={img.caption || `Photo ${idx + 1}`}
+                                  fill
+                                  className="object-cover"
+                                />
+                              </div>
+                              <div className="flex-1 min-w-0 pr-6">
+                                <p className="text-xs text-coffee-dark font-medium truncate">
+                                  {img.caption || "No caption added"}
+                                </p>
+                                <span className="text-[10px] text-coffee-dark/50 block font-mono">
+                                  Photo #{idx + 1}
+                                </span>
+                              </div>
+                              <button
+                                type="button"
+                                onClick={() => handleRemoveGalleryPhoto(idx)}
+                                className="absolute top-2 right-2 p-1.5 rounded-lg text-coffee-dark/40 hover:text-red-500 hover:bg-red-50 transition-colors cursor-pointer"
+                                title="Remove photo"
+                              >
+                                <Trash2 size={13} />
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-xs text-coffee-dark/50 italic py-1 text-center bg-white/40 rounded-xl border border-dashed border-coffee-dark/15">
+                          No in-article demonstration photos attached yet. You can add step-by-step training images above.
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Excerpt / Summary */}
+                    <div className="space-y-1.5">
+                      <label className="text-[11px] font-bold uppercase tracking-wider text-coffee-dark/70">
+                        Short Excerpt / Summary (1-2 sentences) *
+                      </label>
+                      <textarea
+                        required
+                        rows={2}
+                        value={articleForm.excerpt}
+                        onChange={(e) => setArticleForm({ ...articleForm, excerpt: e.target.value })}
+                        className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2.5 text-sm focus:outline-none shadow-2xs resize-none"
+                      />
+                    </div>
+
+                    {/* Full Article Content */}
+                    <div className="space-y-1.5">
+                      <div className="flex items-center justify-between">
+                        <label className="text-[11px] font-bold uppercase tracking-wider text-coffee-dark/70">
+                          Full Article Content *
+                        </label>
+                        <span className="text-[10px] text-coffee-dark/50 italic">
+                          Line breaks will automatically format into paragraphs on the website.
+                        </span>
+                      </div>
+                      <textarea
+                        required
+                        rows={10}
+                        value={articleForm.content}
+                        onChange={(e) => setArticleForm({ ...articleForm, content: e.target.value })}
+                        className="w-full bg-white border border-coffee-dark/15 focus:border-cappuccino text-coffee-dark rounded-xl px-3.5 py-2.5 text-sm leading-relaxed focus:outline-none shadow-2xs font-sans"
+                      />
+                    </div>
+
+                    {/* Submit Actions */}
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-coffee-dark/10">
+                      <button
+                        type="submit"
+                        disabled={articleSubmitting}
+                        className="min-h-[44px] px-8 bg-coffee-dark hover:bg-cappuccino text-white hover:text-coffee-dark font-bold text-xs uppercase tracking-wider rounded-full transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50 w-full sm:w-auto touch-manipulation"
+                      >
+                        {articleSubmitting ? (
+                          <RefreshCw size={14} className="animate-spin" />
+                        ) : (
+                          <Check size={14} />
+                        )}
+                        <span>{articleSubmitting ? "Publishing..." : isEditingArticle ? "Update Article" : "Publish Article to About Page"}</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => handleResetCms("articles")}
+                        className="min-h-[38px] px-3 py-2 text-xs text-coffee-dark/50 hover:text-coffee-dark underline font-mono cursor-pointer self-center sm:self-auto touch-manipulation flex items-center justify-center"
+                      >
+                        Reset Articles to Defaults
+                      </button>
+                    </div>
+                  </form>
+
+                  {/* Published Articles List */}
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-serif text-lg font-bold text-coffee-dark flex items-center gap-2">
+                        <FileText size={18} className="text-cappuccino" />
+                        <span>Published Articles &amp; Insights ({articles.length})</span>
+                      </h4>
+                      <span className="text-xs text-coffee-dark/60 font-light">
+                        Live on public website
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                      {articles.map((art) => (
+                        <div
+                          key={art.id}
+                          className="bg-white rounded-2xl border border-coffee-dark/15 overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col group"
+                        >
+                          {/* Card Image */}
+                          <div className="relative h-44 w-full bg-coffee-dark/5 overflow-hidden">
+                            <Image
+                              src={art.coverImage || "/images/vajra_hero.jpg"}
+                              alt={art.title}
+                              fill
+                              className="object-cover group-hover:scale-105 transition-transform duration-500"
+                            />
+                            <div className="absolute top-3 left-3 bg-coffee-dark/85 backdrop-blur-xs text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
+                              {art.category}
+                            </div>
+                            <div className="absolute top-3 right-3 bg-black/60 backdrop-blur-xs text-white/90 text-[10px] font-mono px-2 py-0.5 rounded-md">
+                              {art.readTime || "4 min read"}
+                            </div>
+                          </div>
+
+                          {/* Card Content */}
+                          <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-3">
+                            <div className="space-y-2">
+                              <span className="text-[10px] text-coffee-dark/50 block font-medium">
+                                {art.publishedAt} • {art.author || "Coach Murali"}
+                              </span>
+                              <h5 className="font-serif text-base font-bold text-coffee-dark group-hover:text-cappuccino transition-colors line-clamp-2 leading-snug">
+                                {art.title}
+                              </h5>
+                              <p className="text-xs text-coffee-dark/70 font-light line-clamp-2 leading-relaxed">
+                                {art.excerpt}
+                              </p>
+                              {art.galleryImages && art.galleryImages.length > 0 && (
+                                <div className="inline-flex items-center gap-1.5 text-[10px] text-cappuccino font-bold bg-amber-50 px-2 py-1 rounded-md border border-cappuccino/20">
+                                  <ImageIcon size={11} />
+                                  <span>{art.galleryImages.length} In-article demonstration photo{art.galleryImages.length > 1 ? "s" : ""}</span>
+                                </div>
+                              )}
+                            </div>
+
+                            {/* Card Actions */}
+                            <div className="pt-3 border-t border-coffee-dark/10 flex items-center justify-between gap-2">
+                              <button
+                                type="button"
+                                onClick={() => handleEditArticle(art)}
+                                className="px-3.5 py-1.5 rounded-xl bg-coffee-dark/5 hover:bg-coffee-dark/15 text-coffee-dark text-xs font-bold transition-colors cursor-pointer flex items-center gap-1.5 min-h-[36px]"
+                              >
+                                <Edit3 size={13} className="text-cappuccino" />
+                                <span>Edit</span>
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => handleDeleteArticle(art.id)}
+                                className="p-2 rounded-xl text-coffee-dark/40 hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer min-h-[36px] min-w-[36px] flex items-center justify-center"
+                                title="Delete article"
+                              >
+                                <Trash2 size={15} />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               )}
             </motion.div>
           )}

@@ -3,9 +3,21 @@
 import React, { useState, useEffect } from "react";
 import SectionHeading from "@/components/SectionHeading";
 import Image from "next/image";
-import { motion } from "framer-motion";
-import { Shield, Sparkles, Flame, Target, CheckCircle2, ArrowRight, MessageCircle } from "lucide-react";
-import { DEFAULT_ABOUT_SETTINGS, AboutSettings } from "@/lib/cmsDefaults";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Shield,
+  Sparkles,
+  Flame,
+  Target,
+  CheckCircle2,
+  ArrowRight,
+  MessageCircle,
+  Clock,
+  Calendar,
+  X,
+  Image as ImageIcon
+} from "lucide-react";
+import { DEFAULT_ABOUT_SETTINGS, AboutSettings, ArticleItem, DEFAULT_ARTICLES } from "@/lib/cmsDefaults";
 
 const defaultDisciplines = [
   {
@@ -55,13 +67,16 @@ const pillars = [
 
 export default function AboutPage() {
   const [aboutData, setAboutData] = useState<AboutSettings>(DEFAULT_ABOUT_SETTINGS);
+  const [articles, setArticles] = useState<ArticleItem[]>(DEFAULT_ARTICLES);
+  const [selectedArticle, setSelectedArticle] = useState<ArticleItem | null>(null);
 
   useEffect(() => {
-    fetch("/api/portal/cms?type=about")
+    fetch("/api/portal/cms")
       .then((res) => res.json())
       .then((data) => {
-        if (data.success && data.aboutSettings) {
-          setAboutData(data.aboutSettings);
+        if (data.success) {
+          if (data.aboutSettings) setAboutData(data.aboutSettings);
+          if (data.articles && data.articles.length > 0) setArticles(data.articles);
         }
       })
       .catch(() => {});
@@ -288,6 +303,89 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* Coach Murali's Journal & Articles Section */}
+      <section className="py-16 sm:py-24 md:py-32 px-4 sm:px-6 md:px-12 bg-[#FCFAF6] border-t border-cream relative z-10">
+        <div className="max-w-7xl mx-auto">
+          <SectionHeading
+            subtitle="Founder's Knowledge & Insights"
+            title="Articles & Training Philosophy by Coach Murali"
+            centered={true}
+            className="mb-10 sm:mb-16"
+          />
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            {articles.map((article, idx) => (
+              <motion.article
+                key={article.id}
+                initial={{ opacity: 0, y: 25 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1, duration: 0.6 }}
+                className="group flex flex-col bg-white rounded-3xl border border-cream hover:border-cappuccino/60 shadow-premium hover:shadow-[0_20px_45px_rgba(200,149,95,0.22)] transition-all duration-500 overflow-hidden cursor-pointer"
+                onClick={() => setSelectedArticle(article)}
+              >
+                {/* Cover Image */}
+                <div className="relative h-52 sm:h-56 w-full overflow-hidden bg-coffee-dark/5">
+                  <Image
+                    src={article.coverImage || "/images/vajra_hero.jpg"}
+                    alt={article.title}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity" />
+
+                  {/* Category Pill */}
+                  <span className="absolute top-4 left-4 bg-coffee-dark/90 backdrop-blur-md text-white text-[10px] sm:text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">
+                    {article.category}
+                  </span>
+
+                  {/* Read Time */}
+                  <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-md text-white/90 text-[10px] font-mono px-2.5 py-1 rounded-full flex items-center gap-1 shadow-sm">
+                    <Clock size={11} className="text-cappuccino" />
+                    <span>{article.readTime || "4 min read"}</span>
+                  </div>
+
+                  {article.galleryImages && article.galleryImages.length > 0 && (
+                    <div className="absolute bottom-3 right-3 bg-black/75 backdrop-blur-md text-white text-[10px] px-2.5 py-1 rounded-lg flex items-center gap-1.5 border border-white/20">
+                      <ImageIcon size={12} className="text-cappuccino" />
+                      <span>{article.galleryImages.length} Photos Attached</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Article Info */}
+                <div className="p-6 sm:p-7 flex-1 flex flex-col justify-between space-y-4">
+                  <div className="space-y-2.5">
+                    <div className="flex items-center gap-2 text-[11px] text-coffee-dark/55 font-medium">
+                      <Calendar size={12} className="text-cappuccino shrink-0" />
+                      <span>{article.publishedAt}</span>
+                      <span>•</span>
+                      <span className="text-coffee-dark/70 font-semibold">{article.author || "Coach Murali"}</span>
+                    </div>
+
+                    <h3 className="font-serif text-lg sm:text-xl font-bold text-coffee-dark group-hover:text-cappuccino transition-colors leading-snug line-clamp-2">
+                      {article.title}
+                    </h3>
+
+                    <p className="text-xs sm:text-sm text-coffee-dark/70 font-light leading-relaxed line-clamp-3">
+                      {article.excerpt}
+                    </p>
+                  </div>
+
+                  {/* Read More Trigger */}
+                  <div className="pt-4 border-t border-cream flex items-center justify-between text-xs font-bold text-coffee-dark group-hover:text-cappuccino transition-colors">
+                    <span className="uppercase tracking-wider">Read Full Article</span>
+                    <div className="w-8 h-8 rounded-full bg-cream/60 group-hover:bg-cappuccino group-hover:text-white transition-all flex items-center justify-center shrink-0">
+                      <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
+                    </div>
+                  </div>
+                </div>
+              </motion.article>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* The 4 Pillars - Warm card backgrounds, icon circles with bg-cappuccino/15 text-cappuccino, and hover glow */}
       <section className="py-16 sm:py-24 md:py-32 px-4 sm:px-6 md:px-12 bg-white border-t border-cream relative z-10">
         <div className="max-w-7xl mx-auto">
@@ -328,6 +426,171 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+
+      {/* Full Article Reader Modal with Rich In-Article Photos */}
+      <AnimatePresence>
+        {selectedArticle && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 xs:p-4 sm:p-6 overflow-y-auto">
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedArticle(null)}
+              className="fixed inset-0 bg-black/80 backdrop-blur-sm"
+            />
+
+            {/* Modal Dialog */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ duration: 0.25 }}
+              className="relative w-full max-w-3xl max-h-[90vh] bg-white rounded-3xl shadow-2xl border border-cream overflow-hidden flex flex-col z-10 my-auto"
+            >
+              {/* Sticky Modal Top Bar */}
+              <div className="p-4 sm:p-5 border-b border-cream bg-white/95 backdrop-blur-md flex items-center justify-between gap-3 shrink-0">
+                <div className="flex items-center gap-2">
+                  <span className="px-3 py-1 bg-cappuccino/15 text-cappuccino rounded-full text-xs font-bold uppercase tracking-wider">
+                    {selectedArticle.category}
+                  </span>
+                  <span className="text-xs text-coffee-dark/40 hidden xs:inline">•</span>
+                  <span className="text-xs text-coffee-dark/60 font-mono hidden xs:inline flex items-center gap-1">
+                    <Clock size={12} className="text-cappuccino" />
+                    {selectedArticle.readTime || "4 min read"}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setSelectedArticle(null)}
+                  className="w-9 h-9 rounded-full bg-coffee-dark/5 hover:bg-coffee-dark/15 text-coffee-dark transition-all flex items-center justify-center cursor-pointer touch-manipulation"
+                  title="Close article"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+
+              {/* Scrollable Article Body */}
+              <div className="overflow-y-auto p-5 sm:p-8 md:p-10 space-y-6 sm:space-y-8">
+                {/* Hero Banner */}
+                <div className="relative w-full aspect-video sm:aspect-[21/9] rounded-2xl overflow-hidden bg-coffee-dark/10 shadow-md">
+                  <Image
+                    src={selectedArticle.coverImage || "/images/vajra_hero.jpg"}
+                    alt={selectedArticle.title}
+                    fill
+                    className="object-cover"
+                    priority
+                  />
+                </div>
+
+                {/* Article Header */}
+                <div className="space-y-3 border-b border-cream pb-6">
+                  <div className="flex items-center gap-2 text-xs text-coffee-dark/60">
+                    <Calendar size={13} className="text-cappuccino" />
+                    <span>Published on {selectedArticle.publishedAt}</span>
+                  </div>
+                  <h1 className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold text-coffee-dark leading-tight">
+                    {selectedArticle.title}
+                  </h1>
+                  <p className="text-coffee-dark/75 text-sm sm:text-base font-medium leading-relaxed italic border-l-4 border-cappuccino pl-3 sm:pl-4 py-1.5 bg-[#FDFBF7] rounded-r-xl">
+                    "{selectedArticle.excerpt}"
+                  </p>
+                </div>
+
+                {/* Author Card */}
+                <div className="flex items-center gap-3.5 p-3.5 bg-[#FDFBF7] rounded-2xl border border-cream">
+                  <div className="relative w-12 h-12 rounded-xl overflow-hidden border border-cream shrink-0 bg-coffee-dark/5">
+                    <Image
+                      src={aboutData.founderPhoto || "/images/coach_murali_clean.jpg"}
+                      alt={selectedArticle.author || "Coach Murali"}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <div>
+                    <h4 className="font-serif font-bold text-sm text-coffee-dark">
+                      {selectedArticle.author || "Coach Murali"}
+                    </h4>
+                    <p className="text-[11px] text-coffee-dark/60">
+                      Founder &amp; Head Coach • Vajra Fitness Arts
+                    </p>
+                  </div>
+                </div>
+
+                {/* Article Content Paragraphs */}
+                <div className="space-y-4 text-coffee-dark/85 text-sm sm:text-base leading-relaxed font-light">
+                  {selectedArticle.content.split("\n\n").map((para, i) => (
+                    <p key={i} className="whitespace-pre-line">
+                      {para}
+                    </p>
+                  ))}
+                </div>
+
+                {/* In-Article Demonstration Photos Showcase */}
+                {selectedArticle.galleryImages && selectedArticle.galleryImages.length > 0 && (
+                  <div className="pt-6 border-t border-cream space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h3 className="font-serif text-lg font-bold text-coffee-dark flex items-center gap-2">
+                        <ImageIcon size={18} className="text-cappuccino" />
+                        <span>Step-by-Step Technique &amp; Demonstration Photos</span>
+                      </h3>
+                      <span className="text-xs text-coffee-dark/50 font-mono">
+                        {selectedArticle.galleryImages.length} photos
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      {selectedArticle.galleryImages.map((img, idx) => (
+                        <div
+                          key={idx}
+                          className="group relative rounded-2xl overflow-hidden border border-cream bg-[#FDFBF7] shadow-sm hover:shadow-md transition-all flex flex-col"
+                        >
+                          <div className="relative aspect-[4/3] w-full overflow-hidden bg-coffee-dark/10">
+                            <Image
+                              src={img.url}
+                              alt={img.caption || `Demonstration ${idx + 1}`}
+                              fill
+                              className="object-cover group-hover:scale-105 transition-transform duration-500"
+                            />
+                          </div>
+                          {img.caption && (
+                            <div className="p-3 bg-white border-t border-cream text-xs text-coffee-dark/80 font-medium leading-snug">
+                              <span className="text-cappuccino font-bold mr-1.5 font-mono">#{idx + 1}</span>
+                              {img.caption}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Article Footer & Direct WhatsApp CTA */}
+                <div className="pt-6 border-t border-cream bg-gradient-to-r from-cream/40 via-cream/15 to-transparent p-5 sm:p-7 rounded-2xl border-l-4 border-cappuccino space-y-4">
+                  <div>
+                    <h4 className="font-serif text-base sm:text-lg font-bold text-coffee-dark">
+                      Have questions or wish to learn this discipline?
+                    </h4>
+                    <p className="text-xs sm:text-sm text-coffee-dark/70 font-light mt-1">
+                      Discuss training techniques, batch timings, or personalized coaching directly with Head Coach Murali.
+                    </p>
+                  </div>
+
+                  <a
+                    href={`https://wa.me/919047743533?text=${encodeURIComponent(`Hello Coach Murali, I just read your article "${selectedArticle.title}" on Vajra Fitness Arts website and would like to inquire more.`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2.5 px-6 py-3.5 bg-[#25D366] hover:bg-[#20bd5a] text-black font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md hover:shadow-lg active:scale-95 cursor-pointer"
+                  >
+                    <MessageCircle size={17} className="fill-black" />
+                    <span>Discuss on WhatsApp with Coach</span>
+                  </a>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </main>
   );
 }

@@ -10,7 +10,8 @@ import {
   DEFAULT_GALLERY,
   DEFAULT_SITE_SETTINGS,
   DEFAULT_REVIEWS,
-  DEFAULT_ABOUT_SETTINGS
+  DEFAULT_ABOUT_SETTINGS,
+  DEFAULT_ARTICLES
 } from "./cmsDefaults";
 
 const DATA_FILE_PATH = path.join(process.cwd(), "src", "data", "portal-data.json");
@@ -29,7 +30,8 @@ function normalizePortalData(data: Partial<PortalData>): PortalData {
     gallery: data.gallery && data.gallery.length > 0 ? data.gallery : [...DEFAULT_GALLERY],
     siteSettings: data.siteSettings ? { ...DEFAULT_SITE_SETTINGS, ...data.siteSettings } : { ...DEFAULT_SITE_SETTINGS },
     reviews: data.reviews && data.reviews.length > 0 ? data.reviews : [...DEFAULT_REVIEWS],
-    aboutSettings: data.aboutSettings ? { ...DEFAULT_ABOUT_SETTINGS, ...data.aboutSettings } : { ...DEFAULT_ABOUT_SETTINGS }
+    aboutSettings: data.aboutSettings ? { ...DEFAULT_ABOUT_SETTINGS, ...data.aboutSettings } : { ...DEFAULT_ABOUT_SETTINGS },
+    articles: data.articles && data.articles.length > 0 ? data.articles : [...DEFAULT_ARTICLES]
   };
 }
 

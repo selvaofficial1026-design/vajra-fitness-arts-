@@ -144,6 +144,25 @@ export interface AboutSettings {
   founderDisciplines: FounderDiscipline[];
 }
 
+export interface ArticleImage {
+  url: string;
+  caption?: string;
+}
+
+export interface ArticleItem {
+  id: string;
+  title: string;
+  category: "Fitness" | "Silambam" | "Yoga" | "Martial Arts" | "Diet & Lifestyle" | string;
+  coverImage: string;
+  galleryImages?: ArticleImage[];
+  excerpt: string;
+  content: string;
+  author?: string;
+  readTime?: string;
+  publishedAt: string;
+  isFeatured?: boolean;
+}
+
 export interface PortalData {
   students: Student[];
   meetings: ClassMeeting[];
@@ -155,6 +174,7 @@ export interface PortalData {
   siteSettings?: SiteSettings;
   reviews?: ReviewItem[];
   aboutSettings?: AboutSettings;
+  articles?: ArticleItem[];
 }
 
 export const DEFAULT_ADMIN_CONFIG: AdminConfig = {
@@ -396,3 +416,100 @@ export const DEFAULT_ABOUT_SETTINGS: AboutSettings = {
     }
   ]
 };
+
+export const DEFAULT_ARTICLES: ArticleItem[] = [
+  {
+    id: "art_1",
+    title: "The Science of Silambam: How Traditional Tamil Staff Arts Build Reflexes & Balance",
+    category: "Silambam",
+    coverImage: "/images/vajra_hero.jpg",
+    galleryImages: [
+      {
+        url: "/images/gallery/vajra_martial_arts_horse_stance.jpg",
+        caption: "Foundational Horse Stance (Kuthirai Bhavam) grounding the lower body before rotation"
+      },
+      {
+        url: "/images/gallery/vajra_martial_arts_bow_stance.jpg",
+        caption: "Directional Bow Stance enabling explosive linear reach and swift defense recovery"
+      }
+    ],
+    excerpt: "Silambam is far more than martial combat—it is a geometric science of rotational torque, peripheral visual awareness, and complete neuromuscular harmony.",
+    content: `Silambam is an ancient martial treasure of Tamil Nadu, dating back thousands of years. When a practitioner picks up the bamboo staff (Pirambu), every single movement is governed by fundamental biomechanical laws of physics.
+
+In our daily academy sessions at Vajra Fitness Arts, we observe that students initially view Silambam as simply swinging a stick. However, true mastery begins at the feet—through Kaalvari (footwork geometry). Without rooted footwork, even the fastest hand rotation loses balance and power.
+
+Key Benefits of Consistent Silambam Training:
+1. Enhanced Peripheral Vision: Tracking circular staff movements sharpens optic reflexes and spatial awareness.
+2. Wrist and Forearm Conditioning: Rapid continuous 360-degree rotations (Veesu) develop exceptional grip strength and tendon elasticity.
+3. Bilateral Symmetry: Unlike most modern sports that favor the dominant hand, Silambam strictly demands equal agility with both right and left hands, harmonizing left and right brain coordination.
+
+Whether you are 7 or 45 years old, practicing Silambam builds a calm, unwavering focus that carries directly into daily life.`,
+    author: "Coach Murali (Founder & Head Coach)",
+    readTime: "4 min read",
+    publishedAt: "2026-10-08",
+    isFeatured: true
+  },
+  {
+    id: "art_2",
+    title: "Functional Strength vs Muscle Bulk: Why Movement Quality Matters Most",
+    category: "Fitness",
+    coverImage: "/images/martial_arts.jpg",
+    galleryImages: [
+      {
+        url: "/images/gallery/vajra_fitness_full_splits.jpg",
+        caption: "Hip flexor and hamstring mobility drills supporting full range athletic power"
+      },
+      {
+        url: "/images/gallery/vajra_fitness_shoulder_mobility.jpg",
+        caption: "Overhead thoracic spine and shoulder girdle conditioning for joint resilience"
+      }
+    ],
+    excerpt: "Lifting heavy weights without functional mobility leaves the body stiff. Here is why movement quality, core stability, and agility build true lifelong vitality.",
+    content: `In the modern fitness world, people often measure health solely by bicep circumference or numbers on a scale. But ask yourself: can you sit deep on the floor comfortably and stand up without hands? Can you sprint 100 meters without gasping for breath?
+
+At Vajra Fitness Arts, our philosophy bridges classical martial mobility with functional conditioning. We focus on training the human body as an integrated kinetic chain, not isolated muscles on machines.
+
+The Three Pillars of Functional Athleticism:
+1. Multi-Planar Mobility: Modern life restricts us to the sagittal plane (sitting at desks, walking forward). Real athletic resilience requires transverse (twisting) and frontal (lateral) movement freedom.
+2. Core Stability Over Sit-Ups: True core strength is anti-rotation and spinal protection under load—achieved through calisthenics, animal crawls, and dynamic martial stances.
+3. Joint Longevity: Muscles can grow in months, but tendons and ligaments take years to adapt. Progressive movement training prevents chronic injuries and keeps you youthful decades into the future.
+
+Train for capability, agility, and vitality—the aesthetic physique will naturally follow as a byproduct.`,
+    author: "Coach Murali (Founder & Head Coach)",
+    readTime: "3 min read",
+    publishedAt: "2026-10-06",
+    isFeatured: true
+  },
+  {
+    id: "art_3",
+    title: "Pranayama & Spine Mobility: The Missing Link in Everyday Recovery",
+    category: "Yoga",
+    coverImage: "/images/yoga.jpg",
+    galleryImages: [
+      {
+        url: "/images/gallery/vajra_yoga_group_meditation.jpg",
+        caption: "Morning group mindfulness and conscious breath calibration at our Ariyalur training center"
+      },
+      {
+        url: "/images/gallery/vajra_yoga_pranayama_breathwork.jpg",
+        caption: "Guided diaphragmatic breathing balancing the autonomic nervous system"
+      }
+    ],
+    excerpt: "High stress and sedentary desk postures lock our spine and shallow our breath. Discover how 15 minutes of mindful breathwork restores central nervous balance.",
+    content: `The modern student and working professional spend over 8 hours a day seated, hunched forward over screens. This posture mechanically compresses the ribcage, forcing shallow chest breathing that constantly keeps our sympathetic nervous system (fight-or-flight) activated.
+
+When you cannot breathe deeply into your diaphragm, your body remains in chronic low-grade inflammation, fatigue, and muscular tension.
+
+How Mindful Yoga Restores Equilibrium:
+1. Lengthening the Spine: Through gentle traction, gentle spinal twists, and restorative extensions, we relieve pressure from compressed intervertebral discs.
+2. Nadi Shodhana (Alternate Nostril Breathing): Calms mental chatter, reduces cortisol levels, and stabilizes heart rate variability.
+3. Mind-Muscle Centering: Moving slowly with deliberate breath teaches the nervous system how to relax under stress.
+
+True power does not come from constant aggression; it is anchored in the stillness and inner peace you cultivate between training sessions.`,
+    author: "Coach Murali (Founder & Head Coach)",
+    readTime: "3 min read",
+    publishedAt: "2026-10-04",
+    isFeatured: false
+  }
+];
+

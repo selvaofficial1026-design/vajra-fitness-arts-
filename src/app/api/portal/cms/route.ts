@@ -6,11 +6,13 @@ import {
   GalleryItem,
   SiteSettings,
   ReviewItem,
+  ArticleItem,
   DEFAULT_COURSES,
   DEFAULT_GALLERY,
   DEFAULT_SITE_SETTINGS,
   DEFAULT_REVIEWS,
   DEFAULT_ABOUT_SETTINGS,
+  DEFAULT_ARTICLES,
   AboutSettings
 } from "@/lib/portalStore";
 
@@ -27,6 +29,7 @@ export async function GET(req: Request) {
     const siteSettings = data.siteSettings || DEFAULT_SITE_SETTINGS;
     const reviews = data.reviews && data.reviews.length > 0 ? data.reviews : DEFAULT_REVIEWS;
     const aboutSettings = data.aboutSettings || DEFAULT_ABOUT_SETTINGS;
+    const articles = data.articles && data.articles.length > 0 ? data.articles : DEFAULT_ARTICLES;
 
     if (type === "courses") {
       return NextResponse.json({ success: true, courses });
@@ -43,6 +46,9 @@ export async function GET(req: Request) {
     if (type === "about") {
       return NextResponse.json({ success: true, aboutSettings });
     }
+    if (type === "articles") {
+      return NextResponse.json({ success: true, articles });
+    }
 
     return NextResponse.json({
       success: true,
@@ -50,7 +56,8 @@ export async function GET(req: Request) {
       gallery,
       siteSettings,
       reviews,
-      aboutSettings
+      aboutSettings,
+      articles
     });
   } catch (error) {
     console.error("CMS GET error:", error);
@@ -81,6 +88,9 @@ export async function POST(req: Request) {
     }
     if (!data.aboutSettings) {
       data.aboutSettings = { ...DEFAULT_ABOUT_SETTINGS };
+    }
+    if (!data.articles || data.articles.length === 0) {
+      data.articles = [...DEFAULT_ARTICLES];
     }
 
     // --- 1. COURSE OPERATIONS ---
@@ -248,7 +258,52 @@ export async function POST(req: Request) {
       });
     }
 
-    // --- 6. RESET TO DEFAULTS ---
+    // --- 6. ARTICLE OPERATIONS ---
+    if (action === "saveArticle") {
+      const articleData: ArticleItem = body.article;
+      if (!articleData || !articleData.title?.trim() || !articleData.content?.trim()) {
+        return NextResponse.json(
+          { success: false, error: "Article title and content are required." },
+          { status: 400 }
+        );
+      }
+
+      const existingIndex = data.articles.findIndex((a) => a.id === articleData.id);
+      if (existingIndex > -1) {
+        data.articles[existingIndex] = {
+          ...data.articles[existingIndex],
+          ...articleData
+        };
+      } else {
+        const newId = articleData.id || `art_${Date.now()}`;
+        data.articles.unshift({
+          ...articleData,
+          id: newId,
+          publishedAt: articleData.publishedAt || new Date().toISOString().split("T")[0],
+          author: articleData.author || "Coach Murali (Founder & Head Coach)"
+        });
+      }
+
+      await savePortalData(data);
+      return NextResponse.json({
+        success: true,
+        message: "Article published successfully.",
+        articles: data.articles
+      });
+    }
+
+    if (action === "deleteArticle") {
+      const { id } = body;
+      data.articles = data.articles.filter((a) => a.id !== id);
+      await savePortalData(data);
+      return NextResponse.json({
+        success: true,
+        message: "Article deleted successfully.",
+        articles: data.articles
+      });
+    }
+
+    // --- 7. RESET TO DEFAULTS ---
     if (action === "resetDefaults") {
       const { target } = body;
       if (target === "courses") data.courses = [...DEFAULT_COURSES];
@@ -256,12 +311,14 @@ export async function POST(req: Request) {
       if (target === "settings") data.siteSettings = { ...DEFAULT_SITE_SETTINGS };
       if (target === "reviews") data.reviews = [...DEFAULT_REVIEWS];
       if (target === "about") data.aboutSettings = { ...DEFAULT_ABOUT_SETTINGS };
+      if (target === "articles") data.articles = [...DEFAULT_ARTICLES];
       if (target === "all") {
         data.courses = [...DEFAULT_COURSES];
         data.gallery = [...DEFAULT_GALLERY];
         data.siteSettings = { ...DEFAULT_SITE_SETTINGS };
         data.reviews = [...DEFAULT_REVIEWS];
         data.aboutSettings = { ...DEFAULT_ABOUT_SETTINGS };
+        data.articles = [...DEFAULT_ARTICLES];
       }
       await savePortalData(data);
       return NextResponse.json({
@@ -271,7 +328,8 @@ export async function POST(req: Request) {
         gallery: data.gallery,
         siteSettings: data.siteSettings,
         reviews: data.reviews,
-        aboutSettings: data.aboutSettings
+        aboutSettings: data.aboutSettings,
+        articles: data.articles
       });
     }
 
