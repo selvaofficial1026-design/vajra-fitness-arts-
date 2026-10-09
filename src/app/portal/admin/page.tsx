@@ -4515,71 +4515,81 @@ export default function AdminPortalPage() {
                       </span>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                      {articles.map((art) => (
-                        <div
-                          key={art.id}
-                          className="bg-white rounded-2xl border border-coffee-dark/15 overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col group"
-                        >
-                          {/* Card Image */}
-                          <div className="relative h-44 w-full bg-coffee-dark/5 overflow-hidden">
-                            <Image
-                              src={art.coverImage || "/images/vajra_hero.jpg"}
-                              alt={art.title}
-                              fill
-                              className="object-cover group-hover:scale-105 transition-transform duration-500"
-                            />
-                            <div className="absolute top-3 left-3 bg-coffee-dark/85 backdrop-blur-xs text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
-                              {art.category}
-                            </div>
-                            <div className="absolute top-3 right-3 bg-black/60 backdrop-blur-xs text-white/90 text-[10px] font-mono px-2 py-0.5 rounded-md">
-                              {art.readTime || "4 min read"}
-                            </div>
-                          </div>
-
-                          {/* Card Content */}
-                          <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-3">
-                            <div className="space-y-2">
-                              <span className="text-[10px] text-coffee-dark/50 block font-medium">
-                                {art.publishedAt} • {art.author || "Coach Murali"}
-                              </span>
-                              <h5 className="font-serif text-base font-bold text-coffee-dark group-hover:text-cappuccino transition-colors line-clamp-2 leading-snug">
-                                {art.title}
-                              </h5>
-                              <p className="text-xs text-coffee-dark/70 font-light line-clamp-2 leading-relaxed">
-                                {art.excerpt}
-                              </p>
-                              {art.galleryImages && art.galleryImages.length > 0 && (
-                                <div className="inline-flex items-center gap-1.5 text-[10px] text-cappuccino font-bold bg-amber-50 px-2 py-1 rounded-md border border-cappuccino/20">
-                                  <ImageIcon size={11} />
-                                  <span>{art.galleryImages.length} In-article demonstration photo{art.galleryImages.length > 1 ? "s" : ""}</span>
-                                </div>
-                              )}
+                    {articles.length > 0 ? (
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                        {articles.map((art) => (
+                          <div
+                            key={art.id}
+                            className="bg-white rounded-2xl border border-coffee-dark/15 overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col group"
+                          >
+                            {/* Card Image */}
+                            <div className="relative h-44 w-full bg-coffee-dark/5 overflow-hidden">
+                              <Image
+                                src={art.coverImage || "/images/vajra_hero.jpg"}
+                                alt={art.title}
+                                fill
+                                className="object-cover group-hover:scale-105 transition-transform duration-500"
+                              />
+                              <div className="absolute top-3 left-3 bg-coffee-dark/85 backdrop-blur-xs text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
+                                {art.category}
+                              </div>
+                              <div className="absolute top-3 right-3 bg-black/60 backdrop-blur-xs text-white/90 text-[10px] font-mono px-2 py-0.5 rounded-md">
+                                {art.readTime || "4 min read"}
+                              </div>
                             </div>
 
-                            {/* Card Actions */}
-                            <div className="pt-3 border-t border-coffee-dark/10 flex items-center justify-between gap-2">
-                              <button
-                                type="button"
-                                onClick={() => handleEditArticle(art)}
-                                className="px-3.5 py-1.5 rounded-xl bg-coffee-dark/5 hover:bg-coffee-dark/15 text-coffee-dark text-xs font-bold transition-colors cursor-pointer flex items-center gap-1.5 min-h-[36px]"
-                              >
-                                <Edit3 size={13} className="text-cappuccino" />
-                                <span>Edit</span>
-                              </button>
-                              <button
-                                type="button"
-                                onClick={() => handleDeleteArticle(art.id)}
-                                className="p-2 rounded-xl text-coffee-dark/40 hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer min-h-[36px] min-w-[36px] flex items-center justify-center"
-                                title="Delete article"
-                              >
-                                <Trash2 size={15} />
-                              </button>
+                            {/* Card Content */}
+                            <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-3">
+                              <div className="space-y-2">
+                                <span className="text-[10px] text-coffee-dark/50 block font-medium">
+                                  {art.publishedAt} • {art.author || "Coach Murali"}
+                                </span>
+                                <h5 className="font-serif text-base font-bold text-coffee-dark group-hover:text-cappuccino transition-colors line-clamp-2 leading-snug">
+                                  {art.title}
+                                </h5>
+                                <p className="text-xs text-coffee-dark/70 font-light line-clamp-2 leading-relaxed">
+                                  {art.excerpt}
+                                </p>
+                                {art.galleryImages && art.galleryImages.length > 0 && (
+                                  <div className="inline-flex items-center gap-1.5 text-[10px] text-cappuccino font-bold bg-amber-50 px-2 py-1 rounded-md border border-cappuccino/20">
+                                    <ImageIcon size={11} />
+                                    <span>{art.galleryImages.length} In-article demonstration photo{art.galleryImages.length > 1 ? "s" : ""}</span>
+                                  </div>
+                                )}
+                              </div>
+
+                              {/* Card Actions */}
+                              <div className="pt-3 border-t border-coffee-dark/10 flex items-center justify-between gap-2">
+                                <button
+                                  type="button"
+                                  onClick={() => handleEditArticle(art)}
+                                  className="px-3.5 py-1.5 rounded-xl bg-coffee-dark/5 hover:bg-coffee-dark/15 text-coffee-dark text-xs font-bold transition-colors cursor-pointer flex items-center gap-1.5 min-h-[36px]"
+                                >
+                                  <Edit3 size={13} className="text-cappuccino" />
+                                  <span>Edit</span>
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => handleDeleteArticle(art.id)}
+                                  className="p-2 rounded-xl text-coffee-dark/40 hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer min-h-[36px] min-w-[36px] flex items-center justify-center"
+                                  title="Delete article"
+                                >
+                                  <Trash2 size={15} />
+                                </button>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      ))}
-                    </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="p-8 sm:p-12 text-center bg-white/50 rounded-2xl border border-dashed border-coffee-dark/20 space-y-2">
+                        <Newspaper size={32} className="mx-auto text-coffee-dark/30" />
+                        <h5 className="font-serif font-bold text-coffee-dark text-base">No Articles Published Yet</h5>
+                        <p className="text-xs text-coffee-dark/60 font-light max-w-sm mx-auto">
+                          Use the form above to write your own article, attach step-by-step photos, and publish it directly to the website.
+                        </p>
+                      </div>
+                    )}
                   </div>
                 </div>
               )}

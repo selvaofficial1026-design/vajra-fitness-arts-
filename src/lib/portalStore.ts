@@ -31,7 +31,7 @@ function normalizePortalData(data: Partial<PortalData>): PortalData {
     siteSettings: data.siteSettings ? { ...DEFAULT_SITE_SETTINGS, ...data.siteSettings } : { ...DEFAULT_SITE_SETTINGS },
     reviews: data.reviews && data.reviews.length > 0 ? data.reviews : [...DEFAULT_REVIEWS],
     aboutSettings: data.aboutSettings ? { ...DEFAULT_ABOUT_SETTINGS, ...data.aboutSettings } : { ...DEFAULT_ABOUT_SETTINGS },
-    articles: data.articles && data.articles.length > 0 ? data.articles : [...DEFAULT_ARTICLES]
+    articles: data.articles || []
   };
 }
 

@@ -29,7 +29,7 @@ export async function GET(req: Request) {
     const siteSettings = data.siteSettings || DEFAULT_SITE_SETTINGS;
     const reviews = data.reviews && data.reviews.length > 0 ? data.reviews : DEFAULT_REVIEWS;
     const aboutSettings = data.aboutSettings || DEFAULT_ABOUT_SETTINGS;
-    const articles = data.articles && data.articles.length > 0 ? data.articles : DEFAULT_ARTICLES;
+    const articles = data.articles || [];
 
     if (type === "courses") {
       return NextResponse.json({ success: true, courses });
@@ -89,8 +89,8 @@ export async function POST(req: Request) {
     if (!data.aboutSettings) {
       data.aboutSettings = { ...DEFAULT_ABOUT_SETTINGS };
     }
-    if (!data.articles || data.articles.length === 0) {
-      data.articles = [...DEFAULT_ARTICLES];
+    if (!data.articles) {
+      data.articles = [];
     }
 
     // --- 1. COURSE OPERATIONS ---

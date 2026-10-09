@@ -303,88 +303,90 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Coach Murali's Journal & Articles Section */}
-      <section className="py-16 sm:py-24 md:py-32 px-4 sm:px-6 md:px-12 bg-[#FCFAF6] border-t border-cream relative z-10">
-        <div className="max-w-7xl mx-auto">
-          <SectionHeading
-            subtitle="Founder's Knowledge & Insights"
-            title="Articles & Training Philosophy by Coach Murali"
-            centered={true}
-            className="mb-10 sm:mb-16"
-          />
+      {/* Coach Murali's Journal & Articles Section (Displayed only when Coach publishes real articles) */}
+      {articles && articles.length > 0 && (
+        <section className="py-16 sm:py-24 md:py-32 px-4 sm:px-6 md:px-12 bg-[#FCFAF6] border-t border-cream relative z-10">
+          <div className="max-w-7xl mx-auto">
+            <SectionHeading
+              subtitle="Founder's Knowledge & Insights"
+              title="Articles & Training Philosophy by Coach Murali"
+              centered={true}
+              className="mb-10 sm:mb-16"
+            />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {articles.map((article, idx) => (
-              <motion.article
-                key={article.id}
-                initial={{ opacity: 0, y: 25 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1, duration: 0.6 }}
-                className="group flex flex-col bg-white rounded-3xl border border-cream hover:border-cappuccino/60 shadow-premium hover:shadow-[0_20px_45px_rgba(200,149,95,0.22)] transition-all duration-500 overflow-hidden cursor-pointer"
-                onClick={() => setSelectedArticle(article)}
-              >
-                {/* Cover Image */}
-                <div className="relative h-52 sm:h-56 w-full overflow-hidden bg-coffee-dark/5">
-                  <Image
-                    src={article.coverImage || "/images/vajra_hero.jpg"}
-                    alt={article.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity" />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+              {articles.map((article, idx) => (
+                <motion.article
+                  key={article.id}
+                  initial={{ opacity: 0, y: 25 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1, duration: 0.6 }}
+                  className="group flex flex-col bg-white rounded-3xl border border-cream hover:border-cappuccino/60 shadow-premium hover:shadow-[0_20px_45px_rgba(200,149,95,0.22)] transition-all duration-500 overflow-hidden cursor-pointer"
+                  onClick={() => setSelectedArticle(article)}
+                >
+                  {/* Cover Image */}
+                  <div className="relative h-52 sm:h-56 w-full overflow-hidden bg-coffee-dark/5">
+                    <Image
+                      src={article.coverImage || "/images/vajra_hero.jpg"}
+                      alt={article.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-700"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity" />
 
-                  {/* Category Pill */}
-                  <span className="absolute top-4 left-4 bg-coffee-dark/90 backdrop-blur-md text-white text-[10px] sm:text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">
-                    {article.category}
-                  </span>
+                    {/* Category Pill */}
+                    <span className="absolute top-4 left-4 bg-coffee-dark/90 backdrop-blur-md text-white text-[10px] sm:text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">
+                      {article.category}
+                    </span>
 
-                  {/* Read Time */}
-                  <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-md text-white/90 text-[10px] font-mono px-2.5 py-1 rounded-full flex items-center gap-1 shadow-sm">
-                    <Clock size={11} className="text-cappuccino" />
-                    <span>{article.readTime || "4 min read"}</span>
-                  </div>
-
-                  {article.galleryImages && article.galleryImages.length > 0 && (
-                    <div className="absolute bottom-3 right-3 bg-black/75 backdrop-blur-md text-white text-[10px] px-2.5 py-1 rounded-lg flex items-center gap-1.5 border border-white/20">
-                      <ImageIcon size={12} className="text-cappuccino" />
-                      <span>{article.galleryImages.length} Photos Attached</span>
-                    </div>
-                  )}
-                </div>
-
-                {/* Article Info */}
-                <div className="p-6 sm:p-7 flex-1 flex flex-col justify-between space-y-4">
-                  <div className="space-y-2.5">
-                    <div className="flex items-center gap-2 text-[11px] text-coffee-dark/55 font-medium">
-                      <Calendar size={12} className="text-cappuccino shrink-0" />
-                      <span>{article.publishedAt}</span>
-                      <span>•</span>
-                      <span className="text-coffee-dark/70 font-semibold">{article.author || "Coach Murali"}</span>
+                    {/* Read Time */}
+                    <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-md text-white/90 text-[10px] font-mono px-2.5 py-1 rounded-full flex items-center gap-1 shadow-sm">
+                      <Clock size={11} className="text-cappuccino" />
+                      <span>{article.readTime || "4 min read"}</span>
                     </div>
 
-                    <h3 className="font-serif text-lg sm:text-xl font-bold text-coffee-dark group-hover:text-cappuccino transition-colors leading-snug line-clamp-2">
-                      {article.title}
-                    </h3>
-
-                    <p className="text-xs sm:text-sm text-coffee-dark/70 font-light leading-relaxed line-clamp-3">
-                      {article.excerpt}
-                    </p>
+                    {article.galleryImages && article.galleryImages.length > 0 && (
+                      <div className="absolute bottom-3 right-3 bg-black/75 backdrop-blur-md text-white text-[10px] px-2.5 py-1 rounded-lg flex items-center gap-1.5 border border-white/20">
+                        <ImageIcon size={12} className="text-cappuccino" />
+                        <span>{article.galleryImages.length} Photos Attached</span>
+                      </div>
+                    )}
                   </div>
 
-                  {/* Read More Trigger */}
-                  <div className="pt-4 border-t border-cream flex items-center justify-between text-xs font-bold text-coffee-dark group-hover:text-cappuccino transition-colors">
-                    <span className="uppercase tracking-wider">Read Full Article</span>
-                    <div className="w-8 h-8 rounded-full bg-cream/60 group-hover:bg-cappuccino group-hover:text-white transition-all flex items-center justify-center shrink-0">
-                      <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
+                  {/* Article Info */}
+                  <div className="p-6 sm:p-7 flex-1 flex flex-col justify-between space-y-4">
+                    <div className="space-y-2.5">
+                      <div className="flex items-center gap-2 text-[11px] text-coffee-dark/55 font-medium">
+                        <Calendar size={12} className="text-cappuccino shrink-0" />
+                        <span>{article.publishedAt}</span>
+                        <span>•</span>
+                        <span className="text-coffee-dark/70 font-semibold">{article.author || "Coach Murali"}</span>
+                      </div>
+
+                      <h3 className="font-serif text-lg sm:text-xl font-bold text-coffee-dark group-hover:text-cappuccino transition-colors leading-snug line-clamp-2">
+                        {article.title}
+                      </h3>
+
+                      <p className="text-xs sm:text-sm text-coffee-dark/70 font-light leading-relaxed line-clamp-3">
+                        {article.excerpt}
+                      </p>
+                    </div>
+
+                    {/* Read More Trigger */}
+                    <div className="pt-4 border-t border-cream flex items-center justify-between text-xs font-bold text-coffee-dark group-hover:text-cappuccino transition-colors">
+                      <span className="uppercase tracking-wider">Read Full Article</span>
+                      <div className="w-8 h-8 rounded-full bg-cream/60 group-hover:bg-cappuccino group-hover:text-white transition-all flex items-center justify-center shrink-0">
+                        <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
+                      </div>
                     </div>
                   </div>
-                </div>
-              </motion.article>
-            ))}
+                </motion.article>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* The 4 Pillars - Warm card backgrounds, icon circles with bg-cappuccino/15 text-cappuccino, and hover glow */}
       <section className="py-16 sm:py-24 md:py-32 px-4 sm:px-6 md:px-12 bg-white border-t border-cream relative z-10">
