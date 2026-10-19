@@ -2,7 +2,6 @@
 
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { 
   ArrowRight, 
   MessageCircle, 
@@ -99,17 +98,17 @@ export default function BmiCourseCalculator() {
     return bmi >= 25 || bmi < 18.5;
   }, [bmi, selectedGoal]);
 
-  // Course Definitions (Professional English)
+  // Course Definitions (Crisp & Professional)
   const fitnessCourse = useMemo(() => ({
     name: "Fitness & Calisthenics",
     tagline: "Strength, Fat Burn & Functional Stamina",
     description: bmi >= 25 
-      ? "Daily bodyweight circuits and athletic conditioning to burn fat, activate metabolic rate, and build endurance safely without joint strain."
-      : "Functional strength conditioning, core stability, and calisthenics to sculpt lean muscle and dynamic athletic resilience.",
+      ? "High-metabolic bodyweight conditioning to burn fat and build endurance safely."
+      : "Functional strength and calisthenics to sculpt lean muscle and dynamic agility.",
     benefits: [
-      "Full-body metabolic conditioning & core tone",
-      "Corrective posture alignment & joint stability",
-      "Direct guidance in morning & evening batches"
+      "Metabolic conditioning",
+      "Joint stability & core tone",
+      "Morning & evening batches"
     ],
     enrollParam: "Fitness"
   }), [bmi]);
@@ -118,12 +117,12 @@ export default function BmiCourseCalculator() {
     name: "Yoga & Flexibility",
     tagline: "Mobility, Balance & Mind-Body Health",
     description: bmi >= 25
-      ? "Restorative postures and guided diaphragmatic breathwork to release spinal tension, lower systemic stress, and accelerate bodily recovery."
-      : "Traditional asanas and balancing drills engineered to unlock deep flexibility, joint decompression, and unwavering mental focus.",
+      ? "Restorative postures and breathwork to relieve joint tension and aid recovery."
+      : "Traditional asanas and balancing drills to unlock deep flexibility and focus.",
     benefits: [
-      "Deep thoracic & hip mobility with back pain relief",
-      "Pranayama breath control for stress management",
-      "Structured progression suitable for all ages"
+      "Deep spine & hip mobility",
+      "Pranayama breath control",
+      "All skill levels"
     ],
     enrollParam: "Yoga"
   }), [bmi]);
@@ -142,17 +141,17 @@ export default function BmiCourseCalculator() {
 
 I would like to inquire about batch availability and admissions.`;
     return `https://wa.me/919047743533?text=${encodeURIComponent(text)}`;
-  }, [height, weight, feetInches, weightLbs, bmi, categoryConfig.label, firstCourse, secondCourse]);
+  }, [height, weight, feetInches, weightLbs, bmi, categoryConfig.label, firstCourse.name, secondCourse.name]);
 
   const goals = [
-    { id: "fat_loss", label: "Fat Loss & Conditioning", icon: Flame },
-    { id: "muscle", label: "Strength & Muscle Tone", icon: Dumbbell },
-    { id: "flexibility", label: "Mobility & Flexibility", icon: Sparkles },
+    { id: "fat_loss", label: "Fat Loss & Burn", icon: Flame },
+    { id: "muscle", label: "Strength & Tone", icon: Dumbbell },
+    { id: "flexibility", label: "Mobility & Flex", icon: Sparkles },
     { id: "stamina", label: "Cardio & Stamina", icon: Activity }
   ] as const;
 
   return (
-    <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 md:px-12 bg-[#1A1210] relative z-10 text-white border-y border-[#3E2B24] overflow-hidden">
+    <section className="py-10 sm:py-14 md:py-16 px-4 sm:px-6 md:px-12 bg-[#1A1210] relative z-10 text-white border-y border-[#3E2B24] overflow-hidden">
       {/* Subtle luxury ambient glow */}
       <div className="absolute top-0 right-1/4 w-96 h-96 bg-cappuccino/8 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-[#C8955F]/5 rounded-full blur-3xl pointer-events-none" />
@@ -160,17 +159,17 @@ I would like to inquire about batch availability and admissions.`;
       <div className="max-w-6xl mx-auto relative z-10">
         
         {/* Professional Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-12 px-2">
-          <span className="text-[10px] sm:text-xs uppercase tracking-[0.35em] text-cappuccino font-extrabold block mb-2">
+        <div className="text-center max-w-2xl mx-auto mb-7 sm:mb-10 px-2">
+          <span className="text-[10px] sm:text-xs uppercase tracking-[0.35em] text-cappuccino font-extrabold block mb-1.5">
             Personalized Body Assessment
           </span>
-          <h2 className="text-2xl sm:text-4xl md:text-5xl font-serif text-white font-bold mb-3 tracking-tight">
+          <h2 className="text-2xl sm:text-4xl md:text-5xl font-serif text-white font-bold mb-2 tracking-tight">
             Calculate Your BMI &amp; Ideal Program
           </h2>
           <p className="text-xs sm:text-sm text-white/70 font-light leading-relaxed">
-            Enter your height and weight to assess your body mass index and receive a tailored, master-crafted training track.
+            Adjust your height and weight to assess your body mass index and find the ideal training track.
           </p>
-          <div className="flex items-center justify-center gap-3 mt-5">
+          <div className="flex items-center justify-center gap-3 mt-4">
             <div className="h-[1px] w-8 sm:w-12 bg-cappuccino/35" />
             <div className="h-[5px] w-[5px] rounded-full bg-cappuccino shadow-[0_0_8px_rgba(200,149,95,0.7)]" />
             <div className="h-[1px] w-8 sm:w-12 bg-cappuccino/35" />
@@ -178,17 +177,17 @@ I would like to inquire about batch availability and admissions.`;
         </div>
 
         {/* 2-Column Assessment Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-7 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-start">
           
           {/* LEFT: Assessment Console */}
-          <div className="lg:col-span-5 bg-[#231916] p-5 sm:p-7 rounded-3xl border border-[#3E2B24] shadow-2xl relative overflow-hidden">
+          <div className="lg:col-span-5 bg-[#231916] p-5 sm:p-6 rounded-3xl border border-[#3E2B24] shadow-2xl relative overflow-hidden">
             {/* Top accent line */}
             <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cappuccino/60 to-transparent" />
 
             {/* Height & Weight Sliders */}
-            <div className="space-y-5">
+            <div className="space-y-4">
               {/* Height */}
-              <div className="space-y-2">
+              <div className="space-y-1.5">
                 <div className="flex justify-between items-center text-xs">
                   <span className="text-white/80 font-medium">Height</span>
                   <div className="flex items-center gap-2 bg-[#1A1210] px-3 py-1 rounded-xl border border-white/10 font-mono text-xs">
@@ -203,7 +202,7 @@ I would like to inquire about batch availability and admissions.`;
                   max={215}
                   value={height}
                   onChange={(e) => setHeight(Number(e.target.value))}
-                  className="w-full h-2 bg-[#352520] rounded-lg appearance-none cursor-pointer accent-cappuccino"
+                  className="w-full h-2 bg-[#352520] rounded-lg appearance-none cursor-pointer accent-[#C8955F]"
                 />
                 <div className="flex justify-between text-[10px] text-white/40 font-mono">
                   <span>120 cm</span>
@@ -213,7 +212,7 @@ I would like to inquire about batch availability and admissions.`;
               </div>
 
               {/* Weight */}
-              <div className="space-y-2">
+              <div className="space-y-1.5">
                 <div className="flex justify-between items-center text-xs">
                   <span className="text-white/80 font-medium">Weight</span>
                   <div className="flex items-center gap-2 bg-[#1A1210] px-3 py-1 rounded-xl border border-white/10 font-mono text-xs">
@@ -228,7 +227,7 @@ I would like to inquire about batch availability and admissions.`;
                   max={150}
                   value={weight}
                   onChange={(e) => setWeight(Number(e.target.value))}
-                  className="w-full h-2 bg-[#352520] rounded-lg appearance-none cursor-pointer accent-cappuccino"
+                  className="w-full h-2 bg-[#352520] rounded-lg appearance-none cursor-pointer accent-[#C8955F]"
                 />
                 <div className="flex justify-between text-[10px] text-white/40 font-mono">
                   <span>35 kg</span>
@@ -239,9 +238,9 @@ I would like to inquire about batch availability and admissions.`;
             </div>
 
             {/* Training Goal Selector */}
-            <div className="mt-5 pt-4 border-t border-white/10">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-white/70 block mb-2.5">
-                Primary Fitness Priority:
+            <div className="mt-4 pt-3.5 border-t border-white/10">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-white/70 block mb-2">
+                Fitness Focus:
               </span>
               <div className="grid grid-cols-2 gap-2">
                 {goals.map((g) => {
@@ -253,9 +252,9 @@ I would like to inquire about batch availability and admissions.`;
                       type="button"
                       onClick={() => setSelectedGoal(g.id)}
                       className={cn(
-                        "p-2.5 rounded-xl text-left text-xs transition-all border flex items-center gap-2 cursor-pointer touch-manipulation",
+                        "p-2 rounded-xl text-left text-xs transition-colors border flex items-center gap-1.5 cursor-pointer touch-manipulation",
                         isSelected
-                          ? "bg-cappuccino/20 border-cappuccino text-white font-semibold shadow-xs"
+                          ? "bg-cappuccino/20 border-cappuccino text-white font-semibold"
                           : "bg-[#1A1210] border-white/10 text-white/70 hover:border-cappuccino/30 hover:text-white"
                       )}
                     >
@@ -268,82 +267,76 @@ I would like to inquire about batch availability and admissions.`;
             </div>
 
             {/* Precision BMI Metric Output Box */}
-            <div className="mt-5 p-4 rounded-2xl bg-[#1A1210] border border-[#3E2B24] space-y-3">
-              <div className="flex items-center justify-between gap-3">
+            <div className="mt-4 p-3.5 rounded-2xl bg-[#1A1210] border border-[#3E2B24] space-y-2.5">
+              <div className="flex items-center justify-between gap-2">
                 <div>
-                  <span className="text-[10px] text-white/50 uppercase tracking-wider font-semibold block">
-                    Calculated Score
+                  <span className="text-[9px] text-white/50 uppercase tracking-wider font-semibold block">
+                    Calculated BMI
                   </span>
-                  <div className="flex items-baseline gap-1.5 mt-0.5">
-                    <span className="text-3xl sm:text-4xl font-serif font-bold text-white tracking-tight">
+                  <div className="flex items-baseline gap-1 mt-0.5">
+                    <span className="text-3xl font-serif font-bold text-white tracking-tight">
                       {bmi}
                     </span>
-                    <span className="text-xs text-white/50 font-mono">kg/m²</span>
+                    <span className="text-[11px] text-white/50 font-mono">kg/m²</span>
                   </div>
                 </div>
 
                 <div className="text-right">
                   <span className={cn(
-                    "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border",
+                    "inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold border",
                     categoryConfig.badgeClass
                   )}>
                     <span className={cn("w-1.5 h-1.5 rounded-full", categoryConfig.dotClass)} />
-                    <span>{categoryConfig.label}</span>
+                    <span className="whitespace-nowrap">{categoryConfig.label}</span>
                   </span>
-                  <span className="text-[11px] text-white/50 font-mono block mt-1">
-                    Healthy Target: {idealMin}–{idealMax} kg
+                  <span className="text-[10px] text-white/50 font-mono block mt-0.5">
+                    Target: {idealMin}–{idealMax} kg
                   </span>
                 </div>
               </div>
 
-              {/* 4-Stage Precision Segmented Meter */}
-              <div className="space-y-1.5 pt-1">
+              {/* 4-Stage Segmented Meter */}
+              <div className="space-y-1 pt-0.5">
                 <div className="grid grid-cols-4 gap-1.5 h-2 w-full">
                   <div className={cn(
-                    "rounded-full transition-all duration-300",
-                    bmi < 18.5 ? "bg-sky-400 shadow-[0_0_10px_rgba(56,189,248,0.5)]" : "bg-sky-500/20"
+                    "rounded-full transition-colors duration-200",
+                    bmi < 18.5 ? "bg-sky-400 shadow-[0_0_8px_rgba(56,189,248,0.5)]" : "bg-sky-500/20"
                   )} />
                   <div className={cn(
-                    "rounded-full transition-all duration-300",
-                    bmi >= 18.5 && bmi < 25 ? "bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.5)]" : "bg-emerald-500/20"
+                    "rounded-full transition-colors duration-200",
+                    bmi >= 18.5 && bmi < 25 ? "bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.5)]" : "bg-emerald-500/20"
                   )} />
                   <div className={cn(
-                    "rounded-full transition-all duration-300",
-                    bmi >= 25 && bmi < 30 ? "bg-amber-400 shadow-[0_0_10px_rgba(251,191,36,0.5)]" : "bg-amber-500/20"
+                    "rounded-full transition-colors duration-200",
+                    bmi >= 25 && bmi < 30 ? "bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.5)]" : "bg-amber-500/20"
                   )} />
                   <div className={cn(
-                    "rounded-full transition-all duration-300",
-                    bmi >= 30 ? "bg-rose-400 shadow-[0_0_10px_rgba(248,113,113,0.5)]" : "bg-rose-500/20"
+                    "rounded-full transition-colors duration-200",
+                    bmi >= 30 ? "bg-rose-400 shadow-[0_0_8px_rgba(248,113,113,0.5)]" : "bg-rose-500/20"
                   )} />
                 </div>
 
                 <div className="grid grid-cols-4 text-[9px] font-medium text-center text-white/50 pt-0.5">
-                  <span className={cn(bmi < 18.5 && "text-sky-300 font-bold")}>Under (&lt;18.5)</span>
-                  <span className={cn(bmi >= 18.5 && bmi < 25 && "text-emerald-300 font-bold")}>Optimal (18.5–24.9)</span>
-                  <span className={cn(bmi >= 25 && bmi < 30 && "text-amber-300 font-bold")}>Over (25–29.9)</span>
-                  <span className={cn(bmi >= 30 && "text-rose-300 font-bold")}>High (30+)</span>
+                  <span className={cn("truncate block", bmi < 18.5 && "text-sky-300 font-bold")}>Under (&lt;18.5)</span>
+                  <span className={cn("truncate block", bmi >= 18.5 && bmi < 25 && "text-emerald-300 font-bold")}>Normal (18.5-25)</span>
+                  <span className={cn("truncate block", bmi >= 25 && bmi < 30 && "text-amber-300 font-bold")}>Over (25-30)</span>
+                  <span className={cn("truncate block", bmi >= 30 && "text-rose-300 font-bold")}>High (30+)</span>
                 </div>
               </div>
 
-              <p className="text-[11px] text-white/70 font-light leading-relaxed pt-1 border-t border-white/5">
+              <p className="text-[11px] text-white/70 font-light leading-snug pt-1 border-t border-white/5">
                 {categoryConfig.summary}
               </p>
             </div>
 
           </div>
 
-          {/* RIGHT: Tailored Course Recommendations */}
-          <div className="lg:col-span-7 space-y-4">
+          {/* RIGHT: Tailored Course Recommendations (Stable DOM, zero remount blinking) */}
+          <div className="lg:col-span-7 space-y-3.5">
             
             {/* 1st Choice Card: Primary Recommended Focus */}
-            <motion.div 
-              key={`1st-${firstCourse.name}`}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.35 }}
-              className="bg-gradient-to-br from-[#291D1A] to-[#1E1513] p-5 sm:p-6 rounded-3xl border border-cappuccino/45 shadow-xl relative overflow-hidden group"
-            >
-              <div className="flex items-center justify-between mb-3">
+            <div className="bg-gradient-to-br from-[#291D1A] to-[#1E1513] p-5 sm:p-6 rounded-3xl border border-cappuccino/45 shadow-xl relative overflow-hidden group">
+              <div className="flex items-center justify-between mb-2.5">
                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-cappuccino/15 text-cappuccino border border-cappuccino/30 shadow-2xs">
                   <Sparkles size={12} className="text-cappuccino" />
                   <span>Primary Recommended Track</span>
@@ -354,48 +347,43 @@ I would like to inquire about batch availability and admissions.`;
                 </span>
               </div>
 
-              <h3 className="text-xl sm:text-2xl font-serif font-bold text-white mb-1 tracking-tight group-hover:text-cappuccino transition-colors">
+              <h3 className="text-xl sm:text-2xl font-serif font-bold text-white mb-0.5 tracking-tight group-hover:text-cappuccino transition-colors">
                 {firstCourse.name}
               </h3>
-              <p className="text-xs text-cappuccino font-semibold uppercase tracking-wider mb-2.5">
+              <p className="text-xs text-cappuccino font-semibold uppercase tracking-wider mb-2">
                 {firstCourse.tagline}
               </p>
-              <p className="text-xs sm:text-sm text-white/80 leading-relaxed mb-4 font-light">
+              <p className="text-xs sm:text-sm text-white/80 leading-relaxed mb-3.5 font-light">
                 {firstCourse.description}
               </p>
 
-              <div className="space-y-1.5 mb-5 text-xs text-white/75">
+              {/* Compact Benefits Pills */}
+              <div className="flex flex-wrap gap-1.5 mb-4 text-[11px] text-white/80">
                 {firstCourse.benefits.map((b, i) => (
-                  <div key={i} className="flex items-center gap-2">
+                  <span key={i} className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 font-medium">
                     <CheckCircle2 className="w-3.5 h-3.5 text-cappuccino shrink-0" />
                     <span>{b}</span>
-                  </div>
+                  </span>
                 ))}
               </div>
 
-              <div className="pt-3 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="pt-3 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
                 <span className="text-[11px] text-white/50 font-mono">
                   Daily Batches: Morning &amp; Evening
                 </span>
                 <Link
                   href={`/portal?tab=enroll&course=${firstCourse.enrollParam}`}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-cappuccino hover:bg-[#b8824d] text-[#1A1210] font-bold text-xs uppercase tracking-wider shadow-md hover:shadow-lg active:scale-95 transition-all text-center"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-cappuccino hover:bg-[#b8824d] text-[#1A1210] font-bold text-xs uppercase tracking-wider shadow-md hover:shadow-lg active:scale-95 transition-all text-center"
                 >
                   <span>Enroll in Primary Track</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
-            </motion.div>
+            </div>
 
             {/* 2nd Choice Card: Complementary Discipline */}
-            <motion.div 
-              key={`2nd-${secondCourse.name}`}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.35, delay: 0.05 }}
-              className="bg-[#211715] p-5 sm:p-6 rounded-3xl border border-white/10 hover:border-cappuccino/30 shadow-lg relative overflow-hidden transition-all group"
-            >
-              <div className="flex items-center justify-between mb-3">
+            <div className="bg-[#211715] p-5 sm:p-6 rounded-3xl border border-white/10 hover:border-cappuccino/30 shadow-lg relative overflow-hidden transition-all group">
+              <div className="flex items-center justify-between mb-2.5">
                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-white/10 text-white/90 border border-white/15">
                   <Shield size={12} className="text-cappuccino" />
                   <span>Complementary Discipline</span>
@@ -406,43 +394,44 @@ I would like to inquire about batch availability and admissions.`;
                 </span>
               </div>
 
-              <h3 className="text-xl sm:text-2xl font-serif font-bold text-white mb-1 tracking-tight group-hover:text-cappuccino transition-colors">
+              <h3 className="text-xl sm:text-2xl font-serif font-bold text-white mb-0.5 tracking-tight group-hover:text-cappuccino transition-colors">
                 {secondCourse.name}
               </h3>
-              <p className="text-xs text-cappuccino font-semibold uppercase tracking-wider mb-2.5">
+              <p className="text-xs text-cappuccino font-semibold uppercase tracking-wider mb-2">
                 {secondCourse.tagline}
               </p>
-              <p className="text-xs sm:text-sm text-white/80 leading-relaxed mb-4 font-light">
+              <p className="text-xs sm:text-sm text-white/80 leading-relaxed mb-3.5 font-light">
                 {secondCourse.description}
               </p>
 
-              <div className="space-y-1.5 mb-5 text-xs text-white/75">
+              {/* Compact Benefits Pills */}
+              <div className="flex flex-wrap gap-1.5 mb-4 text-[11px] text-white/80">
                 {secondCourse.benefits.map((b, i) => (
-                  <div key={i} className="flex items-center gap-2">
+                  <span key={i} className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 font-medium">
                     <CheckCircle2 className="w-3.5 h-3.5 text-cappuccino/70 shrink-0" />
                     <span>{b}</span>
-                  </div>
+                  </span>
                 ))}
               </div>
 
-              <div className="pt-3 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="pt-3 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
                 <span className="text-[11px] text-white/50 font-mono">
                   Daily Batches: Morning &amp; Evening
                 </span>
                 <Link
                   href={`/portal?tab=enroll&course=${secondCourse.enrollParam}`}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-transparent hover:bg-cappuccino/15 border border-cappuccino/40 text-cappuccino hover:border-cappuccino text-xs font-bold uppercase tracking-wider transition-all active:scale-95 text-center"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-transparent hover:bg-cappuccino/15 border border-cappuccino/40 text-cappuccino hover:border-cappuccino text-xs font-bold uppercase tracking-wider transition-all active:scale-95 text-center"
                 >
                   <span>Enroll in Complementary Track</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
-            </motion.div>
+            </div>
 
             {/* Executive Consultation Strip with Head Coach Murali */}
-            <div className="p-4 rounded-2xl bg-[#1A1210] border border-[#3E2B24] flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left shadow-md">
+            <div className="p-3.5 sm:p-4 rounded-2xl bg-[#1A1210] border border-[#3E2B24] flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left shadow-md">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-cappuccino/15 border border-cappuccino/30 flex items-center justify-center text-cappuccino shrink-0">
+                <div className="w-9 h-9 rounded-full bg-cappuccino/15 border border-cappuccino/30 flex items-center justify-center text-cappuccino shrink-0">
                   <MessageCircle className="w-4 h-4" />
                 </div>
                 <div>
@@ -459,7 +448,7 @@ I would like to inquire about batch availability and admissions.`;
                 href={whatsAppUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:w-auto shrink-0 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-black font-bold text-xs uppercase tracking-wider transition-all active:scale-95"
+                className="w-full sm:w-auto shrink-0 inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-black font-bold text-xs uppercase tracking-wider transition-all active:scale-95"
               >
                 <span>Ask on WhatsApp</span>
                 <ArrowRight size={13} />

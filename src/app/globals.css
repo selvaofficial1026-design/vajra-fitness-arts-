@@ -122,8 +122,11 @@
   body {
     cursor: none;
   }
-  input, textarea, select {
+  input:not([type="range"]):not([type="button"]):not([type="submit"]):not([type="checkbox"]):not([type="radio"]), textarea, select {
     cursor: text !important;
+  }
+  input[type="range"] {
+    cursor: pointer !important;
   }
   button, a {
     cursor: pointer;

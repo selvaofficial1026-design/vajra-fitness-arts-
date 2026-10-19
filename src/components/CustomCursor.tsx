@@ -20,14 +20,20 @@ export default function CustomCursor() {
         target.tagName.toLowerCase() === "textarea" ||
         target.tagName.toLowerCase() === "select" ||
         target.isContentEditable ||
-        (target.tagName.toLowerCase() === "input" && !["submit", "button", "checkbox", "radio"].includes((target as HTMLInputElement).type?.toLowerCase())) ||
+        (target.tagName.toLowerCase() === "input" && !["submit", "button", "checkbox", "radio", "range"].includes((target as HTMLInputElement).type?.toLowerCase())) ||
         target.closest("textarea, select, [contenteditable='true']") ||
-        target.closest("input:not([type='submit']):not([type='button']):not([type='checkbox']):not([type='radio'])")
+        target.closest("input:not([type='submit']):not([type='button']):not([type='checkbox']):not([type='radio']):not([type='range'])")
       );
 
       setIsOverInput(isInput);
 
+      const isRange = Boolean(
+        (target.tagName.toLowerCase() === "input" && (target as HTMLInputElement).type?.toLowerCase() === "range") ||
+        target.closest("input[type='range']")
+      );
+
       if (!isInput && (
+        isRange ||
         target.tagName.toLowerCase() === "a" ||
         target.tagName.toLowerCase() === "button" ||
         target.closest("a") ||
@@ -78,7 +84,7 @@ export default function CustomCursor() {
   return (
     <div className="fixed inset-0 pointer-events-none z-[99999] hidden [@media(hover:hover)]:block">
       <motion.div
-        className="w-4 h-4 bg-cappuccino rounded-full flex items-center justify-center mix-blend-difference"
+        className="w-4 h-4 rounded-full flex items-center justify-center bg-cappuccino/85 border border-[#1A1210]/40 shadow-[0_0_12px_rgba(200,149,95,0.7)]"
         style={{
           x: mouseX,
           y: mouseY,
@@ -86,7 +92,7 @@ export default function CustomCursor() {
           translateY: "-50%",
         }}
         animate={{
-          scale: isOverInput ? 0 : isHovering ? 4 : 1,
+          scale: isOverInput ? 0 : isHovering ? 2.8 : 1,
           opacity: isOverInput ? 0 : 1,
         }}
         transition={{ type: "spring", stiffness: 280, damping: 22 }}
@@ -95,7 +101,7 @@ export default function CustomCursor() {
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="w-1 h-1 bg-coffee-dark rounded-full"
+            className="w-1.5 h-1.5 bg-[#1A1210] rounded-full"
           />
         )}
       </motion.div>
