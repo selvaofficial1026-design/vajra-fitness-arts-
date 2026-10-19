@@ -17,12 +17,12 @@ export default function Hero() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Spring-smoothed Parallax: 0.25x background, subtle content counter-shift
-  const rawYBg = useTransform(scrollY, [0, 800], [0, isMobile ? 0 : 160]);
-  const rawYContent = useTransform(scrollY, [0, 800], [0, isMobile ? 0 : -60]);
+  // Spring-smoothed Parallax: background and subtle content shift
+  const rawYBg = useTransform(scrollY, [0, 800], [0, isMobile ? 0 : 80]);
+  const rawYContent = useTransform(scrollY, [0, 800], [0, isMobile ? 0 : -40]);
   const yBg = useSpring(rawYBg, { stiffness: 90, damping: 25, restDelta: 0.001 });
   const yContent = useSpring(rawYContent, { stiffness: 90, damping: 25, restDelta: 0.001 });
-  const opacity = useTransform(scrollY, [0, 450], [1, 0]);
+  const opacity = useTransform(scrollY, [0, 600], [1, 0.2]);
 
   // Spring-smoothed 3D tilt with bounded ranges (max 5deg)
   const mouseX = useMotionValue(0);
@@ -51,12 +51,12 @@ export default function Hero() {
     <section 
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="relative min-h-[100svh] w-full flex flex-col items-center justify-center p-0 perspective-1000 pt-20 pb-12 sm:pt-24 sm:pb-16 overflow-hidden"
+      className="relative min-h-[100svh] w-full flex flex-col items-center justify-center p-0 pt-20 pb-12 sm:pt-24 sm:pb-16 overflow-hidden bg-[#1A1210]"
     >
       {/* Background Image with Pro Parallax & Rich Warm Cinematic Grade */}
       <motion.div 
         style={{ y: yBg }} 
-        className="absolute -top-16 -bottom-16 inset-x-0 z-0 will-change-transform pointer-events-none"
+        className="absolute -top-16 -bottom-16 inset-x-0 z-0 pointer-events-none"
       >
         <Image
           src="/images/logo_gold.jpeg"
@@ -67,9 +67,9 @@ export default function Hero() {
           sizes="100vw"
           className="object-cover brightness-[0.36] scale-105"
         />
-        {/* Warm vignette overlay and top shadow */}
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-[#241A1A]/40 to-transparent pointer-events-none" />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#1A1212]/80 via-[#1A1212]/25 to-transparent pointer-events-none" />
+        {/* Seamless dark blend into BmiCourseCalculator - zero white flash */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#1A1210] via-[#1A1210]/60 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#1A1210]/90 via-[#1A1210]/30 to-transparent pointer-events-none" />
       </motion.div>
 
       <motion.div 
@@ -77,8 +77,7 @@ export default function Hero() {
           y: yContent, 
           opacity,
           rotateX,
-          rotateY,
-          transformStyle: "preserve-3d"
+          rotateY
         }}
         className="relative z-20 text-center px-4 xs:px-6 sm:px-12 max-w-5xl my-auto"
       >
