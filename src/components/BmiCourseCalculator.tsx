@@ -151,10 +151,10 @@ I would like to inquire about batch availability and admissions.`;
   ] as const;
 
   return (
-    <section className="py-10 sm:py-14 md:py-16 px-4 sm:px-6 md:px-12 bg-[#1A1210] relative z-10 text-white border-y border-[#3E2B24] overflow-hidden">
-      {/* Subtle luxury ambient glow */}
-      <div className="absolute top-0 right-1/4 w-96 h-96 bg-cappuccino/8 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-[#C8955F]/5 rounded-full blur-3xl pointer-events-none" />
+    <section className="py-10 sm:py-14 md:py-16 px-4 sm:px-6 md:px-12 bg-[#1A1210] relative z-10 text-white border-y border-[#3E2B24] overflow-hidden touch-pan-y">
+      {/* Subtle luxury ambient glow - Zero GPU blur shader overhead, mobile-safe */}
+      <div className="absolute top-0 right-1/4 w-80 h-80 rounded-full bg-[radial-gradient(circle,rgba(200,149,95,0.08)_0%,transparent_70%)] pointer-events-none" />
+      <div className="absolute bottom-0 left-1/4 w-80 h-80 rounded-full bg-[radial-gradient(circle,rgba(200,149,95,0.05)_0%,transparent_70%)] pointer-events-none" />
 
       <div className="max-w-6xl mx-auto relative z-10">
         
@@ -180,14 +180,14 @@ I would like to inquire about batch availability and admissions.`;
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-start">
           
           {/* LEFT: Assessment Console */}
-          <div className="lg:col-span-5 bg-[#231916] p-5 sm:p-6 rounded-3xl border border-[#3E2B24] shadow-2xl relative overflow-hidden">
+          <div className="lg:col-span-5 bg-[#231916] p-5 sm:p-6 rounded-3xl border border-[#3E2B24] shadow-2xl relative overflow-hidden touch-pan-y">
             {/* Top accent line */}
             <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cappuccino/60 to-transparent" />
 
             {/* Height & Weight Sliders */}
-            <div className="space-y-4">
+            <div className="space-y-4 touch-pan-y">
               {/* Height */}
-              <div className="space-y-1.5">
+              <div className="space-y-1.5 touch-pan-y">
                 <div className="flex justify-between items-center text-xs">
                   <span className="text-white/80 font-medium">Height</span>
                   <div className="flex items-center gap-2 bg-[#1A1210] px-3 py-1 rounded-xl border border-white/10 font-mono text-xs">
@@ -202,7 +202,7 @@ I would like to inquire about batch availability and admissions.`;
                   max={215}
                   value={height}
                   onChange={(e) => setHeight(Number(e.target.value))}
-                  className="w-full h-2 bg-[#352520] rounded-lg appearance-none cursor-pointer accent-[#C8955F]"
+                  className="w-full h-2 bg-[#352520] rounded-lg appearance-none cursor-pointer accent-[#C8955F] touch-pan-y"
                 />
                 <div className="flex justify-between text-[10px] text-white/40 font-mono">
                   <span>120 cm</span>
@@ -212,7 +212,7 @@ I would like to inquire about batch availability and admissions.`;
               </div>
 
               {/* Weight */}
-              <div className="space-y-1.5">
+              <div className="space-y-1.5 touch-pan-y">
                 <div className="flex justify-between items-center text-xs">
                   <span className="text-white/80 font-medium">Weight</span>
                   <div className="flex items-center gap-2 bg-[#1A1210] px-3 py-1 rounded-xl border border-white/10 font-mono text-xs">
@@ -227,7 +227,7 @@ I would like to inquire about batch availability and admissions.`;
                   max={150}
                   value={weight}
                   onChange={(e) => setWeight(Number(e.target.value))}
-                  className="w-full h-2 bg-[#352520] rounded-lg appearance-none cursor-pointer accent-[#C8955F]"
+                  className="w-full h-2 bg-[#352520] rounded-lg appearance-none cursor-pointer accent-[#C8955F] touch-pan-y"
                 />
                 <div className="flex justify-between text-[10px] text-white/40 font-mono">
                   <span>35 kg</span>

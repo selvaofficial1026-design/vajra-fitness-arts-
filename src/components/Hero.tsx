@@ -51,7 +51,7 @@ export default function Hero() {
     <section 
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="relative min-h-[100svh] w-full flex flex-col items-center justify-center p-0 pt-20 pb-12 sm:pt-24 sm:pb-16 overflow-hidden bg-[#1A1210]"
+      className="relative min-h-[100dvh] w-full flex flex-col items-center justify-center p-0 pt-20 pb-12 sm:pt-24 sm:pb-16 overflow-hidden bg-[#1A1210] touch-pan-y"
     >
       {/* Background Image with Pro Parallax & Rich Warm Cinematic Grade */}
       <motion.div 

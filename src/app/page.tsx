@@ -110,10 +110,11 @@ export default function Home() {
 
   return (
     <main className="min-h-screen flex flex-col pt-0 bg-background relative">
-      <Hero />
-
-      {/* Smart BMI Assessment & Course Matcher */}
-      <BmiCourseCalculator />
+      {/* Dark Studio Wrapper - guarantees zero white background flash on mobile scroll */}
+      <div className="w-full bg-[#1A1210] relative">
+        <Hero />
+        <BmiCourseCalculator />
+      </div>
 
       {/* Featured Courses Section */}
       <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 md:px-12 bg-premium-gradient relative z-10">
